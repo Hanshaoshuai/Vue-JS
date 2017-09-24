@@ -15,38 +15,42 @@
 			<div class="wenzhang-list">
 				<div class="wenzhang-content">
 					<div class="zhuying">
-						<div class="zhuying_1">
-							<div class="ferst">天天定增定增定增定增定增定增定增定增定增定增定增主营业务</div>
-							<div class="last">
-								<ul>
-									<li><span>主办方：</span>sa</li>
-									<li><span>课程大纲：</span>ff</li>
-									<li><span>授课老师：</span>sa</li>
-									<li><span>以往课程风采：</span>ds</li>
-									<li><span>时间：</span>jfdj</li>
-									<li><span>地点：</span>fsdf</li>
-									<li><span>费用：</span>fd</li>
-									<li><span>报名截止时间：</span>ds</li>
-									<li><span>优惠：</span>ff</li>
-								</ul>
-							</div>
+						<div class="ferst">IPO加速下企业股改上市，股权融资级市值管理公益辅导计划</div>
+						<div class="last">
+							<p>
+								增定增定增以往课程风采定增定，股权融资级程大以往课程风采增定增定增定增
+							</p>
 						</div>
 					</div>
-					<div class="times border-topbottom">
-						<div class="times-child">
-							<div class="content-food">
-								<img class="border" src="" alt="" />
-								<span>&nbsp;&nbsp;{{cishu}}次阅读</span>
-								<span>&nbsp;&nbsp;投资经理</span>
-								<span>{{cishu}}发布</span>
-							</div>
-						</div>
+					<div class="content-food border-topbottom">
+						<li class="imgs">
+							<img src="../img/xun.png"/>
+						</li>
+						<span>&nbsp;王美丽</span>
+						<span>&nbsp;中小企业投资</span>
+						<span>&nbsp;投资经理</span>
+						<span><img src="../img/fabu.png"/>{{cishu}}&nbsp;发布</span>
 					</div>
 				</div>
-			</div>
-			<div class="baoming">
-				<span @click.stap="liuyan()">留言问询</span>
-				<span @click.stap="youhiuGo()">查看优惠券</span>
+				<div class="xinxi border-topbottom">
+					<ul>
+						<li @click.stop="kechengShow()" :class="kechengs"><p class="border-right">
+							<font>课程信息<span></span></font></p>
+						</li>
+						<li @click.stop="fengcaiShow()" :class="fengcais">
+							<p><font>以往课程风采<span></span></font></p>
+						</li>
+					</ul>
+				</div>
+				<div>
+					<gugaifengcai ref="gugaifengcaiShow"></gugaifengcai>
+					<kechengxinxi ref="kechengxinxiShow"></kechengxinxi>
+					
+				</div>
+				<div class="baoming">
+					<span @click.stap="liuyan()">留言问询</span>
+					<span @click.stap="youhiuGo()">查看优惠券</span>
+				</div>
 			</div>
 			<youhuiquan ref="youhuiShow"></youhuiquan>
 		</div>
@@ -57,6 +61,8 @@
 	import { Toast } from 'mint-ui';
 	import { MessageBox } from 'mint-ui';
 	import youhuiquan from "./YouhuiQuan.vue";
+	import gugaifengcai from "../GugaiFengcai/GugaiFengcai.vue";
+	import kechengxinxi from "../GugaiFengcai/KechengXinxi.vue";
 //	import BScroll from "better-scroll";
 //	import Vue from "vue";
 //	import {formatDate} from "../../common/js/date.js";
@@ -75,6 +81,9 @@
 			return {
 				cishu:"888",
 				block:false,
+				shijianBlock:false,
+				kechengs:"kechengs",
+				fengcais:"",
 				ButtenName:"索要完整项目信息",
 				showFlag:true,
 				onlyContent:true
@@ -88,8 +97,17 @@
 			quanXuan(){
 				
 			},
-			peixunShow(){
-				this.showFlag=true;
+			kechengShow(){
+				this.kechengs="kechengs";
+				this.fengcais="";
+				this.$refs.kechengxinxiShow.KechengXinxiBlock();
+				this.$refs.gugaifengcaiShow.gugaifengcaiNone();
+			},
+			fengcaiShow(){
+				this.kechengs="";
+				this.fengcais="fengcais";
+				this.$refs.gugaifengcaiShow.gugaifengcaiBlock();
+				this.$refs.kechengxinxiShow.KechengXinxiNone();
 			},
 			youhiuGo(){
 //				var tate=this;
@@ -148,7 +166,9 @@
 //			}
 		},
 		components:{
-			youhuiquan
+			youhuiquan,
+			gugaifengcai,
+			kechengxinxi
 //			cartcontrol,
 //			ratingselect,
 //			split
@@ -194,7 +214,7 @@
 				.fanhui-butten{
 					position:absolute;
 					height:100%;
-					padding-left:0.3rem;
+					padding-left:0.16rem;
 					display:inline-block;
 					top:0.04rem;
 					left:0;
@@ -214,99 +234,160 @@
 			    }
 			}
 		}
+		.wenzhang-list::-webkit-scrollbar{width:0px}
 		.wenzhang-list{
 			width:100%;
+			height:100%;
 			overflow-y:auto;
+			-webkit-overflow-scrolling:touch;/*解决苹果滑动流畅*/
 			.wenzhang-content{
 				width: 100%;
-				/*height:auto;*/
-				margin:0.55rem 0;
-				padding-bottom:0.45rem;
-				.content-heder{
-					width:100%;
-					height:0.3rem;
-					background:#fff;
-					margin-top:0.12rem 0 ;
-					display:flex;
-					-webkit-box-pack:center;
-					justify-content:center;
-					-webkit-box-align:center;
-					align-items:center;
-					span{
-						display:inline-block;
-						font-weight:bold;
-						font-size:0.16rem;
-					}
-					.text-center{
-						padding:0 0.2rem;
-					}
-				}
+				margin-top:0.55rem;
+				background:#fff;
+				margin-bottom:0.13rem;
+				box-shadow: 0.03rem 0 0.04rem #e2e2e6;
 				.zhuying{
-					width:100%;
+					width:91.5%;
+					margin:0 auto;
 					background:#fff;
-					display:flex;
-					.zhuying_1{
-						flex:1;
-						padding:0 0.2rem;
-						.ferst{
-							font-size:0.17rem;
-							font-weight:bold;
-							line-height:0.2rem;
-							padding-top:0.1rem;
-						}
-						.last{
-							padding:0.2rem 0;
-							font-size:0.12rem;
-							span{
-								display:inline-block;
-								line-height:0.3rem;
-								width:1rem;
-							}
+					.ferst{
+						font-size:0.18rem;
+						line-height:0.22rem;
+						color:#484848;
+						padding:0.16rem 0 0.07rem 0;
+					}
+					.last{
+						font-size:0.16rem;
+						p{
+							color:#787878;
+							line-height:0.24rem;
+							padding-bottom:0.06rem;
 						}
 					}
 				}
-				.times{
+				.content-food{
+					/*width:92%;*/
+					margin:0 auto;
+					padding:0.08rem 4.25%;
+					font-size:0.12rem;
+					color:#9d9d9d;
+					line-height:0.34rem;
+					.imgs{
+						display:inline-block;
+						vertical-align:top;
+						border:2px solid #e5e4e4;
+						border-radius:0.3rem;
+						width:0.3rem;
+						height:0.3rem;
+						img{
+							width:0.3rem;
+							height:0.3rem;
+						}
+					}
+					span{
+						&:last-child{
+							float:right;
+						}
+						img{
+							width:0.12rem;
+							margin:0 0.02rem -0.02rem 0;
+						}
+					}
+				}
+			}
+			.xinxi{
+				width:100%;
+				ul{
 					width:100%;
-					background:#fff;
-					line-height:0.16rem;
 					display:flex;
-					.times-child{
+					background:#fff;
+					li{
 						flex:1;
-						padding:0.1rem 0.2rem;
-						font-size:0.12rem;
-						.content-food{
-							line-height:0.22rem;
-							img{
-								vertical-align:top;
-								width:0.2rem;
-								height:0.2rem;
+						text-align:center;
+						padding:0.1rem 0;
+						p{
+							width:100%;
+							line-height:0.2rem;
+							font-size:0.16rem;
+							/*color:#ff7a59;*/
+							/*font{
+								display:inline-block;
+								position:relative;
+								span{
+									width:110%;
+									height:0.03rem;
+									position:absolute;
+									margin:auto;
+									bottom:-0.1rem;
+									left:-0.04rem;
+									right:0;
+									background:#ff7a59;
+								}
+							}*/
+						}
+					}
+					.kechengs{
+						p{
+							color:#ff7a59;
+							font{
+								display:inline-block;
+								position:relative;
+								span{
+									width:110%;
+									height:0.03rem;
+									position:absolute;
+									margin:auto;
+									bottom:-0.1rem;
+									left:-0.04rem;
+									right:0;
+									background:#ff7a59;
+								}
 							}
-							span{
-								&:last-child{
-									float:right;
+						}
+					}
+					.fengcais{
+						p{
+							color:#ff7a59;
+							font{
+								display:inline-block;
+								position:relative;
+								span{
+									width:110%;
+									height:0.03rem;
+									position:absolute;
+									margin:auto;
+									bottom:-0.1rem;
+									left:-0.04rem;
+									right:0;
+									background:#ff7a59;
 								}
 							}
 						}
 					}
 				}
 			}
-		}
-		.baoming{
-			width:100%;
-			height:0.4rem;
-			position:absolute;
-			bottom:0.2rem;
-			left:0;
-			text-align:center;
-			span{
-				line-height:0.10rem;
-				border-radius:0.06rem;
-				display:inline-block;
-				padding:0.1rem 0.3rem;
-				background:#00A0DC;
-				color:#fff;
-				&:last-child{
-					margin-left:0.2rem;
+
+			.baoming{
+				width:100%;
+				height:0.85rem;
+				display:flex;
+				justify-content:center;
+				align-content:center;
+				align-items:center;
+				background:#fff;
+				span{
+					width:43.5%;
+					height:0.48rem;
+					line-height:0.48rem;
+					border-radius:0.06rem;
+					display:inline-block;
+					background:#ff7a59;
+					text-align:center;
+					color:#fff;
+					font-size:0.18rem;
+					&:last-child{
+						margin-left:0.08rem;
+					}
 				}
 			}
 		}

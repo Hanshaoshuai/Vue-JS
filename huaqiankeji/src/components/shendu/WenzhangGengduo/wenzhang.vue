@@ -22,16 +22,14 @@
 								<span class="center">天天定增定</span>
 								<span>天天定增定</span>
 							</div>
-						</div>
-					</div>
-					<div class="liangdian">
-						<div class="liangdian_1">
-							<div class="ferst">天天定增定增上一天天天定增天天定增定增定增天定增定增财年天天定增定增营收</div>
-						</div>
-					</div>
-					<div class="times border-topbottom">
-						<div class="times-child">
-							<span class="times_1">声明：以上内容仅供参考，不做投资决策依据。如有版权问题，请联系。。。</span>
+							<div class="border-bottom">
+								<p>
+									天天定增定增上一天天天定增天天定增定增定增天定增定增财年天定增增定增天定增定增财年天定增增定增天定增定增财年天定增天天定增定增定增天定增定增财年天天定增定增营收
+								</p>
+							</div>
+							<div class="times-child">
+								<span class="times_1">声明：以上内容仅供参考，不做投资决策依据。如有版权问题，请联系。。。</span>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -145,7 +143,7 @@
 		left:0;
 		right:0;
 		bottom:0;
-		z-index:230;
+		z-index:400;
 		.searchBox {
 			position:fixed;
 			top:0;
@@ -153,7 +151,7 @@
 		    width: 100%;
 		    height:0.45rem;
 		    background-color:#ff7a59;
-		    z-index:240;
+		    z-index:410;
 		    .home-search {
 			    height: 100%;
 			    line-height:0.45rem;
@@ -163,7 +161,7 @@
 				.fanhui-butten{
 					position:absolute;
 					height:100%;
-					padding-left:0.3rem;
+					padding-left:0.16rem;
 					display:inline-block;
 					top:0.04rem;
 					left:0;
@@ -183,91 +181,51 @@
 			    }
 			}
 		}
+		.wenzhang-list::-webkit-scrollbar{width:0px}
 		.wenzhang-list{
 			width:100%;
 			height:100%;
 			overflow-y:auto;
 			.wenzhang-content{
 				width: 100%;
-				/*height:auto;*/
-				margin:0.55rem 0;
-				padding-bottom:0.45rem;
-				.content-heder{
-					width:100%;
-					height:0.3rem;
-					background:#fff;
-					margin-top:0.12rem 0 ;
-					display:flex;
-					-webkit-box-pack:center;
-					justify-content:center;
-					-webkit-box-align:center;
-					align-items:center;
-					span{
-						display:inline-block;
-						font-weight:bold;
-						font-size:0.16rem;
-					}
-					.text-center{
-						padding:0 0.2rem;
-					}
-				}
+				margin:0 auto;
+				padding:0.6rem 0;
+				-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
 				.zhuying{
 					width:100%;
 					background:#fff;
-					display:flex;
+					padding:0.11rem 0 0.12rem 0;
 					.zhuying_1{
-						flex:1;
-						padding:0 0.2rem;
+						width:93%;
+						margin:0 auto;
 						.ferst{
-							font-size:0.17rem;
-							font-weight:bold;
-							line-height:0.2rem;
+							font-size:0.22rem;
+							line-height:0.31rem;
 							padding-top:0.1rem;
 						}
 						.last{
-							padding:0.2rem 0;
-							display:flex;
-							font-size:0.12rem;
-							.center{
-								flex:3;
-							}
+							padding:0.07rem 0 0.2rem 0;
+							font-size:0.14rem;
+							color:#cfcfcf;
 							span{
-								&:first-child{
-									flex:1;
-								}
-								&:last-child{
-									flex:2;
-								}
+								display:inline-block;
+								margin-left:0.03rem;
 							}
 						}
-					}
-					
-				}
-				.liangdian{
-					width:100%;
-					background:#fff;
-					display:flex;
-					.liangdian_1{
-						flex:1;
-						padding:0 0.2rem;
-						.ferst{
-							font-size:0.16rem;
-							padding-bottom:0.06rem;
+						p{
+							font-size:0.2rem;
+							line-height:0.36rem;
+							padding-bottom:0.13rem;
 						}
-						.last{
-							padding:0.2rem;
+						.times-child{
+							width:100%;
+							line-height:0.20rem;
+							padding-top:0.27rem;
+							.times_1{
+								color:#d7d7d7;
+								font-size:0.14rem;
+							}
 						}
-					}
-				}
-				.times{
-					width:100%;
-					background:#fff;
-					line-height:0.16rem;
-					display:flex;
-					.times-child{
-						flex:1;
-						padding:0.2rem;
-						font-size:0.12rem;
 					}
 				}
 			}

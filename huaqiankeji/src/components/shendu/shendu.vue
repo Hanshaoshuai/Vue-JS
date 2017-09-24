@@ -191,7 +191,7 @@
 <script type="text/ecmascript">
 	import BScroll from "better-scroll";
 	import { InfiniteScroll } from 'mint-ui';
-	import wenzhang from "./WenzhangYuedu/wenzhang.vue";
+	import wenzhang from "./WenzhangGengduo/wenzhang.vue";
 //	import gengduo from "./DujinGengduo/gengduo.vue";
 //	import xianxiagengduo from "./XianxiaGengduo/XianxiaGengduo.vue";
 //	import xianxiawenzhang from "./XianxiaHuodong/XianxiaWenzhang.vue";
@@ -245,6 +245,9 @@
 					loopAdditionalSlides : 1,
 				})
 			});
+		},
+		mounted(){
+			
 		},
 		updated(){
 			alert("jfkd")
