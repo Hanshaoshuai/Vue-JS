@@ -20,7 +20,7 @@
 						<img src="./img/banner.png"/>
 					</div>
 					<div class="ContentType clearbox">
-						<!--<div v-if="x" class="TypeList" @click.stop="XiangMuGo()">
+						<div v-if="x" class="TypeList" @click.stop="XiangMuGo()">
 							<div class="TypeList-img">
 								<li><span>6</span></li>
 							</div>
@@ -37,8 +37,8 @@
 								<span>企业反馈</span>
 								<span class="text-coler">查看反馈留言箱</span>
 							</div>
-						</div>-->
-						<div v-if="w" class="TypeList" @click.stop="rongziGo()">
+						</div>
+						<!--<div v-if="w" class="TypeList" @click.stop="rongziGo()">
 							<div class="TypeList-img">
 								<li><span>6</span></li>
 							</div>
@@ -55,7 +55,7 @@
 								<span>投资人反馈</span>
 								<span class="text-coler">查看反馈留言箱</span>
 							</div>
-						</div>
+						</div>-->
 					</div>
 					<div class="bannerlist">
 						<div class="swiper-img">
@@ -491,7 +491,7 @@
 		    width: 100%;
 		    height:0.48rem;
 		    background-color: #ff7a59;
-		    z-index:200;
+		    z-index:10;
 		    .home-search {
 		    	position: absolute;
 		    	margin:auto;
@@ -637,7 +637,7 @@
 					margin-top:-0.23rem;
 					zoom:1;
 					position:relative;
-					z-index:1000;
+					z-index:11;
 					.TypeList{
 						width:48%;
 						color:#323232;

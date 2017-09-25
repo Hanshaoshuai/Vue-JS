@@ -1,93 +1,94 @@
 <template>
 	<transition name="fade">
 		<div v-show="tucaoShow" class="xiangmu">
-			<div class="xiangmu-header" @click.stap="yijianHind()">
-				<span class="xiangmu-left"><</span>
-				<span>已否决项目</span>
+			<div class="xiangmu-header"></div>
+			<div class="header-content" @click.stap="yijianHind()">
+				<span class="xiangmu-left"><img src="./img/back.png"/></span>
+				<span>项目详情</span>
 			</div>
 			<div class="box">
-				<div style="width:100%;height:0.5rem;"></div>
-				<div class="fankiu border-topbottom">
+				<div style="width:100%;height:0.55rem;"></div>
+				<div class="fankiu border">
 					<div class="content-food">
 						<img class="border" src="" alt="" />
-						<span>&nbsp;&nbsp;王美丽</span>
-						<span>&nbsp;&nbsp;投资经理</span>
+						<span>&nbsp;&nbsp;王美丽&nbsp;</span>
+						<font class="bbb border-left"></font>
+						<span>投资经理</span>
 						<span>&nbsp;&nbsp;董秘</span>
 					</div>
 				</div>
-				<box></box>
-				<div class="content-heder">
-					<span>天天</span>
-					<span class="text-center">54587561</span>
-					<span>定增</span>
-				</div>
-				<div class="zhuying">
-					<div class="zhuying_1">
-						<div class="ferst">主营业务</div>
-						<div class="last border">
-							
+				<div class="tishi-bottom">
+					<div class="border">
+						<ul>
+							<li class="border-bottom"></li>
+							<li class="tishi-center">
+								<div class="content-heder">
+									<span>天天</span>
+									<span class="text-center">54587561</span>
+									<span>&nbsp;定增</span>
+								</div>
+							</li>
+							<li class="border-bottom"></li>
+						</ul>
+						<div class="zhuying_1">
+							<div class="ferst"><span></span>公司名称</div>
+							<div class="last">
+								<p>资经理资经理资主营业经理主营业资经理资主营业经理资经理资经理</p>
+							</div>
+						</div>
+					</div>
+					<div class="zhuying_1 border">
+						<div class="ferst"><span></span>公司名称</div>
+						<div class="last">
+							<p>上一财年：营收&nbsp;<span>221亿</span>&nbsp;&nbsp;净利润&nbsp;<span>12万</span></p>
+							<p>今年预计：营收&nbsp;<span>12亿</span>&nbsp;&nbsp;净利润&nbsp;<span>1221万</span></p>
+						</div>
+					</div>
+					<div class="zhuying_1 border">
+						<div class="ferst"><span></span>公司名称</div>
+						<div class="last">
+							<p>融资总额：<span>245万</span></p>
+							<p>投前估值：<span>244万</span></p>
 						</div>
 					</div>
 				</div>
-				<div class="liangdian">
-					<div class="liangdian_1">
-						<div class="ferst">投资亮点</div>
-						<div class="last border">
-							
-						</div>
+				<div class="border aaa">
+					<div class="content-header" @click.stap="chakanBA()">
+						<span>查看BA</span>
+						<font></font>
+					</div>
+					<div class="content-header" @click.stap="xiangguan()">
+						<span>查看公司相关研报</span>
+						<font></font>
 					</div>
 				</div>
-				<div class="yeji">
-					<div class="yeji_1">
-						近两年业绩
-					</div>
-				</div>
-				<div class="zonge">
-					<div class="zonge_1">
-						今年预计营收、利润
-					</div>
-				</div>
-				<div class="yeji">
-					<div class="yeji_1">
-						融资总额
-					</div>
-				</div>
-				<div class="zonge">
-					<div class="zonge_1">
-						估值（是否可议价）
-					</div>
-				</div>
-				<div class="yeji">
-					<div class="yeji_1">
-						是否考虑对赌、回购
-					</div>
-				</div>
-				<div class="content-header border-topbottom">
-					<span>查看BA</span>
-				</div>
-				<div class="content-header border-bottom">
-					<span>查看公司相关研报</span>
-				</div>
-				<box></box>
-				<div class="times border-topbottom">
-					<span class="times_1">领天</span>
+				<div class="times border">
 					<span class="text-center">1小时前</span>
 					<span>发布</span>
 					<div class="times-name">
-						<span>{{fankui}}反馈</span>
-						<span class="text-center">{{genjin}}跟进</span>
+						<font></font>
+						<span class="text-center">剩余有效期{{genjin}}</span>
 					</div>
 				</div>
 				<box></box>
 				<div class="butten">
+					<div class="tousu"><span>投诉</span></div>
 					<ul>
-						<li><span @click.stop="touSu()">投诉</span></li>
-						<li><span @click.stop="genJin()">跟进</span></li>
-						<li><span @click.stop="jiaoHuan()">换名片</span></li>
-						<li><span @click.stop="baoMing()">我报名</span></li>
-						<li><span @click.stop="buGen()">暂不跟进</span></li>
-						<li><span @click.stop="liuYan()">留言询问</span></li>
+						<li @click.stap="liuYanTo()"><span :class="liuYans"></span><p>留言询问</p></li>
+						<li @click.stap="jiaoHuanTo()"><span :class="jiaoHuans"></span><p>换名片</p></li>
 					</ul>
+					<div class="baoming border-top">
+						<span class="border-right" :class="butenLeft" @click.stap="genJin()">跟进</span>
+						<span :class="butenRight" @click.stap="buGen()">暂不跟进</span>
+					</div>
+					<!--<ul>-->
+						<!--<li><span @click.stop="touSu()">投诉</span></li>-->
+						<!--<li><span @click.stop="genJin()">跟进</span></li>-->
+						<!--<li><span @click.stop="jiaoHuan()">换名片</span></li>
+						<li><span @click.stop="baoMing()">我报名</span></li>-->
+						<!--<li><span @click.stop="buGen()">暂不跟进</span></li>-->
+						<!--<li><span @click.stop="liuYan()">留言询问</span></li>-->
+					<!--</ul>-->
 				</div>
 			</div>
 			<!--<youhuiquan ref="youhuiShow"></youhuiquan>-->
@@ -114,8 +115,12 @@
 				genjin:"458",
 				introduction:"",
 				times:20177111129,
-				showFlag:false,
+//				showFlag:false,
 				tucaoShow:false,
+				liuYans:"",
+				jiaoHuans:"",
+				butenLeft:"butenLeft",
+				butenRight:"",
 			}
 		},
 		methods:{
@@ -128,11 +133,23 @@
 			xinxiTo(){
 				this.$refs.xinxiShow.xinxiBlock();
 			},
-			liuYan(){
-				window.location.href="#/fankuixinxi";
+			liuYanTo(){
+//				window.location.href="#/fankuixinxi";
+				this.liuYans="liuYan";
+			},
+			jiaoHuanTo(){
+				this.jiaoHuans="jiaoHuan";
 			},
 			baoMing(){
 				this.$refs.youhuiShow.YouhuiBlock();
+			},
+			genJin(){
+				this.butenLeft="butenLeft";
+				this.butenRight="";
+			},
+			buGen(){
+				this.butenRight="butenRight";
+				this.butenLeft="";
 			}
 			
 //			show(){
@@ -190,196 +207,290 @@
 	}
 	.xiangmu{
 		position:fixed;
-		background:#FCE7E6;
+		background:#f5f4f9;
 		bottom:0;
 		top:0;
 		left:0;
 		right:0;
-		z-index:1200;
+		z-index:120;
 		.xiangmu-header{
-			position:fixed;
+			position:absolute;
 			top:0;
 			left:0;
 			width:100%;
-			height:0.45rem;
-			font-weight:400;
-			background:#01FFFF;
+			height:1.53rem;
+			background:#ff7a59;
+			z-index:300;
+		}
+		.header-content{
+			position:fixed;
+			width:100%;
+			font-weight:600;
+			top:0;
+			left:0;
 			font-size:0.2rem;
 			text-align:center;
 			line-height:0.45rem;
-			z-index:1300;
+			color:#fff;
+			z-index:420;
+			background:#ff7a59;
 			.xiangmu-left{
 				position:absolute;
-				padding-left:0.3rem;
+				height:100%;
+				padding-left:0.16rem;
 				display:inline-block;
-				top:0;
+				top:0.04rem;
 				left:0;
-			}
-			.xiangmu-right{
-				padding:0.08rem 0.1rem;
-				border:0.005rem solid #93999F;
-				line-height:0.12rem;
-				font-size:0.14rem;
-				position:absolute;
-				top:0.09rem;
-				right:0.1rem;
+				img{
+					height:0.2rem;
+				}
 			}
 		}
+		.box::-webkit-scrollbar{width:0px;}
 		.box{
-			overflow-y:auto;
-			width:100%;
+			position:absolute;
+			overflow-y:scroll;
+			width:94%;
+			padding-right:0.03rem;
+			margin:auto;
 			height:100%;
+			top:0;
+			left:0;
+			right:0;
+			z-index:310;
+			-webkit-overflow-scrolling:touch;
 			.fankiu{
 				width:100%;
 				display:flex;
+				margin-bottom:0.07rem;
+				box-shadow: 0.01rem 0.02rem 0.04rem #a7503a;
 				.content-food{
 					flex:1;
-					padding:0.1rem 0.2rem;
-					line-height:0.3rem;
-					font-size:0.14rem;
+					padding:0.06rem 0.2rem;
+					line-height:0.42rem;
+					font-size:0.16rem;
 					background:#fff;
 					img{
 						vertical-align:top;
-						width:0.3rem;
-						height:0.3rem;
+						width:0.42rem;
+						height:0.42rem;
 					}
-					span{
-						font-weight:bold;
+					.bbb{
+						width:0.01rem;
+						height:0.16rem;
+						margin-bottom:-0.03rem;
+						display:inline-block;
+						padding-left:0.03rem;
 					}
 				}
 			}
-			.content-heder{
+			.tishi-bottom{
 				width:100%;
-				height:0.3rem;
-				background:#fff;
-				margin-top:0.12rem 0 ;
-				display:flex;
-				-webkit-box-pack:center;
-				justify-content:center;
-				-webkit-box-align:center;
-				align-items:center;
-				span{
-					display:inline-block;
-					font-weight:bold;
-					font-size:0.16rem;
+				/*height:0.36rem;*/
+				.border{
+					box-shadow: 0.01rem 0.02rem 0.04rem #dfdfdf;
 				}
-				.text-center{
-					padding:0 0.2rem;
+				ul{
+					height:0.3rem;
+					padding:0.28rem 2.5% 0 2.5%;
+					display:flex;
+					background:#fff;
+					li{
+						flex:1;
+						height:0.2rem;
+						&:first-child{
+							max-width:15%;
+						}
+						&:last-child{
+							max-width:15%;
+						}
+						&.tishi-center{
+							width:0.57rem;
+							line-height:0.36rem;
+							text-align:center;
+							font-size:0.2rem;
+							color:#323232;
+						}
+					}
 				}
-			}
-			.zhuying{
-				width:100%;
-				height:1.6rem;
-				background:#fff;
-				display:flex;
 				.zhuying_1{
-					flex:1;
-					padding:0.2rem;
+					width:100%;
+					font-size:0.16rem;
+					background:#fff;
+					margin-bottom:0.1rem;
+					span{
+						color:#2abdfc;
+					}
 					.ferst{
-						font-size:0.16rem;
-						padding-bottom:0.06rem;
+						display:flex;
+						height:0.38rem;
+						align-content: center;
+						align-items: center;
+						span{
+							display:inline-block;
+							position:relative;
+							width:0.08rem;
+							height:0.16rem;
+							background:#ff7a59;
+							margin-right:0.08rem;
+							margin-left:-0.008rem;
+							z-index:200;
+						}
 					}
 					.last{
-						padding:0.2rem;
+						flex:1;
+						color:#676767;
+						padding:0rem 0.14rem 0.18rem 0.14rem;
+						line-height:0.26rem;
+						/*box-shadow: 0 0.02rem 0.04rem #dedde1;*/
 					}
-				}
-				
-			}
-			.liangdian{
-				width:100%;
-				height:1.4rem;
-				background:#fff;
-				display:flex;
-				.liangdian_1{
-					flex:1;
-					padding:0.2rem;
-					.ferst{
-						font-size:0.16rem;
-						padding-bottom:0.06rem;
-					}
-					.last{
-						padding:0.2rem;
-					}
-				}
-			}
-			.yeji{
-				width:100%;
-				background:#fff;
-				display:flex;
-				.yeji_1{
-					flex:1;
-					padding:0.2rem;
-				}
-			}
-			.zonge{
-				width:100%;
-				background:#fff;
-				display:flex;
-				.zonge_1{
-					flex:1;
-					padding:0.2rem;
 				}
 			}
 			.content-header{
 				background:#fff;
-				padding:0.08rem 0.2rem;
-				font-size:0.18rem;
+				padding:0.08rem 2.5%;
+				font-size:0.16rem;
 				span{
 					line-height:0.3rem;
 				}
+				font{
+					float:right;
+					display:inline-block;
+					width:0.2rem;
+					height:0.2rem;
+					margin-top:0.04rem;
+					background-image:url("./img/jiantou.png");
+					background-size:100% 100%;
+				}
+			}
+			.aaa{
+				box-shadow:0.01rem 0.02rem 0.04rem #dfdfdf;
 			}
 			.times{
 				width:100%;
-				height:0.3rem;
+				height:0.33rem;
 				background:#fff;
-				line-height:0.3rem;
-				.times_1{
-					display:inline-block;
-					padding-left:0.2rem;
-				}
+				line-height:0.34rem;
+				margin-top:0.08rem;
+				box-shadow:0 0.02rem 0.04rem #dedde1;
 				.text-center{
 					display:inline-block;
 					padding:0 0.08rem;
 				}
 				.times-name{
+					color:#ff7a59;
+					font{
+						display:inline-block;
+						width:0.16rem;
+						height:0.16rem;
+						background-image:url("./img/time.png");
+						background-size:100% 100%;
+						margin-bottom:-0.03rem;
+						margin-right:-0.04rem;
+					}
 					float:right;
-					margin-right:0.1rem;
-				}
-			}
-			.times{
-				width:100%;
-				height:0.3rem;
-				background:#fff;
-				line-height:0.3rem;
-				font-size:0.12rem;
-				.times_1{
-					display:inline-block;
-					padding-left:0.2rem;
-				}
-				.text-center{
-					display:inline-block;
-					padding:0 0.08rem;
-				}
-				.times-name{
-					float:right;
-					margin-right:0.1rem;
+					/*margin-right:0.1rem;*/
 				}
 			}
 			.butten{
 				width:100%;
+				height:1.5rem;
+				position:relative;
+				.tousu{
+					float:right;
+					width:0.48rem;
+					height:0.15rem;
+					color:#b8b8b8;
+					padding-top:0.01rem;
+					text-align:right;
+					margin:0.06rem 0.1rem 0 0;
+					background-image:url("./img/tousu.png");
+					background-size:0.14rem 0.14rem;
+					background-position:0 0;
+					background-repeat:no-repeat;
+				}
 				ul{
+					display:flex;
 					width:100%;
+					height:0.40rem;
+					margin-top:0.22rem;
 					li{
-						width:100%;
-						padding:0.08rem 0;
-						text-align:center;
-						span{
-							display:inline-block;
-							padding:0.06rem 0.16rem;
-							background:#00A0DC;
-							color:#fff;
-							border-radius:0.04rem;
+						flex:1;
+						color:#7d7d7d;
+						display:flex;
+						justify-content:center;
+						align-content:center;
+						align-items:center;
+						flex-direction:column;
+						&:first-child{
+							span{
+								display:inline-block;
+								width:0.22rem;
+								height:0.24rem;
+								background-image:url("./img/liuyan.png");
+								background-size:100% 100%;
+							}
+							.liuYan{
+								background-image:url("./img/liuyan1.png");
+								background-size:100% 100%;
+							}
 						}
+						&:last-child{
+							span{
+								display:inline-block;
+								width:0.22rem;
+								height:0.24rem;
+								background-image:url("./img/huan.png");
+								background-size:100% 100%;
+							}
+							.jiaoHuan{
+								background-image:url("./img/huan1.png");
+								background-size:100% 100%;
+							}
+						}
+						
+					}
+					p{
+						text-align:center;
+						margin-top:0.07rem;
+					}
+				}
+				.baoming{
+					position:fixed;
+					bottom:0;
+					left:0;
+					width:100%;
+					height:0.5rem;
+					display:flex;
+					justify-content:center;
+					align-content:center;
+					align-items:center;
+					background:#fff;
+					box-shadow:0 0.02rem 0.04rem #dedde1;
+					span{
+						flex:1;
+						height:0.5rem;
+						line-height:0.5rem;
+						display:inline-block;
+						text-align:center;
+						background:#ececec;
+						font-size:0.18rem;
+						font{
+							display:inline-block;
+							width:0.18rem;
+							height:0.18rem;
+							background-image:url("./img/jian.png");
+							background-size:100% 100%;
+							margin:0 0 -0.04rem 0.06rem;
+						}
+					}
+					.butenLeft{
+						color:#fff;
+						background:#ff7a59;
+					}
+					.butenRight{
+						color:#fff;
+						background:#ff7a59;
 					}
 				}
 			}

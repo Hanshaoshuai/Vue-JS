@@ -1,18 +1,30 @@
 <template>
 	<transition name="fade">
 		<div v-show="tucaoShow" class="yijian">
-			<div class="yijian-header">
-				<span class="fanhui-butten" @click.stap="yijianHind()"><</span>
+			<div class="xiangmu-header" @click.stop="yijianHind()">
+				<span class="xiangmu-left"><img src="./img/back.png"/></span>
 				<span>投资人反馈</span>
 			</div>
 			<div class="box">
-				<div style="width:100%;height:0.5rem;"></div>
+				<div style="width:100%;height:0.45rem;"></div>
 				<div class="fankiu">
-					<div class="content-food" @click.stap="xinxiTo()">
-						<img class="border" src="" alt="" />
+					<div class="content-food border-bottom" @click.stap="xinxiTo()">
+						<p>
+							<img class="border" src="" alt="" />
+							<font>6</font>
+						</p>
 						<span>&nbsp;&nbsp;次阅读</span>
 						<span>&nbsp;&nbsp;投资经理</span>
-						<span>张经理</span>
+						<span>&nbsp;&nbsp;张经理</span>
+					</div>
+					<div class="content-food border-bottom" @click.stap="xinxiTo()">
+						<p>
+							<img class="border" src="" alt="" />
+							<font>6</font>
+						</p>
+						<span>&nbsp;&nbsp;次阅读</span>
+						<span>&nbsp;&nbsp;投资经理</span>
+						<span>&nbsp;&nbsp;张经理</span>
 					</div>
 				</div>
 			</div>
@@ -104,56 +116,81 @@
 	}
 	.yijian{
 		position:fixed;
-		background:#FCE7E6;
+		background:#f5f4f9;
 		bottom:0;
 		top:0;
 		left:0;
 		right:0;
 		z-index:900;
-		.yijian-header{
+		.xiangmu-header{
 			position:fixed;
 			top:0;
 			left:0;
 			width:100%;
-			height:0.45rem;
-			font-weight:400;
-			background:#01FFFF;
+			height:0.46rem;
+			font-weight:600;
+			background:#ff7a59;
 			font-size:0.2rem;
 			text-align:center;
 			line-height:0.45rem;
-			z-index:1000;
-			.fanhui-butten{
+			color:#fff;
+			z-index:30;
+			.xiangmu-left{
 				position:absolute;
+				height:100%;
+				padding-left:0.16rem;
 				display:inline-block;
-				padding-left:0.3rem;
-				top:0;
+				top:0.04rem;
 				left:0;
+				img{
+					height:0.2rem;
+				}
 			}
 		}
+		.box::-webkit-scrollbar{width:0px}
 		.box{
 			overflow-y:auto;
 			width:100%;
 			height:100%;
+			-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
 			.fankiu{
 				width:100%;
-				display:flex;
+				background:#fff;
 				.content-food{
-					flex:1;
-					padding:0.1rem 0.2rem;
-					line-height:0.3rem;
-					font-size:0.14rem;
-					background:#fff;
+					width:95%;
+					margin:0 auto;
+					padding:0.14rem 0 0.08rem 0;
+					line-height:0.46rem;
+					font-size:0.16rem;
+					p{
+						display:inline-block;
+						position:relative;
+						font{
+							display:inline-block;
+							width:0.18rem;
+							height:0.18rem;
+							border-radius:0.15rem;
+							background:#ff7a59;
+							position:absolute;
+							top:-0.08rem;
+							right:-0.08rem;
+							font-size:0.12rem;
+							line-height:0.18rem;
+							text-align:center;
+							color:#fff;
+						}
+					}
 					img{
 						vertical-align:top;
-						width:0.3rem;
-						height:0.3rem;
+						width:0.46rem;
+						height:0.46rem;
 					}
-					span{
+					/*span{
 						&:last-child{
 							float:right;
 							margin-right:0.4rem;
 						}
-					}
+					}*/
 				}
 			}
 		}

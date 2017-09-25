@@ -135,7 +135,7 @@
 		left:0;
 		right:0;
 		bottom:0;
-		z-index:310;
+		z-index:410;
 		overflow-y:auto;
 		.searchBox {
 			position:fixed;
@@ -144,7 +144,7 @@
 		    width: 100%;
 		    height:0.45rem;
 		    background-color:#ff7a59;
-		    z-index:330;
+		    z-index:530;
 		    .home-search {
 			    height: 100%;
 			    line-height:0.45rem;

@@ -257,7 +257,7 @@
 		top:0;
 		left:0;
 		right:0;
-		z-index:900;
+		z-index:100;
 		overflow:hidden;
 		.page-loadmore-wrapper {
 		    overflow-y: scroll;
@@ -327,7 +327,7 @@
 			font-size:0.2rem;
 			text-align:center;
 			line-height:0.45rem;
-			z-index:1000;
+			z-index:110;
 			.xiangmu-left{
 				position:absolute;
 				padding-left:0.3rem;

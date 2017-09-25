@@ -1,4 +1,3 @@
-
 <template>
 	<transition name="fade">
 		<div v-show="tucaoShow" class="xiangmu">

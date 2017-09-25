@@ -157,7 +157,7 @@
 	  	/*opacity: 0;*/
 	}
 	.wenzhang{
-		position:fixed;
+		position:absolute;
 		background:#f5f4f9;
 		top:0;
 		left:0;
@@ -172,7 +172,7 @@
 		    width: 100%;
 		    height:0.45rem;
 		    background-color:#ff7a59;
-		    z-index:210;
+		    z-index:300;
 		    .home-search {
 			    height: 100%;
 			    line-height:0.45rem;
