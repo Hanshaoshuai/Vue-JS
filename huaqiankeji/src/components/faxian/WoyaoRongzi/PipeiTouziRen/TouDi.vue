@@ -168,7 +168,7 @@
 			.xiangmu-left{
 				position:absolute;
 				height:100%;
-				padding-left:0.3rem;
+				padding-left:0.16rem;
 				display:inline-block;
 				top:0.04rem;
 				left:0;
@@ -226,7 +226,7 @@
 							width:0.43rem;
 							height:0.43rem;
 							margin-right:0.1rem;
-							border-radius:0.3rem;
+							/*border-radius:0.3rem;*/
 							border:none;
 							border:2px solid #e5e4e4;
 						}

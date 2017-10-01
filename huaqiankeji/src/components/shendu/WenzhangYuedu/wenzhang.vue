@@ -4,7 +4,7 @@
 			<div class="searchBox">
 				<div class="home-search">
 					<span class="fanhui-butten" @click.stop="listnone()"><img src="../img/back.png"/></span>
-					<span>与是汇科技董事长</span>
+					<span>与是汇科ttttttt技董事长</span>
 					<div class="fanhui-right">
 						<div @click.stop="quanXuan()">
 							<font>分享</font>

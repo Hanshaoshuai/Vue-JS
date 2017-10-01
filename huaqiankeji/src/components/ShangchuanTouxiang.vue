@@ -2,7 +2,7 @@
 	<div class="tupians">
 		<div class="left-imgs" id="previews">
 			<label>
-				<img ref="" id="imgheads" src='./u740.png'>
+				<img ref="" id="imgheads" src='./shangchuan.png'>
 				<input class="inputs" ref="file" type="file" @change="previewImage()" />
 			</label>
 		</div>
@@ -68,9 +68,10 @@
 		height:auto;
 		.left-imgs{
 			margin:0 auto;
-			width:1rem;
-			height:1rem;
+			width:0.75rem;
+			height:0.75rem;
 			overflow:hidden;
+			border-radius:0.06rem;
 			border:0.005rem solid #EAEAEA;
 			label{
 				width:100%;
@@ -84,7 +85,8 @@
 			    -webkit-box-align: center;
 			    align-items: center;
 				#imgheads{
-					/*height:100%;*/
+					/*width:100%;*/
+					height:100%;
 					filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=image);
 				}
 				.inputs{

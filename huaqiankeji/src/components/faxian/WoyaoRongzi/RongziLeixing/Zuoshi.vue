@@ -68,7 +68,22 @@
 							<span>万元</span>
 						</div>
 					</div>
-					<div class="zhuying_1">
+					<div class="zhuying_1 jihua">
+						<div class="ferst"><span>*</span>融资计划</div>
+						<div class="last number last-bottom">
+							<input v-model="numbere" placeholder="请填写融资估值" number="true" type="number" class="mint-field-core">
+							<span>亿元</span>
+						</div>
+						<div class="last number last-bottom">
+							<input v-model="numberf" placeholder="请填写融资总额" number="true" type="number" class="mint-field-core">
+							<span>万元</span>
+						</div>
+						<div class="last number last-bottom">
+							<input v-model="numberg" placeholder="请填写每股价格" number="true" type="number" class="mint-field-core">
+							<span>元/股</span>
+						</div>
+					</div>
+					<!--<div class="zhuying_1">
 						<div class="ferst"><span>*</span>融资总额</div>
 						<div class="last number">
 							<input v-model="numbere" placeholder="输入数字" number="true" type="number" class="mint-field-core">
@@ -79,11 +94,11 @@
 						<div class="last number">
 							<input v-model="numberf" placeholder="输入数字" number="true" type="number" class="mint-field-core">
 						</div>
-					</div>
+					</div>-->
 					<div class="zhuying_1">
 						<div class="ferst"><span>*</span>所在省份</div>
 						<div class="last number">
-							<input v-model="numberg" placeholder="请填写省份" number="true" type="text" class="mint-field-core">
+							<input v-model="numberh" placeholder="请填写省份" number="true" type="text" class="mint-field-core">
 						</div>
 					</div>
 					<div class="times">
@@ -134,6 +149,7 @@
 				numbere:"",
 				numberf:"",
 				numberg:"",
+				numberh:"",
 				texta:"",
 				textb:"",
 				textc:"",
@@ -273,7 +289,7 @@
 			.xiangmu-left{
 				position:absolute;
 				height:100%;
-				padding-left:0.3rem;
+				padding-left:0.16rem;
 				display:inline-block;
 				top:0.04rem;
 				left:0;
@@ -370,12 +386,12 @@
 						width:82%;
 						position:relative;
 						span{
-							width:0.3rem;
+							width:0.36rem;
 							height:0.38rem;
 							color:#bdbdbd;
 							line-height:0.38rem;
 							position:absolute;
-							right:-0.35rem;
+							right:-0.4rem;
 							top:0;
 						}
 						.mint-field-core::-webkit-input-placeholder{
@@ -384,6 +400,11 @@
 					}
 					.last-bottom{
 						margin-bottom:0.1rem;
+					}
+				}
+				.jihua{
+					.last-bottom{
+						margin-bottom:0.06rem;
 					}
 				}
 				.liangdian_1{

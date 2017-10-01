@@ -5,7 +5,7 @@
 				<span class="xiangmu-left"><img src="../img/back.png"/></span>
 				<span>填写要素</span>
 			</div>
-			<div class="box border-bottom">
+			<div class="box">
 				<div style="width:100%;height:0.45rem;"></div>
 				<box></box>
 				<div class="fankiu-content">
@@ -46,22 +46,25 @@
 					</div>
 					<div class="dujia-header"  @click.stop="LiuchengGo()">
 						<span><font class="diaoyan"></font>阅读研报服务流程</span>
-						<span @click.stop="dujiaGo()"><img src="../img/jiantou.png"/></span>
+						<span><img src="../img/jiantou.png"/></span>
 					</div>
-					<div class="dujia-header border-top"  @click.stap="ShiliGo()">
+					<div class="dujia-header border-topbottom"  @click.stap="ShiliGo()">
 						<span><font class="xianxia"></font>研报实例</span>
-						<span @click.stop="dujiaGo()"><img src="../img/jiantou.png"/></span>
+						<span><img src="../img/jiantou.png"/></span>
+					</div>
+				</div>
+				<div class="times">
+					<span class="times_1">备注：这是一项付费服务，具体标准将由客服与您电话沟通</span>
+				</div>
+				<div class="butten-box">
+					<div class="butten">
+						<ul>
+							<li><span @click.stop="shenqingGo()">确定申请</span></li>
+						</ul>
 					</div>
 				</div>
 			</div>
-			<div class="times">
-				<span class="times_1">备注：这是一项付费服务，具体标准将由客服与您电话沟通</span>
-			</div>
-			<div class="butten">
-				<ul>
-					<li><span @click.stop="shenqingGo()">确定申请</span></li>
-				</ul>
-			</div>
+			
 			<pipei ref="pipeiShow"></pipei>
 			<liucheng ref="liuchengShow"></liucheng>
 		</div>
@@ -88,6 +91,8 @@
 		},
 		data () {
 			return {
+				texta:"",
+				textb:"",
 				src:"",
 				urlName:"Dingzeng",
 				showFlag:true,
@@ -241,7 +246,7 @@
 			.xiangmu-left{
 				position:absolute;
 				height:100%;
-				padding-left:0.3rem;
+				padding-left:0.16rem;
 				display:inline-block;
 				top:0.04rem;
 				left:0;
@@ -423,36 +428,42 @@
 					}
 				}
 			}
-		}
-		.times{
-			width:100%;
-			height:0.45rem;
-			line-height:0.45rem;
-			font-size:0.13rem;
-			text-align:center;
-			.times_1{
-				color:#b0b0b0;
+			.times{
+				width:100%;
+				height:0.45rem;
+				line-height:0.45rem;
+				font-size:0.13rem;
+				text-align:center;
+				background:#f5f4f9;
+				.times_1{
+					color:#b0b0b0;
+				}
 			}
-		}
-		.butten{
-			width:45%;
-			height:0.55rem;
-			margin:0 auto;
-			display:flex;
-			background:#ff7a59;
-			align-content:center;
-			align-items:center;
-			justify-content:center;
-			font-size:0.18rem;
-			border-radius:0.16rem;
-			position:absolute;
-			bottom:0.76rem;
-			left:0;
-			right:0;
-			ul{
-				li{
-					span{
-						color:#fff;
+			.butten-box{
+				width:100%;
+				padding:0.33rem 0 0.33rem 0;
+				background:#f5f4f9;
+				.butten{
+					width:45%;
+					height:0.55rem;
+					margin:0 auto;
+					display:flex;
+					background:#ff7a59;
+					align-content:center;
+					align-items:center;
+					justify-content:center;
+					font-size:0.18rem;
+					border-radius:0.16rem;
+					/*position:absolute;
+					bottom:0.76rem;
+					left:0;
+					right:0;*/
+					ul{
+						li{
+							span{
+								color:#fff;
+							}
+						}
 					}
 				}
 			}

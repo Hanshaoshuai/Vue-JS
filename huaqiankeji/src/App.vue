@@ -1,6 +1,6 @@
 <template>
   <div id="app" >
-  	<div class="content"><keep-alive><router-view :userid="show"></router-view></keep-alive></div>
+  	<div class="content"><keep-alive><router-view :token="token"></router-view></keep-alive></div>
     <div class="food border-top">
     	<div class="tab-item border-right">
     		<router-link to="/faxian" ref="fx">
@@ -9,12 +9,12 @@
     		</router-link>
     		<li>6</li>
     	</div>
-    	<div class="tab-item">
+    	<!--<div class="tab-item">
     		<router-link to="/shendu">
     			<span class="icon-shendu"></span>
     			<font>深度</font>
     		</router-link>
-    	</div>
+    	</div>-->
     	<div class="tab-item border-left">
     		<router-link to="/wode">
     			<span class="icon-wode">
@@ -52,6 +52,7 @@
 		name: 'app',
 	  data () {
 	    return {
+	    	token:"N8KCEuwCyhOSviBLwm9PhbrZEQ1aUJBhHMkL7XNv5cEqBF2xs1DQSupWBgxWpz5w",
 	      page: '1',
 				limit: '15',
 				type: '3',
@@ -83,12 +84,12 @@
 				limit: this.limit,
 				ctype: this.type,
 			}
-	  	this.$http.post(URL.path+'api/index.php/welcome',datas,{emulateJSON:true}).then(function(res){
-        var data=res.data
-        alert("成功");
-	    },function(res){
-	        console.log(res.status);
-	    })
+//	  	this.$http.post(URL.path+'api/index.php/welcome',datas,{emulateJSON:true}).then(function(res){
+//      var data=res.data
+//      alert("成功");
+//	    },function(res){
+//	        console.log(res.status);
+//	    })
 	  },
 	  uptated(){
 	  	
@@ -131,18 +132,18 @@
 				box-sizing:border-box;
 				li{
 					position:absolute;
-					width:0.12rem;
-					height:0.12rem;
-					top:0.02rem;
+					width:0.2rem;
+					height:0.2rem;
+					top:0.01rem;
 					right:34%;
-					border-radius:0.1rem;
+					border-radius:0.16rem;
 					background-image:url("./u740.png");
 					background-size:100% 100%;
-					background:#E19900;
+					background:#ff2d00;
 					color:#fff;
-					font-size:0.1rem;
+					font-size:0.12rem;
 					text-align:center;
-					line-height:0.12rem;
+					line-height:0.21rem;
 				}
 				a{
 					display:block;
@@ -188,5 +189,12 @@
 				}
 			}
 		}
+	}
+	.mint-toast .mint-toast-text{
+		line-height:0.2rem;
+		font-size:0.16rem;
+	}
+	.mint-indicator-wrapper{
+		z-index:2000;
 	}
 </style>

@@ -3,33 +3,38 @@
 		<div v-show="showFlag" class="wenzhang">
 			<div class="searchBox">
 				<div class="home-search">
-					<span class="fanhui-butten" @click.stop="listnone()"><img src="../img/back.png"/></span>
+					<span class="fanhui-butten" @click.stop="youhuiFanhui()"><img src="../img/back.png"/></span>
 					<span>天风证券Pre-IPO专</span>
 				</div>
 			</div>
 			<div class="wenzhang-list">
-				<div class="wenzhang-content">
-					<div class="haoma border-topbottom">
-						<div class="haoma-img border"><span>二维码</span></div>
-						<span>优惠编码：jfdsfhij</span>
-					</div>
-					<div class="zhuying">
-						<div class="zhuying_1">
-							<div class="ferst">天天定增定增定增定增定增定增定增定增定增定增定增主营业务</div>
-							<div class="last">
-								<ul>
-									<li>时间天天定增定增定增定增定增定增定增定增定增定增定增主营业务jfdj</li>
-									<li>联系人<span>定增</span>25465665</li>
-								</ul>
+				<div class="list-bottom">
+					<div class="wenzhang-content">
+						<img class="juzhong" src="../img/juzhong.png"/>
+						<div class="haoma">
+							<div class="haoma-img border"><span>二维码</span></div>
+							<span>优惠编码：jfdsfhij</span>
+						</div>
+						<div class="zhuying">
+							<div class="zhuying_1">
+								<div class="ferst">天天定增定增定增定增定增定增定增定增定增定增定增主营业务</div>
+								<div class="last">
+									<ul>
+										<li class="lianxi"><span>时间：</span><font>优惠价：</font></li>
+										<li><p>地址：时间天天定增定增定增定增增定增</p></li>
+									</ul>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="times border-topbottom">
-						<div class="times-child">
-							<div class="content-food">
-								<li><span>时间：&nbsp;&nbsp;</span>jfdj</li>
-								<li><span>地点：&nbsp;&nbsp;</span>fsdf</li>
-								<li><span>杭州华千科技有限公司</span>fsdf</li>
+						<div class="times">
+							<img class="xia" src="../img/xia.png"/>
+							<div class="times-child">
+								<div class="content-food">
+									<li><img src="../img/geren.png"/><span>张山</span></li>
+									<li><img src="../img/dianhua.png"/><span>15486582</span></li>
+									<li><img src="../img/zhiwei.png"/><span>董秘</span>fsdf</li>
+									<li><img src="../img/gongsi.png"/><span>杭州有限公司</span>fsdf</li>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -66,7 +71,7 @@
 			}
 		},
 		methods:{
-			listnone(){
+			youhuiFanhui(){
 				this.showFlag=false;
 			},
 			MenpiaoBlock(){
@@ -132,7 +137,7 @@
 		left:0;
 		right:0;
 		bottom:0;
-		z-index:300;
+		z-index:310;
 		overflow-y:auto;
 		.searchBox {
 			position:fixed;
@@ -161,24 +166,43 @@
 				}
 			}
 		}
+		.wenzhang-list::-webkit-scrollbar{width:0px}
 		.wenzhang-list{
 			width:100%;
+			height:100%;
 			overflow-y:auto;
+			-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
+			.list-bottom{
+				padding-bottom:0.3rem;
+			}
 			.wenzhang-content{
-				width: 100%;
-				/*height:auto;*/
-				margin:0.55rem 0;
-				padding-bottom:0.45rem;
+				width: 88.2%;
+				background:#fff;
+				margin:0 auto;
+				margin-top:0.68rem;
+				padding-top:0.14rem;
+				position:relative;
+				box-shadow: 0.03rem 0.01rem 0.04rem #e2e2e6;
+				.juzhong{
+					width:0.64rem;
+					position:absolute;
+					margin:auto;
+					top:-0.01rem;
+					left:0;
+					right:0;
+				}
 				.haoma{
-					width:100%;
+					width:93%;
+					margin:0 auto;
+					margin-top:0.14rem;
 					text-align:center;
-					background:#fff;
-					padding-top:0.1rem;
+					border:1px dashed #e4e4e4;
+					border-top:none;
+					padding-top:0.31rem;
 					.haoma-img{
-						width:1.6rem;
-						height:1.6rem;
+						width:1.26rem;
+						height:1.26rem;
 						margin:0 auto;
-						margin-top:0.2rem;
 						display:flex;
 						-webkit-box-pack:center;
 						justify-content:center;
@@ -187,67 +211,79 @@
 					}
 					span{
 						text-align:center;
+						font-size:0.14rem;
 						line-height:0.4rem;
-					}
-				}
-				.content-heder{
-					width:100%;
-					height:0.3rem;
-					background:#fff;
-					margin-top:0.12rem 0 ;
-					display:flex;
-					-webkit-box-pack:center;
-					justify-content:center;
-					-webkit-box-align:center;
-					align-items:center;
-					span{
-						display:inline-block;
-						font-weight:bold;
-						font-size:0.16rem;
-					}
-					.text-center{
-						padding:0 0.2rem;
+						color:#ff9b83;
 					}
 				}
 				.zhuying{
-					width:100%;
+					width:93%;
+					margin:0 auto;
 					background:#fff;
-					display:flex;
+					padding:0.22rem 0 0.15rem 0;
+					border:1px dashed #e4e4e4;
+					border-top:none;
+					border-bottom:none;
 					.zhuying_1{
-						flex:1;
-						padding:0 0.2rem;
+						width:91.7%;
+						margin:0 auto;
 						.ferst{
-							font-size:0.17rem;
-							font-weight:bold;
-							line-height:0.2rem;
-							padding-top:0.1rem;
+							font-size:0.16rem;
+							line-height:0.23rem;
 						}
 						.last{
-							padding:0.2rem 0;
-							font-size:0.12rem;
-							line-height:0.18rem;
-							span{
-								display:inline-block;
-								padding:0 0.1rem;
-								line-height:0.4rem;
+							font-size:0.14rem;
+							
+							ul{
+								.lianxi{
+									display:flex;
+									line-height:0.41rem;
+									span{
+										flex:5;
+									}
+									font{
+										flex:3;
+									}
+								}
+							}
+							p{
+								line-height:0.2rem;
 							}
 						}
 					}
 				}
 				.times{
 					width:100%;
-					background:#fff;
+					background:#fff5f2;
 					line-height:0.16rem;
 					display:flex;
+					.xia{
+						width:101.5%;
+						position:absolute;
+						left:0;
+						bottom:-0.1rem;
+					}
 					.times-child{
-						flex:1;
-						padding:0.1rem 0.2rem;
-						font-size:0.12rem;
+						width:93%;
+						margin:0 auto;
+						font-size:0.16rem;
+						border:1px dashed #e4e4e4;
+						border-top:none;
+						border-bottom:none;
 						.content-food{
-							line-height:0.22rem;
-							span{
-								&:last-child{
-									
+							width:91.7%;
+							margin:0 auto;
+							padding-bottom:0.2rem;
+							li{
+								padding:0.13rem 0;
+								img{
+									height:0.15rem;
+									margin-right:0.09rem;
+								}
+								span{
+									&:last-child{
+										
+									}
 								}
 							}
 						}
@@ -255,23 +291,9 @@
 				}
 			}
 		}
-		.baoming{
-			width:100%;
-			height:0.4rem;
-			position:absolute;
-			bottom:0.2rem;
-			left:0;
-			text-align:center;
-			span{
-				line-height:0.10rem;
-				border-radius:0.06rem;
-				display:inline-block;
-				padding:0.1rem 0.3rem;
-				background:#00A0DC;
-				color:#fff;
-			}
-		}
 	}
 </style>
+
+
 
 

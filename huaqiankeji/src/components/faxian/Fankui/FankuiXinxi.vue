@@ -12,22 +12,7 @@
 			<div class="content-text" ref="contentTexte">
 				<div class="box" ref="boxTexte" id="box">
 					<div style="width:100%;height:0.5rem;"></div>
-					<div class="fankiu-my">
-						<div class="fankiu-img">
-							<img class="border" src="" alt="" />
-						</div>
-						<div class="fankiu-text">
-							<span class="border">kkkkkkkkjcdh45463fisdj</span>
-						</div>
-					</div>
-					<div class="fankiu-you">
-						<div class="fankiu-text">
-							<span>kkkkkkkkjcdh45463fisdj</span>
-						</div>
-						<div class="fankiu-img">
-							<img class="border" src="" alt="" />
-						</div>
-					</div>
+					
 				</div>
 			</div>
 			<div class="shuru" ref="shuru">
@@ -35,7 +20,7 @@
 				<ul>
 					<li>
 						<!--<div ref="texts" class="test_box" contenteditable="true"></div>--> 
-						<textarea ref="texts" placeholder="请详输入您的问题..." class="mint-field-core" v-model="introduction"></textarea>
+						<textarea @click.stop="shangyi()" ref="texts" placeholder="请详输入您的问题..." class="mint-field-core" v-model="introduction"></textarea>
 						<div class="fasong" @click.stop="fasong()"><span>发送</span></div>
 					</li>
 					<!--<li class="">
@@ -44,12 +29,15 @@
 					</li>-->
 				</ul>
 			</div>
+			<tishi ref="tishiShow" :xingXi="xingXi" :content="content"></tishi>
 		</div>
 	<!--</transition>-->
 </template>
 
 <script type="text/ecmascript">
+	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
+	import tishi from "../../Tishi.vue";
 //	import BScroll from "better-scroll";
 //	import Vue from "vue";
 //	import {formatDate} from "../../common/js/date.js";
@@ -66,35 +54,64 @@
 		},
 		data () {
 			return {
+				datas:"",		//评论详情
+				datasA:"",		//发送评论
+				datasB:"",		//处理换名片同意
+				prent:"",		//显示内容最外层DOM元素
+//				My:"",
+//				You:"",
 				DEHeight:"",
 				introduction:"",
 				times:20177111129,
 				showFlag:false,
 				tucaoShow:true,
-				tousuoContent:""
+				tousuoContent:"",
+				xingXi:{			//给下级提示组件要传的参数  提示信息
+					huJiao:"呼叫",
+					tianJia:"添加到手机通讯录",
+				},
+				content:"",
+				tongxun:"ok"
 			}
 		},
 		mounted(){
-//			this.$http.post('./index.txt',datas,{emulateJSON:true}).then(function(res){
-//		        console.log(res)
-//		        alert("成功");
-//			},function(res){
-//			    console.log(res.status);
-//			})
+			var thate=this;
+			this.prent=this.$refs.boxTexte;
+			this.datas={
+				token:this.$route.params.token,
+				to_id:this.$route.params.to_id			//对方id
+			}
+			console.log(this.datas)						//评论详情接口   随时更新信息
+//			setInterval(function(){
+//				thate.$http.post(URL.path+'chatcomment/comment_detail',thate.datas,{emulateJSON:true}).then(function(res){
+//					var cont="xxx 总经理 申请换取名片"
+//					var data=res
+////					console.log(this.My);
+//					var type=1
+////					this.My(type,cont);		//随时更新信息
+////					this.You(type,cont)
+////					this.FasongShijian();
+//					this.$nextTick(function(){
+//						var contentTexte=this.$refs.contentTexte;
+//						contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
+//					});
+//				},function(res){
+//				    console.log(res);
+//				})
+//			},2000)
 		},
 		methods:{
 			yijianHind(){
 				history.go(-1);
 			},
-			tousuoGo(){
+			tousuoGo(){			//提示投诉信息内容按钮
 				var contentTexte=this.$refs.contentTexte;
 				this.tousuoContent="投诉成功！"
-				var prent=this.$refs.boxTexte;
 				var tiShi=document.createElement("div");		//提示信息内容
 				var textCont=document.createElement("font");
 				textCont.innerText=this.tousuoContent;						//后台获取信息插入
 				tiShi.appendChild(textCont);
-				prent.appendChild(tiShi);
+				this.prent.appendChild(tiShi);
 				textCont.style.color="#b4b4b4";
 				textCont.style.lineHeight="0.2rem";
 				textCont.style.fontSize="0.16rem";
@@ -104,227 +121,352 @@
 				tiShi.style.padding="0.1rem 0";
 				tiShi.style.textAlign="center";
 				contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
+				this.FasongShijian();
 			},
-			fasong(){
+			shangyi(){
+				var contentTexte=this.$refs.contentTexte;
+				contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
+			},
+			ChushiHuaTimes(){			//初始化时间函数
+				var times=new Date();           //实例化日期对象；
+				var myMonth=times.getMonth();   //当前的月份；
+				myMonth=myMonth+1;				//当前的月份；
+				var myDate=times.getDay();      //当前的日期；
+				var myHours=times.getHours();   //当前的小时；
+				var myMinutes=times.getMinutes();   //当前的分钟；
+				return myHours+":"+myMinutes;
+				console.log(myMinutes)
+			},
+			FasongShijian(){	//发送时间显示函数
+				var contentTexte=this.$refs.contentTexte;
+				var shiJian=document.createElement("div");				
+				var shiJianCont=document.createElement("font");
+				shiJianCont.innerText=this.ChushiHuaTimes();		//调用初始化时间函数
+				shiJian.appendChild(shiJianCont);
+				this.prent.appendChild(shiJian);
+				shiJianCont.style.color="#fff";
+				shiJianCont.style.lineHeight="0.21rem";
+				shiJianCont.style.fontSize="0.16rem";
+				shiJianCont.style.background="#cfced2";
+				shiJianCont.style.display="inline-block";
+				shiJianCont.style.padding="0 0.06rem";
+				shiJianCont.style.borderRadius="0.04rem";
+				shiJian.style.padding="0.1rem 0";
+				shiJian.style.textAlign="center";
+				contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
+			},
+			My(type,cont){		//我要发送信息处理函数
+				var contentTexte=this.$refs.contentTexte;
+				var you=document.createElement("div");			//创建元素        我要发送的dom
+				var	neiRong=document.createElement("div");		//内容信息
+				var touXiang=document.createElement("div");		//头像
+				var span=document.createElement("span");
+				var img=document.createElement("img");
+				var imgs=document.createElement("div");
+				you.setAttribute("class","fankiu-you");			//添加属性
+				neiRong.setAttribute("class","fankiu-text clearbox");
+				touXiang.setAttribute("class","fankiu-img");
+//					imgs.style.backgroundImage="url('./dist/you.png')";
+				img.setAttribute("class","border");
+//					span.appendChild(imgs);
+				neiRong.appendChild(span);
+				neiRong.appendChild(imgs);
+				touXiang.appendChild(img);
+				you.appendChild(neiRong);
+				you.appendChild(touXiang);
+				this.prent.appendChild(you);
+				you.style.width="92%";						//样式4
+				you.style.margin="0 auto";
+				you.style.textAlign="justify";
+				you.style.lineHeight="0.2rem";
+				you.style.overflow="hidden";
+				you.style.padding="0.05rem 0";
+				neiRong.style.width="86%";
+				neiRong.style.float="left";
+//					neiRong.style.overflow="hidden";
+				neiRong.style.position="relative";
+				span.style.display="inline-block";
+				span.style.padding="0.08rem 0.1rem";
+				span.style.background="#ff7a59";
+				span.style.color="#fff";
+				span.style.float="right";
+				span.style.maxWidth="77%";
+				span.style.borderRadius="0.04rem";
+				span.style.fontSize="0.16rem";
+				span.style.border="1px solid #d4d2d2";
+				span.style.wordWrap="break-word";
+				touXiang.style.width="14%";
+				touXiang.style.float="left";
+				touXiang.style.overflow="hidden";
+				img.style.width="0.38rem";
+				img.style.height="0.38rem";
+				img.style.background="#EAEAEA";
+				img.style.float="right";
+				img.style.borderRadius="0.02rem";
+				imgs.style.position="absolute";
+				imgs.style.background="#ff7a59";
+				imgs.style.borderRight="0.008rem solid #d4d2d2";
+				imgs.style.borderTop="0.008rem solid #d4d2d2";
+//					imgs.style.border="0.008rem solid #d4d2d2";
+//					imgs.style.transform="skew(50deg,0deg)";
+				imgs.style.transform="rotate(45deg)";
+				imgs.style.width="0.08rem";
+				imgs.style.height="0.08rem";
+				imgs.style.top="0.09rem";
+				imgs.style.right="-0.04rem";
+				imgs.style.Zindex=100;
+				if(type==1){			//发送的是名片
+					span.style.background="#fff";
+					imgs.style.background="#fff";
+					span.appendChild(this.MingpianTishi(cont));
+				}else{
+					span.innerText=cont;							//对应插入
+					this.introduction="";
+				}
+				contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
+			},
+			You(type,cont){		//对方要发送信息处理函数
+				var contentTexte=this.$refs.contentTexte;
+				var my=document.createElement("div");			//创建元素		对方要发送的dom
+				var	neiRong=document.createElement("div");
+				var touXiang=document.createElement("div");
+				var span=document.createElement("span");
+				var img=document.createElement("img");
+				var imgs=document.createElement("div");
+				my.setAttribute("class","fankiu-my");			//添加属性
+				neiRong.setAttribute("class","fankiu-text");
+				touXiang.setAttribute("class","fankiu-img");
+				img.setAttribute("class","border");
+//						span.innerText=texts;							//对应插入
+				neiRong.appendChild(span);
+				neiRong.appendChild(imgs);
+				touXiang.appendChild(img);
+				my.appendChild(touXiang);
+				my.appendChild(neiRong);
+				this.prent.appendChild(my);
+				my.style.width="92%";						//样式4
+				my.style.margin="0 auto";
+				my.style.lineHeight="0.2rem";
+				my.style.textAlign="justify";
+				my.style.display="flex";
+				my.style.padding="0.05rem 0";
+				neiRong.style.width="86%";
+				neiRong.style.position="relative";
+//					neiRong.style.float="left";
+				span.style.display="inline-block";
+				span.style.padding="0.08rem 0.1rem";
+				span.style.background="#fff";
+				span.style.maxWidth="77%"
+				span.style.borderRadius="0.04rem";
+				span.style.fontSize="0.16rem";
+				span.style.border="1px solid #d4d2d2";
+				span.style.wordWrap="break-word";
+				touXiang.style.width="14%";
+//					touXiang.style.float="left";
+				img.style.width="0.38rem";
+				img.style.height="0.38rem";
+				img.style.background="#EAEAEA";
+				img.style.borderRadius="0.02rem";
+				imgs.style.position="absolute";
+				imgs.style.background="#fff";
+				imgs.style.width="0.08rem";
+				imgs.style.height="0.08rem";
+				imgs.style.borderLeft="0.008rem solid #d4d2d2";
+				imgs.style.borderTop="0.008rem solid #d4d2d2";
+				imgs.style.transform="rotate(-45deg)";
+				imgs.style.top="0.09rem";
+				imgs.style.left="-0.04rem";
+				imgs.style.Zindex=100;
+				if(type==1){			//发送的是名片
+					span.style.background="#fff";
+					imgs.style.background="#fff";
+					span.appendChild(this.HuanquSenqing(cont));
+				}else{
+					span.innerText=cont;							//对应插入
+					this.introduction="";
+				}
+				contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
+			},
+			MingpianTishi(texts){			//申请换名片处理函数
+				var thata=this;
+				var mingPianTishi=document.createElement("div");			//申请换名片提示   创建DOM元素
+				var	NameTishi=document.createElement("p");
+				var SpanTishi=document.createElement("span");
+				var FontTishi=document.createElement("font");
+				var	GerenTishi=document.createElement("p");
+				SpanTishi.innerText="王美丽";							//后台获取信息插入
+				FontTishi.innerText="1831066986";					//后台获取信息插入
+				GerenTishi.innerText="个人名片";
+				NameTishi.appendChild(SpanTishi);
+				NameTishi.appendChild(FontTishi);
+				mingPianTishi.appendChild(NameTishi);
+				mingPianTishi.appendChild(GerenTishi);
+//						thata.prent.appendChild(mingPianTishi);						//最终要插入到对话框内
+				mingPianTishi.style.width="2.02rem";
+				mingPianTishi.style.margin="0 auto";
+				mingPianTishi.style.minHeight="0.56rem";
+				mingPianTishi.style.fontSize="0.16rem";
+				mingPianTishi.style.background="#fff";
+				NameTishi.style.lineHeight="0.34rem";
+				NameTishi.style.height="0.4rem";
+				NameTishi.style.color="#07111B";
+				SpanTishi.style.display="inline-block";
+				SpanTishi.style.padding="0 0.07rem 0 0";
+				GerenTishi.style.borderTop="1px solid #cfcfcf";
+				GerenTishi.style.fontSize="0.13rem";
+				GerenTishi.style.padding="0.06rem 0 0 0.03rem";
+				GerenTishi.style.color="#b4b4b4";
+				mingPianTishi.onclick=function(){		//提示添加通讯录弹框
+					thata.$refs.tishiShow.tishiBlock(thata.tongxun,FontTishi.innerText);//CanShu是下级要传的参数
+				}
+				return mingPianTishi;
+			},
+			HuanquSenqing(texts){			//换名片申请提示处理函数
+				var thata=this;
+				var mingPian=document.createElement("div");			//换名片申请提示	  是否确定换名片  创建DOM元素    在对方对话框内显示
+				var	mingText=document.createElement("p");
+				var mingSpan=document.createElement("span");
+				var mingFont=document.createElement("font");
+				mingText.innerText=texts;							//后台获取信息插入
+				mingSpan.innerText="同意";
+				mingFont.innerText="拒绝";
+				mingPian.appendChild(mingText);
+				mingPian.appendChild(mingSpan);
+				mingPian.appendChild(mingFont);
+//						thata.prent.appendChild(mingPian);						//最终要插入到对话框内
+				mingPian.style.width="2.02rem";
+				mingPian.style.margin="0 auto";
+				mingPian.style.minHeight="0.63rem";
+				mingPian.style.position="relative";
+				mingPian.style.background="#fff";
+				mingText.style.lineHeight="0.21rem";
+				mingText.style.fontSize="0.16rem";
+				mingText.style.wordWrap="break-word";
+				mingText.style.padding="0 0 0.36rem 0";
+				mingText.style.color="#07111B";
+				mingSpan.style.position="absolute";
+				mingSpan.style.left="0";
+				mingSpan.style.bottom="0";
+				mingSpan.style.color="#f5f4f9";
+				mingSpan.style.width="46%";
+				mingSpan.style.height="0.31rem";
+				mingSpan.style.borderRadius="0.04rem";
+				mingSpan.style.background="#ff7a59";
+				mingSpan.style.lineHeight="0.31rem";
+				mingSpan.style.textAlign="center";
+				mingSpan.onclick=function(){				//绑定换名片同意事件
+					thata.datasB={							//处理换名片同意
+						token:thata.$route.params.token,
+						from_id:"123",	//发送方id	是	[string]		
+						id:"123",	//名片id	是	[string]		
+						item_id:"123",	//项目id	是	[string]		
+						operate:"1"	//操作 1:同意 2:拒绝
+					}
+					console.log(thata.datasB)				//处理换名片同意接口
+					thata.$http.post(URL.path+'chatcomment/send_msg',thata.datas,{emulateJSON:true}).then(function(res){
+						var data=res
+						console.log("处理换名片同意"+res);
+						this.TishiNeirong("处理换名片同意");
+						this.FasongShijian();
+					},function(res){
+					    console.log(res);
+					})
+					thata.TishiNeirong("处理换名片同意");
+						thata.FasongShijian();
+				}
+				mingFont.style.position="absolute";
+				mingFont.style.right="0";
+				mingFont.style.bottom="0";
+				mingFont.style.width="46%";
+				mingFont.style.height="0.31rem";
+				mingFont.style.borderRadius="0.04rem";
+				mingFont.style.background="#f5f4f9";
+				mingFont.style.lineHeight="0.31rem";
+				mingFont.style.textAlign="center";
+				mingFont.onclick=function(){			//绑定换名片拒绝事件
+					thata.datasB={						//处理换名片拒绝
+						token:thata.$route.params.token,
+						from_id:"123",	//发送方id	是	[string]		
+						id:"123",	//名片id	是	[string]		
+						item_id:"123",	//项目id	是	[string]		
+						operate:"2"	//操作 1:同意 2:拒绝
+					}
+					console.log(thata.datasB)			//处理换名片拒绝接口
+					thata.$http.post(URL.path+'chatcomment/send_msg',thata.datas,{emulateJSON:true}).then(function(res){
+						var data=res
+						console.log("处理换名片拒绝"+res);
+						this.TishiNeirong("处理换名片拒绝");
+						
+						
+						
+						this.FasongShijian();
+					},function(res){
+					    console.log(res);
+					})
+					thata.TishiNeirong("处理换名片拒绝");
+					thata.FasongShijian();
+				}
+				return mingPian;
+			},
+			TishiNeirong(texts){			//换名片时提示信息内容处理函数
+				var tiShi=document.createElement("div");		//创建DOM元素
+				var textCont=document.createElement("font");
+				textCont.innerText=texts;						//插入提示信息
+				tiShi.appendChild(textCont);
+				this.prent.appendChild(tiShi);
+				textCont.style.color="#b4b4b4";
+				textCont.style.lineHeight="0.2rem";
+				textCont.style.fontSize="0.16rem";
+				textCont.style.wordWrap="break-word";
+				tiShi.style.width="82%";
+				tiShi.style.margin="0 auto";
+				tiShi.style.padding="0.1rem 0";
+				tiShi.style.textAlign="center";
+			},
+			fasong(){		//发送按钮
+				var thata=this;
 //				var DEHeight;
 //				this.DEHeight=DEHeight    //窗口高度
 				var contentTexte=this.$refs.contentTexte;
-				var prent=this.$refs.boxTexte;
 				var shuru=this.$refs.shuru;				
 //				var texts=this.$refs.texts.innerText;
-				var texts=this.introduction;
+				var texts=this.introduction;		//发送内容
 				var Height=shuru.clientHeight		//底部高度
 				console.log(shuru.clientHeight)							//显示框高度
 //				contentTexte.style.height=(DEHeight-93)/100+"rem";
 				var aaa=document.getElementById("box")
 //				if(document.aaa.scrollTop){
-					console.log(prent.offsetHeight)
-					console.log(prent.scrollTop )
+					console.log(this.prent.offsetHeight)
+					console.log(this.prent.scrollTop )
 					console.log(contentTexte.scrollTop )
 					console.log(contentTexte.scrollHeight )
 //				}
-				
 				if(texts!=""){
-					var times=new Date();           //实例化日期对象；
-					var myMonth=times.getMonth();   //当前的月份；
-					myMonth=myMonth+1;				//当前的月份；
-					var myDate=times.getDay();      //当前的日期；
-					var myHours=times.getHours();   //当前的小时；
-					var myMinutes=times.getMinutes();   //当前的分钟；
-					console.log(myMinutes)
+					var cont="xxx 总经理 申请换取名片"
+					var type=1
+					this.My(type,texts);		//我要发送信息处理函数
+					this.You(type,texts)		//对方要发送信息处理函数
 					
 					
-					var you=document.createElement("div");			//创建元素        我要发送的
-					var	neiRong=document.createElement("div");		//内容信息
-					var touXiang=document.createElement("div");		//头像
-					var span=document.createElement("span");
-					var img=document.createElement("img");
-					var imgs=document.createElement("img");
-					you.setAttribute("class","fankiu-you");			//添加属性
-					neiRong.setAttribute("class","fankiu-text clearbox");
-					touXiang.setAttribute("class","fankiu-img");
-					imgs.src="../../../../dist/you.png";
-					img.setAttribute("class","border");
-//					span.appendChild(imgs);
-					span.innerText=texts;							//对应插入
-					neiRong.appendChild(span);
-					neiRong.appendChild(imgs);
-					touXiang.appendChild(img);
-					you.appendChild(neiRong);
-					you.appendChild(touXiang);
-					prent.appendChild(you);
-					you.style.width="92%";						//样式4
-					you.style.margin="0 auto";
-					you.style.textAlign="justify";
-					you.style.lineHeight="0.2rem";
-					you.style.overflow="hidden";
-					you.style.padding="0.05rem 0";
-					neiRong.style.width="86%";
-					neiRong.style.float="left";
-//					neiRong.style.overflow="hidden";
-					neiRong.style.position="relative";
-					span.style.display="inline-block";
-					span.style.padding="0.08rem 0.1rem";
-					span.style.background="#ff7a59";
-					span.style.color="#fff";
-					span.style.float="right";
-					span.style.maxWidth="77%";
-					span.style.borderRadius="0.04rem";
-					span.style.fontSize="0.16rem";
-					span.style.border="1px solid #d4d2d2";
-					span.style.wordWrap="break-word";
-					touXiang.style.width="14%";
-					touXiang.style.float="left";
-					touXiang.style.overflow="hidden";
-					img.style.width="0.38rem";
-					img.style.height="0.38rem";
-					img.style.background="#EAEAEA";
-					img.style.float="right";
-					img.style.borderRadius="0.02rem";
-					imgs.style.position="absolute";
-					imgs.style.width="0.08rem";
-					imgs.style.height="0.11rem";
-					imgs.style.top="0.09rem";
-					imgs.style.right="-0.066rem";
-					imgs.style.Zindex=100;
+					this.datasA={			//发送评论接口
+						token:this.$route.params.token,
+						to_id:"123",					//接收方id	是	[string]		
+						content:texts					//评论内容
+					}
+					console.log(this.datasA)			//发送评论接口
+					this.$http.post(URL.path+'chatcomment/send_msg',this.datas,{emulateJSON:true}).then(function(res){
+						var cont="xxx 总经理 申请换取名片"
+						var type=1
+						console.log("发送评论成功"+res);
+						this.My(type,cont);		//调用发送评论函数
+						this.You(type,cont)
+						this.FasongShijian();
+					},function(res){
+					    console.log(res);
+					})
 					
-					var my=document.createElement("div");			//创建元素		对方要发送的
-					var	neiRong=document.createElement("div");
-					var touXiang=document.createElement("div");
-					var span=document.createElement("span");
-					var img=document.createElement("img");
-					var imgs=document.createElement("img");
-					my.setAttribute("class","fankiu-my");			//添加属性
-					neiRong.setAttribute("class","fankiu-text");
-					touXiang.setAttribute("class","fankiu-img");
-					imgs.src="../../../../dist/my.png";
-					img.setAttribute("class","border");
-					span.innerText=texts;							//对应插入
-					neiRong.appendChild(span);
-					neiRong.appendChild(imgs);
-					touXiang.appendChild(img);
-					my.appendChild(touXiang);
-					my.appendChild(neiRong);
-					prent.appendChild(my);
-					my.style.width="92%";						//样式4
-					my.style.margin="0 auto";
-					my.style.lineHeight="0.2rem";
-					my.style.textAlign="justify";
-					my.style.display="flex";
-					my.style.padding="0.05rem 0";
-					neiRong.style.width="86%";
-					neiRong.style.position="relative";
-//					neiRong.style.float="left";
-					span.style.display="inline-block";
-					span.style.padding="0.08rem 0.1rem";
-					span.style.background="#fff";
-					span.style.maxWidth="77%"
-					span.style.borderRadius="0.04rem";
-					span.style.fontSize="0.16rem";
-					span.style.border="1px solid #d4d2d2";
-					span.style.wordWrap="break-word";
-					touXiang.style.width="14%";
-//					touXiang.style.float="left";
-					img.style.width="0.38rem";
-					img.style.height="0.38rem";
-					img.style.background="#EAEAEA";
-					img.style.borderRadius="0.02rem";
-					imgs.style.position="absolute";
-					imgs.style.width="0.08rem";
-					imgs.style.height="0.11rem";
-					imgs.style.top="0.09rem";
-					imgs.style.left="-0.066rem";
-					imgs.style.Zindex=100;
+					this.FasongShijian();
 					this.introduction="";
-					
-					
-					var tiShi=document.createElement("div");		//提示信息内容
-					var textCont=document.createElement("font");
-					textCont.innerText=texts;						//后台获取信息插入
-					tiShi.appendChild(textCont);
-					prent.appendChild(tiShi);
-					textCont.style.color="#b4b4b4";
-					textCont.style.lineHeight="0.2rem";
-					textCont.style.fontSize="0.16rem";
-					textCont.style.wordWrap="break-word";
-					tiShi.style.width="82%";
-					tiShi.style.margin="0 auto";
-					tiShi.style.padding="0.1rem 0";
-					tiShi.style.textAlign="center";
-//					tiShi.style.background="#EAEAEA";
-					
-					
-					
-					var shiJian=document.createElement("div");		//时间显示
-					var shiJianCont=document.createElement("font");
-					shiJianCont.innerText=myHours+":"+myMinutes;						//后台获取信息插入
-					shiJian.appendChild(shiJianCont);
-					prent.appendChild(shiJian);
-					shiJianCont.style.color="#fff";
-					shiJianCont.style.lineHeight="0.21rem";
-					shiJianCont.style.fontSize="0.16rem";
-					shiJianCont.style.background="#cfced2";
-					shiJianCont.style.display="inline-block";
-					shiJianCont.style.padding="0 0.06rem";
-					shiJianCont.style.borderRadius="0.04rem";
-					shiJian.style.padding="0.1rem 0";
-					shiJian.style.textAlign="center";
-					
-					
-					
-					var mingPian=document.createElement("div");			//换名片申请提示
-					var	mingText=document.createElement("p");
-					var mingSpan=document.createElement("span");
-					var mingFont=document.createElement("font");
-					mingText.innerText=texts;							//后台获取信息插入
-					mingSpan.innerText="同意";
-					mingFont.innerText="拒绝";
-					mingPian.appendChild(mingText);
-					mingPian.appendChild(mingSpan);
-					mingPian.appendChild(mingFont);
-					prent.appendChild(mingPian);						//最终要插入到对话框内
-					mingPian.style.width="2.02rem";
-					mingPian.style.margin="0 auto";
-					mingPian.style.minHeight="0.63rem";
-					mingPian.style.position="relative";
-					mingPian.style.background="#fff";
-					mingText.style.lineHeight="0.21rem";
-					mingText.style.fontSize="0.16rem";
-					mingText.style.wordWrap="break-word";
-					mingText.style.padding="0 0 0.36rem 0";
-					
-					mingSpan.style.position="absolute";
-					mingSpan.style.left="0";
-					mingSpan.style.bottom="0";
-					mingSpan.style.color="#f5f4f9";
-					mingSpan.style.width="46%";
-					mingSpan.style.height="0.31rem";
-					mingSpan.style.borderRadius="0.04rem";
-					mingSpan.style.background="#ff7a59";
-					mingSpan.style.lineHeight="0.31rem";
-					mingSpan.style.textAlign="center";
-					mingSpan.onclick=function(){				//绑定事件
-						alert("同意")
-					}
-					mingFont.style.position="absolute";
-					mingFont.style.right="0";
-					mingFont.style.bottom="0";
-					mingFont.style.width="46%";
-					mingFont.style.height="0.31rem";
-					mingFont.style.borderRadius="0.04rem";
-					mingFont.style.background="#f5f4f9";
-					mingFont.style.lineHeight="0.31rem";
-					mingFont.style.textAlign="center";
-					mingFont.onclick=function(){				//绑定事件
-						alert("拒绝")
-					}
-					
-					span.appendChild(mingPian);
-					
-					
-					
-					
-					contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
 				}else{
 					return;
 				}
@@ -370,6 +512,7 @@
 //			}
 		},
 		components:{
+			tishi
 //			cartcontrol,
 //			ratingselect,
 //			split
@@ -392,13 +535,16 @@
 	.yijian{
 		position:fixed;
 		background:#f5f4f9;
+		width:100%;
+		height:100%;
 		bottom:0;
 		top:0;
 		left:0;
 		right:0;
-		z-index:1600;
+		z-index:1000;
 		.xiangmu-header{
-			position:fixed;
+			position:absolute;
+			/*position:fixed;*/
 			top:0;
 			left:0;
 			width:100%;
@@ -409,7 +555,7 @@
 			text-align:center;
 			line-height:0.45rem;
 			color:#fff;
-			z-index:1700;
+			z-index:1200;
 			.xiangmu-left{
 				position:absolute;
 				height:100%;
@@ -430,39 +576,12 @@
 			top:0;
 			left:0;
 			overflow-y:auto;
-			z-index:1500;
+			z-index:1100;
 			padding-bottom:1%;
 			-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
 			.box{
 				width:100%;
 				height:auto;
-				.fankiu-my,.fankiu-you{
-					display:flex;
-					padding:0.04rem 0.2rem;
-					.fankiu-img{
-						width:0.33rem;
-						img{
-							width:0.33rem;
-							height:0.33rem;
-							background:#EAEAEA;
-						}
-					}
-					.fankiu-text{
-						flex:1;
-						margin-left:0.1rem;
-						span{
-							display:inline-block;
-							padding:0.1rem;
-							background:#fff;
-						}
-					}
-				}
-				.fankiu-you{
-					text-align:right;
-					.fankiu-text{
-						margin-right:0.1rem;
-					}
-				}
 			}
 		}
 		.shuru{
@@ -473,7 +592,7 @@
 			left:0;
 			bottom:0;
 			width:100%;
-			z-index:2000;
+			z-index:1300;
 			display:flex;
 			align-content:center;
 			align-items:center;
@@ -494,6 +613,7 @@
 				background-size:0.14rem 0.14rem;
 				background-position:0 0;
 				background-repeat:no-repeat;
+				z-index:1310;
 			}
 			ul{
 				width:95%;

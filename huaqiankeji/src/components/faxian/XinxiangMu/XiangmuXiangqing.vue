@@ -10,11 +10,13 @@
 				<div style="width:100%;height:0.55rem;"></div>
 				<div class="fankiu border">
 					<div class="content-food">
+						<span class="laizi">来自：</span>
 						<img class="border" src="" alt="" />
-						<span>&nbsp;&nbsp;王美丽&nbsp;</span>
+						<span>&nbsp;王美丽&nbsp;</span>
 						<font class="bbb border-left"></font>
 						<span>投资经理</span>
 						<span>&nbsp;&nbsp;董秘</span>
+						<div class="tousu"><span>投诉</span></div>
 					</div>
 				</div>
 				<div class="tishi-bottom">
@@ -31,21 +33,21 @@
 							<li class="border-bottom"></li>
 						</ul>
 						<div class="zhuying_1">
-							<div class="ferst"><span></span>公司名称</div>
+							<div class="ferst"><span></span>项目推荐</div>
 							<div class="last">
 								<p>资经理资经理资主营业经理主营业资经理资主营业经理资经理资经理</p>
 							</div>
 						</div>
 					</div>
 					<div class="zhuying_1 border">
-						<div class="ferst"><span></span>公司名称</div>
+						<div class="ferst"><span></span>经营业绩</div>
 						<div class="last">
 							<p>上一财年：营收&nbsp;<span>221亿</span>&nbsp;&nbsp;净利润&nbsp;<span>12万</span></p>
 							<p>今年预计：营收&nbsp;<span>12亿</span>&nbsp;&nbsp;净利润&nbsp;<span>1221万</span></p>
 						</div>
 					</div>
 					<div class="zhuying_1 border">
-						<div class="ferst"><span></span>公司名称</div>
+						<div class="ferst"><span></span>融资计划</div>
 						<div class="last">
 							<p>融资总额：<span>245万</span></p>
 							<p>投前估值：<span>244万</span></p>
@@ -54,7 +56,7 @@
 				</div>
 				<div class="border aaa">
 					<div class="content-header" @click.stap="chakanBA()">
-						<span>查看BA</span>
+						<span>查看商业计划书（BP）</span>
 						<font></font>
 					</div>
 					<div class="content-header" @click.stap="xiangguan()">
@@ -72,15 +74,11 @@
 				</div>
 				<box></box>
 				<div class="butten">
-					<div class="tousu"><span>投诉</span></div>
+					<div class="tousu"><span>保密信息，禁止传播</span></div>
 					<ul>
 						<li @click.stap="liuYanTo()"><span :class="liuYans"></span><p>留言询问</p></li>
 						<li @click.stap="jiaoHuanTo()"><span :class="jiaoHuans"></span><p>换名片</p></li>
 					</ul>
-					<div class="baoming border-top">
-						<span class="border-right" :class="butenLeft" @click.stap="genJin()">跟进</span>
-						<span :class="butenRight" @click.stap="buGen()">暂不跟进</span>
-					</div>
 					<!--<ul>-->
 						<!--<li><span @click.stop="touSu()">投诉</span></li>-->
 						<!--<li><span @click.stop="genJin()">跟进</span></li>-->
@@ -91,26 +89,37 @@
 					<!--</ul>-->
 				</div>
 			</div>
+			<div class="baoming border-top">
+				<span class="border-right" :class="butenLeft" @click.stap="genJin()">跟进</span>
+				<span :class="butenRight" @click.stap="buGen()">暂不跟进</span>
+				<!--<span class="border-right" :class="butenLeft" @click.stap="genJin()">我要报名</span>
+				<span :class="butenRight" @click.stap="buGen()">不参加</span>-->
+			</div>
 			<!--<youhuiquan ref="youhuiShow"></youhuiquan>-->
+			<tishi ref="tishiShow" :xingXi="xingXi" :content="content"></tishi>
 		</div>
 	</transition>
 </template>
 
 <script type="text/ecmascript">
+	import Vue from 'vue'
 	import { Field } from 'mint-ui';
 	import box from "../../box.vue";
+	import tishi from "../../Tishi.vue";
 //	import youhuiquan from "../../shendu/PeixunZixun/YouhuiQuan.vue";
 //	import fankuixinxi from "./FankuiXinxi.vue";
 	
 	
 	export default {
 		props:{
+			token:{}
 //			food:{
 //				type:Object
 //			}
 		},
 		data () {
 			return {
+				wanchengDu:"1",   //个人资料完成度低于80%要提示    调用 tishiBlock();
 				fankui:"45",
 				genjin:"458",
 				introduction:"",
@@ -121,6 +130,16 @@
 				jiaoHuans:"",
 				butenLeft:"butenLeft",
 				butenRight:"",
+				xingXi:{			//给下级提示组件要传的参数
+					text:"亲，您的个人信息完成的低于80%，请前往完善资料。",
+					x:"不再提醒",
+					y:"确定",
+					m:false,
+					u:true
+				},
+				content:"xiangmuXiangqing",			//给下级要传的参数
+				mingPian:"huanQu",
+				types:"0"
 			}
 		},
 		methods:{
@@ -134,22 +153,53 @@
 				this.$refs.xinxiShow.xinxiBlock();
 			},
 			liuYanTo(){
-//				window.location.href="#/fankuixinxi";
-				this.liuYans="liuYan";
+				if(this.types==1){			//跳转到留言页面
+					window.location.href="#/fankuixinxi/"+this.token+"/12";
+				}
+//				this.liuYans="liuYan";
 			},
 			jiaoHuanTo(){
-				this.jiaoHuans="jiaoHuan";
+				if(this.types==1){				//换取名片申请提示
+					var datas={
+						token:this.token,		//换名片接口
+						to_id:"14",			//接收方id
+						item_id:"25"							//项目id
+					}
+					console.log(datas)
+					this.$http.post(URL.path+'chatcomment/get_card',datas,{emulateJSON:true}).then(function(res){
+						var data=res
+						console.log("换名片申请成功"+res);
+						this.xingXi.text="您已申请向对方换取名片，请注意查收..."
+						this.$refs.tishiShow.tishiBlock(this.mingPian,this.token);//CanShu是下级要传的参数
+					},function(res){
+					    console.log(res);
+					    this.xingXi.text="您申请向对方换取名片失败，请稍后再试..."
+						this.$refs.tishiShow.tishiBlock(this.mingPian,this.token);//CanShu是下级要传的参数
+					})
+				}
+//				this.jiaoHuans="jiaoHuan";
 			},
 			baoMing(){
 				this.$refs.youhuiShow.YouhuiBlock();
 			},
 			genJin(){
-				this.butenLeft="butenLeft";
-				this.butenRight="";
+				this.types=1;
+				if(this.wanchengDu==""){
+					this.$refs.tishiShow.tishiBlock(this.content);//CanShu是下级要传的参数
+				}else{
+					this.butenLeft="butenLeft";
+					this.liuYans="liuYan";
+					this.jiaoHuans="jiaoHuan";
+					this.butenRight="";
+				}
 			},
 			buGen(){
-				this.butenRight="butenRight";
+				this.types=0;
+//				this.butenRight="butenRight";
 				this.butenLeft="";
+				this.butenLeft="";
+				this.liuYans="";
+				this.jiaoHuans="";
 			}
 			
 //			show(){
@@ -186,7 +236,8 @@
 //			}
 		},
 		components:{
-			box
+			box,
+			tishi
 //			youhuiquan
 //			fankuixinxi
 		}
@@ -266,21 +317,40 @@
 				box-shadow: 0.01rem 0.02rem 0.04rem #a7503a;
 				.content-food{
 					flex:1;
-					padding:0.06rem 0.2rem;
-					line-height:0.42rem;
+					padding:0.14rem 0.2rem;
 					font-size:0.16rem;
 					background:#fff;
+					position:relative;
+					display:flex;
+					align-items:center;
+					.laizi{
+						color:#b8b8b8;
+					}
 					img{
-						vertical-align:top;
-						width:0.42rem;
-						height:0.42rem;
+						width:0.25rem;
+						height:0.25rem;
 					}
 					.bbb{
 						width:0.01rem;
 						height:0.16rem;
-						margin-bottom:-0.03rem;
 						display:inline-block;
 						padding-left:0.03rem;
+					}
+					.tousu{
+						position:absolute;
+						top:0.19rem;
+						right:0.16rem;
+						width:0.48rem;
+						height:0.15rem;
+						line-height:0.15rem;
+						font-size:0.12rem;
+						color:#b8b8b8;
+						padding-top:0.01rem;
+						text-align:right;
+						background-image:url("./img/tousu.png");
+						background-size:0.14rem 0.14rem;
+						background-position:0 0;
+						background-repeat:no-repeat;
 					}
 				}
 			}
@@ -398,12 +468,13 @@
 				position:relative;
 				.tousu{
 					float:right;
-					width:0.48rem;
+					width:1.28rem;
 					height:0.15rem;
+					font-size:0.12rem;
 					color:#b8b8b8;
 					padding-top:0.01rem;
 					text-align:right;
-					margin:0.06rem 0.1rem 0 0;
+					margin:0rem 0.06rem 0.06rem 0;
 					background-image:url("./img/tousu.png");
 					background-size:0.14rem 0.14rem;
 					background-position:0 0;
@@ -455,44 +526,45 @@
 						margin-top:0.07rem;
 					}
 				}
-				.baoming{
-					position:fixed;
-					bottom:0;
-					left:0;
-					width:100%;
-					height:0.5rem;
-					display:flex;
-					justify-content:center;
-					align-content:center;
-					align-items:center;
-					background:#fff;
-					box-shadow:0 0.02rem 0.04rem #dedde1;
-					span{
-						flex:1;
-						height:0.5rem;
-						line-height:0.5rem;
-						display:inline-block;
-						text-align:center;
-						background:#ececec;
-						font-size:0.18rem;
-						font{
-							display:inline-block;
-							width:0.18rem;
-							height:0.18rem;
-							background-image:url("./img/jian.png");
-							background-size:100% 100%;
-							margin:0 0 -0.04rem 0.06rem;
-						}
-					}
-					.butenLeft{
-						color:#fff;
-						background:#ff7a59;
-					}
-					.butenRight{
-						color:#fff;
-						background:#ff7a59;
-					}
+			}
+		}
+		.baoming{
+			position:fixed;
+			bottom:0;
+			left:0;
+			width:100%;
+			height:0.5rem;
+			display:flex;
+			justify-content:center;
+			align-content:center;
+			align-items:center;
+			background:#fff;
+			box-shadow:0 0.02rem 0.04rem #dedde1;
+			z-index: 320;
+			span{
+				flex:1;
+				height:0.5rem;
+				line-height:0.5rem;
+				display:inline-block;
+				text-align:center;
+				background:#ececec;
+				font-size:0.18rem;
+				font{
+					display:inline-block;
+					width:0.18rem;
+					height:0.18rem;
+					background-image:url("./img/jian.png");
+					background-size:100% 100%;
+					margin:0 0 -0.04rem 0.06rem;
 				}
+			}
+			.butenLeft{
+				color:#fff;
+				background:#ff7a59;
+			}
+			.butenRight{
+				color:#fff;
+				background:#ff7a59;
 			}
 		}
 	}

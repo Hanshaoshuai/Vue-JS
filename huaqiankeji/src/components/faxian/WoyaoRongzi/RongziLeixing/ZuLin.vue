@@ -65,7 +65,7 @@
 					<div class="zhuying_1">
 						<div class="ferst"><span>*</span>所在省份</div>
 						<div class="last number">
-							<input v-model="numberg" placeholder="请填写省份" number="true" type="text" class="mint-field-core">
+							<input v-model="numberg" placeholder="请填写省份" type="text" class="mint-field-core">
 						</div>
 					</div>
 					<div class="times">
@@ -108,7 +108,7 @@
 		},
 		data () {
 			return {
-				x:"0",
+				x:"0",			//字的个数
 				numbera:"",
 				numberb:"",
 				numberc:"",
@@ -118,21 +118,20 @@
 				numberg:"",
 				texta:"",
 				textb:"",
-				textc:"",
 				fankui:"45",
 				genjin:"458",
 				introduction:"",
 				times:20177111129,
 				showFlag:false,
 				tucaoShow:true,
-				xingXi:{
+				xingXi:{			//给下级要传的参数
 					text:"亲，请您在电脑上登录www.qironghome.com,上传最新商业计划书PPT，便于投资人查看，确保融资沟通顺利。如已上传，请忽略。",
 					x:"不再提醒",
 					y:"确定",
 					m:true,
 					u:true
 				},
-				content:""
+				content:""			//给下级要传的参数
 			}
 		},
 		methods:{
@@ -141,8 +140,32 @@
 //				this.tucaoShow=false;
 			},
 			xiayibuGo(){
-				this.content=this.$refs.pipeiShow;
-				this.$refs.tishiShow.tishiBlock();
+				var CanShu={				//给下级要传的参数
+					texta:this.texta,
+					textb:this.textb,
+					numbera:this.numbera,
+					numberb:this.numberb,
+					numberc:this.numberc,
+					numberd:this.numberd,
+					numbere:this.numbere,
+					numberf:this.numberf,
+					numberg:this.numberg
+				}
+				var ok=0;
+				for(var item in CanShu){		//判断填写信息是否完整Ok=1；标签必选
+					if(!CanShu[item]==""){
+						
+					}else{
+						ok+=1;
+					}
+				}
+				if(ok==0){
+					this.content=this.$refs.pipeiShow;
+					this.$refs.tishiShow.tishiBlock(CanShu);//CanShu是下级要传的参数
+				}else{
+					Toast("请填写完整您的信息！是否已选标签...");
+				}
+				
 //				this.$refs.pipeiShow.pipeiBlock();
 			},
 			dingzengBlock(){
@@ -237,7 +260,7 @@
 			.xiangmu-left{
 				position:absolute;
 				height:100%;
-				padding-left:0.3rem;
+				padding-left:0.16rem;
 				display:inline-block;
 				top:0.04rem;
 				left:0;
@@ -311,6 +334,15 @@
 							}
 						}
 					}
+					li{
+						width:100%;
+						height:0.38rem;
+						display:flex;
+						color:#868686;
+						align-content:center;
+						align-items:center;
+						justify-content:flex-end;
+					}
 					.number{
 						width:82%;
 						position:relative;
@@ -349,6 +381,25 @@
 						margin-right:0.1rem;
 					}
 				}
+				.times{
+					width:100%;
+					height:0.3rem;
+					background:#fff;
+					line-height:0.3rem;
+					font-size:0.12rem;
+					.times_1{
+						display:inline-block;
+						padding-left:0.2rem;
+					}
+					.text-center{
+						display:inline-block;
+						padding:0 0.08rem;
+					}
+					.times-name{
+						float:right;
+						margin-right:0.1rem;
+					}
+				}
 			}
 			.butten{
 				width:100%;
@@ -374,9 +425,5 @@
 		}
 	}
 </style>
-
-
-
-
 
 

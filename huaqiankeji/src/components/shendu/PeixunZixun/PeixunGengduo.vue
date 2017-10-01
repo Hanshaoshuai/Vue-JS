@@ -244,9 +244,10 @@
 								display:inline-block;
 								vertical-align:top;
 								border:2px solid #e5e4e4;
-								border-radius:0.3rem;
+								/*border-radius:0.3rem;*/
 								width:0.3rem;
 								height:0.3rem;
+								margin-top:-0.02rem;
 								img{
 									width:0.3rem;
 									height:0.3rem;

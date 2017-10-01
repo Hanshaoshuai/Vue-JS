@@ -3,7 +3,7 @@
 		<div v-show="showFlag" class="wenzhang">
 			<div class="xiangmu-header" @click.stop="listnone()">
 				<span class="xiangmu-left"><img src="../img/back.png"/></span>
-				<span>培训与咨询</span>
+				<span>线下活动</span>
 			</div>
 			<div class="box">
 				<div class="box-content">
@@ -239,9 +239,10 @@
 								display:inline-block;
 								vertical-align:top;
 								border:2px solid #e5e4e4;
-								border-radius:0.3rem;
+								/*border-radius:0.3rem;*/
 								width:0.3rem;
 								height:0.3rem;
+								margin-top:-0.02rem;
 								img{
 									width:0.3rem;
 									height:0.3rem;

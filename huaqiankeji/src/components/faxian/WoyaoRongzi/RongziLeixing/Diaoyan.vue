@@ -76,13 +76,13 @@
 					<div class="zhuying_1">
 						<div class="ferst"><span>*</span>调研地址</div>
 						<div class="last number">
-							<input v-model="numberf" placeholder="输入数字" number="true" type="number" class="mint-field-core">
+							<input v-model="numberg" placeholder="输入数字" number="true" type="number" class="mint-field-core">
 						</div>
 					</div>
 					<div class="zhuying_1">
 						<div class="ferst"><span>*</span>所在省份</div>
 						<div class="last number">
-							<input v-model="numberg" placeholder="请填写省份" number="true" type="text" class="mint-field-core">
+							<input v-model="numberh" placeholder="请填写省份" type="text" class="mint-field-core">
 						</div>
 					</div>
 					<div class="times">
@@ -125,7 +125,8 @@
 		},
 		data () {
 			return {
-				x:"0",
+				x:"0",			//字的个数
+				y:1,			//判断是否选择标签；》=1为选择；
 				numbera:"",
 				numberb:"",
 				numberc:"",
@@ -133,6 +134,7 @@
 				numbere:"",
 				numberf:"",
 				numberg:"",
+				numberh:"",
 				texta:"",
 				textb:"",
 				textc:"",
@@ -142,14 +144,14 @@
 				times:20177111129,
 				showFlag:false,
 				tucaoShow:true,
-				xingXi:{
+				xingXi:{			//给下级要传的参数
 					text:"亲，请您在电脑上登录www.qironghome.com,上传最新商业计划书PPT，便于投资人查看，确保融资沟通顺利。如已上传，请忽略。",
 					x:"不再提醒",
 					y:"确定",
 					m:true,
 					u:true
 				},
-				content:""
+				content:""			//给下级要传的参数
 			}
 		},
 		methods:{
@@ -158,26 +160,49 @@
 //				this.tucaoShow=false;
 			},
 			xuanze(index){
-				var spans=this.$refs.biaoqian.getElementsByTagName("span");
-				var x=1;
-				for(var i=0; i<spans.length; i++){
-					if(spans[i].getAttribute("class")=="bianse"){
-						x+=1;
-					}
-				}
-				if(spans[index].getAttribute("class")=="bianse"){
+				var spans=this.$refs.biaoqian.getElementsByTagName("span");	
+				if(spans[index].getAttribute("class")=="bianse"){			//判断是否选择标签；》=1为选择；
 					spans[index].setAttribute("class","")
+					this.y-=1
 				}else{
-					if(x>3){
+					if(this.y>2){
 						Toast('最多可选三个');
 					}else{
 						spans[index].setAttribute("class","bianse");
+						this.y+=1;
 					}
 				}
+				console.log(this.y)
 			},
 			xiayibuGo(){
-				this.content=this.$refs.pipeiShow;
-				this.$refs.tishiShow.tishiBlock();
+				var CanShu={				//给下级要传的参数
+					texta:this.texta,
+					textb:this.textb,
+					textc:this.textc,
+					numbera:this.numbera,
+					numberb:this.numberb,
+					numberc:this.numberc,
+					numberd:this.numberd,
+					numbere:this.numbere,
+					numberf:this.numberf,
+					numberg:this.numberg,
+					numberg:this.numberh
+				}
+				var ok=0;
+				for(var item in CanShu){		//判断填写信息是否完整Ok=1；标签必选
+					if(!CanShu[item]=="" && this.y>=1){
+						
+					}else{
+						ok+=1;
+					}
+				}
+				if(ok==0){
+					this.content=this.$refs.pipeiShow;
+					this.$refs.tishiShow.tishiBlock(CanShu);//CanShu是下级要传的参数
+				}else{
+					Toast("请填写完整您的信息！是否已选标签...");
+				}
+				
 //				this.$refs.pipeiShow.pipeiBlock();
 			},
 			dingzengBlock(){
@@ -206,6 +231,19 @@
 //					}
 //				});
 //			}
+		},
+		watch:{					//监听输入范围
+			textc:function(newVal,oldVal){
+				var x=newVal.length;
+				if(x<=100){
+					this.x=x;
+				}else{
+					this.textc=oldVal;
+					Toast("您的输入超出范围！")
+				}
+				
+				
+			}
 		},
 		events:{
 			
@@ -272,7 +310,7 @@
 			.xiangmu-left{
 				position:absolute;
 				height:100%;
-				padding-left:0.3rem;
+				padding-left:0.16rem;
 				display:inline-block;
 				top:0.04rem;
 				left:0;
@@ -281,13 +319,13 @@
 				}
 			}
 		}
-		.box::-webkit-scrollbar{width:0px}
+		.box::-webkit-scrollbar{width:0px;}
 		.box{
 			overflow-y:auto;
 			width:100%;
 			height:100%;
 			background:#fff;
-			-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
+			-webkit-overflow-scrolling:touch;
 			.fankiu-content{
 				width:89.4%;
 				margin:0 auto;

@@ -91,7 +91,7 @@
 				</div>
 			</div>
 			<div class="zhaiyao-food">
-				<div class="ferst">您已选择<span>{{ButtenName}}</span>个投资人</div>
+				<div class="ferst">您已选择&nbsp;<div class="ferst-child"><span ref="size">{{ButtenName}}</span></div>&nbsp;&nbsp;个投资人</div>
 				<span class="last" @click.stop="butten">下一步</span>
 			</div>
 			<!--<router-view></router-view>-->
@@ -100,7 +100,7 @@
 </template>
 
 <script type="text/ecmascript">
-//	import Vue from "vue";
+	import { Toast } from 'mint-ui';
 	import { MessageBox } from 'mint-ui';
 //	import BScroll from "better-scroll";
 //	import Vue from "vue";
@@ -118,12 +118,13 @@
 		},
 		data () {
 			return {
+				CanShu:"",
 				block:false,
-				ButtenName:"88",
+				ButtenName:0,
 				showFlag:false,
-				onlyContent:true,
 				wuxuan:true,
-				xuanze:false
+				xuanze:false,
+				XiaYibu:false
 			}
 		},
 		methods:{
@@ -131,7 +132,9 @@
 				this.showFlag=false;
 //				history.go(-1)
 			},
-			pipeiBlock(){
+			pipeiBlock(CanShu){
+				console.log(CanShu)
+				this.CanShu=CanShu
 				this.showFlag=true;
 			},
 			quanXuan(){
@@ -141,15 +144,48 @@
 				if(this.wuxuan==false){
 					this.wuxuan=true;
 					this.xuanze=false;
+					this.XiaYibu=false;				//判断是否能下一步
+					this.ButtenName=0;				//选择的个数为0
 					for(var i=0; i<length; i++){
 						borders[i].setAttribute("class","borders typeA")
 					}
 				}else{
 					this.wuxuan=false;
 					this.xuanze=true;
+					this.XiaYibu=true;				//判断是否能下一步
+					this.ButtenName=length;			//选择的个数为全部
 					for(var i=0; i<length; i++){
 						borders[i].setAttribute("class","borders typeB")
 					}
+				}
+				this.play();		//调用底部的数量更改动画；
+			},
+			play(){							//底部的数量更改动画；
+				var size=this.$refs.size;
+				var z=0;
+				var y=26;
+				var run=setInterval(function(){
+					if(z<=28){
+						z+=1
+						size.style.fontSize=16+z+"px"
+					}else{
+						size.style.fontSize="28px"
+						stape();
+						clearInterval(run);
+					}
+					
+				},1)
+				function stape(){
+					var stape=setInterval(function(){
+						if(y>=8){
+							y-=1
+							size.style.fontSize=y+"px"
+						}else{
+							size.style.fontSize="0.18rem";
+							clearInterval(stape);
+						}
+						
+					},1)
 				}
 			},
 			xuanZe(id){
@@ -160,16 +196,19 @@
 //				console.log(borders.getAttribute("class","typeA"))
 				if(borders.getAttribute("class")=="borders typeA"){
 					borders.setAttribute("class","borders typeB")
+					this.XiaYibu=true;				//判断是否能下一步
 				}else{
 //					this.wuxuan=true;
 //					this.xuanze=false;
 					borders.setAttribute("class","borders typeA")
+					this.XiaYibu=false;				//判断是否能下一步
 				}
 				for(var i=0; i<length; i++){
 					if(boxs[i].getAttribute("class")=="borders typeB"){
 						x+=1;
 					}
 				}
+				this.ButtenName=x;					//已选择的个数
 				if(x==length){
 					this.wuxuan=false;
 					this.xuanze=true;
@@ -177,6 +216,7 @@
 					this.wuxuan=true;
 					this.xuanze=false;
 				}
+				this.play();			//调用底部的数量更改动画；
 			},
 			butten(){
 //				MessageBox.confirm('您确定要联系对方并索要完整项目信息吗?').then(action => {
@@ -189,7 +229,11 @@
 //				  console.log("ijfj")
 //				});
 //				this.block=true;
-				window.location.href="#/Xeiyi/0";
+				if(this.XiaYibu==true){				//判断必须选择匹配人才可以跳转
+					window.location.href="#/Xeiyi/0";
+				}else{
+					Toast("请选择匹配人");
+				}
 			}
 //			show(){
 ////				dom更新后在执行使用$refs
@@ -269,7 +313,7 @@
 				.fanhui-butten{
 					position:absolute;
 					height:100%;
-					padding-left:0.3rem;
+					padding-left:0.16rem;
 					display:inline-block;
 					top:0.04rem;
 					left:0;
@@ -303,10 +347,12 @@
 			    }
 			}
 		}
+		.wenzhang-list::-webkit-scrollbar{width:0px;}
 		.wenzhang-list{
 			width:100%;
 			height:100%;
 			overflow-y:auto;
+			-webkit-overflow-scrolling:touch;  		/*解决ios滑动*/
 			.wenzhang-content{
 				width:95%;
 				/*height:auto;*/
@@ -452,8 +498,23 @@
 			.ferst{
 				flex:1;
 				text-align:center;
-				span{
-					color:#ff7a59;
+				position:relative;
+				.ferst-child{
+					position:absolute;
+					top:0;
+					bottom:0;
+					left:0;
+					right:0;
+					width:30px;
+					height:30px;
+					margin:auto;
+					display:flex;
+					align-items:center;
+					align-content:center;
+					justify-content:center;
+					span{
+						color:#ff7a59;
+					}
 				}
 			}
 			.last{

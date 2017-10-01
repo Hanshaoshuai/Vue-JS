@@ -11,31 +11,31 @@
 					<div class="content-food" ref="foods">
 						<span>请选择您的融资方式</span>
 						<ul>
-							<li class="src1" ref="img1" index="img1" @click.stap="dingzengGo('Dingzeng')">
+							<li class="src1" ref="img1" index="img1" @click.stap="dingzengGo('Dingzeng','1')">
 								<span>定增</span><font class="img1"></font>
 							</li>
-							<li class="src2" ref="img2" index="img2" @click.stap="zuoshiGo('Zuoshi')">
+							<li class="src2" ref="img2" index="img2" @click.stap="zuoshiGo('Zuoshi','2')">
 								<span>做市</span><font></font>
 							</li>
 						</ul>
 						<ul>
-							<li class="src3" ref="img3" index="img3" @click.stap="zhuanguGo('ZhuanlaoGu')">
+							<li class="src3" ref="img3" index="img3" @click.stap="zhuanguGo('ZhuanlaoGu','3')">
 								<span>转老股</span><font></font>
 							</li>
-							<li class="src4" ref="img4" index="img4" @click.stap="zhiyaGo('ZhiYa')">
+							<li class="src4" ref="img4" index="img4" @click.stap="zhiyaGo('ZhiYa','4')">
 								<span>股权质押</span><font></font>
 							</li>
 						</ul>
 						<ul>
-							<li class="src5" ref="img5" index="img5" @click.stap="zulinGo('ZuLin')">
+							<li class="src5" ref="img5" index="img5" @click.stap="zulinGo('ZuLin','5')">
 								<span>融资租赁</span><font></font>
 							</li>
-							<li class="src6" ref="img6" index="img6" @click.stap="yanbaoGo('YanBao')">
+							<li class="src6" ref="img6" index="img6" @click.stap="yanbaoGo('YanBao','6')">
 								<span>研报支持</span><font></font>
 							</li>
 						</ul>
 						<ul>
-							<li class="src7" ref="img7" index="img7" @click.stap="shuangchuangGo('ShuangChuang')">
+							<li style="display:none;" class="src7" ref="img7" index="img7" @click.stap="shuangchuangGo('ShuangChuang')">
 								<span>双创债</span><font></font>
 							</li>
 							<li class="src8" ref="img8" index="img8" @click.stap="diaoyanGo('Diaoyan')">
@@ -81,6 +81,7 @@
 			return {
 				src:"",
 				urlName:"Dingzeng",
+				type:"1",
 				fankui:"45",
 				genjin:"458",
 				introduction:"",
@@ -89,53 +90,97 @@
 				tucaoShow:true,
 			}
 		},
+		mounted(){
+//			console.log(this.$ruters.pr)
+			var datas = {
+				token:this.$route.params,//	token	是	[string]		
+				uid:"126",//	创建者id	是	[string]		
+				type:"1",//	类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报	是	[string]		
+				company:"666",//	公司id	是	[string]		
+				com_name:"dfg",//	公司名称	是	[string]		
+				com_code:"123456",//	公司代码	是	[string]		
+				main_business:"",//	主营业务	是	[string]		
+				lightspot:"",//	投资亮点	是	[string]		
+				industry:"",//	公司所在行业标签id	是	[string]		
+				last_year_revenue:"",//	上一年营收（单位 万）	是	[string]		
+				last_year_profit:"",//	上一年净利润（单位 万）	是	[string]		
+				predict_revenue:"",//	今年预计营收(单位:万)	是	[string]		
+				predict_profit:"",//	今年预计净利润(单位:万)	是	[string]		
+				total_finance:"",//	融资总额(单位:万)	是	[string]		
+				appraisement:"",//	投前估值(单位:万)	是	[string]		
+				city:"",//	所在城市	是	[string]		
+				transfe_share:"",//	拟转股份数	是	[string]		
+				share_price:"",//	每股价格	是	[string]		
+				is_hold:"",//	是否本人持股 1:是 2:否	是	[string]		
+				research_address:"",//	调研地址	是	[string]		
+				research_time:"",//	调研时间	是	[string]		
+				pledge_time:"",//	质押时间周期(天)	是	[string]		
+				repayment_time:"",//	还款周期(天)	是	[string]		
+				face_rate:"",//	票面利率	是	[string]		
+				is_transfe:"",//	是否转股 1:是 2:否	是	[string]		
+				remark:"",//	备注	是	[string]
+			}
+			this.$http.post(URL.path+'api/index.php/v2/finance/create',datas,{emulateJSON:true}).then(function(res){
+				var data=res.data
+				console.log(res);
+			},function(res){
+			    console.log(res.status);
+			})
+		},
 		methods:{
 			yijianHind(){
 				history.go(-1)
 			},
-			dingzengGo(name){
+			dingzengGo(name,type){
 				console.log(name)
 				this.urlName=name;
+				this.type=type;
 				this.src=this.$refs.img1.getAttribute("index");
 //				window.location.href="#/faxian/WoyaoRongzi/0/Dingzeng";
 			},
-			zuoshiGo(name){
+			zuoshiGo(name,type){
 				this.urlName=name;
+				this.type=type;
 				this.src=this.$refs.img2.getAttribute("index")
 //				window.location.href="#/faxian/WoyaoRongzi/0/Zuoshi";
 			},
-			zhuanguGo(name){
+			zhuanguGo(name,type){
 				this.urlName=name;
+				this.type=type;
 				this.src=this.$refs.img3.getAttribute("index")
 //				window.location.href="#/faxian/WoyaoRongzi/0/ZhuanlaoGu";
 			},
-			zhiyaGo(name){
+			zhiyaGo(name,type){
 				this.urlName=name;
+				this.type=type;
 				this.src=this.$refs.img4.getAttribute("index")
 //				window.location.href="#/faxian/WoyaoRongzi/0/ZhiYa";
 			},
-			zulinGo(name){
+			zulinGo(name,type){
 				this.urlName=name;
+				this.type=type;
 				this.src=this.$refs.img5.getAttribute("index")
 //				window.location.href="#/faxian/WoyaoRongzi/0/ZuLin";
 			},
-			yanbaoGo(name){
+			yanbaoGo(name,type){
 				this.urlName=name;
+				this.type=type;
 				this.src=this.$refs.img6.getAttribute("index")
 //				window.location.href="#/faxian/WoyaoRongzi/0/YanBao";
 			},
-			shuangchuangGo(name){
+//			shuangchuangGo(name){
+//				this.urlName=name;
+//				this.src=this.$refs.img7.getAttribute("index")
+////				window.location.href="#/faxian/WoyaoRongzi/0/ShuangChuang";
+//			},
+			diaoyanGo(name,type){
 				this.urlName=name;
-				this.src=this.$refs.img7.getAttribute("index")
-//				window.location.href="#/faxian/WoyaoRongzi/0/ShuangChuang";
-			},
-			diaoyanGo(name){
-				this.urlName=name;
+				this.type=type;
 				this.src=this.$refs.img8.getAttribute("index")
 //				window.location.href="#/faxian/WoyaoRongzi/0/Diaoyan";
 			},
 			liuYan(){
-				window.location.href="#/faxian/WoyaoRongzi/0/"+this.urlName;
+				window.location.href="#/faxian/WoyaoRongzi/"+this.type+"/"+this.urlName;
 			}
 //			show(){
 ////				dom更新后在执行使用$refs
@@ -235,7 +280,7 @@
 			.xiangmu-left{
 				position:absolute;
 				height:100%;
-				padding-left:0.3rem;
+				padding-left:0.16rem;
 				display:inline-block;
 				top:0.04rem;
 				left:0;
@@ -303,6 +348,11 @@
 						}
 						.src1{
 							border:0.01rem solid #ff7a59;
+						}
+						&:last-child{
+							li{
+								float:left;
+							}
 						}
 					}
 				}

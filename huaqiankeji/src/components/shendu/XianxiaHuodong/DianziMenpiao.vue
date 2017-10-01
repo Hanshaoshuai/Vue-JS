@@ -3,36 +3,38 @@
 		<div v-show="showFlag" class="wenzhang">
 			<div class="searchBox">
 				<div class="home-search">
-					<span class="fanhui-butten" @click.stop="listnone()"><img src="../img/back.png"/></span>
+					<span class="fanhui-butten" @click.stop="youhuiFanhui()"><img src="../img/back.png"/></span>
 					<span>天风证券Pre-IPO专</span>
 				</div>
 			</div>
 			<div class="wenzhang-list">
-				<div class="wenzhang-content">
-					<img class="juzhong" src="../img/juzhong.png"/>
-					<div class="haoma">
-						<div class="haoma-img border"><span>二维码</span></div>
-						<span>优惠编码：jfdsfhij</span>
-					</div>
-					<div class="zhuying">
-						<div class="zhuying_1">
-							<div class="ferst">天天定增定增定增定增定增定增定增定增定增定增定增主营业务</div>
-							<div class="last">
-								<ul>
-									<li class="lianxi"><span>时间：</span><font>优惠价：</font></li>
-									<li><p>地址：时间天天定增定增定增定增增定增</p></li>
-								</ul>
+				<div class="list-bottom">
+					<div class="wenzhang-content">
+						<img class="juzhong" src="../img/juzhong.png"/>
+						<div class="haoma">
+							<div class="haoma-img border"><span>二维码</span></div>
+							<span>优惠编码：jfdsfhij</span>
+						</div>
+						<div class="zhuying">
+							<div class="zhuying_1">
+								<div class="ferst">天天定增定增定增定增定增定增定增定增定增定增定增主营业务</div>
+								<div class="last">
+									<ul>
+										<li class="lianxi"><span>时间：</span><font>优惠价：</font></li>
+										<li><p>地址：时间天天定增定增定增定增增定增</p></li>
+									</ul>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="times">
-						<img class="xia" src="../img/xia.png"/>
-						<div class="times-child">
-							<div class="content-food">
-								<li><img src="../img/geren.png"/><span>张山</span></li>
-								<li><img src="../img/dianhua.png"/><span>15486582</span></li>
-								<li><img src="../img/zhiwei.png"/><span>董秘</span>fsdf</li>
-								<li><img src="../img/gongsi.png"/><span>杭州有限公司</span>fsdf</li>
+						<div class="times">
+							<img class="xia" src="../img/xia.png"/>
+							<div class="times-child">
+								<div class="content-food">
+									<li><img src="../img/geren.png"/><span>张山</span></li>
+									<li><img src="../img/dianhua.png"/><span>15486582</span></li>
+									<li><img src="../img/zhiwei.png"/><span>董秘</span>fsdf</li>
+									<li><img src="../img/gongsi.png"/><span>杭州有限公司</span>fsdf</li>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -69,7 +71,7 @@
 			}
 		},
 		methods:{
-			listnone(){
+			youhuiFanhui(){
 				this.showFlag=false;
 			},
 			MenpiaoBlock(){
@@ -135,7 +137,7 @@
 		left:0;
 		right:0;
 		bottom:0;
-		z-index:410;
+		z-index:310;
 		overflow-y:auto;
 		.searchBox {
 			position:fixed;
@@ -144,7 +146,7 @@
 		    width: 100%;
 		    height:0.45rem;
 		    background-color:#ff7a59;
-		    z-index:530;
+		    z-index:330;
 		    .home-search {
 			    height: 100%;
 			    line-height:0.45rem;
@@ -170,6 +172,9 @@
 			height:100%;
 			overflow-y:auto;
 			-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
+			.list-bottom{
+				padding-bottom:0.3rem;
+			}
 			.wenzhang-content{
 				width: 88.2%;
 				background:#fff;
@@ -288,5 +293,7 @@
 		}
 	}
 </style>
+
+
 
 

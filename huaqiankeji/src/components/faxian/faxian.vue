@@ -17,12 +17,31 @@
 		        <ul class="page-loadmore-list">
 				<!--<div class="FadeContent">-->
 					<div class="banner">
-						<img src="./img/banner.png"/>
+						<img src="./img/bg.jpg"/>
+						<div class="gaikuang">
+							<div class="gaikuang-header border-bottom">
+								<span>企融直通车最新动态数据</span>
+							</div>
+							<div class="gaikuang-content">
+								<div class="gaikuang-list border-right">
+									<span>{{jia}}家</span>
+									<span>入驻企业</span>
+								</div>
+								<div class="gaikuang-list border-right">
+									<span>{{ge}}人</span>
+									<span>机构投资人</span>
+								</div>
+								<div class="gaikuang-list">
+									<span>{{ren}}个</span>
+									<span>本周新增融资人</span>
+								</div>
+							</div>
+						</div>
 					</div>
 					<div class="ContentType clearbox">
-						<div v-if="x" class="TypeList" @click.stop="XiangMuGo()">
+						<!--<div v-if="x" class="TypeList" @click.stop="XiangMuGo()">
 							<div class="TypeList-img">
-								<li><span>6</span></li>
+								<li><span>{{XiangmuShu}}</span></li>
 							</div>
 							<div class="TypeList-text border-right">
 								<span>新项目</span>
@@ -31,16 +50,16 @@
 						</div>
 						<div v-if="q" class="TypeList" @click.stop="qiyefankuiGo()">
 							<div class="TypeList-img">
-								<li class="fankui"><span>6</span></li>
+								<li class="fankui"><span>{{FanuiShu}}</span></li>
 							</div>
 							<div class="TypeList-text">
 								<span>企业反馈</span>
 								<span class="text-coler">查看反馈留言箱</span>
 							</div>
-						</div>
-						<!--<div v-if="w" class="TypeList" @click.stop="rongziGo()">
+						</div>-->
+						<div v-if="w" class="TypeList" @click.stop="rongziGo()">
 							<div class="TypeList-img">
-								<li><span>6</span></li>
+								<li></li>
 							</div>
 							<div class="TypeList-text">
 								<span>我要融资</span>
@@ -49,15 +68,15 @@
 						</div>
 						<div v-if="t" class="TypeList" @click.stop="touzifankuiGo()">
 							<div class="TypeList-img">
-								<li  class="fankui"><span>6</span></li>
+								<li  class="fankui"><span>{{FanuiShu}}</span></li>
 							</div>
 							<div class="TypeList-text">
 								<span>投资人反馈</span>
 								<span class="text-coler">查看反馈留言箱</span>
 							</div>
-						</div>-->
+						</div>
 					</div>
-					<div class="bannerlist">
+					<!--<div class="bannerlist">
 						<div class="swiper-img">
 							<span></span>
 						</div>
@@ -83,8 +102,8 @@
 									</div>
 							</div>
 						</div>
-					</div>
-					<div class="ContentList " @click.stop="yijianFankui">
+					</div>-->
+					<div class="ContentList ">
 						<div class="swiper-img">
 							<span class="img-rongzi"></span>
 						</div>
@@ -158,7 +177,7 @@
 					</div>
 					
 					
-					<div class="tucao">
+					<div class="tucao" @click.stop="yijianFankui()">
 						<img src="./img/hongbao.png" alt="" />
 					</div>
 					
@@ -196,38 +215,41 @@
 							<ol class="ol"></ol>
 						</div>
 					</div>
-					<div class="ContentText " @click.stop="contblock()">
-						<div class="TextMame">
-							<div class="margin">
-								<span class="texts">天立泰</span>
-								<span class="texts">定增</span>
+<!--循环遍历data-->	<li v-for="item in list" class="page-loadmore-listitem">
+						<div v-for="(item,index) in data" class="ContentText " @click.stop="contblock()">
+							<div class="TextMame">
+								<div class="margin">
+									<span class="texts">天立泰{{item.com_name}}</span>
+									<span class="texts">定增{{item.type}}</span>
+								</div>
+								<div class="TypeList">
+									<span v-for="(item,index) in data" class="texts">天立泰{{item.industry}}</span>
+									<!--<span class="texts">定增万</span>
+									<span class="texts">天立泰</span>
+									<span class="texts">定增万</span>
+									<span class="texts">天立泰</span>
+									<span class="texts">定增万</span>
+									<span class="texts">天立泰</span>
+									<span class="texts">定增万</span>-->
+								</div>
 							</div>
-							<div class="TypeList">
-								<span class="texts">天立泰</span>
-								<span class="texts">定增万</span>
-								<span class="texts">天立泰</span>
-								<span class="texts">定增万</span>
-								<span class="texts">天立泰</span>
-								<span class="texts">定增万</span>
-								<span class="texts">天立泰</span>
-								<span class="texts">定增万</span>
+							<div class="BottomText">
+								<span class="texts">{{item.lightspot}}他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以联系的</span>
+							</div>
+							<div class="ContentTime border-top" @click.stop="Guquanzhaiyao()">
+								<div class="tishi-left">
+									<span>企业</span>
+									<span>{{item.research_time}}小时前</span>&nbsp;发布
+								</div>
+								<div class="tishi-right">
+									<span>{{}}反馈</span>
+									<span>{{}}跟进</span>
+								</div>
+								<li></li>
+								<ol class="ol"></ol>
 							</div>
 						</div>
-						<div class="BottomText">
-							<span class="texts">他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以联系的</span>
-						</div>
-						<div class="ContentTime border-top" @click.stop="Guquanzhaiyao()">
-							<div class="tishi-left">
-								<span>企业</span>
-								<span>{{}}小时前</span>&nbsp;发布
-							</div>
-							<div class="tishi-right">
-								<span>{{}}反馈</span>
-								<span>{{}}跟进</span>
-							</div>
-						</div>
-					</div>
-					<li v-for="item in list" class="page-loadmore-listitem">{{ item }}</li>
+					</li>
 					<transition name="promps">
 					<div class="tishi-bottom" v-show="promps">
 						<ul>
@@ -260,7 +282,7 @@
 		      	<div style="width:100%;height:0.6rem;"></div>
 		    </div>
 			<!--</div>-->
-			<xiangmu ref="xiangmuShow" :setscrollTop="scrollTop"></xiangmu>
+			<xiangmu ref="xiangmuShow" :setscrollTop="scrollTop" :token="token"></xiangmu>
 			<fankui ref="fankuiShow"></fankui>
 			<DingzengZhaiyao ref="show"></DingzengZhaiyao>
 			<GuquanZhaiyao ref="GuquanShow"></GuquanZhaiyao>
@@ -271,6 +293,8 @@
 </template>
 
 <script type="text/ecmascript">
+	import { Indicator } from 'mint-ui';
+	import {URL} from '../../common/js/path';
 	import xiangmu from "./XinxiangMu/XinxiangMu.vue";
 	import fankui from "./Fankui/Fankui.vue";
 	import DingzengZhaiyao from "./DingzengZhaiyao.vue";
@@ -286,12 +310,20 @@
 	
 	export default {
 		props:{
+			token:{}
 //			food:{
 //				type:Object
 //			}
 		},
 		data () {
 			return {
+				data:"",
+				jia:"1000",
+				ge:"666",
+				ren:"8888",
+				shijian:"6",
+				datas:"",
+				ResChild:"",
 				x:true,
 				q:true,
 				w:true,
@@ -302,7 +334,6 @@
 				mySwiper:"",
 				scrollTop:"",
 				
-				
 				list: [],
 		        allLoaded: false,
 //		        autoFill:true,
@@ -310,14 +341,15 @@
 		        wrapperHeight: 0,
 		        topStatus: '',
 		        promps:false,
-		        scrollTop:""
+		        scrollTop:"",
+		        XiangmuShu:"",
+		        FanuiShu:""
 			}
 		},
 		methods:{
 			handleTopChange(status) {    //头部函数
 //	      		console.log("top")
 		        this.topStatus = status;
-		        
 //		        console.log(this.wrapperHeight)
 //		      	console.log(this.$refs.wrapper.scrollTop)
 //		      	console.log(document.documentElement.clientHeight)
@@ -343,11 +375,12 @@
 	      	loadBottom() {
 //	      		console.log("bot")
 		        setTimeout(() => {
-		          	let lastValue = this.list[this.list.length - 1];
-		          	if (lastValue < 40) {
-			            for (let i = 1; i <= 10; i++) {
-			              	this.list.push(lastValue + i);
-			            }
+		          	let lastValue = this.list.length;   
+		          	if (lastValue < 3) {
+		          		this.qinQiu();
+//			            for (let i = 1; i <= 10; i++) {
+//			              	this.list.push(lastValue + i);
+//			            }
 		          	} else {
 		            	this.allLoaded = true; //若为真，则 bottomMethod 不会被再次触发 就不能再向上拉了
 		            	this.promps = true;
@@ -359,25 +392,22 @@
 		          	this.$refs.loadmore.onBottomLoaded();
 		        }, 1500);
 	      	},
-			
-			
-			
-			
 			sousuo(){
 				window.location.href="#/sousuo";
 			},
 			rongziGo(){
-				window.location.href="#/faxian/WoyaoRongzi/0";
+				window.location.href="#/faxian/WoyaoRongzi/"+this.datas["token"];
 			},
 			touzifankuiGo(){
-				this.$refs.fankuiShow.fankuiBlock();
+				this.$refs.fankuiShow.fankuiBlock(this.datas);
 			},
 			XiangMuGo(){
+				console.log(this.datas)
 				this.scrollTop=sessionStorage.getItem("scrollTop")
-				this.$refs.xiangmuShow.xiangmuBlock(this.scrollTop);
+				this.$refs.xiangmuShow.xiangmuBlock(this.scrollTop,this.datas);
 			},
 			qiyefankuiGo(){
-				this.$refs.fankuiShow.fankuiBlock();
+				this.$refs.fankuiShow.fankuiBlock(this.datas);
 			},
 			contblock(){
 //				if(!event._constructed){
@@ -395,7 +425,7 @@
 			  var scrollTop = this.$refs.wrapper.scrollTop
 			  sessionStorage.setItem("faxianScroll",scrollTop)
 //			  console.log(sessionStorage.getItem("faxianScroll"))
-			}
+			},
 //			show(){
 ////				dom更新后在执行使用$refs
 //				this.$nextTick(function() {
@@ -409,14 +439,60 @@
 //					}
 //				});
 //			}
+			qinQiu(){
+				Indicator.open({spinnerType: 'fading-circle'});
+	//	    	首页项目列表（非自己收到的项目）接口
+				this.$http.post(URL.path+'finance/get_item_list',this.datas,{emulateJSON:true}).then(function(res){
+					Indicator.close();
+					this.data=res.body.data
+					console.log("首页项目列表成功");
+					console.log(this.data)
+	//				console.log(this.data);
+				},function(res){
+				    console.log(res);
+				})
+				if(this.list.length==0){
+					this.list.push(this.data);
+				}else{
+					this.list.push(this.data);
+				}
+			}
 		},
 		created() {
 //	    	console.log("一次")
-	      	for (let i = 1; i <= 20; i++) {
-	        	this.list.push(i);
-	      	}
+//	      	for (let i = 1; i <= 20; i++) {
+//	        	this.list.push(i);
+//	      	}
+//	      	console.log(URL.path)
 	    },
 	    mounted() {
+	    	var datas = {		//相应参数
+				token:"N8KCEuwCyhOSviBLwm9PhbrZEQ1aUJBhHMkL7XNv5cEqBF2xs1DQSupWBgxWpz5w",//	token	是	[string]		
+				page:"",		
+				size:""	
+			}
+	    	this.datas=datas;
+	    	this.qinQiu();
+//			投资机构收到的新项目数
+			this.$http.post(URL.path+'finance/new_item',datas,{emulateJSON:true}).then(function(res){
+				var data=res
+//				this.XiangmuShu=res;
+				console.log("投资机构收到的新项目个数");
+				console.log(data);
+			},function(res){
+			    console.log(res);
+			})
+//			企业获取反馈数
+			this.$http.post(URL.path+'finance/get_feedback_num',datas,{emulateJSON:true}).then(function(res){
+				var data=res
+//				this.FanuiShu=res;
+				console.log("企业获取反馈个数");
+				console.log(res);
+			},function(res){
+			    console.log(res);
+			})
+	    	
+	    	
 //	    	console.log("计算高度")
 	      	this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
 	      	this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
@@ -430,15 +506,6 @@
 						autoplayDisableOnInteraction:false,
 //						pagination:".swiper-pagination"
 					})
-//				}
-//				var swiper = new Swiper(".swiper-container",{
-//					direction:"vertical",
-//					autoplay :3600,
-//					speed : 2000,//改变Swiper的切换时间曲线
-//					loop:true,
-//					autoplayDisableOnInteraction:false,
-//					pagination:".swiper-pagination"
-//				})
 			});
 	    },
 		events:{
@@ -566,7 +633,7 @@
 		    padding-bottom: 5px
 		}
 		.page-loadmore-desc:last-of-type,
-		.page-loadmore-listitem {
+		/*.page-loadmore-listitem {
 		    border-bottom: 1px solid #eee
 		}
 		.page-loadmore-listitem {
@@ -576,7 +643,7 @@
 		}
 		.page-loadmore-listitem:first-child {
 		    border-top: 1px solid #eee
-		}
+		}*/
 		.mint-loadmore-bottom span {
 		    display: inline-block;
 		    -webkit-transition: .2s linear;
@@ -619,6 +686,57 @@
 					img{
 						width:100%;
 					}
+					.gaikuang{
+				    	width:95%;
+				    	height:1.41rem;
+				    	margin:0 auto;
+				    	border-radius:0.15rem;
+				    	background-color:rgba(255,255,255,0.7);
+				    	position:absolute;
+				    	top:0.62rem;
+				    	left:2.5%;
+				    	box-shadow: 0.03rem 0.03rem 0.04rem #eeeef5;
+				    	.gaikuang-header{
+				    		width:90.1%;
+				    		height:0.36rem;
+				    		margin:0 auto;
+				    		padding-top:0.42rem;
+				    		text-align:center;
+				    		span{
+				    			font-size:0.18rem;
+				    			line-height:0.18rem;
+				    			font-weight:bold;
+				    		}
+				    	}
+					    .gaikuang-content{
+					    	width:100%;
+					    	display:flex;
+					    	/*-webkit-box-pack: center;
+						    justify-content: center;
+						    -webkit-box-align: center;
+						    align-items: center;*/
+					    	.gaikuang-list{
+					    		text-align:center;
+					    		flex:1;
+					    		margin-top:0.13rem;
+					    		span{
+					    			font-size:0.15rem;
+					    			font-weight:500;
+					    			display:block;
+					    			line-height:0.14rem;
+					    			padding-bottom:0.10rem;
+					    			/*font-weight:600;*/
+					    			&:first-child{
+						    			color:#ff7a59;
+						    		}
+					    			&:last-child{
+						    			line-height:0.14rem;
+						    			padding-bottom:0rem;
+						    		}
+					    		}
+					    	}
+					    }
+					}
 				}
 				.tucao{
 					width:100%;
@@ -634,7 +752,8 @@
 				.ContentType{
 					width:95%;
 					margin:0 auto;
-					margin-top:-0.23rem;
+					/*margin-top:-0.23rem;*/
+					margin-top:0.1rem;
 					zoom:1;
 					position:relative;
 					z-index:11;
@@ -658,7 +777,7 @@
 							li{
 								width:0.44rem;
 								height:0.37rem;
-								background-image:url("./img/1.png");
+								background-image:url("./img/bp.png");
 								background-size:100% 100%;
 								position:relative;
 								span{
@@ -766,7 +885,7 @@
 				.ContentList{
 					width:100%;
 					height:0.36rem;
-					margin:0.07rem 0 0.08rem 0;
+					margin:0.13rem 0 0.08rem 0;
 					background:#ffffff;
 					display: flex;
 				    -webkit-box-pack: center;

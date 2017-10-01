@@ -2,71 +2,67 @@
 	<!--<transition name="fade">-->
 		<div class="wode">
 			<div class="searchBox">
-				<div class="home-search border">
-					<img src="" alt="" />
+				<div class="home-search">
+					<img src=""/>
 				</div>
 				<div class="header-name">
-					<span>A</span>
+					<font>A</font>
 					<div class="header-content">
 						<span>天太</span>
 						<span>张中</span>
 					</div>
 				</div>
+				<div class="jifen"><font></font><span>积分 666</span></div>
 			</div>
 			
 			<div class="box">
 				<div class="FadeContent">
-					<div style="width:100%;height:0.82rem;"></div>
-					<div class="sousuo-content border-topbottom">
-						<div class="content-header ziliao">
+					<div style="width:100%;height:1.06rem;"></div>
+					<ul class="content-header ziliao">
+						<li>
+							<span>186</span>
 							<span>收获项目数</span>
+						</li>
+						<li class="border-rightleft">
+							<span>97%</span>
 							<span>反馈率</span>
-							<span>换片率</span>
-						</div>
-					</div>
+						</li>
+						<li>
+							<span>100%</span>
+							<span>约谈率</span>
+						</li>
+					</ul>
 					<box></box>
-					<div class="sousuo-content border-topbottom">
-						<div class="content-header ziliao">
-							<span @click.stop="ziliaoShow(type.g)">个人资料</span>
-							<span>完成度88%</span>
-						</div>
+					<div class="dujia-header border-top" @click.stop="ziliaoShow(type.h)">
+						<span><font class="kuaixuna"></font>个人资料</span>
+						<a class="wancheng">完成度78%</a><span></span>
 					</div>
-					<box></box>
-					<div class="sousuo-content border-topbottom">
-						<div class="content-header" @click.stop="jiluGo()">
-							<span>历史融资记录</span>
-						</div>
+					<div class="dujia-header border-top" @click.stop="dujiaGo()">
+						<span><font class="kuaixunb"></font>融资项目备案</span>
+						<span></span>
 					</div>
-					<box></box>
-					<div class="sousuo-content border-topbottom">
-						<div class="content-header" @click.stop="baomingGo()">
-							<span>我报名的</span>
-						</div>
+					<div class="dujia-header border-top" @click.stop="jiluGo()">
+						<span><font class="kuaixunc"></font>历史融资记录</span>
+						<span></span>
 					</div>
-					<box></box>
-					<div class="sousuo-content border-topbottom">
-						<div class="content-header">
-							<span>分享应用给好友</span>
-						</div>
+					<div class="dujia-header border-top" @click.stop="baomingGo()">
+						<span><font class="kuaixund"></font>我报名的</span>
+						<span></span>
 					</div>
-					<box></box>
-					<div class="sousuo-content border-topbottom">
-						<div class="content-header"  @click.stop="biduGo()">
-							<span>设置</span>
-						</div>
+					<div class="dujia-header border-topbottom" @click.stop="gangweiGo()">
+						<span><font class="kuaixune"></font>工作岗位变更</span>
+						<span></span>
 					</div>
-					<box></box>
-					<div class="sousuo-content border-topbottom">
-						<div class="content-header" @click.stop="gangweiGo()">
-							<span>工作岗位变更</span>
-						</div>
+					<div style="width:100%;height:0.18rem;"></div>
+					<div class="dujia-header border-topbottom" @click.stop="biduGo()">
+						<span><font class="kuaixunf"></font>设置</span>
+						<span></span>
 					</div>
-					<!--<div style="width:100%;height:0.5rem;"></div>-->
 				</div>
 			</div>
 			<!--<bidu ref="biduShow"></bidu>-->
 			<!--<jilu ref="jiluShow"></jilu>-->
-			<router-view></router-view>
+			<router-view :token="token"></router-view>
 		</div>
 	<!--</transition>-->
 </template>
@@ -84,6 +80,7 @@
 	
 	export default {
 		props:{
+			token:{}
 //			food:{
 //				type:Object
 //			}
@@ -167,49 +164,67 @@
 
 <style lang="scss" scoped>
 	.wode{
+		width:100%;
+		height:100%;
+		background-color: #f5f4f9;
 		.searchBox {
 			position:fixed;
 			top:0;
 			left:0;
-		    width: 100%;
-		    height:auto;
-		    padding:0.2rem;
+			width:100%;
+		    padding:0.26rem 0 0.18rem 0;
 		    background-color: #00C850;
+		    background-image:url("./img/bgbg.png");
+		    background-size:100%;
+		    background-position:0 -0.2rem;
 		    display:flex;
 		    z-index:100;
-		    /*span{
-		    	display:inline-block;
-		    	position:absolute;
-		    	right:0;
-		    	top:0;
-		    	padding-right:0.3rem;
-		    	line-height:0.45rem;
-		    	z-index:10000;
-		    }*/
 		    .home-search {
-		    	width:0.8rem;
-		    	height:0.8rem;
+		    	width:0.62rem;
+		    	height:0.62rem;
 			    background: #ffffff;
+			    margin-left:4.9%;
+			    border-radius:0.06rem;
 			    img{
 			    	width:100%;
 			    	height:100%;
 			    }
 			}
 			.header-name{
-				padding-left:0.2rem;
+				padding-left:0.11rem;
 				height:100%;
-				&>span{
+				font{
 					font-size:0.2rem;
-					line-height:0.3rem;
+					line-height:0.34rem;
 				}
 				.header-content{
-					margin-top:0.2rem;
+					margin-top:0.06rem;
+					font-size:0.16rem;
 					span{
 						&:first-child{
 							display:inline-block;
-							padding-right:0.1rem;
+							padding-right:0.13rem;
 						}
 					}
+				}
+			}
+			.jifen{
+				width:0.75rem;
+				height:0.15rem;
+				position:absolute;
+				top:0.58rem;
+				right:0.16rem;
+				font-size:0.12rem;
+				display:flex;
+				align-items:center;
+				color:#fff;
+				font{
+					display:inline-block;
+					width:0.15rem;
+					height:0.15rem;
+					background-image:url("./img/jifen.png");
+					background-size:100% 100%;
+					margin:-0.02rem 0.06rem 0 0;
 				}
 			}
 		}
@@ -220,40 +235,85 @@
 			.FadeContent{
 				width:100%;
 				height:auto;
-				padding:0.45rem 0;
-				.sousuo-content{
+				.content-header{
 					width:100%;
-					height:auto;
+					height:0.33rem;
+					padding:0.12rem 0;
+					font-size:0.18rem;
 					background:#fff;
-					/*padding-bottom:0.2rem;*/
-					/*margin:0.05rem 0;*/
-					/*display:flex;*/
-					/*flex-direction:column;*/
-					.content-header{
-						padding:0.08rem 0.2rem;
-						font-size:0.2rem;
+					display:flex;
+					li{
+						flex:1;
+						text-align:center;
+						display:flex;
+						flex-direction:column;
 						span{
-							line-height:0.3rem;
+							&:first-child{
+								margin-top:-0.04rem;
+							}
+							&:last-child{
+								font-size:0.14rem;
+								display: block;
+								padding-top:0.1rem;
+								color:#737373;
+							}
 						}
 					}
-					.xiaolv{
-						padding:0 0.2rem;
-						display:flex;
-						span{
+				}
+				.dujia-header{
+					flex:1;
+					background:#fff;
+					padding:0.12rem 0.18rem;
+					.wancheng{
+						position:absolute;
+						top:0.12rem;
+						right:0.4rem;
+						line-height:0.34rem;
+					}
+					span{
+						font-size:0.16rem;
+		    			font-weight:500;
+		    			line-height:0.34rem;
+		    			vertical-align: top;
+						&:first-child{
+							/*font-weight:bold;*/
+							font-size:0.16rem;
+						}
+						&:last-child{
+							float:right;
+							float:right;
+							width:0.18rem;
+							height:0.22rem;
+							background-image:url("./img/jiantou.png");
+							background-size:100% 100%;
+							margin-top:0.06rem;
+						}
+						font{
 							display:inline-block;
-							padding:0.06rem 0.2rem;
-							line-height:0.18rem;
-							text-align:center;
+							width:0.24rem;
+							height:0.24rem;
+							margin:0.04rem 0.08rem 0 0;
+							background-size:100% 100%;
+							background-repeat:no-repeat;
+							
 						}
-						.center{
-							margin:0 0.1rem;
+						.kuaixuna{
+							background-image:url("./img/geren.png");
 						}
-					}
-					.ziliao{
-						display:flex;
-						span{
-							flex:1;
-							text-align:center;
+						.kuaixunb{
+							background-image:url("./img/beian.png");
+						}
+						.kuaixunc{
+							background-image:url("./img/jilu.png");
+						}
+						.kuaixund{
+							background-image:url("./img/baoming.png");
+						}
+						.kuaixune{
+							background-image:url("./img/wode1.png");
+						}
+						.kuaixunf{
+							background-image:url("./img/shezhi.png");
 						}
 					}
 				}

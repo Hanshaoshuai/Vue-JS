@@ -161,10 +161,12 @@
 				}
 			}
 		}
+		.box::-webkit-scrollbar{width:0px}
 		.box{
 			width:100%;
 			height:100%;
 			overflow-y:auto;
+			-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
 			.box-content{
 				width:100%;
 				height:auto;

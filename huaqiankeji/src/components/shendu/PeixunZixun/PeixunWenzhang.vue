@@ -73,7 +73,7 @@
 	
 	export default {
 		props:{
-			childnone:{
+			token:{
 //				type:"boolean"
 			}
 		},
@@ -130,7 +130,9 @@
 //				this.block=true;
 			},
 			liuyan(){
-				this.$refs.dianziShow.MenpiaoBlock();
+				console.log(this.token)
+				window.location.href="#/fankuixinxi/"+this.token+"/12";
+//				this.$refs.dianziShow.MenpiaoBlock();
 			}
 //			show(){
 ////				dom更新后在执行使用$refs
@@ -276,9 +278,10 @@
 						display:inline-block;
 						vertical-align:top;
 						border:2px solid #e5e4e4;
-						border-radius:0.3rem;
+						/*border-radius:0.3rem;*/
 						width:0.3rem;
 						height:0.3rem;
+						margin-top:-0.02rem;
 						img{
 							width:0.3rem;
 							height:0.3rem;

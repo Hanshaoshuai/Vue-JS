@@ -40,13 +40,14 @@ import Wode from "../components/wode/wode.vue"
 	import Shezhi from "../components/wode/Shezhi/Shezhi.vue"
 
 
-import ZhuCe from "../components/ZhuCe/ZhuCe.vue"
-	import Type0 from "../components/ZhuCe/type0.vue"
-	import Type1 from "../components/ZhuCe/type1.vue"
-	import Type2 from "../components/ZhuCe/type2.vue"
-	import Type3 from "../components/ZhuCe/type3.vue"
-	import Type4 from "../components/ZhuCe/type4.vue"
-	import Type5 from "../components/ZhuCe/type5.vue"
+import ZhuCe from "../components/ZhuCe/ZhuCe0.vue"
+	import ZhuCe1 from "../components/ZhuCe/ZhuCe1.vue"
+		import Type0 from "../components/ZhuCe/type0.vue"
+		import Type1 from "../components/ZhuCe/type1.vue"
+		import Type2 from "../components/ZhuCe/type2.vue"
+		import Type3 from "../components/ZhuCe/type3.vue"
+		import Type4 from "../components/ZhuCe/type4.vue"
+		import Type5 from "../components/ZhuCe/type5.vue"
 
 
 import Denglu from "../components/DengLu/DengLu.vue"
@@ -173,30 +174,35 @@ export default ({
     	]
     },
     {path: '/zhuce',component: ZhuCe,
-      children:[
-					{
-						path:"type0/:classid",component:Type0
-					},
-					{
-						path:"type1/:classid",component:Type1
-					},
-					{
-						path:"type2/:classid",component:Type2
-					},
-					{
-						path:"type3/:classid",component:Type3
-					},
-					{
-						path:"type4/:classid",component:Type4
-					},
-					{
-						path:"type5/:classid",component:Type5
-					}
-				]
+      	children:[
+      		{
+				path:"zhuceX/:classid",component:ZhuCe1,
+					children:[
+						{
+							path:"type0/:classid",component:Type0
+						},
+						{
+							path:"type1/:classid",component:Type1
+						},
+						{
+							path:"type2/:classid",component:Type2
+						},
+						{
+							path:"type3/:classid",component:Type3
+						},
+						{
+							path:"type4/:classid",component:Type4
+						},
+						{
+							path:"type5/:classid",component:Type5
+						}
+					]
+			}
+		]
    	},
    	{path: '/denglu',component: Denglu},
    	{path: '/sousuo',component: Sousuo},
-   	{path: '/fankuixinxi',component: FankuiXinxi},
+   	{path: '/fankuixinxi/:token/:to_id',component: FankuiXinxi},
    	{path: '/Xeiyi/:classid',component: Xeiyi,
    		children:[
     		{

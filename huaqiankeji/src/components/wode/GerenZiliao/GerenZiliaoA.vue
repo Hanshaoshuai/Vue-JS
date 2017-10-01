@@ -2,8 +2,13 @@
 	<transition name="fade">
 		<div v-show="tucaoShow" class="xiangmu">
 			<div class="xiangmu-header" @click.stap="yijianHind()">
-				<span class="xiangmu-left"><</span>
+				<span class="xiangmu-left"><img src="../img/back.png"/></span>
 				<span>个人资料</span>
+				<div class="fanhui-right">
+					<div>
+						<font></font>
+					</div>
+				</div>
 			</div>
 			<div class="box">
 				<div style="width:100%;height:0.5rem;"></div>
@@ -155,7 +160,7 @@
 	}
 	.xiangmu{
 		position:fixed;
-		background:#FCE7E6;
+		background:#f5f4f9;
 		bottom:0;
 		top:0;
 		left:0;
@@ -166,34 +171,47 @@
 			top:0;
 			left:0;
 			width:100%;
-			height:0.45rem;
-			font-weight:400;
-			background:#fff;
+			height:0.46rem;
+			font-weight:600;
+			background:#ff7a59;
 			font-size:0.2rem;
 			text-align:center;
 			line-height:0.45rem;
-			z-index:220;
+			color:#fff;
+			z-index:300;
 			.xiangmu-left{
 				position:absolute;
-				padding-left:0.3rem;
+				height:100%;
+				padding-left:0.16rem;
 				display:inline-block;
-				top:0;
+				top:0.04rem;
 				left:0;
+				img{
+					height:0.2rem;
+				}
 			}
-			.xiangmu-right{
-				padding:0.08rem 0.1rem;
-				border:0.005rem solid #93999F;
-				line-height:0.12rem;
-				font-size:0.14rem;
-				position:absolute;
-				top:0.09rem;
-				right:0.1rem;
-			}
+			.fanhui-right{
+		    	position:absolute;
+		    	right:0.2rem;
+		    	top:0;
+		    	font-size: 0.16rem;
+		    	font{
+		    		display:inline-block;
+					vertical-align: top;
+					width:0.2rem;
+					height:0.2rem;
+					margin-top:0.13rem;
+					background-image:url("../img/bianji.png");
+					background-size:100% 100%;
+		    	}
+		    }
 		}
+		.box::-webkit-scrollbar{width:0px}
 		.box{
 			overflow-y:auto;
 			width:100%;
 			height:100%;
+			-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
 			.fankiu{
 				width:100%;
 				display:flex;

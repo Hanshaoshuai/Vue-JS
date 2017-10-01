@@ -34,6 +34,7 @@
 </template>
 
 <script type="text/ecmascript">
+	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
 //	import fankuixinxi from "./FankuiXinxi.vue";
 	
@@ -46,21 +47,36 @@
 		},
 		data () {
 			return {
+				res:"",
 				introduction:"",
 				times:20177111129,
 				showFlag:false,
 				tucaoShow:false,
+				datas:{}
 			}
 		},
 		methods:{
 			yijianHind(){
 				this.tucaoShow=false;
 			},
-			fankuiBlock(){
+			fankuiBlock(datas){
 				this.tucaoShow=true;
+				this.datas=datas;
+//				获取评论反馈列表
+				console.log(URL.path)
+				if(this.res==""){
+					this.$http.post(URL.path+'chatcomment/comment_list',datas.token,{emulateJSON:true}).then(function(res){
+						var data=res
+						this.res=res;
+						console.log("取到评论反馈列表");
+					},function(res){
+					    console.log(res);
+					})
+				}
 			},
 			xinxiTo(){
-				window.location.href="#/fankuixinxi";
+				console.log(this.datas);
+				window.location.href="#/fankuixinxi/"+this.datas.token+'/'+"12";
 			}
 			
 //			show(){
