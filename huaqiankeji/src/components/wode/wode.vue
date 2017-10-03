@@ -37,7 +37,7 @@
 						<span><font class="kuaixuna"></font>个人资料</span>
 						<a class="wancheng">完成度78%</a><span></span>
 					</div>
-					<div class="dujia-header border-top" @click.stop="dujiaGo()">
+					<div class="dujia-header border-top" @click.stop="RongziBeian()">
 						<span><font class="kuaixunb"></font>融资项目备案</span>
 						<span></span>
 					</div>
@@ -45,10 +45,10 @@
 						<span><font class="kuaixunc"></font>历史融资记录</span>
 						<span></span>
 					</div>
-					<div class="dujia-header border-top" @click.stop="baomingGo()">
+					<!--<div class="dujia-header border-top" @click.stop="baomingGo()">
 						<span><font class="kuaixund"></font>我报名的</span>
 						<span></span>
-					</div>
+					</div>-->
 					<div class="dujia-header border-topbottom" @click.stop="gangweiGo()">
 						<span><font class="kuaixune"></font>工作岗位变更</span>
 						<span></span>
@@ -110,6 +110,9 @@
 			},
 			ziliaoShow(id){
 				window.location.href="#/wode/ziliao"+id+"/0";
+			},
+			RongziBeian(){
+				window.location.href="#/wode/RongziBeian/0";
 			},
 			jiluGo(){
 				window.location.href="#/wode/jilu/0";

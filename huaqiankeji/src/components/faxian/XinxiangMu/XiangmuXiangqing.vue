@@ -112,7 +112,7 @@
 	
 	export default {
 		props:{
-			token:{}
+			datas:{}
 //			food:{
 //				type:Object
 //			}
@@ -125,7 +125,7 @@
 				introduction:"",
 				times:20177111129,
 //				showFlag:false,
-				tucaoShow:false,
+				tucaoShow:true,
 				liuYans:"",
 				jiaoHuans:"",
 				butenLeft:"butenLeft",
@@ -144,7 +144,8 @@
 		},
 		methods:{
 			yijianHind(){
-				this.tucaoShow=false;
+				history.go(-1)
+//				this.tucaoShow=false;
 			},
 			xiangqingBlock(){
 				this.tucaoShow=true;
@@ -154,14 +155,14 @@
 			},
 			liuYanTo(){
 				if(this.types==1){			//跳转到留言页面
-					window.location.href="#/fankuixinxi/"+this.token+"/12";
+					window.location.href="#/fankuixinxi/"+this.datas['token']+"/12";
 				}
 //				this.liuYans="liuYan";
 			},
 			jiaoHuanTo(){
 				if(this.types==1){				//换取名片申请提示
 					var datas={
-						token:this.token,		//换名片接口
+						token:this.$route.params.token,		//换名片接口
 						to_id:"14",			//接收方id
 						item_id:"25"							//项目id
 					}

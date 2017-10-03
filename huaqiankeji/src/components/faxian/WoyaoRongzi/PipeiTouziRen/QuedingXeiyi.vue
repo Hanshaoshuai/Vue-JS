@@ -192,7 +192,7 @@
 			overflow-y:auto;
 			-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
 			.wenzhang-content{
-				width: 93%;
+				width: 90%;
 				/*height:auto;*/
 				margin:0 auto;
 				padding-bottom:0.45rem;

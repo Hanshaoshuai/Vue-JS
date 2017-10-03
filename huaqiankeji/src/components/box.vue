@@ -1,6 +1,6 @@
 <template>
 	<div class="header">
-		<div style="width:100%;height:0.11rem;background:#f5f4f9"></div>
+		<div style="width:100%;height:0.1rem;background:#f5f4f9"></div>
 	</div>
 </template>
 

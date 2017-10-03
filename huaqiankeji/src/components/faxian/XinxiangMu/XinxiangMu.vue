@@ -91,7 +91,8 @@
 	    </div>
 	    	<tishi ref="tishiShow" :xingXi="texts"></tishi>
 			<yifouxiangmu ref="yifouShou"></yifouxiangmu>
-			<xiangmuxiangqing ref="xiangqingShow" :token="token"></xiangmuxiangqing>
+			<!--<xiangmuxiangqing ref="xiangqingShow" :token="token"></xiangmuxiangqing>-->
+			<router-view :datas="datas"></router-view>
 		</div>
 	</transition>
 </template>
@@ -102,7 +103,7 @@
 	import box from "../../box.vue";
 	import tishi from "../../Tishi.vue";
 	import yifouxiangmu from "./YifouXiangmu.vue";
-	import xiangmuxiangqing from "./XiangmuXiangqing.vue";
+//	import xiangmuxiangqing from "./XiangmuXiangqing.vue";
 	
 	
 	export default {
@@ -110,7 +111,7 @@
 			setscrollTop:{
 //				type:Object
 			},
-			token:{}
+			datas:{}
 		},
 		data () {
 			return {
@@ -120,7 +121,7 @@
 				introduction:"",
 				times:20177111129,
 				showFlag:false,
-				tucaoShow:false,
+				tucaoShow:true,
 				texts:{
 					text:"您要结束xxx公司项目的原因是？",
 					x:"已过会",
@@ -140,13 +141,13 @@
 		},
 		methods:{
 			handleTopChange(status) {    //头部函数
-	      		console.log("top")
+//	      		console.log("top")
 		        this.topStatus = status;
 		        
-		        console.log(this.wrapperHeight)
-	      	console.log(this.$refs.wrapper.scrollTop)
-	      	console.log(document.documentElement.clientHeight)
-	      	console.log(this.$refs.wrapper.getBoundingClientRect().top)
+//		        console.log(this.wrapperHeight)
+//	      	console.log(this.$refs.wrapper.scrollTop)
+//	      	console.log(document.documentElement.clientHeight)
+//	      	console.log(this.$refs.wrapper.getBoundingClientRect().top)
 	      	},
 	      	translateChange(translate) {
 		        const translateNum = +translate;
@@ -185,36 +186,20 @@
 		        }, 1500);
 	      	},
 	      	
-	      	
-	      	
 			yijianHind(){
-				this.tucaoShow=false;
+				history.go(-1)
+//				this.tucaoShow=false;
 				this.$refs.wrapper.scrollTop=sessionStorage.getItem("scrollTop")
 			},
 			xiangmuBlock(x,datas){
-				console.log(datas)
-//			项目列表（投资人收到的项目）
-			if(this.res==""){
-				this.$http.post(URL.path+'finance/received_item_list',datas,{emulateJSON:true}).then(function(res){
-					var data=res
-					this.res=res;
-					console.log("投资人收到的项目列表");
-				},function(res){
-				    console.log(res);
-				})
-			}	
 				
-				this.tucaoShow=true;
-				console.log(this.setscrollTop)
-				this.$nextTick(function() {
-					this.$refs.wrapper.scrollTop=this.setscrollTop;
-				})
 			},
 			yifouXiangmu(){
 				this.$refs.yifouShou.yifouBlock();
 			},
 			xiangqing(){
-				this.$refs.xiangqingShow.xiangqingBlock();
+				window.location.href="#/faxian/XinxiangMu/"+this.datas["token"]+"/XiangmuXiangqing";
+//				this.$refs.xiangqingShow.xiangqingBlock();
 			},
 			jieshu(){
 //				this.texts="您要结束xxx公司项目的原因是？"
@@ -223,7 +208,7 @@
 			handleScroll () {
 			  var scrollTop = this.$refs.wrapper.scrollTop
 			  sessionStorage.setItem("scrollTop",scrollTop)
-			  console.log(sessionStorage.getItem("scrollTop"))
+//			  console.log(sessionStorage.getItem("scrollTop"))
 			},
 		},
 		created() {
@@ -236,6 +221,23 @@
 	    	console.log("计算高度")
 	      	this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
 	      	this.$refs.wrapper.addEventListener('scroll', this.handleScroll)	//做一个scroll监听
+	      	console.log(this.datas)
+//			项目列表（投资人收到的项目）
+			if(this.res==""){
+				this.$http.post(URL.path+'finance/received_item_list',this.datas,{emulateJSON:true}).then(function(res){
+					this.res=res.body.data;
+					console.log("投资人收到的项目列表");
+					console.log(this.res);
+				},function(res){
+				    console.log(res);
+				})
+			}	
+			
+			this.tucaoShow=true;
+//				console.log(this.setscrollTop)
+			this.$nextTick(function() {
+				this.$refs.wrapper.scrollTop=this.setscrollTop;
+			})
 	    },
 		events:{
 			
@@ -260,7 +262,7 @@
 			box,
 			tishi,
 			yifouxiangmu,
-			xiangmuxiangqing
+//			xiangmuxiangqing
 		}
 	}
 </script>

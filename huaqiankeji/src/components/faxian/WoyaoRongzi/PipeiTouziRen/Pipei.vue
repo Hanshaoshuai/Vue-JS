@@ -100,6 +100,7 @@
 </template>
 
 <script type="text/ecmascript">
+	import {URL} from '../../../../common/js/path';
 	import { Toast } from 'mint-ui';
 	import { MessageBox } from 'mint-ui';
 //	import BScroll from "better-scroll";
@@ -114,7 +115,8 @@
 		props:{
 			childnone:{
 //				type:"boolean"
-			}
+			},
+			token:{}
 		},
 		data () {
 			return {
@@ -133,9 +135,23 @@
 //				history.go(-1)
 			},
 			pipeiBlock(CanShu){
-				console.log(CanShu)
+				console.log(CanShu.XiangmuID)
+				console.log(this.token)
 				this.CanShu=CanShu
 				this.showFlag=true;
+				//匹配投资人列表		
+				var datas = {
+					token:this.token,		//	token	是	[string]		
+					item_id:this.CanShu.XiangmuID,		//	项目id	是	[string]		
+					page:"",			//	page	是	[string]		
+					size:""			//	size	是	[string]	
+				}
+				this.$http.post(URL.path+'finance/investor_list',datas,{emulateJSON:true}).then(function(res){
+					var data=res.data
+					console.log(res);
+				},function(res){
+				    console.log(res.status);
+				})
 			},
 			quanXuan(){
 //				console.log(this.$refs.tianjia.getElementsByClassName("borders"))

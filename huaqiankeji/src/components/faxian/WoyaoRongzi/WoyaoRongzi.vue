@@ -30,7 +30,7 @@
 							<li class="src5" ref="img5" index="img5" @click.stap="zulinGo('ZuLin','5')">
 								<span>融资租赁</span><font></font>
 							</li>
-							<li class="src6" ref="img6" index="img6" @click.stap="yanbaoGo('YanBao','6')">
+							<li  style="display:none;" class="src6" ref="img6" index="img6" @click.stap="yanbaoGo('YanBao','6')">
 								<span>研报支持</span><font></font>
 							</li>
 						</ul>
@@ -38,7 +38,7 @@
 							<li style="display:none;" class="src7" ref="img7" index="img7" @click.stap="shuangchuangGo('ShuangChuang')">
 								<span>双创债</span><font></font>
 							</li>
-							<li class="src8" ref="img8" index="img8" @click.stap="diaoyanGo('Diaoyan')">
+							<li  style="display:none;" class="src8" ref="img8" index="img8" @click.stap="diaoyanGo('Diaoyan')">
 								<span>公司调研</span><font></font>
 							</li>
 						</ul>
@@ -55,16 +55,17 @@
 					</div>
 				</div>
 				<div class="butten">
-					<span @click.stop="liuYan()">继续手机端操作</span>
+					<span @click.stop="XiaYibu()">继续手机端操作</span>
 				</div>
 			</div>
-			<router-view></router-view>
+			<router-view :token="token" :BiaoQian="BiaoQian"></router-view>
 			<!--<youhuiquan ref="youhuiShow"></youhuiquan>-->
 		</div>
 	</transition>
 </template>
 
 <script type="text/ecmascript">
+	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
 	import box from "../../box.vue";
 //	import youhuiquan from "../../shendu/PeixunZixun/YouhuiQuan.vue";
@@ -79,9 +80,11 @@
 		},
 		data () {
 			return {
+				token:"",
+				BiaoQian:"",
 				src:"",
 				urlName:"Dingzeng",
-				type:"1",
+				type:"1",			//创建类型
 				fankui:"45",
 				genjin:"458",
 				introduction:"",
@@ -91,38 +94,15 @@
 			}
 		},
 		mounted(){
-//			console.log(this.$ruters.pr)
+			console.log(this.$route.params['type'])
+			this.token=this.$route.params['type'];
 			var datas = {
-				token:this.$route.params,//	token	是	[string]		
-				uid:"126",//	创建者id	是	[string]		
-				type:"1",//	类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报	是	[string]		
-				company:"666",//	公司id	是	[string]		
-				com_name:"dfg",//	公司名称	是	[string]		
-				com_code:"123456",//	公司代码	是	[string]		
-				main_business:"",//	主营业务	是	[string]		
-				lightspot:"",//	投资亮点	是	[string]		
-				industry:"",//	公司所在行业标签id	是	[string]		
-				last_year_revenue:"",//	上一年营收（单位 万）	是	[string]		
-				last_year_profit:"",//	上一年净利润（单位 万）	是	[string]		
-				predict_revenue:"",//	今年预计营收(单位:万)	是	[string]		
-				predict_profit:"",//	今年预计净利润(单位:万)	是	[string]		
-				total_finance:"",//	融资总额(单位:万)	是	[string]		
-				appraisement:"",//	投前估值(单位:万)	是	[string]		
-				city:"",//	所在城市	是	[string]		
-				transfe_share:"",//	拟转股份数	是	[string]		
-				share_price:"",//	每股价格	是	[string]		
-				is_hold:"",//	是否本人持股 1:是 2:否	是	[string]		
-				research_address:"",//	调研地址	是	[string]		
-				research_time:"",//	调研时间	是	[string]		
-				pledge_time:"",//	质押时间周期(天)	是	[string]		
-				repayment_time:"",//	还款周期(天)	是	[string]		
-				face_rate:"",//	票面利率	是	[string]		
-				is_transfe:"",//	是否转股 1:是 2:否	是	[string]		
-				remark:"",//	备注	是	[string]
+				token:this.$route.params['type'],//	token	是	[string]	URL获取的参数
 			}
-			this.$http.post(URL.path+'api/index.php/v2/finance/create',datas,{emulateJSON:true}).then(function(res){
-				var data=res.data
-				console.log(res);
+			this.$http.post(URL.path1+'login/three',datas,{emulateJSON:true}).then(function(res){
+				var data=res.body.data
+				this.BiaoQian=res.body.data
+				console.log(this.BiaoQian);
 			},function(res){
 			    console.log(res.status);
 			})
@@ -179,22 +159,9 @@
 				this.src=this.$refs.img8.getAttribute("index")
 //				window.location.href="#/faxian/WoyaoRongzi/0/Diaoyan";
 			},
-			liuYan(){
+			XiaYibu(){
 				window.location.href="#/faxian/WoyaoRongzi/"+this.type+"/"+this.urlName;
 			}
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		watch:{
 			src:function(newVal,oldVal){

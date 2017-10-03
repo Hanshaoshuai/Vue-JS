@@ -5,7 +5,7 @@
 			<div class="searchBox">
 				<div class="home-search">
 					<span class="fanhui-butten" @click.stop="listnone()"><img src="./XinxiangMu/img/back.png"/></span>
-					<span>新项目</span>
+					<span>项目摘要</span>
 					<div class="fanhui-right">
 						<div @click.stop="yifouXiangmu()">
 							<font>分享</font>

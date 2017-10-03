@@ -282,12 +282,12 @@
 		      	<div style="width:100%;height:0.6rem;"></div>
 		    </div>
 			<!--</div>-->
-			<xiangmu ref="xiangmuShow" :setscrollTop="scrollTop" :token="token"></xiangmu>
+			<!--<xiangmu ref="xiangmuShow" :setscrollTop="scrollTop" :token="token"></xiangmu>-->
 			<fankui ref="fankuiShow"></fankui>
 			<DingzengZhaiyao ref="show"></DingzengZhaiyao>
 			<GuquanZhaiyao ref="GuquanShow"></GuquanZhaiyao>
 			<yijian ref="yijianShow"></yijian>
-			<router-view></router-view>
+			<router-view :setscrollTop="scrollTop" :datas="datas"></router-view>
 		</div>
 	<!--</transition>-->
 </template>
@@ -295,7 +295,7 @@
 <script type="text/ecmascript">
 	import { Indicator } from 'mint-ui';
 	import {URL} from '../../common/js/path';
-	import xiangmu from "./XinxiangMu/XinxiangMu.vue";
+//	import xiangmu from "./XinxiangMu/XinxiangMu.vue";
 	import fankui from "./Fankui/Fankui.vue";
 	import DingzengZhaiyao from "./DingzengZhaiyao.vue";
 	import GuquanZhaiyao from "./GuquanZhaiyao.vue";
@@ -402,9 +402,10 @@
 				this.$refs.fankuiShow.fankuiBlock(this.datas);
 			},
 			XiangMuGo(){
-				console.log(this.datas)
+//				console.log(this.datas)
+				window.location.href="#/faxian/XinxiangMu/"+this.datas["token"];
 				this.scrollTop=sessionStorage.getItem("scrollTop")
-				this.$refs.xiangmuShow.xiangmuBlock(this.scrollTop,this.datas);
+//				this.$refs.xiangmuShow.xiangmuBlock(this.scrollTop,this.datas);
 			},
 			qiyefankuiGo(){
 				this.$refs.fankuiShow.fankuiBlock(this.datas);
@@ -538,7 +539,7 @@
 //			}
 		},
 		components:{
-			xiangmu,
+//			xiangmu,
 			fankui,
 			DingzengZhaiyao,
 			GuquanZhaiyao,

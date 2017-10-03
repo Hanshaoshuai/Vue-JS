@@ -96,15 +96,15 @@
 				numberTo:"",
 				block:false,
 				introduction:"",
-				Guzhaishow:false
+				Guzhaishow:true
 //				onlyContent:true,
 //				times:20177111129
 			}
 		},
 		methods:{
 			fanhuiB(){
-				this.Guzhaishow=false;
-//				history.go(-1)
+//				this.Guzhaishow=false;
+				history.go(-1)
 			},
 			Toguzhai(){
 				this.Guzhaishow=true;

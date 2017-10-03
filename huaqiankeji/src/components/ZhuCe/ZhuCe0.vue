@@ -144,7 +144,7 @@
 						}else{
 							Indicator.close();
 							Toast("您已注册成功请进一步完善信息")
-							window.location.href="#/zhuce/zhuceX/12";
+							window.location.href="#/zhuce/ZhuCe1/12";
 						}
 					})
 				}

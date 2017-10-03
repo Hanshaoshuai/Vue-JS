@@ -11,7 +11,7 @@
 				<div class="fankiu border-topbottom">
 					<div class="content-food" style="text-align:center;">
 						<img src="../img/lishi.png"/>
-						<span class="content-header">选择历史融资记录</span>
+						<span class="content-header">尚无历史融资记录</span>
 					</div>
 				</div>
 				<box></box>
@@ -38,12 +38,13 @@
 					<div class="zhuying_1 liangdian_1">
 						<div class="ferst"><span>*</span>公司所在行业标签<font>（选标签）</font></div>
 						<ul ref="biaoqian">
-							<span class="bianse" @click.stap="xuanze('0')">行业标签</span>
-							<span @click.stap="xuanze('1')">行业标签</span>
-							<span @click.stap="xuanze('2')">行业标签</span>
-							<span @click.stap="xuanze('3')">行业标签</span>
-							<span @click.stap="xuanze('4')">行业标签</span>
-							<span @click.stap="xuanze('5')">行业标签</span>
+							<span v-for="(item,index) in BiaoQian[0]" @click.stap="xuanze(index)" :id="item.id">{{item.title}}</span>
+							<!--<span class="bianse" @click.stap="xuanze('0')">物联网</span>
+							<span @click.stap="xuanze('1')">食品健康</span>
+							<span @click.stap="xuanze('2')">旅游</span>
+							<span @click.stap="xuanze('3')">新材料</span>
+							<span @click.stap="xuanze('4')">大数据</span>
+							<span @click.stap="xuanze('5')">军工</span>-->
 						</ul>
 					</div>
 					<div class="zhuying_1">
@@ -98,7 +99,7 @@
 					<div class="zhuying_1">
 						<div class="ferst"><span>*</span>所在省份</div>
 						<div class="last number">
-							<input v-model="numberh" placeholder="请填写省份" number="true" type="text" class="mint-field-core">
+							<input v-model="numberh" placeholder="请填写省份" type="text" class="mint-field-core">
 						</div>
 					</div>
 					<div class="times">
@@ -117,13 +118,14 @@
 					</ul>
 				</div>
 			</div>
-			<pipei ref="pipeiShow"></pipei>
+			<pipei ref="pipeiShow" :token="token"></pipei>
 			<tishi ref="tishiShow" :xingXi="xingXi" :content="content"></tishi>
 		</div>
 	</transition>
 </template>
 
 <script type="text/ecmascript">
+	import {URL} from '../../../../common/js/path';
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
 	import box from "../../../box.vue";
@@ -135,39 +137,56 @@
 	
 	export default {
 		props:{
-//			food:{
+			token:{
 //				type:Object
-//			}
+			},
+			BiaoQian:{}
 		},
 		data () {
 			return {
-				x:"0",
-				numbera:"",
-				numberb:"",
-				numberc:"",
-				numberd:"",
-				numbere:"",
-				numberf:"",
-				numberg:"",
-				numberh:"",
-				texta:"",
-				textb:"",
-				textc:"",
+				type:"",		//创建类型
+				x:"0",			//字的个数
+				y:1,			//判断是否选择标签；》=1为选择；
+				numbera:"",	//上一财年营收、净利润		请填写年营业
+				numberb:"",	//上一财年营收、净利润		请填写净利润
+				numberc:"",	//今年预计营收、净利润		请填写预计营收
+				numberd:"",	//今年预计营收、净利润		请填写净利润
+				numbere:"",	//融资计划		请填写融资估值
+				numberf:"",	//融资计划		请填写融资总额
+				numberg:"",	//融资计划		请填写每股价格
+				numberh:"",	//所在省份
+				texta:"",	//公司名称
+				textb:"",	//公司代码
+				textc:"",	//项目推荐		请填写直营业务、投资亮点等
 				fankui:"45",
 				genjin:"458",
 				introduction:"",
 				times:20177111129,
 				showFlag:false,
 				tucaoShow:true,
-				xingXi:{
+				xingXi:{			//给下级提示组件要传的参数
 					text:"亲，请您在电脑上登录www.qironghome.com,上传最新商业计划书PPT，便于投资人查看，确保融资沟通顺利。如已上传，请忽略。",
 					x:"不再提醒",
 					y:"确定",
 					m:true,
 					u:true
 				},
-				content:""
+				content:"",		//给下级要传的参数
+				XiangmuID:"12",
+				biaoQianID:[]		//储存标签id
 			}
+		},
+		mounted(){
+			console.log(this.$route.params.type)
+			console.log(this.token)
+			console.log(this.BiaoQian)
+			this.type=this.$route.params.type
+			this.$nextTick(function() {
+				var spans=this.$refs.biaoqian.getElementsByTagName("span")[0];
+				spans.setAttribute("class","bianse")
+				this.biaoQianID.push(spans.id);
+			});
+//			this.token=this.$route.params
 		},
 		methods:{
 			yijianHind(){
@@ -175,26 +194,104 @@
 //				this.tucaoShow=false;
 			},
 			xuanze(index){
-				var spans=this.$refs.biaoqian.getElementsByTagName("span");
-				var x=1;
-				for(var i=0; i<spans.length; i++){
-					if(spans[i].getAttribute("class")=="bianse"){
-						x+=1;
-					}
-				}
-				if(spans[index].getAttribute("class")=="bianse"){
+				var spans=this.$refs.biaoqian.getElementsByTagName("span");	
+				var length=spans.length;
+				if(spans[index].getAttribute("class")=="bianse"){			//判断是否选择标签；》=1为选择；
 					spans[index].setAttribute("class","")
+					for(var z=0; z<this.y; z++){
+						if(this.biaoQianID[z]==spans[index].id){
+							this.biaoQianID.splice(z,1);
+							console.log(this.biaoQianID)
+							this.y-=1
+							break;
+						}
+					}
 				}else{
-					if(x>3){
+					if(this.y>2){
 						Toast('最多可选三个');
 					}else{
+						var ok=0;
 						spans[index].setAttribute("class","bianse");
+						this.y+=1;
+						for(var i=0; i<this.y; i++){
+							if(this.biaoQianID[i]!=spans[index].id){
+								ok=1
+								this.biaoQianID.push(spans[index].id)
+								break;
+							}
+						}
+						console.log(this.biaoQianID)
 					}
+				}
+				for(var i=0; i<length; i++){
+					
 				}
 			},
 			xiayibuGo(){
-				this.content=this.$refs.pipeiShow;
-				this.$refs.tishiShow.tishiBlock();
+				this.biaoQianID=this.biaoQianID.join()
+				var datas = {
+					token:this.token,//	token	是	[string]		
+//					uid:"",//	创建者id	是	[string]		
+					type:this.type,//	类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报	是	[string]		
+//					company:"",//	公司id	是	[string]		
+					com_name:this.texta,//	公司名称	是	[string]		
+					com_code:this.textb,//	公司代码	是	[string]		
+					main_business:"",//	主营业务	是	[string]		
+					lightspot:this.textc,//	投资亮点	是	[string]		
+					industry:this.biaoQianID,//	公司所在行业标签id	是	[string]		
+					last_year_revenue:this.numbera,//	上一年营收（单位 万）	是	[string]		
+					last_year_profit:this.numberb,//	上一年净利润（单位 万）	是	[string]		
+					predict_revenue:this.numberc,//	今年预计营收(单位:万)	是	[string]		
+					predict_profit:this.numberd,//	今年预计净利润(单位:万)	是	[string]		
+					total_finance:this.numberf,//	融资总额(单位:万)	是	[string]		
+					appraisement:this.numbere,//	投前估值(单位:万)	是	[string]		
+					city:this.numberh,//	所在城市	是	[string]		
+					transfe_share:"",//	拟转股份数	是	[string]		
+					share_price:this.numberg,//	每股价格	是	[string]		
+					is_hold:"",//	是否本人持股 1:是 2:否	是	[string]		
+					research_address:"",//	调研地址	是	[string]		
+					research_time:"",//	调研时间	是	[string]		
+					pledge_time:"",//	质押时间周期(天)	是	[string]		
+					repayment_time:"",//	还款周期(天)	是	[string]		
+					face_rate:"",//	票面利率	是	[string]		
+					is_transfe:"",//	是否转股 1:是 2:否	是	[string]		
+					remark:"",//	备注	是	[string]
+				}
+				this.$http.post(URL.path+'finance/create',datas,{emulateJSON:true}).then(function(res){
+					var data=res.data
+					console.log(res);
+				},function(res){
+				    console.log(res.status);
+				})
+				var CanShu={				//给下级要传的参数
+					texta:this.texta,
+					textb:this.textb,
+					textc:this.textc,
+					numbera:this.numbera,
+					numberb:this.numberb,
+					numberc:this.numberc,
+					numberd:this.numberd,
+					numbere:this.numbere,
+					numberf:this.numberf,
+					numberg:this.numberg,
+					numberh:this.numberh,
+					XiangmuID:this.XiangmuID
+				}
+				var ok=0;
+				for(var item in CanShu){		//判断填写信息是否完整Ok=1；标签必选
+					if(!CanShu[item]=="" && this.y>=1){
+						
+					}else{
+						ok+=1;
+					}
+				}
+				if(ok==0){
+					this.content=this.$refs.pipeiShow;
+					this.$refs.tishiShow.tishiBlock(CanShu);//CanShu是下级要传的参数
+				}else{
+					Toast("请填写完整您的信息！是否已选标签...");
+				}
+				
 //				this.$refs.pipeiShow.pipeiBlock();
 			},
 			dingzengBlock(){
@@ -223,6 +320,19 @@
 //					}
 //				});
 //			}
+		},
+		watch:{					//监听输入范围
+			textc:function(newVal,oldVal){
+				var x=newVal.length;
+				if(x<=100){
+					this.x=x;
+				}else{
+					this.textc=oldVal;
+					Toast("您的输入超出范围！")
+				}
+				
+				
+			}
 		},
 		events:{
 			
@@ -304,7 +414,7 @@
 			width:100%;
 			height:100%;
 			background:#fff;
-			-webkit-overflow-scrolling:touch;
+			-webkit-overflow-scrolling:touch;  		/*解决ios滑动*/
 			.fankiu{
 				width:100%;
 				display:flex;
@@ -418,7 +528,9 @@
 						span{
 							display:inline-block;
 							float:left;
-							padding:0.08rem 0.24rem;
+							width:1.04rem;
+							text-align:center;
+							padding:0.08rem 0;
 							background:#f2f2f2;
 							color:#acacac;
 							border-radius:0.3rem;

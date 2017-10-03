@@ -1,6 +1,8 @@
 import Faxian from "../components/faxian/faxian.vue"
 	import Sousuo from "../components/SouSuo/SouSuo.vue"
 	import FankuiXinxi from "../components/faxian/Fankui/FankuiXinxi.vue"
+	import XinxiangMu from "../components/faxian/XinxiangMu/XinxiangMu.vue"
+		import XiangmuXiangqing from "../components/faxian/XinxiangMu/XiangmuXiangqing.vue"
 	
 	import WoyaoRongzi from "../components/faxian/WoyaoRongzi/WoyaoRongzi.vue"
 		import Diaoyan from "../components/faxian/WoyaoRongzi/RongziLeixing/Diaoyan.vue"
@@ -27,6 +29,7 @@ import Shendu from "../components/shendu/shendu.vue"
 
 import Wode from "../components/wode/wode.vue"
 	import Jilu from "../components/wode/RongziJilu/jiLu.vue"
+		import types from "../components/wode/RongziJilu/DingzengZuoshi.vue"
 	import Baoming from "../components/wode/WoyaoBaoming/Baoming.vue"
 	import ZiliaoA from "../components/wode/GerenZiliao/GerenZiliaoA.vue"
 	import ZiliaoB from "../components/wode/GerenZiliao/GerenZiliaoB.vue"
@@ -38,6 +41,7 @@ import Wode from "../components/wode/wode.vue"
 	import ZiliaoH from "../components/wode/GerenZiliao/GerenZiliaoH.vue"
 	import Gangwei from "../components/wode/GangweiBiangeng/Gangwei.vue"
 	import Shezhi from "../components/wode/Shezhi/Shezhi.vue"
+	import RongziBeian from "../components/wode/RongziBeian/RongziBeian.vue"
 
 
 import ZhuCe from "../components/ZhuCe/ZhuCe0.vue"
@@ -48,6 +52,9 @@ import ZhuCe from "../components/ZhuCe/ZhuCe0.vue"
 		import Type3 from "../components/ZhuCe/type3.vue"
 		import Type4 from "../components/ZhuCe/type4.vue"
 		import Type5 from "../components/ZhuCe/type5.vue"
+		import Guquan from "../components/ZhuCe/Guquan/Guquan.vue"
+		import Zaiquan from "../components/ZhuCe/Zaiquan/Zaiquan.vue"
+		import Guzhai from "../components/ZhuCe/Guzhai/Guzhai.vue"
 
 
 import Denglu from "../components/DengLu/DengLu.vue"
@@ -61,7 +68,7 @@ export default ({
     {path: '/faxian',component: Faxian,
     	children:[
 			{
-				path:"WoyaoRongzi/:classid",component:WoyaoRongzi,
+				path:"WoyaoRongzi/:type",component:WoyaoRongzi,
 				children:[
 					{
 						path:"Diaoyan",component:Diaoyan
@@ -86,6 +93,14 @@ export default ({
 					},
 					{
 						path:"YanBao",component:YanBao
+					}
+				]
+			},
+			{
+				path:"XinxiangMu/:token",component:XinxiangMu,
+				children:[
+					{
+						path:"XiangmuXiangqing",component:XiangmuXiangqing
 					}
 				]
 			}
@@ -126,7 +141,7 @@ export default ({
 					path:"jilu/:classid",component:Jilu,
 						children:[
 				    		{
-								path:"jilu",component:Jilu
+								path:"types",component:types
 							}
 				    	]
 				},
@@ -170,31 +185,43 @@ export default ({
 				},
 				{
 					path:"shezhi/:classid",component:Shezhi
+				},
+				{
+					path:"RongziBeian/:classid",component:RongziBeian
 				}
     	]
     },
     {path: '/zhuce',component: ZhuCe,
       	children:[
       		{
-				path:"zhuceX/:classid",component:ZhuCe1,
+				path:"ZhuCe1/:classid",component:ZhuCe1,
 					children:[
 						{
-							path:"type0/:classid",component:Type0
+							path:"type0",component:Type0
 						},
 						{
-							path:"type1/:classid",component:Type1
+							path:"type1",component:Type1
 						},
 						{
-							path:"type2/:classid",component:Type2
+							path:"type2",component:Type2
 						},
 						{
-							path:"type3/:classid",component:Type3
+							path:"type3",component:Type3
 						},
 						{
-							path:"type4/:classid",component:Type4
+							path:"type4",component:Type4
 						},
 						{
-							path:"type5/:classid",component:Type5
+							path:"type5",component:Type5
+						},
+						{
+							path:"Guquan",component:Guquan
+						},
+						{
+							path:"Zaiquan",component:Zaiquan
+						},
+						{
+							path:"Guzhai",component:Guzhai
 						}
 					]
 			}

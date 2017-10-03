@@ -21,100 +21,9 @@
 						</li>
 					</ul>
 				</div>
-				<div class="sousuo-content border-topbottom">
-					<ul ref="index2" class="content-header border-bottom" index="type2"  @click.stap="typeName('1')">
-						<li>
-							<div class="content-top">
-								<span>定增&nbsp;(34565645)</span>
-								<span>定增</span>
-								<font>已投递</font>
-							</div>
-							<div class="content-bottom">
-								<span>1小时前</span>
-							</div>
-						</li>
-					</ul>
-				</div>
-				<div class="sousuo-content border-topbottom">
-					<ul ref="index3" class="content-header border-bottom" index="type3"  @click.stap="typeName('2')">
-						<li>
-							<div class="content-top">
-								<span>股权质押&nbsp;(34565645)</span>
-								<span>股权质押</span>
-								<font>已投递</font>
-							</div>
-							<div class="content-bottom">
-								<span>1小时前</span>
-							</div>
-						</li>
-					</ul>
-				</div>
-				<div class="sousuo-content border-topbottom">
-					<ul ref="index4" class="content-header border-bottom" index="type4"  @click.stap="typeName('3')">
-						<li>
-							<div class="content-top">
-								<span>转老股&nbsp;(34565645)</span>
-								<span>转老股</span>
-								<font>已投递</font>
-							</div>
-							<div class="content-bottom">
-								<span>1小时前</span>
-							</div>
-						</li>
-					</ul>
-				</div>
-				<div class="sousuo-content border-topbottom">
-					<ul ref="index5" class="content-header border-bottom" index="type5"  @click.stap="typeName('4')">
-						<li>
-							<div class="content-top">
-								<span>融资租赁&nbsp;(34565645)</span>
-								<span>融资租赁</span>
-								<font>已投递</font>
-							</div>
-							<div class="content-bottom">
-								<span>1小时前</span>
-							</div>
-						</li>
-					</ul>
-				</div>
-				<div class="sousuo-content border-topbottom">
-					<ul ref="index6" class="content-header border-bottom" index="type6"  @click.stap="typeName('5')">
-						<li>
-							<div class="content-top">
-								<span>公司调研&nbsp;(34565645)</span>
-								<span>公司调研</span>
-								<font>已投递</font>
-							</div>
-							<div class="content-bottom">
-								<span>1小时前</span>
-							</div>
-						</li>
-					</ul>
-				</div>
-				<!--<div class="sousuo-content border-topbottom">
-					<ul class="content-header border-bottom"  @click.stap="shuangchuangGo()">
-						<li>
-							<div class="content-top">
-								<span>双创债&nbsp;(34565645)</span>
-								<span>双创债</span>
-								<font>已投递</font>
-							</div>
-							<div class="content-bottom">
-								<span>1小时前</span>
-							</div>
-						</li>
-					</ul>
-				</div>-->
 				<box></box>
 				<div style="width:100%;height:0.5rem;"></div>
 			</div>
-			<router-view></router-view>
-			<!--<dingzengzuoshi ref="dingzengzuoshiShow"></dingzengzuoshi>-->
-			<zhuanlaogu ref="zhuanlaoguShow"></zhuanlaogu>
-			<diaoyan ref="diaoyanShow"></diaoyan>
-			<shuangchuang ref="shuangchuangShow"></shuangchuang>
-			<zhiya ref="zhiyaShow"></zhiya>
-			<zulin ref="zulinShow"></zulin>
 		</div>
 	</transition>
 </template>
@@ -122,12 +31,6 @@
 <script type="text/ecmascript">
 	import { Field } from 'mint-ui';
 	import box from "../../box.vue";
-//	import dingzengzuoshi from "./DingzengZuoshi.vue";
-	import zhuanlaogu from "./ZhuanlaoGu.vue";
-	import diaoyan from "./Diaoyan.vue";
-	import shuangchuang from "./ShuangChuang.vue";
-	import zhiya from "./ZhiYa.vue";
-	import zulin from "./ZuLin.vue";
 	
 	export default {
 		props:{
@@ -157,6 +60,7 @@
 			}
 		},
 		mounted() {
+			
 			this.$nextTick(function() {
 				this.boxUl=this.$refs.box.getElementsByTagName("ul");
 				console.log(this.boxUl)
@@ -174,24 +78,6 @@
 				window.location.href="#/wode/jilu/0/types";
 //				this.$refs.dingzengzuoshiShow.zuoshiBlock();
 			},
-//			dingzengGo(){
-//				this.$refs.dingzengzuoshiShow.dingzengBlock();
-//			},
-//			zhiyaGo(){
-//				this.$refs.zhiyaShow.zhiyaBlock();
-//			},
-//			zhuangguGo(){
-//				this.$refs.zhuanlaoguShow.zhuanlaoguBlock();
-//			},
-//			zulinGo(){
-//				this.$refs.zulinShow.zulinBlock();
-//			},
-//			diaoyanGo(){
-//				this.$refs.diaoyanShow.diaoyanBlock();
-//			},
-//			shuangchuangGo(){
-//				this.$refs.shuangchuangShow.shuangchuangBlock();
-//			}
 			
 //			show(){
 ////				dom更新后在执行使用$refs
@@ -228,12 +114,6 @@
 		},
 		components:{
 			box,
-//			dingzengzuoshi,
-			zhuanlaogu,
-			diaoyan,
-			shuangchuang,
-			zhiya,
-			zulin
 		}
 	}
 </script>

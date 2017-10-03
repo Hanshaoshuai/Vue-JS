@@ -35,15 +35,17 @@
 							<span @click.stap="xuanze('6')">后续添加</span>
 						</ul>
 					</div>
-					<div class="zhuying_1 liangdian_1 border-topbottom">
-						<div class="ferst">您是什么类型的投资机构<font></font></div>
-						<ul ref="biaoqian2">
-							<span class="bianse" @click.stap="xuanze2('0')">股权投资</span>
-							<span @click.stap="xuanze2('1')">债权投资</span>
-							<span @click.stap="xuanze2('2')">股债兼投</span>
-						</ul>
-					</div>
-					<div class="zhuce-food" @click.stop="zhuceCont">
+					<transition name="fades">
+						<div v-show="Leixing" class="zhuying_1 liangdian_1 border-topbottom">
+							<div class="ferst">您是什么类型的投资机构<font></font></div>
+							<ul ref="biaoqian2">
+								<span class="bianse" @click.stap="xuanze2('0','Guquan')">股权投资</span>
+								<span @click.stap="xuanze2('1','Zaiquan')">债权投资</span>
+								<span @click.stap="xuanze2('2','Guzhai')">股债兼投</span>
+							</ul>
+						</div>
+					</transition>
+					<div class="zhuce-food" @click.stop="XiaYibu()">
 						<span>下一步</span>
 					</div>
 				</div>
@@ -81,6 +83,7 @@
 		},
 		data () {
 			return {
+				Leixing:true,
 				phone:"",
 				captcha:"",
 				password:"",
@@ -97,6 +100,8 @@
 				id:3,
 				showFlag:false,
 				onlyContent:true,
+				index:"0",
+				JigouType:"Guquan"
 			}
 		},
 		methods:{
@@ -105,62 +110,25 @@
 //				history.go(-1)
 //				window.location.href="#/faxian";
 			},
-			zhuceCont(){
-				var tate=this;
-				var phone=/^1[34578]\d{9}$/;
-				var user = this.phone;
-				var ph = this.phone;
-				var pw = this.password;
-				var url = "http://datainfo.duapp.com/shopdata/userinfo.php?status=register&userID="+ph+"&password="+pw;
-				if(user=="" || this.captcha=="" || this.password=="" || this.passwords==""){
-					Toast('请完善信息');
-//					Toast('输入手机号有误');
+			XiaYibu(){
+				if(this.index==0){
+					window.location.href="#/zhuce/ZhuCe1/12/"+this.JigouType;
 				}else{
-					if(!phone.test(this.phone)) {
-						this.tishi="输入手机号有误";
-						Toast('输入手机号有误');
-						return;
-					}else{
-						if(this.password!=this.passwords){
-							Toast('请输入相同密码');
-						}else{
-//							Toast('成功');
-							this.$http.get(url).then(function(response){
-								console.log("login",response)
-								if(response==1){
-									alert("注册成功请重新登录");
-									Toast({
-									  message: '注册成功请重新登录',
-//									  position: 'bottom',
-									  duration: 2000
-									});
-									setTimeout(function(){
-										window.location.href="#/denglu";
-									},2000)
-								}else{
-									Toast({
-									  message: '此账号已注册请您重新注册',
-//									  position: 'bottom',
-									  duration: 2000
-									});
-								}
-							})
-						}
-					}
+					window.location.href="#/zhuce/ZhuCe1/12/type"+this.index;
 				}
 				
-//				Toast({
-//				  message: '您已注册成功',
-//				  iconClass: 'icon icon-success'
-//				});
-//				setTimeout(() => {
-//				  	window.location.href="#/faxian";
-//				}, 3500);
+				
 			},
 			xuanze(index){
 //				console.log(this.$refs.biaoqian.getElementsByTagName("span"))
 				var spans=this.$refs.biaoqian.getElementsByTagName("span")
 				var length=spans.length;
+				this.index=index;
+				if(index==0){
+					this.Leixing=true;
+				}else{
+					this.Leixing=false;
+				}
 				for(var i=0; i<length; i++){
 					if(spans[i].getAttribute("class")=="bianse"){
 						spans[i].setAttribute("class","");
@@ -168,10 +136,11 @@
 				}
 				spans[index].setAttribute("class","bianse")
 			},
-			xuanze2(index){
+			xuanze2(index,type){
 //				console.log(this.$refs.biaoqian.getElementsByTagName("span"))
 				var spans=this.$refs.biaoqian2.getElementsByTagName("span")
 				var length=spans.length;
+				this.JigouType=type;
 				for(var i=0; i<length; i++){
 					if(spans[i].getAttribute("class")=="bianse"){
 						spans[i].setAttribute("class","");
@@ -247,6 +216,17 @@
 	  	transition: all .5s ease;
 	}
 	.fade-enter, .fade-leave-active {
+	  	transform: translateX(4.17rem);
+	  	/*transform:rotate(360deg);*/
+	  	/*opacity: 0;*/
+	}
+	.fades-enter-active {
+	  	transition: all .5s ease;
+	}
+	.fades-leave-active {
+	  	transition: all .5s ease;
+	}
+	.fades-enter, .fades-leave-active {
 	  	transform: translateX(4.17rem);
 	  	/*transform:rotate(360deg);*/
 	  	/*opacity: 0;*/

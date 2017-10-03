@@ -94,15 +94,15 @@
 				numberTo:"",
 				introduction:"",
 				showFlag:false,
-				GuquanShow:false,
+				GuquanShow:true,
 //				onlyContent:true,
 //				times:20177111129
 			}
 		},
 		methods:{
 			fanhui(){
-				this.GuquanShow=false;
-//				history.go(-1)
+//				this.GuquanShow=false;
+				history.go(-1)
 			},
 			Toguquan(){
 				this.GuquanShow=true;
