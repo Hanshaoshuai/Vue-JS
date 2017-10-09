@@ -75,15 +75,17 @@
 							</div>
 						</div>
 					</div>
-				</div>			</div>
-			<typea ref="TypeA"></typea>
+				</div>			
+			</div>
+			<router-view></router-view>
+			<!--<router-view :setscrollTop="scrollTop" :datas="datas" :TouziToken='TouziToken'></router-view>-->
 		</div>
 	</transition>
 </template>
 
 <script type="text/ecmascript">
 	import { Field } from 'mint-ui';
-	import typea from './ShenfenLeixing/TypeH.vue';
+//	import typea from './ShenfenLeixing/TypeH.vue';
 //	import fankui from "./Fankui/Fankui.vue";
 //	import BScroll from "better-scroll";
 //	import Vue from "vue";
@@ -119,10 +121,10 @@
 //				if(!event._constructed){
 //					return;
 //				}
-				this.$refs.show.listShow();
 			},
 			xiangQing(){
-				this.$refs.TypeA.typeShow();
+				window.location.href="#/sousuo/"+this.$route.params.token+'/'+"SousuoLeixing";
+//				this.$refs.TypeA.typeShow();
 			}
 //			show(){
 ////				dom更新后在执行使用$refs
@@ -158,7 +160,7 @@
 //			}
 		},
 		components:{
-			typea
+//			typea
 //			cartcontrol,
 //			ratingselect,
 //			split

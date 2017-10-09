@@ -8,7 +8,16 @@
 			<div class="box">
 				<div style="width:100%;height:0.45rem;"></div>
 				<div class="fankiu">
-					<div class="content-food border-bottom" @click.stap="xinxiTo()">
+					<div v-for="(item,index) in res" class="content-food border-bottom" @click.stap="xinxiTo(item.id)">
+						<p>
+							<img class="border" :src="item.photo" alt="" />
+							<font>6</font>
+						</p>
+						<span>&nbsp;&nbsp;{{item.uname}}</span>
+						<span>&nbsp;&nbsp;{{item.com_short}}</span>
+						<span>&nbsp;&nbsp;{{item.position}}</span>
+					</div>
+					<!--<div class="content-food border-bottom" @click.stap="xinxiTo()">
 						<p>
 							<img class="border" src="" alt="" />
 							<font>6</font>
@@ -16,16 +25,7 @@
 						<span>&nbsp;&nbsp;次阅读</span>
 						<span>&nbsp;&nbsp;投资经理</span>
 						<span>&nbsp;&nbsp;张经理</span>
-					</div>
-					<div class="content-food border-bottom" @click.stap="xinxiTo()">
-						<p>
-							<img class="border" src="" alt="" />
-							<font>6</font>
-						</p>
-						<span>&nbsp;&nbsp;次阅读</span>
-						<span>&nbsp;&nbsp;投资经理</span>
-						<span>&nbsp;&nbsp;张经理</span>
-					</div>
+					</div>-->
 				</div>
 			</div>
 			<!--<fankuixinxi ref="xinxiShow"></fankuixinxi>-->
@@ -41,6 +41,7 @@
 	
 	export default {
 		props:{
+			datas:{}
 //			food:{
 //				type:Object
 //			}
@@ -48,35 +49,42 @@
 		data () {
 			return {
 				res:"",
+				token:"",
 				introduction:"",
 				times:20177111129,
 				showFlag:false,
-				tucaoShow:false,
-				datas:{}
+				tucaoShow:true,
+				type:"1"
+			}
+		},
+		mounted(){
+//			获取评论反馈列表
+			console.log(this.$route.params.token,)
+			this.token={
+				token:this.$route.params.token
+			}
+			if(this.res==""){
+				this.$http.post(URL.path+'chatcomment/comment_list',this.token,{emulateJSON:true}).then(function(res){
+					this.res=res.body.data;
+					console.log("取到评论反馈列表");
+					console.log(this.res);
+				},function(res){
+				    console.log(res);
+				})
 			}
 		},
 		methods:{
 			yijianHind(){
-				this.tucaoShow=false;
+				history.go(-1)
+//				this.tucaoShow=false;
 			},
-			fankuiBlock(datas){
-				this.tucaoShow=true;
-				this.datas=datas;
-//				获取评论反馈列表
-				console.log(URL.path)
-				if(this.res==""){
-					this.$http.post(URL.path+'chatcomment/comment_list',datas.token,{emulateJSON:true}).then(function(res){
-						var data=res
-						this.res=res;
-						console.log("取到评论反馈列表");
-					},function(res){
-					    console.log(res);
-					})
-				}
+			fankuiBlock(){
+			
 			},
-			xinxiTo(){
+			xinxiTo(to_id){///Xeiyi/:token/:uID/:type/:XiangmuID
+				console.log(to_id)
 				console.log(this.datas);
-				window.location.href="#/fankuixinxi/"+this.datas.token+'/'+"12";
+				window.location.href="#/fankuixinxi/"+this.$route.params.token+'/'+to_id+'/'+this.type;
 			}
 			
 //			show(){

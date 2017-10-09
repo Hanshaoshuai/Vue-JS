@@ -12,7 +12,7 @@
 					<div class="content-food">
 						<span class="laizi">来自：</span>
 						<img class="border" src="" alt="" />
-						<span>&nbsp;王美丽&nbsp;</span>
+						<span>&nbsp;{{data.uname}}&nbsp;</span>
 						<font class="bbb border-left"></font>
 						<span>投资经理</span>
 						<span>&nbsp;&nbsp;董秘</span>
@@ -25,9 +25,9 @@
 							<li class="border-bottom"></li>
 							<li class="tishi-center">
 								<div class="content-heder">
-									<span>天天</span>
-									<span class="text-center">54587561</span>
-									<span>&nbsp;定增</span>
+									<span>{{data.com_name}}</span>
+									<span class="text-center">{{data.com_code}}</span>
+									<span>&nbsp;{{data.type}}</span>
 								</div>
 							</li>
 							<li class="border-bottom"></li>
@@ -35,32 +35,32 @@
 						<div class="zhuying_1">
 							<div class="ferst"><span></span>项目推荐</div>
 							<div class="last">
-								<p>资经理资经理资主营业经理主营业资经理资主营业经理资经理资经理</p>
+								<p>{{data.lightspot}}资经理资经理资主营业经理主营业资经理资主营业经理资经理资经理</p>
 							</div>
 						</div>
 					</div>
 					<div class="zhuying_1 border">
 						<div class="ferst"><span></span>经营业绩</div>
 						<div class="last">
-							<p>上一财年：营收&nbsp;<span>221亿</span>&nbsp;&nbsp;净利润&nbsp;<span>12万</span></p>
-							<p>今年预计：营收&nbsp;<span>12亿</span>&nbsp;&nbsp;净利润&nbsp;<span>1221万</span></p>
+							<p>上一财年：营收&nbsp;<span>{{data.last_year_revenue}}亿</span>&nbsp;&nbsp;净利润&nbsp;<span>{{data.last_year_profit}}万</span></p>
+							<p>今年预计：营收&nbsp;<span>{{data.predict_revenue}}亿</span>&nbsp;&nbsp;净利润&nbsp;<span>{{data.predict_profit}}万</span></p>
 						</div>
 					</div>
 					<div class="zhuying_1 border">
 						<div class="ferst"><span></span>融资计划</div>
 						<div class="last">
-							<p>融资总额：<span>245万</span></p>
-							<p>投前估值：<span>244万</span></p>
+							<p>融资总额：<span>{{data.total_finance}}万</span></p>
+							<p>投前估值：<span>{{data.appraisement}}万</span></p>
 						</div>
 					</div>
 				</div>
 				<div class="border aaa">
-					<div class="content-header" @click.stap="chakanBA()">
-						<span>查看商业计划书（BP）</span>
+					<div class="content-header" @click.stap="xiangguan()">
+						<span>查看项目分析与尽调报告</span>
 						<font></font>
 					</div>
-					<div class="content-header" @click.stap="xiangguan()">
-						<span>查看公司相关研报</span>
+					<div class="content-header" @click.stap="chakanBA()">
+						<span>查看商业计划书（BP）</span>
 						<font></font>
 					</div>
 				</div>
@@ -97,12 +97,13 @@
 			</div>
 			<!--<youhuiquan ref="youhuiShow"></youhuiquan>-->
 			<tishi ref="tishiShow" :xingXi="xingXi" :content="content"></tishi>
+			<router-view></router-view>
 		</div>
 	</transition>
 </template>
 
 <script type="text/ecmascript">
-	import Vue from 'vue'
+	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
 	import box from "../../box.vue";
 	import tishi from "../../Tishi.vue";
@@ -112,13 +113,17 @@
 	
 	export default {
 		props:{
-			datas:{}
+			datas:{},
+			XiangmuID:{},
+			TouziToken:{}
 //			food:{
 //				type:Object
 //			}
 		},
 		data () {
 			return {
+				data:"",
+				uid:"",
 				wanchengDu:"1",   //个人资料完成度低于80%要提示    调用 tishiBlock();
 				fankui:"45",
 				genjin:"458",
@@ -142,6 +147,21 @@
 				types:"0"
 			}
 		},
+		mounted(){
+			console.log("jjjjjjjjjjjj")
+			//项目详情
+			var data = {
+				token:this.TouziToken.token,
+				item_id:this.$route.params.XiangmuID			//	项目id
+			}
+			console.log(this.data)
+			this.$http.post(URL.path+'finance/item_detail',data,{emulateJSON:true}).then(function(res){
+				this.data=res.body.data[0]
+				console.log(res);
+			},function(res){
+			    console.log(res.status);
+			})
+		},
 		methods:{
 			yijianHind(){
 				history.go(-1)
@@ -153,23 +173,26 @@
 			xinxiTo(){
 				this.$refs.xinxiShow.xinxiBlock();
 			},
+			chakanBA(){
+				window.location.href="#/faxian/XinxiangMu/"+this.TouziToken.token+"/XiangmuXiangqing/"+this.data.uid+'/BP';
+			},
 			liuYanTo(){
 				if(this.types==1){			//跳转到留言页面
-					window.location.href="#/fankuixinxi/"+this.datas['token']+"/12";
+					window.location.href="#/fankuixinxi/"+this.TouziToken.token+"/"+this.data.uid+'/1';
 				}
 //				this.liuYans="liuYan";
 			},
 			jiaoHuanTo(){
-				if(this.types==1){				//换取名片申请提示
-					var datas={
+				if(this.types==1){
+					var datas={								//换取名片申请提示
 						token:this.$route.params.token,		//换名片接口
-						to_id:"14",			//接收方id
-						item_id:"25"							//项目id
+						to_id:this.data.uid,				//接收方id
+						item_id:this.XiangmuID				//项目id
 					}
 					console.log(datas)
 					this.$http.post(URL.path+'chatcomment/get_card',datas,{emulateJSON:true}).then(function(res){
-						var data=res
-						console.log("换名片申请成功"+res);
+						console.log("换名片申请成功");
+						console.log(res);
 						this.xingXi.text="您已申请向对方换取名片，请注意查收..."
 						this.$refs.tishiShow.tishiBlock(this.mingPian,this.token);//CanShu是下级要传的参数
 					},function(res){
@@ -370,10 +393,10 @@
 						flex:1;
 						height:0.2rem;
 						&:first-child{
-							max-width:15%;
+							max-width:10%;
 						}
 						&:last-child{
-							max-width:15%;
+							max-width:10%;
 						}
 						&.tishi-center{
 							width:0.57rem;
@@ -418,13 +441,18 @@
 				}
 			}
 			.content-header{
+				position:relative;
 				background:#fff;
 				padding:0.08rem 2.5%;
 				font-size:0.16rem;
+				z-index:1000;
 				span{
 					line-height:0.3rem;
 				}
 				font{
+					/*position:absolute;
+					top:0.04rem;
+					right:0;*/
 					float:right;
 					display:inline-block;
 					width:0.2rem;

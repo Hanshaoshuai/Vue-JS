@@ -7,6 +7,16 @@
 			</div>
 			<div class="box">
 				<div style="width:100%;height:0.5rem;"></div>
+				<div class="zhuying">
+					<div class="zhuying-heder"><font></font>您还可以在电脑端发起融资<span>（推荐）</span></div>
+					<div class="zhuying_1">
+						<div class="ferst">
+							<span>1.登录网站www.qironghome.com,输入用户名和密码，登录您的账号</span>
+							<span>2.点击登录“发起融资”，按照页面提示步骤操作即可完成</span>
+							<span>3.您的项目融资信息将会一对一的发送给您后续步骤中选择的机构投资人，也会以私密模式出现在“其他正在融资的项目”列表里（参见“发现”页面示例），不会大范围公开。</span>
+						</div>
+					</div>
+				</div>
 				<div class="fankiu">
 					<div class="content-food" ref="foods">
 						<span>请选择您的融资方式</span>
@@ -30,7 +40,7 @@
 							<li class="src5" ref="img5" index="img5" @click.stap="zulinGo('ZuLin','5')">
 								<span>融资租赁</span><font></font>
 							</li>
-							<li  style="display:none;" class="src6" ref="img6" index="img6" @click.stap="yanbaoGo('YanBao','6')">
+							<li  style="" class="src6" ref="img6" index="img6" @click.stap="yanbaoGo('YanBao','6')">
 								<span>研报支持</span><font></font>
 							</li>
 						</ul>
@@ -38,20 +48,10 @@
 							<li style="display:none;" class="src7" ref="img7" index="img7" @click.stap="shuangchuangGo('ShuangChuang')">
 								<span>双创债</span><font></font>
 							</li>
-							<li  style="display:none;" class="src8" ref="img8" index="img8" @click.stap="diaoyanGo('Diaoyan')">
+							<li  style="" class="src8" ref="img8" index="img8" @click.stap="diaoyanGo('Diaoyan','7')">
 								<span>公司调研</span><font></font>
 							</li>
 						</ul>
-					</div>
-				</div>
-				<div class="zhuying">
-					<div class="zhuying-heder"><font></font>您还可以在电脑端发起融资<span>（推荐）</span></div>
-					<div class="zhuying_1">
-						<div class="ferst">
-							<span>1.登录网站www.qironghome.com,输入用户名和密码，登录您的账号</span>
-							<span>2.点击登录“发起融资”，按照页面提示步骤操作即可完成</span>
-							<span>3.您的项目融资信息将会一对一的发送给您后续步骤中选择的机构投资人，也会以私密模式出现在“其他正在融资的项目”列表里（参见“发现”页面示例），不会大范围公开。</span>
-						</div>
 					</div>
 				</div>
 				<div class="butten">
@@ -96,6 +96,7 @@
 		mounted(){
 			console.log(this.$route.params['type'])
 			this.token=this.$route.params['type'];
+			//获取标签
 			var datas = {
 				token:this.$route.params['type'],//	token	是	[string]	URL获取的参数
 			}
@@ -327,7 +328,7 @@
 			.zhuying{
 				width:100%;
 				.zhuying-heder{
-					padding:0 0.2rem 0.08rem 0.2rem;
+					padding:0.16rem 0.2rem 0.08rem 0.2rem;
 					line-height:0.2rem;
 					font-size:0.18rem;
 					/*font-weight:600;*/

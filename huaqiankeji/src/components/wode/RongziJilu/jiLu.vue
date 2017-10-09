@@ -7,12 +7,12 @@
 			</div>
 			<div class="box" ref="box">
 				<div style="width:100%;height:0.55rem;"></div>
-				<div class="sousuo-content border-topbottom">
-					<ul ref="index1" class="content-header border-bottom" index="type1"  @click.stap="typeName('0')">
+				<div v-for="(item,index) in data" class="sousuo-content border-topbottom">
+					<ul ref="index1" class="content-header border-bottom" index="type1"  @click.stap="typeName(item.id,item.type)">
 						<li>
 							<div class="content-top">
-								<span>天立泰&nbsp;(34565645)</span>
-								<span>做市</span>
+								<span>{{item.com_name}}&nbsp;({{item.com_code}})</span>
+								<span>{{item.type}}</span>
 								<font>已投递</font>
 							</div>
 							<div class="content-bottom">
@@ -21,7 +21,7 @@
 						</li>
 					</ul>
 				</div>
-				<div class="sousuo-content border-topbottom">
+				<!--<div class="sousuo-content border-topbottom">
 					<ul ref="index2" class="content-header border-bottom" index="type2"  @click.stap="typeName('1')">
 						<li>
 							<div class="content-top">
@@ -76,8 +76,8 @@
 							</div>
 						</li>
 					</ul>
-				</div>
-				<div class="sousuo-content border-topbottom">
+				</div>-->
+				<!--<div class="sousuo-content border-topbottom">
 					<ul ref="index6" class="content-header border-bottom" index="type6"  @click.stap="typeName('5')">
 						<li>
 							<div class="content-top">
@@ -90,7 +90,7 @@
 							</div>
 						</li>
 					</ul>
-				</div>
+				</div>-->
 				<!--<div class="sousuo-content border-topbottom">
 					<ul class="content-header border-bottom"  @click.stap="shuangchuangGo()">
 						<li>
@@ -108,37 +108,39 @@
 				<box></box>
 				<div style="width:100%;height:0.5rem;"></div>
 			</div>
-			<router-view></router-view>
+			<router-view :token="token" :XiangmuID="XiangmuID"></router-view>
 			<!--<dingzengzuoshi ref="dingzengzuoshiShow"></dingzengzuoshi>-->
-			<zhuanlaogu ref="zhuanlaoguShow"></zhuanlaogu>
+			<!--<zhuanlaogu ref="zhuanlaoguShow"></zhuanlaogu>-->
 			<diaoyan ref="diaoyanShow"></diaoyan>
 			<shuangchuang ref="shuangchuangShow"></shuangchuang>
-			<zhiya ref="zhiyaShow"></zhiya>
-			<zulin ref="zulinShow"></zulin>
+			<!--<zhiya ref="zhiyaShow"></zhiya>-->
+			<!--<zulin ref="zulinShow"></zulin>-->
 		</div>
 	</transition>
 </template>
 
 <script type="text/ecmascript">
+	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
 	import box from "../../box.vue";
 //	import dingzengzuoshi from "./DingzengZuoshi.vue";
-	import zhuanlaogu from "./ZhuanlaoGu.vue";
+//	import zhuanlaogu from "./ZhuanlaoGu.vue";
 	import diaoyan from "./Diaoyan.vue";
 	import shuangchuang from "./ShuangChuang.vue";
-	import zhiya from "./ZhiYa.vue";
-	import zulin from "./ZuLin.vue";
+//	import zhiya from "./ZhiYa.vue";
+//	import zulin from "./ZuLin.vue";
 	
 	export default {
 		props:{
-//			food:{
+			token:{
 //				type:Object
-//			}
+			}
 		},
 		data () {
 			return {
+				data:'',
 				x:'1',
-				urlName:"Dingzeng",
+				urlName:"DingzengZuoshi",
 				fankui:"45",
 				genjin:"458",
 				introduction:"",
@@ -147,16 +149,30 @@
 				tucaoShow:true,
 				boxUl:"",
 				types:{
-					type0:"Zuoshi",
-					type1:"Dingzeng",
-					type2:"ZhiYa",
-					type3:"ZhuanlaoGu",
-					type4:"ZuLin",
-					type5:"Diaoyan"
-				}
+					type1:"DingzengZuoshi",
+					type2:"DingzengZuoshi",
+					type3:"ZhuanlaoGu1",
+					type4:"ZhiYa1",
+					type5:"ZuLin1"
+//					type5:"Diaoyan"
+				},
+				XiangmuID:""
 			}
 		},
 		mounted() {
+			console.log(this.token)
+			//项目列表（自己创建的历史融资记录）	
+			var datas = {
+				token:this.token,//	token	是	[string]		
+				page:"",	//page	是	[string]		
+				size:""	//size	是	[string]
+			}
+			this.$http.post(URL.path+'finance/creae_list',datas,{emulateJSON:true}).then(function(res){
+				this.data=res.body.data;
+				console.log(res.body.data);
+			},function(res){
+			    console.log(res.status);
+			})
 			this.$nextTick(function() {
 				this.boxUl=this.$refs.box.getElementsByTagName("ul");
 				console.log(this.boxUl)
@@ -167,11 +183,12 @@
 				history.go(-1)
 //				this.tucaoShow=false;
 			},
-			typeName(id){
-				var Uls=this.boxUl[id]
-				this.types['type'+id]
-				console.log(this.types['type'+id])
-				window.location.href="#/wode/jilu/0/types";
+			typeName(id,type){
+				var Uls=this.boxUl[type]
+				this.XiangmuID=id;
+				this.types['type'+type]
+				console.log(this.types['type'+type])
+				window.location.href="#/wode/jilu/0/"+this.types['type'+type];
 //				this.$refs.dingzengzuoshiShow.zuoshiBlock();
 			},
 //			dingzengGo(){
@@ -229,11 +246,11 @@
 		components:{
 			box,
 //			dingzengzuoshi,
-			zhuanlaogu,
+//			zhuanlaogu,
 			diaoyan,
 			shuangchuang,
-			zhiya,
-			zulin
+//			zhiya,
+//			zulin
 		}
 	}
 </script>

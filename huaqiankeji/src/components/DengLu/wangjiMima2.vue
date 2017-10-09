@@ -1,9 +1,9 @@
 <template>
-	<!--<transition name="fade">-->
+	<transition name="fade">
 		<div class="denglu" v-show="showFlag">
 			<div class="xiangmu-header" @click.stap="yijianHind()">
 				<span class="xiangmu-left"><img src="./img/back.png"/></span>
-				<span>注册</span>
+				<span>重置密码</span>
 			</div>
 			<div class="logo">
 				<ul>
@@ -14,38 +14,24 @@
 				<ul>
 					<li>
 						<span></span>
-						<input ref="shouji" v-model="phone" placeholder="请输入手机号" type="number" class="ferst mint-field-core"/>
+						<input ref="shouji" v-model="xinmima1" placeholder="请输入新密码" type="password" class="ferst mint-field-core"/>
 						<transition name="fade"><font v-show="shoujis" @click.stop="quxiao()"></font></transition>
 					</li>
 					<li>
 						<span></span>
-						<input ref="mima" v-model="texts" placeholder="请输验证码" type="text" class="last mint-field-core"/>
-						<font ref="yanzhengMa" @click.stop="huoquMima()">获取验证码</font>
-					</li>
-					<li>
-						<span></span>
-						<input ref="mimas" v-model="password" placeholder="请输入密码" type="password" class="last mint-field-core"/>
-						<font v-show="mimas" @click.stop="mima()"></font>
+						<input ref="mimas" v-model="xinmima2" placeholder="请输入密码" type="password" class="last mint-field-core"/>
+						<transition name="fade"><font v-show="mimas" @click.stop="mima()"></font></transition>
 					</li>
 				</ul>
 				
 				
 			</div>
 			<div class="denglu-food" @click.stop="denglus()">
-				<span>注&nbsp;&nbsp;册</span>
+				<span>立即重置</span>
 			</div>
-			<div class="denglu-to">
-				<ul>
-					<!--<li class="denglu-wangji">忘记密码</li>&nbsp;&nbsp;|&nbsp;&nbsp;-->
-					<li class="denglu-zhuce" @click.stop="dengluGo()"><span>登录已有账号</span></li>
-				</ul>
-			</div>
-			<div class="denglu-list denglu-bottom">
-				合作热线：400 235648
-			</div>
-			<router-view :datas="datas"></router-view>
+			<!--<router-view></router-view>-->
 		</div>
-	<!--</transition>-->
+	</transition>
 </template>
 
 <script type="text/ecmascript">
@@ -70,10 +56,8 @@
 		},
 		data () {
 			return {
-				datas:"",
-				phone:'',
-				texts:"",
-				password:'',
+				xinmima1:'',
+				xinmima2:'',
 				times:20177111129,
 				showFlag:true,
 				onlyContent:false,
@@ -92,54 +76,63 @@
 			denglus(){
 				var tate=this;
 				var phone=/^1[34578]\d{9}$/;
-//				var url = "http://datainfo.duapp.com/shopdata/userinfo.php?status=login&userID="+userID+"&password="+password;
-				this.datas = {
-					phone: this.phone,  //手机号
-					texts:this.texts,	//验证码
-					pwd: this.password, //密码
-//					version: this.type,//版本号
+				var xinmima1 = /^[a-zA-Z0-9]{6,12}$/;
+				var ph=0;
+				var pw=0;
+				var yz=0;
+				var url = "http://datainfo.duapp.com/shopdata/userinfo.php?status=login&userID="+this.xinmima1+"&password="+this.xinmima2;
+				var datas = {
+					phone: this.xinmima1,  //手机号
+					pwd: this.xinmima2,   //密码
+					version: this.type,//版本号
+					terminalNo: '3'
 				}
-				console.log(this.datas)
-				if(!phone.test(this.phone)) {
-					Toast('输入手机号有误');
+				if(!xinmima1.test(this.xinmima1)) {
+					Toast('密码格式错误');
+					return;
+				}else{
+					ph=1;
+				}
+				if(!this.xinmima2) {
+					Toast('请输入二次密码');
+					return;
+				}else{
+					pw=1;
+				}
+				if(this.xinmima1!==this.xinmima2){
+					Toast('两次密码不一致');
 					return;
 				}
-				if(!this.texts) {
-					Toast('请输入验证码');
-					return;
-				}
-				if(!this.password) {
-					Toast('请输入密码');
-					return;
-				}
-				window.location.href="#/zhuce/ZhuCe1/"+this.token;
-//				Indicator.open({spinnerType: 'fading-circle'});
-//				this.$http.post(URL.path+'api/index.php/login/login',{datas},{emulateJSON:true}).then(function(res){
-//                  console.log(res);
-//              },function(res){
-//                  console.log(res);
-//              });
-//			
-//			
-//			  	this.$http.get(url).then(function(response){
-//					console.log("login",response)
-//					if(response.body != "0" && response.body != "2"){
-//						Indicator.close();
-//						localStorage.setItem("userID",userID);
-//						if(confirm("已成功登陆是否进入首页?")){
-//							window.location.href="#/fanxian";
+				if(ph==1 && pw==1 && this.xinmima1==this.xinmima2){
+//					Indicator.open({spinnerType: 'fading-circle'});
+//					this.$http.post(URL.path+'api/index.php/login/login',{datas},{emulateJSON:true}).then(function(res){
+//                      console.log(res);
+//                  },function(res){
+//                      console.log(res);
+//                  });
+					this.dengluGo()
+					
+//				  	this.$http.get(url).then(function(response){
+//						console.log("login",response)
+//						if(response.body != "0" && response.body != "2"){
+//							Indicator.close();
+//							localStorage.setItem("userID",userID);
+//							if(confirm("已成功登陆是否进入首页?")){
+//								window.location.href="#/fanxian";
+//							}
+//						}else{
+//							Indicator.close();
+//							Toast("您已注册成功请进一步完善信息")
+//							window.location.href="#/zhuce/ZhuCe1/"+this.token;
 //						}
-//					}else{
-//						Indicator.close();
-//						Toast("您已注册成功请进一步完善信息")
-//					}
-//				})
+//					})
+				}
 			},
 			dengluGo(){
 				window.location.href="#/denglu";
 			},
 			quxiao(){
-				this.phone="";
+				this.xinmima1="";
 				this.shoujis=false;
 			},
 			huoquMima(){
@@ -148,14 +141,14 @@
 				}
 				var data={
 					phone:this.phone
-				}							//获取验证码接口
+				}
 				this.$http.post(URL.path+'regist/smsCode',data,{emulateJSON:true}).then(function(res){
                     console.log(res.body);
                     if(res.body.returnCode=='0011'){
 						Toast(res.body.msg);
 					}else{
 						if(res.body.returnCode=='200'){
-							this.timesgo();
+							
 						}else{
 							Toast("系统正忙请稍后！");
 						}
@@ -164,31 +157,14 @@
                     console.log(res);
                 });
 			},
-			timesgo(ok){
-				Toast("已发送至您的手机请注意查收");
-				this.ok=true;
-				var thate=this;
-				var _time=0;                           //60秒限时
-				var x=60;
-				function dong(){
-//					p.innerHTML=x+"秒";
-					x--;
-					if(x<=0){
-						clearInterval(_time);
-						thate.$refs.yanzhengMa.innerText="重新获取验证码";
-						thate.ok=false;
-					}else{
-						thate.$refs.yanzhengMa.innerText=x+"秒";
-					}
-				}
-				_time = setInterval(dong, 1000);
-			},
 			mima(){
-				if(this.$refs.mimas.getAttribute('type')=="password"){
-					this.$refs.mimas.setAttribute('type','text');
-				}else{
-					this.$refs.mimas.setAttribute('type','password');
-				}
+				this.xinmima2="";
+				this.mimas=false;
+//				if(this.$refs.mimas.getAttribute('type')=="password"){
+//					this.$refs.mimas.setAttribute('type','text');
+//				}else{
+//					this.$refs.mimas.setAttribute('type','password');
+//				}
 			}
 		},
 		mounted(){
@@ -204,12 +180,12 @@
 //			}
 		},
 		updated(){
-			if(this.phone!=""){
+			if(this.xinmima1!=""){
 				this.shoujis=true;
 			}else{
 				this.shoujis=false;
 			}
-			if(this.password!=""){
+			if(this.xinmima2!=""){
 				this.mimas=true;
 			}else{
 				this.mimas=false;
@@ -248,7 +224,9 @@
 		background:#fff;
 		width:100%;
 		height:100%;
-		z-index:10;
+		left:0;
+		top:0;
+		z-index:100;
 		.xiangmu-header{
 			position:fixed;
 			top:0;
@@ -261,7 +239,7 @@
 			text-align:center;
 			line-height:0.45rem;
 			color:#fff;
-			z-index:21;
+			z-index:300;
 			.xiangmu-left{
 				position:absolute;
 				height:100%;
@@ -318,13 +296,13 @@
 						width:0.14rem;
 						height:0.16rem;
 						margin:0.05rem 0.16rem 0 0.13rem;
-						background-image:url("../DengLu/img/gerens.png");
+						background-image:url("../DengLu/img/mimas.png");
 						background-size:100% 100%;
 						
 					}
 					font{
 						display:inline-block;
-						width:0.17rem;
+						width:0.18rem;
 						height:0.17rem;
 						margin:0.04rem 0.16rem 0 0;
 						background-image:url("../DengLu/img/quxiao.png");
@@ -337,47 +315,26 @@
 						}
 						font{
 							display:inline-block;
-							width:0.19rem;
-							height:0.13rem;
-							margin:0.06rem 0.15rem 0 0;
-							background-image:url("../DengLu/img/xianshimima.png");
+							/*width:0.19rem;
+							height:0.13rem;*/
+							width:0.17rem;
+							height:0.17rem;
+							margin:0.04rem 0.16rem 0 0;
+							/*margin:0.06rem 0.15rem 0 0;*/
+							background-image:url("../DengLu/img/quxiao.png");
+							/*background-image:url("../DengLu/img/xianshimima.png");*/
 							background-size:100% 100%;
 							
 						}
 					}
-					&:nth-child(2n){
-						border-bottom:0.008px solid #d0d0d0;
-						span{
-							background-image:url("../DengLu/img/yanzheng.png");
-						}
-						font{
-							display:inline-block;
-							padding:0.08rem 0.17rem;
-							border-radius:0.04rem;
-							background:#ff7a59;
-							width:auto;
-							height:auto;
-							margin:0;
-							position:absolute;
-							top:0.05rem;
-							right:0.04rem;
-							color:#fff;
-						}
-					}
 				}
-			}
-			.ferst{
-				
-			}
-			.last{
-				
 			}
 		}
 		.denglu-food{
 			width:90.80%;
 			height:0.4rem;
 			margin:0 auto;
-			margin-top:0.18rem;
+			margin-top:0.3rem;
 			span{
 				width:100%;
 				height:100%;
@@ -389,39 +346,6 @@
 				display:inline-block;
 				background:#ff7a59;
 			}
-		}
-		.denglu-to{
-			width:100%;
-			color:#d0d0d0;
-			ul{
-				padding:0.2rem;
-				display: flex;
-			    -webkit-box-pack: center;
-			    justify-content:flex-end;
-			    -webkit-box-align: center;
-			    align-items: center;
-				.denglu-wangji{
-					
-				}
-				.denglu-zhuce{
-					color:#ff7a59;
-				}
-			}
-		}
-		.denglu-list{
-			width:100%;
-			height:0.4rem;
-			display:flex;
-		    -webkit-box-pack: center;
-		    justify-content: center;
-		    -webkit-box-align: center;
-		    align-items: center;
-		}
-		.denglu-bottom{
-			color:#d0d0d0;
-			margin-top:1rem;
-			bottom:0.1rem;
-			left:0;
 		}
 	}
 </style>

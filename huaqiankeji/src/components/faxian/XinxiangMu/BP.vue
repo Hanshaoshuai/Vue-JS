@@ -2,101 +2,28 @@
 	<transition name="fade">
 		<div v-show="tucaoShow" class="xiangmu">
 			<div class="xiangmu-header" @click.stop="yijianHind()">
-				<span class="xiangmu-left"><img src="../img/back.png"/></span>
-				<span>融资信息备案</span>
+				<span class="xiangmu-left"><img src="./img/back.png"/></span>
+				<span>BP详情</span>
 			</div>
 			<div class="box" ref="box">
 				<div style="width:100%;height:0.55rem;"></div>
-				<div class="sousuo-content">
-					<li class="beian-first">
-						2017年 10月 8日
-					</li>
-					<ul ref="index1" class="content-header" index="type1"  @click.stap="typeName('0')">
-						<li class="beian-last">
+				<div class="sousuo-content border-topbottom">
+					<ul ref="index1" class="content-header border-bottom" index="type1"  @click.stap="typeName('0')">
+						<li>
 							<div class="content-top">
 								<span>天立泰&nbsp;(34565645)</span>
 								<span>做市</span>
-								<font>已通过</font>
+								<font>已投递</font>
 							</div>
-							<!--<div class="content-bottom">
+							<div class="content-bottom">
 								<span>1小时前</span>
-							</div>-->
+							</div>
 						</li>
 					</ul>
-					<ul ref="index1" class="content-header" index="type1"  @click.stap="typeName('1')">
-						<li class="beian-last">
-							<div class="content-top">
-								<span>天立泰&nbsp;(34565645)</span>
-								<span>做市</span>
-								<font>申请中</font>
-							</div>
-							<!--<div class="content-bottom">
-								<span>1小时前</span>
-							</div>-->
-						</li>
-					</ul>
-					<ul ref="index1" class="content-header" index="type1"  @click.stap="typeName('2')">
-						<li class="beian-last">
-							<div class="content-top">
-								<span>天立泰&nbsp;(34565645)</span>
-								<span>做市</span>
-								<font>未通过</font>
-							</div>
-							<!--<div class="content-bottom">
-								<span>1小时前</span>
-							</div>-->
-						</li>
-					</ul>
-					<box></box>
 				</div>
-				<div class="sousuo-content">
-					<li class="beian-first">
-						2017年 10月 8日
-					</li>
-					<ul ref="index1" class="content-header" index="type1"  @click.stap="typeName1('0')">
-						<li class="beian-last">
-							<div class="content-top">
-								<span>天立泰&nbsp;(34565645)</span>
-								<span>做市</span>
-								<font>已通过</font>
-							</div>
-							<!--<div class="content-bottom">
-								<span>1小时前</span>
-							</div>-->
-						</li>
-					</ul>
-					<ul ref="index1" class="content-header" index="type1"  @click.stap="typeName1('1')">
-						<li class="beian-last">
-							<div class="content-top">
-								<span>天立泰&nbsp;(34565645)</span>
-								<span>做市</span>
-								<font>申请中</font>
-							</div>
-							<!--<div class="content-bottom">
-								<span>1小时前</span>
-							</div>-->
-						</li>
-					</ul>
-					<ul ref="index1" class="content-header" index="type1"  @click.stap="typeName1('2')">
-						<li class="beian-last">
-							<div class="content-top">
-								<span>天立泰&nbsp;(34565645)</span>
-								<span>做市</span>
-								<font>未通过</font>
-							</div>
-							<!--<div class="content-bottom">
-								<span>1小时前</span>
-							</div>-->
-						</li>
-					</ul>
-					<box></box>
-				</div>
-				<div style="width:100%;height:0.6rem;"></div>
+				<box></box>
+				<div style="width:100%;height:0.5rem;"></div>
 			</div>
-			<div class="butten">
-				<span @click.stop="Xinzeng()">新&nbsp;&nbsp;增</span>
-			</div>
-			<router-view :token="token"></router-view>
 		</div>
 	</transition>
 </template>
@@ -113,7 +40,6 @@
 		},
 		data () {
 			return {
-				token:'1',
 				x:'1',
 				urlName:"Dingzeng",
 				fankui:"45",
@@ -130,15 +56,11 @@
 					type3:"ZhuanlaoGu",
 					type4:"ZuLin",
 					type5:"Diaoyan"
-				},
-				beianType:"0"
+				}
 			}
 		},
 		mounted() {
-			if(this.beianType==0){
-				
-			}else{
-			}
+			
 			this.$nextTick(function() {
 				this.boxUl=this.$refs.box.getElementsByTagName("ul");
 				console.log(this.boxUl)
@@ -150,19 +72,13 @@
 //				this.tucaoShow=false;
 			},
 			typeName(id){
-				window.location.href="#/wode/RongziBeian/"+this.token+"/BeianXiangqing/"+id;
+				var Uls=this.boxUl[id]
+				this.types['type'+id]
+				console.log(this.types['type'+id])
+				window.location.href="#/wode/jilu/0/types";
+//				this.$refs.dingzengzuoshiShow.zuoshiBlock();
 			},
-			typeName1(id){
-				window.location.href="#/wode/RongziBeian/"+this.token+"/QiyeBeianXiang/"+id;
-			},
-			Xinzeng(){
-				if(this.beianType==0){
-					window.location.href="#/wode/RongziBeian/"+this.token+"/XinzengQiye";
-				}else{
-					window.location.href="#/wode/RongziBeian/"+this.token+"/TianQiBeian";
-				}
-				
-			}
+			
 //			show(){
 ////				dom更新后在执行使用$refs
 //				this.$nextTick(function() {
@@ -221,7 +137,7 @@
 		top:0;
 		left:0;
 		right:0;
-		z-index:200;
+		z-index:500;
 		.xiangmu-header{
 			position:fixed;
 			top:0;
@@ -234,7 +150,7 @@
 			text-align:center;
 			line-height:0.45rem;
 			color:#fff;
-			z-index:210;
+			z-index:510;
 			.xiangmu-left{
 				position:absolute;
 				height:100%;
@@ -259,25 +175,15 @@
 				/*margin:0.05rem 0;*/
 				/*display:flex;*/
 				/*flex-direction:column;*/
-				.beian-first{
-					width:96%;
-					margin:0 auto;
-					padding:0.16rem 0;
-					font-size:0.16rem;
-					color:#323232;
-					border-bottom:1px solid #8c8c8c;
-				}
 				.content-header{
 					width:96%;
 					margin:0 auto;
-					padding:0.18rem 0 0 0;
+					padding:0.16rem 0;
 					font-size:0.16rem;
 					li{
 						width:91.7%;
 						margin:0 auto;
 						color:#8c8c8c;
-						padding-bottom:0.16rem;
-						border-bottom:1px solid #cfcfcf;
 						.content-top{
 							width:100%;
 							height:0.22rem;
@@ -325,23 +231,6 @@
 					float:right;
 					margin-right:0.1rem;
 				}
-			}
-		}
-		.butten{
-			position:fixed;
-			bottom:0;
-			left:0;
-			width:100%;
-			height:0.58rem;
-			background:#ff7a59;
-			margin-top:0.08rem;
-			text-align:center;
-			line-height:0.58rem;
-			span{
-				display:inline-block;
-				width:100%;
-				font-size:0.2rem;
-				color:#fff;
 			}
 		}
 	}

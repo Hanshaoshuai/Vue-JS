@@ -221,7 +221,7 @@
 				number:"",
 				numberTo:"",
 				times:20177111129,
-				showList:false,
+				showList:true,
 				onlyContent:true,
 			}
 		},
@@ -232,7 +232,8 @@
 		},
 		methods:{
 			fanhui(){
-				this.showList=false;
+				history.go(-1)
+//				this.showList=false;
 			},
 			fankuiTo(){
 				this.$refs.fankuiShow.fankuiBlock();
@@ -306,7 +307,7 @@
 		right:0;
 		width:100%;
 		height:100%;
-		z-index:1000;
+		z-index:100;
 		.searchBox {
 			position:fixed;
 			top:0;
@@ -316,7 +317,7 @@
 		    padding:0.2rem;
 		    background-color: #00C850;
 		    display:flex;
-		    z-index:1100;
+		    z-index:110;
 		    /*span{
 		    	display:inline-block;
 		    	position:absolute;

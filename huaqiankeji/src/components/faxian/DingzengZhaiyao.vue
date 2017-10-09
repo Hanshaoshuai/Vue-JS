@@ -21,9 +21,9 @@
 								<li class="border-bottom"></li>
 								<li class="tishi-center">
 									<div class="content-heder">
-										<span>天天</span>
-										<span class="text-center">54587561</span>
-										<span>&nbsp;定增</span>
+										<span>{{data.com_name}}</span>
+										<span class="text-center">{{data.com_code}}</span>
+										<span>&nbsp;{{data.type}}</span>
 									</div>
 								</li>
 								<li class="border-bottom"></li>
@@ -31,22 +31,22 @@
 							<div class="zhuying_1">
 								<div class="ferst"><span></span>项目推荐</div>
 								<div class="last">
-									<p>资经理资经理资主营业经理主营业资经理资主营业经理资经理资经理</p>
+									<p>{{data.lightspot}}资经理资经理资主营业经理主营业资经理资主营业经理资经理资经理</p>
 								</div>
 							</div>
 						</div>
 						<div class="zhuying_1 border">
 							<div class="ferst"><span></span>经营业绩</div>
 							<div class="last">
-								<p>上一财年：营收&nbsp;<span>221亿</span>&nbsp;&nbsp;净利润&nbsp;<span>12万</span></p>
-								<p>今年预计：营收&nbsp;<span>12亿</span>&nbsp;&nbsp;净利润&nbsp;<span>1221万</span></p>
+								<p>上一财年：营收&nbsp;<span>{{data.last_year_revenue}}亿</span>&nbsp;&nbsp;净利润&nbsp;<span>{{data.last_year_profit}}万</span></p>
+								<p>今年预计：营收&nbsp;<span>{{data.predict_revenue}}亿</span>&nbsp;&nbsp;净利润&nbsp;<span>{{data.predict_profit}}万</span></p>
 							</div>
 						</div>
 						<div class="zhuying_1 border">
 							<div class="ferst"><span></span>融资计划</div>
 							<div class="last">
-								<p>融资总额：<span>245万</span></p>
-								<p>投前估值：<span>244万</span></p>
+								<p>融资总额：<span>{{data.total_finance}}万</span></p>
+								<p>投前估值：<span>{{data.appraisement}}万</span></p>
 							</div>
 						</div>
 					</div>
@@ -66,7 +66,9 @@
 
 <script type="text/ecmascript">
 //	import Vue from "vue";
+	import { Toast } from 'mint-ui';
 	import { MessageBox } from 'mint-ui';
+	import {URL} from '../../common/js/path';
 //	import BScroll from "better-scroll";
 //	import Vue from "vue";
 //	import {formatDate} from "../../common/js/date.js";
@@ -83,24 +85,57 @@
 		},
 		data () {
 			return {
+				data:'',
 				block:false,
 				ButtenName:"索要完整项目信息",
-				showFlag:false,
+				showFlag:true,
 				fankui:13,
 				genjin:50
 //				onlyContent:true
 			}
 		},
+		mounted(){
+			//项目详情
+			var data = {
+				token:this.$route.params.token,
+				item_id:this.$route.params.XiangmuID			//	项目id
+			}
+			console.log(this.data)
+			this.$http.post(URL.path+'finance/item_detail',data,{emulateJSON:true}).then(function(res){
+				this.data=res.body.data[0]
+				console.log(res);
+			},function(res){
+			    console.log(res.status);
+			})
+		},
 		methods:{
-			listShow(){
-				this.showFlag=true;
-			},
 			listnone(){
-				this.showFlag=false;
+				history.go(-1)
+//				this.showFlag=false;
 			},
 			butten(){
 				MessageBox.confirm('您确定要联系对方并索要完整项目信息吗?').then(action => {
-				  console.log("ijfj")
+					//投资人索要项目
+					var data = {
+						token:this.$route.params.token,
+						item_id:this.$route.params.XiangmuID,			//	项目id
+						type:'1',
+						uid:this.data.uid
+					}
+					console.log(this.data)
+					this.$http.post(URL.path+'finance/demand_item',data,{emulateJSON:true}).then(function(res){
+						if(res.body.msg=="操作成功"){
+							Toast("申请成功，请您等待反馈")
+							this.ButtenName="申请成功，请您等待反馈"
+							setTimeout(function(){
+//								history.go(-1)
+								tate.ButtenName="索要完整项目信息";
+							},2000)
+							console.log(res);
+						}
+					},function(res){
+					    console.log(res.status);
+					})
 				});
 				this.block=true;
 			}
@@ -252,10 +287,10 @@
 							flex:1;
 							height:0.2rem;
 							&:first-child{
-								max-width:15%;
+								max-width:10%;
 							}
 							&:last-child{
-								max-width:15%;
+								max-width:10%;
 							}
 							&.tishi-center{
 								width:0.57rem;

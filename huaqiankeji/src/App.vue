@@ -1,6 +1,6 @@
 <template>
   <div id="app" >
-  	<div class="content"><keep-alive><router-view :token="token"></router-view></keep-alive></div>
+  	<div class="content"><keep-alive><router-view :token="token" :TouziToken="TouziToken"></router-view></keep-alive></div>
     <div class="food border-top">
     	<div class="tab-item border-right">
     		<router-link to="/faxian" ref="fx">
@@ -53,6 +53,7 @@
 	  data () {
 	    return {
 	    	token:"N8KCEuwCyhOSviBLwm9PhbrZEQ1aUJBhHMkL7XNv5cEqBF2xs1DQSupWBgxWpz5w",
+	    	TouziToken:{token:'DxZGPSUsZsp48LUdWYWpca2HXxwfUDZY1zfFHzyhidbfov0BKWrnwiuKVhpqkFa5'},
 	      page: '1',
 				limit: '15',
 				type: '3',
@@ -75,8 +76,8 @@
 //	  		console.log(localStorage.getItem("userID"))
 //	  		window.location.href="#/denglu";
 	  	}else{
-	  		console.log(localStorage.getItem("userID"))
-	  		window.location.href="#/denglu";
+//	  		console.log(localStorage.getItem("userID"))
+//	  		window.location.href="#/denglu";
 	  	}
 			var datas = {
 				terminalNo: '3',
@@ -195,6 +196,6 @@
 		font-size:0.16rem;
 	}
 	.mint-indicator-wrapper{
-		z-index:2000;
+		z-index:3000;
 	}
 </style>

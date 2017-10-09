@@ -80,7 +80,8 @@
 	
 	export default {
 		props:{
-			token:{}
+			token:{},
+			TouziToken:{}
 //			food:{
 //				type:Object
 //			}
@@ -103,13 +104,16 @@
 				}
 			}
 		},
+		mounted(){
+			console.log(this.token)
+		},
 		methods:{
 			biduGo(){
 //				this.$refs.biduShow.biduBlock();
 				window.location.href="#/wode/shezhi/0";
 			},
 			ziliaoShow(id){
-				window.location.href="#/wode/ziliao"+id+"/0";
+				window.location.href="#/wode/ziliao"+id+"/"+this.TouziToken["token"];
 			},
 			RongziBeian(){
 				window.location.href="#/wode/RongziBeian/0";

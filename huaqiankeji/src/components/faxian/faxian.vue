@@ -50,7 +50,7 @@
 						</div>
 						<div v-if="q" class="TypeList" @click.stop="qiyefankuiGo()">
 							<div class="TypeList-img">
-								<li class="fankui"><span>{{FanuiShu}}</span></li>
+								<li class="fankui"><span>{{FankuiShu}}</span></li>
 							</div>
 							<div class="TypeList-text">
 								<span>企业反馈</span>
@@ -68,7 +68,7 @@
 						</div>
 						<div v-if="t" class="TypeList" @click.stop="touzifankuiGo()">
 							<div class="TypeList-img">
-								<li  class="fankui"><span>{{FanuiShu}}</span></li>
+								<li  class="fankui"><span>{{FankuiShu}}</span></li>
 							</div>
 							<div class="TypeList-text">
 								<span>投资人反馈</span>
@@ -216,14 +216,14 @@
 						</div>
 					</div>
 <!--循环遍历data-->	<li v-for="item in list" class="page-loadmore-listitem">
-						<div v-for="(item,index) in data" class="ContentText " @click.stop="contblock()">
+						<div v-for="(item,index) in data" class="ContentText " @click.stop="contblock(item.id,item.type)">
 							<div class="TextMame">
 								<div class="margin">
-									<span class="texts">天立泰{{item.com_name}}</span>
+									<span class="texts">{{item.com_name}}</span>
 									<span class="texts">定增{{item.type}}</span>
 								</div>
 								<div class="TypeList">
-									<span v-for="(item,index) in data" class="texts">天立泰{{item.industry}}</span>
+									<span v-for="(name,index) in item.industry" class="texts">{{name.title}}</span>
 									<!--<span class="texts">定增万</span>
 									<span class="texts">天立泰</span>
 									<span class="texts">定增万</span>
@@ -283,11 +283,11 @@
 		    </div>
 			<!--</div>-->
 			<!--<xiangmu ref="xiangmuShow" :setscrollTop="scrollTop" :token="token"></xiangmu>-->
-			<fankui ref="fankuiShow"></fankui>
-			<DingzengZhaiyao ref="show"></DingzengZhaiyao>
-			<GuquanZhaiyao ref="GuquanShow"></GuquanZhaiyao>
-			<yijian ref="yijianShow"></yijian>
-			<router-view :setscrollTop="scrollTop" :datas="datas"></router-view>
+			<!--<fankui ref="fankuiShow"></fankui>-->
+			<!--<DingzengZhaiyao ref="show"></DingzengZhaiyao>-->
+			<!--<GuquanZhaiyao ref="GuquanShow"></GuquanZhaiyao>-->
+			<!--<yijian ref="yijianShow"></yijian>-->
+			<router-view :setscrollTop="scrollTop" :datas="datas" :TouziToken='TouziToken'></router-view>
 		</div>
 	<!--</transition>-->
 </template>
@@ -296,10 +296,10 @@
 	import { Indicator } from 'mint-ui';
 	import {URL} from '../../common/js/path';
 //	import xiangmu from "./XinxiangMu/XinxiangMu.vue";
-	import fankui from "./Fankui/Fankui.vue";
-	import DingzengZhaiyao from "./DingzengZhaiyao.vue";
-	import GuquanZhaiyao from "./GuquanZhaiyao.vue";
-	import yijian from "./yijian.vue";
+//	import fankui from "./Fankui/Fankui.vue";
+//	import DingzengZhaiyao from "./DingzengZhaiyao.vue";
+//	import GuquanZhaiyao from "./GuquanZhaiyao.vue";
+//	import yijian from "./yijian.vue";
 //	import BScroll from "better-scroll";
 //	import Vue from "vue";
 //	import {formatDate} from "../../common/js/date.js";
@@ -310,19 +310,24 @@
 	
 	export default {
 		props:{
-			token:{}
+//			token:{},
+			TouziToken:{}
 //			food:{
 //				type:Object
 //			}
 		},
 		data () {
 			return {
+				token:"",
+				userID:'',
+				type:"",
 				data:"",
 				jia:"1000",
 				ge:"666",
 				ren:"8888",
 				shijian:"6",
 				datas:"",
+//				TouziToken:"",
 				ResChild:"",
 				x:true,
 				q:true,
@@ -343,9 +348,64 @@
 		        promps:false,
 		        scrollTop:"",
 		        XiangmuShu:"",
-		        FanuiShu:""
+		        FankuiShu:""
 			}
 		},
+		mounted() {//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商
+//			console.log(localStorage.getItem("token"))
+//			console.log(localStorage.getItem("userID"))
+//			console.log(localStorage.getItem("type"))
+			this.token=localStorage.getItem("token")
+			this.token=localStorage.getItem("userID")
+			this.type=localStorage.getItem("type")
+			
+	    	var datas = {		//相应参数
+				token:"N8KCEuwCyhOSviBLwm9PhbrZEQ1aUJBhHMkL7XNv5cEqBF2xs1DQSupWBgxWpz5w",//	token	是	[string]		
+				page:"",		
+				size:""	
+			}
+	    	var token={
+	    		token:'DxZGPSUsZsp48LUdWYWpca2HXxwfUDZY1zfFHzyhidbfov0BKWrnwiuKVhpqkFa5',
+	    		ok:"jdfj"
+	    	}
+	    	this.datas=datas;
+//	    	this.TouziToken=token;
+	    	this.qinQiu();
+//			投资机构收到的新项目数
+			this.$http.post(URL.path+'finance/new_item',token,{emulateJSON:true}).then(function(res){
+				this.XiangmuShu=res.body.data.new_item;
+//				this.XiangmuShu=res;
+				console.log("投资机构收到的新项目个数");
+				console.log(this.XiangmuShu);
+			},function(res){
+			    console.log(res);
+			})
+//			企业获取反馈数	和	投资机构收获取反馈数
+			this.$http.post(URL.path+'chatcomment/get_feedback_num',token,{emulateJSON:true}).then(function(res){
+				this.FankuiShu=res.body.data[0].feedback_num;
+//				this.FanuiShu=res;
+				console.log("企业获取反馈个数");
+				console.log(res);
+			},function(res){
+			    console.log(res);
+			})
+	    	
+	    	
+//	    	console.log("计算高度")
+	      	this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+	      	this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
+//	      	this.$nextTick(function() {
+////				if(!this.mySwiper){
+//	             	this.mySwiper = new Swiper(".swiper-container",{
+//						direction:"vertical",
+//						autoplay :2000,
+//						speed : 2000,//改变Swiper的切换时间曲线
+//						loop:true,
+//						autoplayDisableOnInteraction:false,
+////						pagination:".swiper-pagination"
+//					})
+//			});
+	    },
 		methods:{
 			handleTopChange(status) {    //头部函数
 //	      		console.log("top")
@@ -393,34 +453,41 @@
 		        }, 1500);
 	      	},
 			sousuo(){
-				window.location.href="#/sousuo";
+				window.location.href="#/sousuo/"+this.TouziToken["token"];
 			},
 			rongziGo(){
 				window.location.href="#/faxian/WoyaoRongzi/"+this.datas["token"];
 			},
 			touzifankuiGo(){
-				this.$refs.fankuiShow.fankuiBlock(this.datas);
+				console.log(this.datas)
+				window.location.href="#/faxian/Fankui/"+this.datas["token"];
+//				this.$refs.fankuiShow.fankuiBlock(this.datas);
 			},
 			XiangMuGo(){
 //				console.log(this.datas)
-				window.location.href="#/faxian/XinxiangMu/"+this.datas["token"];
+				window.location.href="#/faxian/XinxiangMu/"+this.TouziToken["token"];
 				this.scrollTop=sessionStorage.getItem("scrollTop")
 //				this.$refs.xiangmuShow.xiangmuBlock(this.scrollTop,this.datas);
 			},
 			qiyefankuiGo(){
-				this.$refs.fankuiShow.fankuiBlock(this.datas);
+				console.log(this.TouziToken)
+				window.location.href="#/faxian/Fankui/"+this.TouziToken["token"];
+//				this.$refs.fankuiShow.fankuiBlock(this.datas);
 			},
-			contblock(){
-//				if(!event._constructed){
-//					return;
-//				}
-				this.$refs.show.listShow();
+			contblock(id,type){
+				if(type==1 || type==2 ||type==3){
+					window.location.href="#/faxian/DingzengZhaiyao/"+this.TouziToken["token"]+'/'+id;
+				}else{
+					window.location.href="#/faxian/GuquanZhaiyao/"+this.TouziToken["token"]+'/'+id;
+				}
+//				this.$refs.show.listShow();
 			},
 			Guquanzhaiyao(){
 				this.$refs.GuquanShow.Guquanblock();
 			},
 			yijianFankui(){
-				this.$refs.yijianShow.fankiuShow();
+				window.location.href="#/faxian/Yijian/"+this.TouziToken["token"];
+//				this.$refs.yijianShow.fankiuShow();
 			},
 			faxianScroll () {
 			  var scrollTop = this.$refs.wrapper.scrollTop
@@ -440,7 +507,7 @@
 //					}
 //				});
 //			}
-			qinQiu(){
+			qinQiu(){		//类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报
 				Indicator.open({spinnerType: 'fading-circle'});
 	//	    	首页项目列表（非自己收到的项目）接口
 				this.$http.post(URL.path+'finance/get_item_list',this.datas,{emulateJSON:true}).then(function(res){
@@ -448,7 +515,6 @@
 					this.data=res.body.data
 					console.log("首页项目列表成功");
 					console.log(this.data)
-	//				console.log(this.data);
 				},function(res){
 				    console.log(res);
 				})
@@ -465,49 +531,6 @@
 //	        	this.list.push(i);
 //	      	}
 //	      	console.log(URL.path)
-	    },
-	    mounted() {
-	    	var datas = {		//相应参数
-				token:"N8KCEuwCyhOSviBLwm9PhbrZEQ1aUJBhHMkL7XNv5cEqBF2xs1DQSupWBgxWpz5w",//	token	是	[string]		
-				page:"",		
-				size:""	
-			}
-	    	this.datas=datas;
-	    	this.qinQiu();
-//			投资机构收到的新项目数
-			this.$http.post(URL.path+'finance/new_item',datas,{emulateJSON:true}).then(function(res){
-				var data=res
-//				this.XiangmuShu=res;
-				console.log("投资机构收到的新项目个数");
-				console.log(data);
-			},function(res){
-			    console.log(res);
-			})
-//			企业获取反馈数
-			this.$http.post(URL.path+'finance/get_feedback_num',datas,{emulateJSON:true}).then(function(res){
-				var data=res
-//				this.FanuiShu=res;
-				console.log("企业获取反馈个数");
-				console.log(res);
-			},function(res){
-			    console.log(res);
-			})
-	    	
-	    	
-//	    	console.log("计算高度")
-	      	this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
-	      	this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
-	      	this.$nextTick(function() {
-//				if(!this.mySwiper){
-	             	this.mySwiper = new Swiper(".swiper-container",{
-						direction:"vertical",
-						autoplay :2000,
-						speed : 2000,//改变Swiper的切换时间曲线
-						loop:true,
-						autoplayDisableOnInteraction:false,
-//						pagination:".swiper-pagination"
-					})
-			});
 	    },
 		events:{
 			
@@ -540,10 +563,10 @@
 		},
 		components:{
 //			xiangmu,
-			fankui,
-			DingzengZhaiyao,
-			GuquanZhaiyao,
-			yijian
+//			fankui,
+//			DingzengZhaiyao,
+//			GuquanZhaiyao,
+//			yijian
 		}
 	}
 </script>
@@ -906,7 +929,7 @@
 				}
 				.ContentText{
 					width:95%;
-					min-height:1.76rem;
+					min-height:1.0rem;
 					display:flex;
 					flex-direction:column;
 					margin:0 auto;
@@ -933,7 +956,8 @@
 								line-height:0.2rem;
 								font-weight:600;
 								&:first-child{
-									width:31%;
+									min-width:31%;
+									margin-right:0.1rem;
 								}
 							}
 						}
@@ -945,9 +969,11 @@
 							overflow:hidden;
 							span{
 								display:inline-block;
+								width:0.7rem;
 								height:0.22rem;
+								text-align:center;
 								float:left;
-								padding:0.04rem 0.06rem;
+								padding:0.04rem 0;
 								background:#fde9e2;
 								border-radius:0.04rem;
 								font-size:0.14rem;
@@ -965,17 +991,17 @@
 						width:89%;
 						margin:0 auto;
 						color:#717171;
-						padding-bottom:0.06rem;
+						padding-bottom:0.36rem;
 						text-align:justify;
 						word-wrap:break-word;
 						font-size:0.15rem;
 						line-height:0.22rem;
 					}
 					.ContentTime{
-						/*position:absolute;
+						position:absolute;
 						left:0;
-						right:0;
-						bottom:0;*/
+						/*right:0;*/
+						bottom:0;
 						width:100%;
 						/*margin:0 auto;*/
 						height:0.3rem;

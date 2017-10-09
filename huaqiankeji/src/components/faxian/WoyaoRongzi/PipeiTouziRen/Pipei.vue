@@ -20,7 +20,7 @@
 							<span>已为您匹配888人</span>
 						</div>
 					</div>
-					<div class="sousuo-content border-topbottom">
+					<!--<div class="sousuo-content border-topbottom">
 						<div class="content-header">
 							<font></font>
 							<div class="names">
@@ -53,16 +53,16 @@
 								<span  class="lingyu">领域：医疗、军事</span>
 							</div>
 						</div>
-					</div>
-					<div class="sousuo-content border-topbottom">
+					</div>-->
+					<div v-for="(item,index) in body" class="sousuo-content border-topbottom">
 						<div class="content-header">
 							<font></font>
 							<div class="names">
-								<span class="border-right">徐小平</span>
-								<span>真格基金</span>&nbsp;
-								<span>徐小平</span>
+								<span class="border-right">{{item.uname}}</span>
+								<span>{{item.com_short}}</span>&nbsp;
+								<span>{{item.position}}</span>
 							</div>
-							<div class="borders typeA"  @click.stop="xuanZe('1')"></div>
+							<div class="borders typeA" :id="item.id"  @click.stop="xuanZe(index,item.id)"></div>
 						</div>
 						<div class="xiaolv border-topbottom">
 							<div class="border-right">
@@ -70,7 +70,10 @@
 								<span>收获项目数</span>
 							</div>
 							<div class="border-right">
-								<li><font class="center">2&nbsp;%</font></li>
+								<li>
+									<font v-if="item.follow==''" class="center">0&nbsp;%</font>
+									<font v-else class="center">{{item.follow}}</font>
+								</li>
 								<span class="center">反馈率</span>
 							</div>
 							<div class="border-right">
@@ -81,7 +84,8 @@
 						<div class="leimu">
 							<div class="zhonglei">
 								<span class="jieduan">阶段：PE</span>
-								<span  class="dangbi">单笔投资：1000万-2000万</span>
+								<span  class="dangbi">单笔投资：2000万-5000万</span>
+								<span v-if="item.total_finance" class="dangbi">单笔投资：{{item.total_finance}}万</span>
 								<span  class="zijin">资金成本：年化20%-30%</span>
 								<span  class="fangkuan">放款速度：不超过90天</span>
 								<span  class="lingyu">领域：医疗、军事</span>
@@ -91,7 +95,7 @@
 				</div>
 			</div>
 			<div class="zhaiyao-food">
-				<div class="ferst">您已选择&nbsp;<div class="ferst-child"><span ref="size">{{ButtenName}}</span></div>&nbsp;&nbsp;个投资人</div>
+				<div class="ferst"><font>您已选择</font><span ref="size" class="ferst-child">{{ButtenName}}</span><font>个投资人</font></div>
 				<span class="last" @click.stop="butten">下一步</span>
 			</div>
 			<!--<router-view></router-view>-->
@@ -100,6 +104,7 @@
 </template>
 
 <script type="text/ecmascript">
+	import { Indicator } from 'mint-ui';
 	import {URL} from '../../../../common/js/path';
 	import { Toast } from 'mint-ui';
 	import { MessageBox } from 'mint-ui';
@@ -116,26 +121,33 @@
 			childnone:{
 //				type:"boolean"
 			},
-			token:{}
+			token:{},
+			type:{},
+			XiangmuID:{}
 		},
 		data () {
 			return {
+				y:0,
+				body:"",
 				CanShu:"",
 				block:false,
 				ButtenName:0,
 				showFlag:false,
 				wuxuan:true,
 				xuanze:false,
-				XiaYibu:false
+				XiaYibu:false,
+				uID:[],		//项目id
+				uID1:[]		//项目id字符串；
 			}
 		},
 		methods:{
 			listnone(){
 				this.showFlag=false;
-//				history.go(-1)
+				history.go(-1)
 			},
 			pipeiBlock(CanShu){
-				console.log(CanShu.XiangmuID)
+				Indicator.open({spinnerType: 'fading-circle'});
+				console.log(CanShu)
 				console.log(this.token)
 				this.CanShu=CanShu
 				this.showFlag=true;
@@ -147,8 +159,9 @@
 					size:""			//	size	是	[string]	
 				}
 				this.$http.post(URL.path+'finance/investor_list',datas,{emulateJSON:true}).then(function(res){
-					var data=res.data
-					console.log(res);
+					Indicator.close();
+					this.body=res.body.data
+					console.log(this.body);
 				},function(res){
 				    console.log(res.status);
 				})
@@ -165,14 +178,23 @@
 					for(var i=0; i<length; i++){
 						borders[i].setAttribute("class","borders typeA")
 					}
+					this.uID=[];
+//					console.log(this.uID)
+					this.uID1=this.uID.join(';')
+					console.log(this.uID1)
 				}else{
 					this.wuxuan=false;
 					this.xuanze=true;
 					this.XiaYibu=true;				//判断是否能下一步
 					this.ButtenName=length;			//选择的个数为全部
+					this.uID=[];
 					for(var i=0; i<length; i++){
-						borders[i].setAttribute("class","borders typeB")
+						borders[i].setAttribute("class","borders typeB");
+						this.uID.push(borders[i].id)
 					}
+//					console.log(this.uID)
+					this.uID1=this.uID.join(';')
+					console.log(this.uID1)
 				}
 				this.play();		//调用底部的数量更改动画；
 			},
@@ -185,12 +207,12 @@
 						z+=1
 						size.style.fontSize=16+z+"px"
 					}else{
-						size.style.fontSize="28px"
+						size.style.fontSize="26px"
 						stape();
 						clearInterval(run);
 					}
 					
-				},1)
+				},0.5)
 				function stape(){
 					var stape=setInterval(function(){
 						if(y>=8){
@@ -201,21 +223,35 @@
 							clearInterval(stape);
 						}
 						
-					},1)
+					},0.5)
 				}
 			},
-			xuanZe(id){
+			xuanZe(index,id){
+				console.log(id)
 				var boxs=this.$refs.tianjia.getElementsByClassName("borders");
 				var length = boxs.length;
 				var x=0;
-				var borders=this.$refs.tianjia.getElementsByClassName("borders")[id];
+				var borders=this.$refs.tianjia.getElementsByClassName("borders")[index];
 //				console.log(borders.getAttribute("class","typeA"))
 				if(borders.getAttribute("class")=="borders typeA"){
+					this.y+=1;
+					this.uID.push(id)				//保存项目id
+//					console.log(this.uID)
+					this.uID1=this.uID.join(';')
+					console.log(this.uID1)
 					borders.setAttribute("class","borders typeB")
 					this.XiaYibu=true;				//判断是否能下一步
 				}else{
-//					this.wuxuan=true;
-//					this.xuanze=false;
+					for(var z=0; z<this.y; z++){
+						if(this.uID[z]==id){
+							this.uID.splice(z,1);
+//							console.log(this.uID)
+							this.uID1=this.uID.join(';')
+							console.log(this.uID1)
+							this.y-=1
+							break;
+						}
+					}
 					borders.setAttribute("class","borders typeA")
 					this.XiaYibu=false;				//判断是否能下一步
 				}
@@ -246,7 +282,7 @@
 //				});
 //				this.block=true;
 				if(this.XiaYibu==true){				//判断必须选择匹配人才可以跳转
-					window.location.href="#/Xeiyi/0";
+					window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.type+'/'+this.CanShu.XiangmuID;
 				}else{
 					Toast("请选择匹配人");
 				}
@@ -513,24 +549,21 @@
 			align-items:center;
 			.ferst{
 				flex:1;
-				text-align:center;
-				position:relative;
-				.ferst-child{
-					position:absolute;
-					top:0;
-					bottom:0;
-					left:0;
-					right:0;
-					width:30px;
-					height:30px;
-					margin:auto;
-					display:flex;
-					align-items:center;
-					align-content:center;
-					justify-content:center;
-					span{
-						color:#ff7a59;
+				display:flex;
+				align-items:center;
+				align-content:center;
+				justify-content:center;
+				font{
+					flex:1;
+					&:first-child{
+						text-align:right;
 					}
+				}
+				.ferst-child{
+					text-align:center;
+					min-width:30px;
+					margin:auto;
+					color:#ff7a59;
 				}
 			}
 			.last{

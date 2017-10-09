@@ -11,32 +11,32 @@
 				<div class="fankiu border-topbottom">
 					<div class="content-food" style="text-align:center;">
 						<img src="../img/lishi.png"/>
-						<span class="content-header">尚无历史融资记录</span>
+						<span class="content-header">选择历史融资记录</span>
 					</div>
 				</div>
 				<box></box>
 				<div class="fankiu-content">
 					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>公司名称</div>
+						<div class="ferst"><span>*</span>企业名称</div>
 						<div class="last">
 							<textarea placeholder="" class="mint-field-core" v-model="texta"></textarea>
 						</div>
 					</div>
 					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>公司代码</div>
+						<div class="ferst"><span>*</span>企业代码</div>
 						<div class="last">
 							<textarea placeholder="" class="mint-field-core" v-model="textb"></textarea>
 						</div>
 					</div>
 					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>项目推荐</div>
+						<div class="ferst"><span>*</span>企业推荐</div>
 						<div class="last neirong">
 							<textarea placeholder="请填写直营业务、投资亮点等" class="mint-field-core" v-model="textc"></textarea>
 						</div>
 						<li>{{x}}/100</li>
 					</div>
 					<div class="zhuying_1 liangdian_1">
-						<div class="ferst"><span>*</span>公司所在行业标签<font>（选标签）</font></div>
+						<div class="ferst"><span>*</span>企业所在行业标签<font>（选标签）</font></div>
 						<ul ref="biaoqian">
 							<span v-for="(item,index) in BiaoQian[0]" @click.stap="xuanze(index)" :id="item.id">{{item.title}}</span>
 							<!--<span class="bianse" @click.stap="xuanze('0')">物联网</span>
@@ -173,7 +173,8 @@
 				},
 				content:"",		//给下级要传的参数
 				XiangmuID:"12",
-				biaoQianID:[]		//储存标签id
+				biaoQianID:[],		//储存标签id
+				biaoQianid:'',		//储存标签id字符串
 			}
 		},
 		mounted(){
@@ -201,7 +202,9 @@
 					for(var z=0; z<this.y; z++){
 						if(this.biaoQianID[z]==spans[index].id){
 							this.biaoQianID.splice(z,1);
-							console.log(this.biaoQianID)
+//							console.log(this.biaoQianID)
+							this.biaoQianid=this.biaoQianID.join()
+							console.log(this.biaoQianid)
 							this.y-=1
 							break;
 						}
@@ -210,17 +213,17 @@
 					if(this.y>2){
 						Toast('最多可选三个');
 					}else{
-						var ok=0;
 						spans[index].setAttribute("class","bianse");
 						this.y+=1;
 						for(var i=0; i<this.y; i++){
 							if(this.biaoQianID[i]!=spans[index].id){
-								ok=1
 								this.biaoQianID.push(spans[index].id)
 								break;
 							}
 						}
-						console.log(this.biaoQianID)
+//						console.log(this.biaoQianID)
+						this.biaoQianid=this.biaoQianID.join()
+						console.log(this.biaoQianid)
 					}
 				}
 				for(var i=0; i<length; i++){
@@ -228,7 +231,6 @@
 				}
 			},
 			xiayibuGo(){
-				this.biaoQianID=this.biaoQianID.join()
 				var datas = {
 					token:this.token,//	token	是	[string]		
 //					uid:"",//	创建者id	是	[string]		
@@ -238,7 +240,7 @@
 					com_code:this.textb,//	公司代码	是	[string]		
 					main_business:"",//	主营业务	是	[string]		
 					lightspot:this.textc,//	投资亮点	是	[string]		
-					industry:this.biaoQianID,//	公司所在行业标签id	是	[string]		
+					industry:this.biaoQianid,//	公司所在行业标签id	是	[string]		
 					last_year_revenue:this.numbera,//	上一年营收（单位 万）	是	[string]		
 					last_year_profit:this.numberb,//	上一年净利润（单位 万）	是	[string]		
 					predict_revenue:this.numberc,//	今年预计营收(单位:万)	是	[string]		
@@ -257,12 +259,6 @@
 					is_transfe:"",//	是否转股 1:是 2:否	是	[string]		
 					remark:"",//	备注	是	[string]
 				}
-				this.$http.post(URL.path+'finance/create',datas,{emulateJSON:true}).then(function(res){
-					var data=res.data
-					console.log(res);
-				},function(res){
-				    console.log(res.status);
-				})
 				var CanShu={				//给下级要传的参数
 					texta:this.texta,
 					textb:this.textb,
@@ -286,8 +282,14 @@
 					}
 				}
 				if(ok==0){
-					this.content=this.$refs.pipeiShow;
-					this.$refs.tishiShow.tishiBlock(CanShu);//CanShu是下级要传的参数
+					this.$http.post(URL.path+'finance/create',datas,{emulateJSON:true}).then(function(res){
+						CanShu.XiangmuID=res.body.data
+						this.content=this.$refs.pipeiShow;
+						this.$refs.tishiShow.tishiBlock(CanShu);//CanShu是下级要传的参数
+						console.log(res);
+					},function(res){
+					    console.log(res.status);
+					})
 				}else{
 					Toast("请填写完整您的信息！是否已选标签...");
 				}

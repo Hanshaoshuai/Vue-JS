@@ -24,15 +24,15 @@
 		        	
 			
 			<div class="box">
-				<div class="tishi-bottom" @click.stop="xiangqing()">
+				<div v-for="(item,index) in data" class="tishi-bottom" @click.stop="xiangqing(item.id)">
 					<div class="tubiao"></div>
 					<div class="borders">
 						<ul>
 							<li class="tishi-center">
 								<div class="content-heder">
-									<span>天天</span>
-									<span class="text-center">54587561</span>
-									<span>&nbsp;定增</span>
+									<span>{{item.com_name}}</span>
+									<span class="text-center">{{item.com_code}}</span>
+									<span>&nbsp;{{item.type}}</span>
 								</div>
 							</li>
 						</ul>
@@ -47,9 +47,9 @@
 							</div>
 						</div>
 						<div class="zhuying_1">
-							<div class="ferst">今年预计收入3.5亿，净利润3500万</div>
+							<div class="ferst">今年预计收入{{item.predict_revenue}}亿，净利润{{item.predict_profit}}万</div>
 							<div class="last">
-								<p>资经理资经理资主营业经理主营业资经理资主营业经理资经理资经理</p>
+								<p>资经理资经理资主营业经理主营业资经理资主营业经理资经理资经理{{item.lightspot}}</p>
 							</div>
 						</div>
 						<div class="jieshu"><font>保密信息，禁止传播</font><span @click.stop="jieshu()">结束项目</span></div>
@@ -90,9 +90,8 @@
 	      	</transition>
 	    </div>
 	    	<tishi ref="tishiShow" :xingXi="texts"></tishi>
-			<yifouxiangmu ref="yifouShou"></yifouxiangmu>
-			<!--<xiangmuxiangqing ref="xiangqingShow" :token="token"></xiangmuxiangqing>-->
-			<router-view :datas="datas"></router-view>
+			<!--<yifouxiangmu ref="yifouShou"></yifouxiangmu>-->
+			<router-view :TouziToken="TouziToken" :XiangmuID="XiangmuID"></router-view>
 		</div>
 	</transition>
 </template>
@@ -102,8 +101,7 @@
 	import { Field } from 'mint-ui';
 	import box from "../../box.vue";
 	import tishi from "../../Tishi.vue";
-	import yifouxiangmu from "./YifouXiangmu.vue";
-//	import xiangmuxiangqing from "./XiangmuXiangqing.vue";
+//	import yifouxiangmu from "./YifouXiangmu.vue";
 	
 	
 	export default {
@@ -111,11 +109,13 @@
 			setscrollTop:{
 //				type:Object
 			},
-			datas:{}
+			datas:{},
+			TouziToken:{}
 		},
 		data () {
 			return {
-				res:"",
+				data:"",
+				XiangmuID:"",
 				fankui:"45",
 				genjin:"458",
 				introduction:"",
@@ -138,6 +138,37 @@
 		        promps:false,
 		        scrollTop:""
 			}
+		},
+		mounted() {
+	    	console.log("计算高度")
+	      	this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+	      	this.$refs.wrapper.addEventListener('scroll', this.handleScroll)	//做一个scroll监听
+	      	console.log(this.TouziToken)
+//			项目列表（投资人收到的项目）
+			if(this.data==""){
+				this.$http.post(URL.path+'finance/received_item_list',this.TouziToken,{emulateJSON:true}).then(function(res){
+					this.data=res.body.data;
+					console.log("投资人收到的项目列表");
+					console.log(this.data);
+				},function(res){
+				    console.log(res);
+				})
+			}	
+			
+			this.tucaoShow=true;
+//				console.log(this.setscrollTop)
+			this.$nextTick(function() {
+				this.$refs.wrapper.scrollTop=this.setscrollTop;
+			})
+	    },
+		events:{
+			
+		},
+		filters:{
+//			formatDate(time){
+//				let date = new Date(time);
+//				return formatDate(date,'yyyy-MM-dd hh:mm');
+//			}
 		},
 		methods:{
 			handleTopChange(status) {    //头部函数
@@ -195,10 +226,13 @@
 				
 			},
 			yifouXiangmu(){
-				this.$refs.yifouShou.yifouBlock();
+				window.location.href="#/faxian/YifouXiangmu/"+this.TouziToken['token'];
+//				this.$refs.yifouShou.yifouBlock();
 			},
-			xiangqing(){
-				window.location.href="#/faxian/XinxiangMu/"+this.datas["token"]+"/XiangmuXiangqing";
+			xiangqing(XiangmuID){
+				console.log(XiangmuID)
+				this.XiangmuID=XiangmuID
+				window.location.href="#/faxian/XinxiangMu/"+this.TouziToken['token']+"/XiangmuXiangqing"+'/'+XiangmuID;
 //				this.$refs.xiangqingShow.xiangqingBlock();
 			},
 			jieshu(){
@@ -217,37 +251,6 @@
 	        	this.list.push(i);
 	      	}
 	    },
-	    mounted() {
-	    	console.log("计算高度")
-	      	this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
-	      	this.$refs.wrapper.addEventListener('scroll', this.handleScroll)	//做一个scroll监听
-	      	console.log(this.datas)
-//			项目列表（投资人收到的项目）
-			if(this.res==""){
-				this.$http.post(URL.path+'finance/received_item_list',this.datas,{emulateJSON:true}).then(function(res){
-					this.res=res.body.data;
-					console.log("投资人收到的项目列表");
-					console.log(this.res);
-				},function(res){
-				    console.log(res);
-				})
-			}	
-			
-			this.tucaoShow=true;
-//				console.log(this.setscrollTop)
-			this.$nextTick(function() {
-				this.$refs.wrapper.scrollTop=this.setscrollTop;
-			})
-	    },
-		events:{
-			
-		},
-		filters:{
-//			formatDate(time){
-//				let date = new Date(time);
-//				return formatDate(date,'yyyy-MM-dd hh:mm');
-//			}
-		},
 		updated(){
 //			if(!this.betterscroll){
 //				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
@@ -261,8 +264,7 @@
 		components:{
 			box,
 			tishi,
-			yifouxiangmu,
-//			xiangmuxiangqing
+//			yifouxiangmu,
 		}
 	}
 </script>

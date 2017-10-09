@@ -136,10 +136,12 @@
 				}
 				.inputs{
 					position:absolute;
-					width:80%;
-					left:0.06rem;
-					top:0.1rem;
-					z-index:-1;
+					width:100%;
+					height:100%;
+					opacity:0;
+					left:0rem;
+					top:0rem;
+					/*z-index:-1;*/
 				}
 			}
 		}

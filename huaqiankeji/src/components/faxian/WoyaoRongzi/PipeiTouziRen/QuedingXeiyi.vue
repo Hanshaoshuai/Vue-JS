@@ -47,7 +47,7 @@
 </template>
 
 <script type="text/ecmascript">
-//	import Vue from "vue";
+	import {URL} from '../../../../common/js/path';
 	import { MessageBox } from 'mint-ui';
 //	import BScroll from "better-scroll";
 //	import Vue from "vue";
@@ -71,6 +71,10 @@
 				onlyContent:true
 			}
 		},
+		mounted(){
+			console.log(this.$route.params.token)
+			console.log(this.$route.params.XiangmuID)
+		},
 		methods:{
 			listnone(){
 //				this.showFlag=false;
@@ -80,7 +84,7 @@
 				
 			},
 			TongyiGo(){
-				window.location.href="#/Xeiyi/0/TouDi";
+				window.location.href="#/Xeiyi/"+this.$route.params.token+"/"+this.$route.params.uID+'/'+this.$route.params.type+'/'+this.$route.params.XiangmuID+"/TouDi";
 //				this.showFlag=true;
 			},
 			ShaohouGo(){

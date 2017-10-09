@@ -100,7 +100,7 @@
 			return {
 				block:false,
 				ButtenName:"索要完整项目信息",
-				showFlag:false,
+				showFlag:true,
 				onlyContent:true
 			}
 		},

@@ -37,7 +37,7 @@
 			</div>
 			<div class="denglu-to">
 				<ul>
-					<li class="denglu-wangji">忘记密码</li>&nbsp;&nbsp;|&nbsp;&nbsp;
+					<li class="denglu-wangji"  @click.stop="wangji()">忘记密码</li>&nbsp;&nbsp;|&nbsp;&nbsp;
 					<li class="denglu-zhuce" @click.stop="zhuche()">立即注册</li>
 				</ul>
 			</div>
@@ -115,7 +115,7 @@
 					pw=1;
 				}
 				if(ph==1 && pw==1){
-					Indicator.open({spinnerType: 'fading-circle'});
+//					Indicator.open({spinnerType: 'fading-circle'});
 //					this.$http.post(URL.path+'login',{datas},{emulateJSON:true}).then(function(res){
 //						if(res.status==200){
 //							localStorage.setItem("userID",userID);		//本地储存
@@ -129,22 +129,25 @@
 //                  });
 					
 					
-				  	this.$http.get(url).then(function(response){
-						console.log("login",response)
-						if(response.body != "0" && response.body != "2"){
-							Indicator.close();
-							localStorage.setItem("userID",userID);
+//				  	this.$http.get(url).then(function(response){
+//						console.log("login",response)
+//						if(response.body != "0" && response.body != "2"){
+//							Indicator.close();
+//							localStorage.setItem("userID",userID);
 							if(confirm("已成功登陆是否进入首页?")){
 								window.location.href="#/fanxian";
 							}
-						}else{
-							Toast("此账号未注册请您立即注册")
-						}
-					})
+//						}else{
+//							Toast("此账号未注册请您立即注册")
+//						}
+//					})
 				}
 			},
 			zhuche(){
 				window.location.href="#/zhuce";
+			},
+			wangji(){
+				window.location.href="#/wangjiMima1";
 			},
 			quxiao(){
 				this.phone="";

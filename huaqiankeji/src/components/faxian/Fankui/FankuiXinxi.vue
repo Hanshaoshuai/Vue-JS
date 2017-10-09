@@ -37,6 +37,7 @@
 <script type="text/ecmascript">
 	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
+	import { Toast } from 'mint-ui';
 	import tishi from "../../Tishi.vue";
 //	import BScroll from "better-scroll";
 //	import Vue from "vue";
@@ -54,6 +55,16 @@
 		},
 		data () {
 			return {
+				typeName:'',	//索要项目或索要名片   进来就执行；所需参数
+				typeCont:'',	//索要项目或索要名片   进来就执行；所需参数
+				from_photo:'',//发送方头像	
+				from_id:"",	//发送方id
+				to_id:"",	//我的id
+				id:"",		//发送方名片id		
+				item_id:"",	//发送方项目id		
+				Token:"",
+				uid:"",
+				type:"",
 				datas:"",		//评论详情
 				datasA:"",		//发送评论
 				datasB:"",		//处理换名片同意
@@ -75,29 +86,150 @@
 			}
 		},
 		mounted(){
+			this.fasong(this.typeName,this.typeCont)		//索要项目或索要名片   进来就执行；
+			this.Token=this.$route.params.token;
+			this.uid=this.$route.params.to_id;		//对方id
+			this.type=this.$route.params.type;		//发送信息类型
 			var thate=this;
 			this.prent=this.$refs.boxTexte;
 			this.datas={
-				token:this.$route.params.token,
-				to_id:this.$route.params.to_id			//对方id
+				token:this.Token,
+				to_id:this.uid			//对方id
 			}
 			console.log(this.datas)						//评论详情接口   随时更新信息
 //			setInterval(function(){
-//				thate.$http.post(URL.path+'chatcomment/comment_detail',thate.datas,{emulateJSON:true}).then(function(res){
-//					var cont="xxx 总经理 申请换取名片"
-//					var data=res
-////					console.log(this.My);
-//					var type=1
-////					this.My(type,cont);		//随时更新信息
-////					this.You(type,cont)
-////					this.FasongShijian();
-//					this.$nextTick(function(){
-//						var contentTexte=this.$refs.contentTexte;
-//						contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
-//					});
-//				},function(res){
-//				    console.log(res);
-//				})
+				thate.$http.post(URL.path+'chatcomment/comment_detail',thate.datas,{emulateJSON:true}).then(function(res){
+					var cont="xxx 总经理 申请换取名片"
+					var res=res.body.data;
+					var length=res.length;
+					if(res[0].from_id==this.uid){
+						this.from_photo=res[0]['from_photo'];	//发送方头像
+						this.to_photo=res[0]['to_photo'];	//我的方头像
+					}else{
+						this.from_photo=res[0]['to_photo'];	//发送方头像
+						this.to_photo=res[0]['from_photo'];	//我的方头像
+					}
+					this.from_id=res[0]['from_id'];		//发送方id
+					this.to_id=res[0]['to_id'];			//我的id
+					this.id=res[0]['id'];					//发送方名片id	
+					this.item_id=res[0]['item_id'];				//发送方项目id
+					console.log(res);
+					res=res.reverse();
+					for(var item in res){
+						if(res[item].type==1){		//type=1:评论
+							if(res[item].from_id==this.uid){
+								this.You('0',res[item].content)
+								this.tousuoContent=res[item].create_time;
+								this.TishiNeirong(res[item].create_time);
+							}else{
+								this.My('0',res[item].content);
+								this.tousuoContent=res[item].create_time;
+								this.TishiNeirong(res[item].create_time);
+							}
+						}
+						if(res[item].type==2){		//type=2:项目请求
+							if(res[item].from_id==this.uid){
+								var MingPian="2";
+								var DianJi=res[item].agree
+								var cont=JSON.parse(res[item].content);
+								var name=cont.user[1]
+								this.You('1',name,cont.to_id,cont.item_id,MingPian,DianJi,res[item].id)
+								this.tousuoContent=res[item].create_time;
+								this.TishiNeirong(res[item].create_time);
+								console.log(res[item].id)
+								console.log(DianJi)
+							}else{
+								this.TishiNeirong('您已成功向对方索要完整项目')
+								this.TishiNeirong(res[item].create_time);
+							}
+						}
+						if(res[item].type==4){		//type=4:发送项目
+							if(res[item].from_id==this.uid){
+								var cont=JSON.parse(res[item].content);
+								if(cont.operate==1){
+									this.TishiNeirong('对方已将完整项目发送给你')		//提示信息函数
+									this.TishiNeirong(res[item].create_time);
+								}
+								if(cont.operate==2){
+									this.TishiNeirong('对方拒绝了您索要申请完整项目')
+									this.TishiNeirong(res[item].create_time);
+								}
+							}else{
+								var cont=JSON.parse(res[item].content);
+								if(cont.operate==1){
+									this.TishiNeirong('您同意了向对方发送完整项目')		//提示信息函数
+									this.TishiNeirong(res[item].create_time);
+								}
+								if(cont.operate==2){
+									this.TishiNeirong('您拒绝了向对方发送完整项目')
+									this.TishiNeirong(res[item].create_time);
+								}
+							}
+						}
+						if(res[item].type==3){		//type=3:名片请求
+							if(res[item].from_id==this.uid){
+								var MingPian="3";
+								var DianJi=res[item].agree
+								var i=0;
+								var cont=JSON.parse(res[item].content);
+								var name=cont.card[1]
+								this.You('1',name,cont.id,cont.item_id,MingPian,DianJi,res[item].id)
+								this.tousuoContent=res[item].create_time;
+								this.TishiNeirong(res[item].create_time);
+								console.log(JSON.parse(res[item].content))
+								console.log(DianJi)
+								i++;
+							}else{
+								this.TishiNeirong('您已成功向对方申请交换名片')
+								this.TishiNeirong(res[item].create_time);
+							}
+						}
+						if(res[item].type==5){		//type=5:发送名片
+							if(res[item].from_id==this.uid){
+								var MingPian="5";
+								var i=0;
+								var cont=JSON.parse(res[item].content)
+								if(cont.operate==1){
+									cont.card[0];
+									this.You('1',cont.card[0],'0','1',MingPian);
+									this.tousuoContent=res[item].create_time;
+									this.TishiNeirong(res[item].create_time);
+									console.log(JSON.parse(res[item].content).card[0])
+								}
+								if(cont.operate==2){
+//									cont.card[i];
+									this.TishiNeirong('对方拒绝了您的名片的申请')
+									this.TishiNeirong(res[item].create_time);
+								}
+								
+								i++;
+							}else{
+								var cont=JSON.parse(res[item].content)
+								if(cont.operate==2){
+									this.TishiNeirong('您拒绝了对方名片的申请')		//提示信息函数
+									this.TishiNeirong(res[item].create_time);
+								}else{
+									this.TishiNeirong('您同意了对方名片的申请')		//提示信息函数
+									this.TishiNeirong(res[item].create_time);
+								}
+							}
+							
+//							this.tousuoContent=res[item].create_time;
+//							this.TishiNeirong(res[item].create_time);
+						}
+					}
+//					console.log(this.My);
+					var type=1
+//					this.My(type,cont);		//随时更新信息
+//					this.You(type,cont)
+//					this.FasongShijian();
+					this.$nextTick(function(){
+						var contentTexte=this.$refs.contentTexte;
+						contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
+					});
+				},function(res){
+				    console.log(res);
+				})
 //			},2000)
 		},
 		methods:{
@@ -203,6 +335,7 @@
 				img.style.background="#EAEAEA";
 				img.style.float="right";
 				img.style.borderRadius="0.02rem";
+				img.src=this.to_photo;
 				imgs.style.position="absolute";
 				imgs.style.background="#ff7a59";
 				imgs.style.borderRight="0.008rem solid #d4d2d2";
@@ -223,9 +356,10 @@
 					span.innerText=cont;							//对应插入
 					this.introduction="";
 				}
+//				this.FasongShijian();
 				contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
 			},
-			You(type,cont){		//对方要发送信息处理函数
+			You(type,cont,id,item_id,MingPian,DianJi,chat_id){		//对方要发送信息处理函数
 				var contentTexte=this.$refs.contentTexte;
 				var my=document.createElement("div");			//创建元素		对方要发送的dom
 				var	neiRong=document.createElement("div");
@@ -267,6 +401,7 @@
 				img.style.height="0.38rem";
 				img.style.background="#EAEAEA";
 				img.style.borderRadius="0.02rem";
+				img.src=this.from_photo;
 				imgs.style.position="absolute";
 				imgs.style.background="#fff";
 				imgs.style.width="0.08rem";
@@ -277,25 +412,29 @@
 				imgs.style.top="0.09rem";
 				imgs.style.left="-0.04rem";
 				imgs.style.Zindex=100;
-				if(type==1){			//发送的是名片
+				if(type==1){			
 					span.style.background="#fff";
 					imgs.style.background="#fff";
-					span.appendChild(this.HuanquSenqing(cont));
+					if(MingPian=="5"){
+						span.appendChild(this.MingpianTishi(cont,id,item_id));
+					}else{
+						span.appendChild(this.HuanquSenqing(cont,id,item_id,MingPian,DianJi,chat_id));
+					}
 				}else{
 					span.innerText=cont;							//对应插入
 					this.introduction="";
 				}
 				contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
 			},
-			MingpianTishi(texts){			//申请换名片处理函数
+			MingpianTishi(cont,name,pont){			//申请换名片处理函数
 				var thata=this;
 				var mingPianTishi=document.createElement("div");			//申请换名片提示   创建DOM元素
 				var	NameTishi=document.createElement("p");
 				var SpanTishi=document.createElement("span");
 				var FontTishi=document.createElement("font");
 				var	GerenTishi=document.createElement("p");
-				SpanTishi.innerText="王美丽";							//后台获取信息插入
-				FontTishi.innerText="1831066986";					//后台获取信息插入
+				SpanTishi.innerText=cont['uname'];							//后台获取信息插入
+				FontTishi.innerText=cont['phone'];					//后台获取信息插入
 				GerenTishi.innerText="个人名片";
 				NameTishi.appendChild(SpanTishi);
 				NameTishi.appendChild(FontTishi);
@@ -321,13 +460,18 @@
 				}
 				return mingPianTishi;
 			},
-			HuanquSenqing(texts){			//换名片申请提示处理函数
+			HuanquSenqing(cont,id,item_id,MingPian,DianJi,chat_id){			//换名片和发送项目申请提示处理函数
 				var thata=this;
 				var mingPian=document.createElement("div");			//换名片申请提示	  是否确定换名片  创建DOM元素    在对方对话框内显示
 				var	mingText=document.createElement("p");
 				var mingSpan=document.createElement("span");
 				var mingFont=document.createElement("font");
-				mingText.innerText=texts;							//后台获取信息插入
+				if(MingPian==2){
+					mingText.innerText=cont['uname']+" 对您的项目感兴趣，想看完整项目信息，你若7天未反馈，默认拒绝";		//后台获取信息插入
+				}
+				if(MingPian==3){
+					mingText.innerText=cont['uname']+" 对您的项目感兴趣，向您申请了换名片，你若7天未反馈，默认拒绝";		//后台获取信息插入
+				}
 				mingSpan.innerText="同意";
 				mingFont.innerText="拒绝";
 				mingPian.appendChild(mingText);
@@ -354,25 +498,66 @@
 				mingSpan.style.background="#ff7a59";
 				mingSpan.style.lineHeight="0.31rem";
 				mingSpan.style.textAlign="center";
-				mingSpan.onclick=function(){				//绑定换名片同意事件
-					thata.datasB={							//处理换名片同意
-						token:thata.$route.params.token,
-						from_id:"123",	//发送方id	是	[string]		
-						id:"123",	//名片id	是	[string]		
-						item_id:"123",	//项目id	是	[string]		
-						operate:"1"	//操作 1:同意 2:拒绝
+				if(DianJi==1 || DianJi==2){
+					mingSpan.style.color="#000000";
+					mingSpan.style.background="#f5f4f9";
+				}
+				var i=0;
+				mingSpan.onclick=function(){			//绑定换名片同意事件
+					if(DianJi==1 || DianJi==2){
+						Toast("不可重复反馈");
+						return;
 					}
-					console.log(thata.datasB)				//处理换名片同意接口
-					thata.$http.post(URL.path+'chatcomment/send_msg',thata.datas,{emulateJSON:true}).then(function(res){
-						var data=res
-						console.log("处理换名片同意"+res);
-						this.TishiNeirong("处理换名片同意");
-						this.FasongShijian();
-					},function(res){
-					    console.log(res);
-					})
-					thata.TishiNeirong("处理换名片同意");
-						thata.FasongShijian();
+					if(i==1){
+						Toast("不可重复反馈");
+//						mingSpan.style.color="#000000";
+//						mingSpan.style.background="#f5f4f9";
+						return;
+					}
+					i++;
+					console.log(i)
+					if(MingPian=='2'){
+						thata.datasB={							//处理发送项目同意
+							token:thata.$route.params.token,
+							item_id:item_id,	//项目id	是	[string]
+							chat_id:chat_id,			//评论id
+							to_id:id,		//接受方id	是	[string]		
+							operate:'1'		//1同意2拒绝	
+//							demand:"2"		//是否索要 1:非索要 2:索要
+						}
+						console.log(thata.datasB)				//处理发送项目同意接口
+						thata.$http.post(URL.path+'finance/send_demand_item',thata.datasB,{emulateJSON:true}).then(function(res){
+							var data=res
+							console.log("处理发送项目同意"+res);
+							console.log(res);
+							if(res.body.msg=="操作成功"){
+								this.TishiNeirong("您同意了向对方发送项目");
+							}
+							this.FasongShijian();
+						},function(res){
+						    console.log(res);
+						})
+					}else{
+						thata.datasB={							//处理换名片同意
+							token:thata.$route.params.token,
+							from_id:thata.from_id,	//发送方id	是	[string]		
+							id:id,				//名片id	是	[string]		
+							item_id:item_id,	//项目id	是	[string]		
+							operate:"1",		//操作 1:同意 2:拒绝
+							chat_id:chat_id		//评论id
+						}
+						console.log(thata.datasB)				//处理换名片同意接口
+						thata.$http.post(URL.path+'chatcomment/card_operate',thata.datasB,{emulateJSON:true}).then(function(res){
+							var data=res
+							console.log("处理换名片同意"+res);
+							console.log(res);
+							this.TishiNeirong("您同意了对方名片的申请");
+							this.FasongShijian();
+						},function(res){
+						    console.log(res);
+						})
+					}
+//						thata.FasongShijian();
 				}
 				mingFont.style.position="absolute";
 				mingFont.style.right="0";
@@ -384,31 +569,61 @@
 				mingFont.style.lineHeight="0.31rem";
 				mingFont.style.textAlign="center";
 				mingFont.onclick=function(){			//绑定换名片拒绝事件
-					thata.datasB={						//处理换名片拒绝
-						token:thata.$route.params.token,
-						from_id:"123",	//发送方id	是	[string]		
-						id:"123",	//名片id	是	[string]		
-						item_id:"123",	//项目id	是	[string]		
-						operate:"2"	//操作 1:同意 2:拒绝
+					if(DianJi==1 || DianJi==2){
+						Toast("不可重复反馈");
+						return;
 					}
-					console.log(thata.datasB)			//处理换名片拒绝接口
-					thata.$http.post(URL.path+'chatcomment/send_msg',thata.datas,{emulateJSON:true}).then(function(res){
-						var data=res
-						console.log("处理换名片拒绝"+res);
-						this.TishiNeirong("处理换名片拒绝");
-						
-						
-						
-						this.FasongShijian();
-					},function(res){
-					    console.log(res);
-					})
-					thata.TishiNeirong("处理换名片拒绝");
-					thata.FasongShijian();
+					if(i==1){
+						Toast("不可重复反馈");
+//						mingSpan.style.color="#000000";
+//						mingSpan.style.background="#f5f4f9";
+						return;
+					}
+					i++;
+					if(MingPian=='2'){
+						thata.datasB={						//处理发送项目拒绝
+							token:thata.$route.params.token,
+							item_id:item_id,	//项目id	是	[string]
+							chat_id:chat_id,			//评论id
+							to_id:id,		//接受方id	是	[string]		
+							operate:'2'		//1同意2拒绝	
+//							demand:"2"		//是否索要 1:非索要 2:索要
+						}
+						console.log(thata.datasB)			//处理发送项目拒绝接口
+						thata.$http.post(URL.path+'finance/send_demand_item',thata.datasB,{emulateJSON:true}).then(function(res){
+							var data=res
+							console.log("处理发送项目拒绝");
+							console.log(res);
+							this.TishiNeirong("您拒绝了向对方发送项目");
+							this.FasongShijian();
+						},function(res){
+						    console.log(res);
+						})
+					}else{
+						thata.datasB={						//处理换名片拒绝
+							token:thata.$route.params.token,
+							from_id:thata.from_id,	//发送方id	是	[string]		
+							id:id,				//名片id	是	[string]		
+							item_id:item_id,	//项目id	是	[string]		
+							operate:"2",		//操作 1:同意 2:拒绝
+							chat_id:chat_id		//评论id
+						}
+						console.log(thata.datasB)			//处理换名片拒绝接口
+						thata.$http.post(URL.path+'chatcomment/card_operate',thata.datasB,{emulateJSON:true}).then(function(res){
+							var data=res
+							console.log("处理换名片拒绝");
+							console.log(res);
+							this.TishiNeirong("您拒绝了对方名片的申请");
+							this.FasongShijian();
+						},function(res){
+						    console.log(res);
+						})
+					}
+//					thata.FasongShijian();
 				}
 				return mingPian;
 			},
-			TishiNeirong(texts){			//换名片时提示信息内容处理函数
+			TishiNeirong(texts){			//换名片时提示信息内容处理函数    或其他提示信息
 				var tiShi=document.createElement("div");		//创建DOM元素
 				var textCont=document.createElement("font");
 				textCont.innerText=texts;						//插入提示信息
@@ -423,7 +638,7 @@
 				tiShi.style.padding="0.1rem 0";
 				tiShi.style.textAlign="center";
 			},
-			fasong(){		//发送按钮
+			fasong(typeName,typeCont){		//发送按钮
 				var thata=this;
 //				var DEHeight;
 //				this.DEHeight=DEHeight    //窗口高度
@@ -436,36 +651,46 @@
 //				contentTexte.style.height=(DEHeight-93)/100+"rem";
 				var aaa=document.getElementById("box")
 //				if(document.aaa.scrollTop){
-					console.log(this.prent.offsetHeight)
-					console.log(this.prent.scrollTop )
-					console.log(contentTexte.scrollTop )
-					console.log(contentTexte.scrollHeight )
+//					console.log(this.prent.offsetHeight)
+//					console.log(this.prent.scrollTop )
+//					console.log(contentTexte.scrollTop )
+//					console.log(contentTexte.scrollHeight )
 //				}
+				if(typeName){
+					if(typeName==2){		//type=2:项目请求
+						this.My('1',typeCont)
+					}
+					if(typeName==3){		//type=3:名片请求
+						this.My('1',typeCont)
+					}
+				}
+				
 				if(texts!=""){
-					var cont="xxx 总经理 申请换取名片"
-					var type=1
-					this.My(type,texts);		//我要发送信息处理函数
-					this.You(type,texts)		//对方要发送信息处理函数
-					
-					
+//					var cont="xxx 总经理 申请换取名片"
+//					var type=1					//如果tyoe=1发送的是名片
+//					this.My(type,texts);		//我要发送信息处理函数
+//					this.You(type,texts)		//对方要发送信息处理函数
 					this.datasA={			//发送评论接口
-						token:this.$route.params.token,
-						to_id:"123",					//接收方id	是	[string]		
-						content:texts					//评论内容
+						token:this.Token,
+						to_id:this.uid,					//接收方id	是	[string]		
+						content:texts,					//评论内容
+						type:this.type
 					}
 					console.log(this.datasA)			//发送评论接口
-					this.$http.post(URL.path+'chatcomment/send_msg',this.datas,{emulateJSON:true}).then(function(res){
-						var cont="xxx 总经理 申请换取名片"
-						var type=1
+					this.$http.post(URL.path+'chatcomment/send_msg',this.datasA,{emulateJSON:true}).then(function(res){
+						var cont=texts;
+						var type=0
 						console.log("发送评论成功"+res);
 						this.My(type,cont);		//调用发送评论函数
-						this.You(type,cont)
-						this.FasongShijian();
+//						this.You(type,cont)
+						this.$nextTick(function(){
+							this.FasongShijian();
+						})
 					},function(res){
 					    console.log(res);
 					})
 					
-					this.FasongShijian();
+//					this.FasongShijian();
 					this.introduction="";
 				}else{
 					return;

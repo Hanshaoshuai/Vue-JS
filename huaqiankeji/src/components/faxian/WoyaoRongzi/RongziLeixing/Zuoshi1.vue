@@ -17,26 +17,26 @@
 				<box></box>
 				<div class="fankiu-content">
 					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>公司名称</div>
+						<div class="ferst"><span>*</span>企业名称</div>
 						<div class="last">
 							<textarea placeholder="" class="mint-field-core" v-model="texta"></textarea>
 						</div>
 					</div>
 					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>公司代码</div>
+						<div class="ferst"><span>*</span>企业代码</div>
 						<div class="last">
 							<textarea placeholder="" class="mint-field-core" v-model="textb"></textarea>
 						</div>
 					</div>
 					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>项目推荐</div>
+						<div class="ferst"><span>*</span>企业推荐</div>
 						<div class="last neirong">
 							<textarea placeholder="请填写直营业务、投资亮点等" class="mint-field-core" v-model="textc"></textarea>
 						</div>
 						<li>{{x}}/100</li>
 					</div>
 					<div class="zhuying_1 liangdian_1">
-						<div class="ferst"><span>*</span>公司所在行业标签<font>（选标签）</font></div>
+						<div class="ferst"><span>*</span>企业所在行业标签<font>（选标签）</font></div>
 						<ul ref="biaoqian">
 							<span class="bianse" @click.stap="xuanze('0')">行业标签</span>
 							<span @click.stap="xuanze('1')">行业标签</span>

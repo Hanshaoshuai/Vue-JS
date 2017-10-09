@@ -46,6 +46,9 @@
 </template>
 
 <script type="text/ecmascript">
+	import {URL} from '../../../../common/js/path';
+	import { Toast } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 //	import Vue from "vue";
 	import { MessageBox } from 'mint-ui';
 //	import BScroll from "better-scroll";
@@ -64,11 +67,41 @@
 		},
 		data () {
 			return {
+				token:"",
+				XiangmuID:"",
+				type:"",
+				uID:"",
 				block:false,
 				ButtenName:"88",
 				showFlag:true,
 				onlyContent:true
 			}
+		},
+		mounted(){
+			Indicator.open({spinnerType: 'fading-circle'});
+			console.log(this.$route.params.uID);
+			this.token=this.$route.params.token;
+			this.XiangmuID=this.$route.params.XiangmuID;
+			this.type=this.$route.params.type;
+			this.uID=this.$route.params.uID;
+			
+			//发送项目	
+			var datas = {
+				token:this.token,		//	token	是	[string]		
+				item_id:this.XiangmuID,	//项目id	是	[string]		
+				type:this.type,			//类型 1:项目 2:活动	是	[string]		
+				to_id:this.uID,			//接受者id	是	[string]		
+				status:"",			//状态 1:已发送 2:未发送 3:拒绝		[string]		
+				demand:""		//	是否索要 1:非索要 2:索要		[string]
+			}
+			this.$http.post(URL.path+'finance/send_item',datas,{emulateJSON:true}).then(function(res){
+				Indicator.close();
+				var data=res.data
+				Toast("您已成功投递"+this.uID.length+"位投资人请您注意查收投资人的反馈并及时回复");
+				console.log(res);
+			},function(res){
+			    console.log(res.status);
+			})
 		},
 		methods:{
 			listnone(){
@@ -151,7 +184,7 @@
 		left:0;
 		right:0;
 		bottom:0;
-		z-index:3100;
+		z-index:200;
 		.xiangmu-header{
 			position:fixed;
 			top:0;

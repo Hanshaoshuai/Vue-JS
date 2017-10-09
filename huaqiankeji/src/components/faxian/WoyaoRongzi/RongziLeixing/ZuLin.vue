@@ -17,13 +17,13 @@
 				<box></box>
 				<div class="fankiu-content">
 					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>公司名称</div>
+						<div class="ferst"><span>*</span>企业名称</div>
 						<div class="last">
 							<textarea placeholder="" class="mint-field-core" v-model="texta"></textarea>
 						</div>
 					</div>
 					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>公司代码</div>
+						<div class="ferst"><span>*</span>企业代码</div>
 						<div class="last">
 							<textarea placeholder="" class="mint-field-core" v-model="textb"></textarea>
 						</div>
@@ -84,13 +84,14 @@
 					</ul>
 				</div>
 			</div>
-			<pipei ref="pipeiShow"></pipei>
+			<pipei ref="pipeiShow" :token="token"></pipei>
 			<tishi ref="tishiShow" :xingXi="xingXi" :content="content"></tishi>
 		</div>
 	</transition>
 </template>
 
 <script type="text/ecmascript">
+	import {URL} from '../../../../common/js/path';
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
 	import box from "../../../box.vue";
@@ -102,12 +103,13 @@
 	
 	export default {
 		props:{
-//			food:{
+			token:{
 //				type:Object
-//			}
+			}
 		},
 		data () {
 			return {
+				type:"",		//创建类型
 				x:"0",			//字的个数
 				numbera:"",
 				numberb:"",
@@ -131,8 +133,18 @@
 					m:true,
 					u:true
 				},
-				content:""			//给下级要传的参数
+				content:"",			//给下级要传的参数
+				XiangmuID:"1"
 			}
+		},
+		mounted(){
+			console.log(this.$route.params.type)
+			console.log(this.token)
+			this.type=this.$route.params.type
+			this.$nextTick(function() {
+				
+			});
+//			this.token=this.$route.params
 		},
 		methods:{
 			yijianHind(){
@@ -140,6 +152,34 @@
 //				this.tucaoShow=false;
 			},
 			xiayibuGo(){
+				var datas = {
+					token:this.token,//	token	是	[string]		
+//					uid:"",//	创建者id	是	[string]		
+					type:this.type,//	类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报	是	[string]		
+//					company:"",//	公司id	是	[string]		
+					com_name:this.texta,//	公司名称	是	[string]		
+					com_code:this.textb,//	公司代码	是	[string]		
+					main_business:"",//	主营业务	是	[string]		
+					lightspot:'',//	投资亮点	是	[string]		
+					industry:'',//	公司所在行业标签id	是	[string]		
+					last_year_revenue:this.numbera,//	上一年营收（单位 万）	是	[string]		
+					last_year_profit:this.numberb,//	上一年净利润（单位 万）	是	[string]		
+					predict_revenue:this.numberc,//	今年预计营收(单位:万)	是	[string]		
+					predict_profit:this.numberd,//	今年预计净利润(单位:万)	是	[string]		
+					total_finance:this.numbere,//	融资总额(单位:万)	是	[string]		
+					appraisement:'',//	投前估值(单位:万)	是	[string]		
+					city:this.numberg,//	所在城市	是	[string]		
+					transfe_share:"",//	拟转股份数	是	[string]		
+					share_price:'',//	每股价格	是	[string]		
+					is_hold:"",//	是否本人持股 1:是 2:否	是	[string]		
+					research_address:"",//	调研地址	是	[string]		
+					research_time:"",//	调研时间	是	[string]		
+					pledge_time:this.numberf,//	质押时间周期(天)	是	[string]		
+					repayment_time:"",//	还款周期(天)	是	[string]		
+					face_rate:"",//	票面利率	是	[string]		
+					is_transfe:"",//	是否转股 1:是 2:否	是	[string]		
+					remark:"",//	备注	是	[string]
+				}
 				var CanShu={				//给下级要传的参数
 					texta:this.texta,
 					textb:this.textb,
@@ -149,7 +189,8 @@
 					numberd:this.numberd,
 					numbere:this.numbere,
 					numberf:this.numberf,
-					numberg:this.numberg
+					numberg:this.numberg,
+					XiangmuID:this.XiangmuID
 				}
 				var ok=0;
 				for(var item in CanShu){		//判断填写信息是否完整Ok=1；标签必选
@@ -160,8 +201,14 @@
 					}
 				}
 				if(ok==0){
-					this.content=this.$refs.pipeiShow;
-					this.$refs.tishiShow.tishiBlock(CanShu);//CanShu是下级要传的参数
+					this.$http.post(URL.path+'finance/create',datas,{emulateJSON:true}).then(function(res){
+						CanShu.XiangmuID=res.body.data
+						this.content=this.$refs.pipeiShow;
+						this.$refs.tishiShow.tishiBlock(CanShu);//CanShu是下级要传的参数
+						console.log(res);
+					},function(res){
+					    console.log(res.status);
+					})
 				}else{
 					Toast("请填写完整您的信息！是否已选标签...");
 				}

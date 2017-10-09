@@ -2,14 +2,18 @@
 	<div class="tupian">
 		<div class="left-img" id="preview">
 			<label>
+				<form enctype="multipart/form-data" method="post" name="fileinfo" ref="forms">
 				<img ref="" id="imghead" src='./mingpian.png'>
 				<input class="inputs" ref="file" type="file" @change="previewImage()" />
+				</form>
 			</label>
 		</div>
 	</div>
 </template>
 
 <script type="text/ecmascript">
+	import {URL} from '../common/js/path';
+	import { Toast } from 'mint-ui';
 	export default {
 		props:{
 //			seller:{
@@ -18,7 +22,7 @@
 		},
 		data () {
 			return {
-				msg: "我是组件模板的数据"
+				mingpianID:""
 			}
 		},
 		mounted(){
@@ -27,21 +31,45 @@
 		methods:{
 			previewImage(){
 				var file=this.$refs.file
-				console.log(file.files)
+				var thata=this;
+				console.log(file.files[0])
 	          	var div = document.getElementById('preview');
 	          	if(file.files && file.files[0]){
+	          		var formData = new FormData();
+						formData.append('pic', file.files[0]); // 文件数据
+						formData.append('flag', '1'); // 其他的一些参数
+						thata.shangchuan(formData)
+						
+						
 	              	var img = document.getElementById('imghead');
 	              	img.onload = function(){
-	              		this.style.width="1rem";
-//	              		console.log(this.clientWidth)
-//	              		var width=this.clientWidth+"px"
-	              		var height=this.clientHeight+"px"
-//	              		console.log(width)
-//	              		div.style.width=width;
-	              		div.style.height=height;
+	              		if(this.clientWidth>this.clientHeight){
+	              			this.style.width="0.75rem";
+	              		}else{
+	              			this.style.height="0.75rem";
+	              		}
+////	              		this.style.width="0.75rem";
+////	              		console.log(this.clientWidth)
+////	              		var width=this.clientWidth+"px"
+//	              		var height=this.clientHeight+"px"
+////	              		console.log(width)
+////	              		div.style.width=width;
+//	              		div.style.height=height;
 		            }
 	              	var reader = new FileReader();
-	              	reader.onload = function(evt){img.src = evt.target.result;}
+	              	reader.onload = function(evt){
+	              		if(!(file.files[0].type.indexOf('image')==0 && file.files[0].type && /\.(?:jpg|png|gif)$/.test(file.files[0].name)) ){  
+					        Toast('图片只能是jpg,gif,png');  
+					        return ;
+					    } 
+	              		img.src = evt.target.result;
+						var zipFormData = new FormData();
+						zipFormData.append('filename', file.files[0],file.files[0].name)
+						
+						console.log(file.files[0].name)
+						
+	              		thata.shangchuan(zipFormData)
+	              	}
 	              	reader.readAsDataURL(file.files[0]);
 	          	}else{
 	            	var sFilter='filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
@@ -50,7 +78,33 @@
 	            	var img = document.getElementById('imghead');
 	            	img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
 	          	}
-	        }
+	        },
+			shangchuan(urlfrom){
+				console.log(urlfrom)
+				var data={
+					upload_file:urlfrom,
+					terminalNo:3
+				}
+				this.$http.post(URL.path2+'upload/photo',data,{emulateJSON:true}).then(function(res){
+                    console.log(res);
+                    if(res.body.returnCode=='0011'){
+						Toast(res.body.msg);
+					}else{
+						if(res.body.returnCode=='200'){
+							this.timesgo();
+						}else{
+							Toast("系统正忙请稍后！");
+						}
+					}
+                },function(res){
+                	this.mingpianID='5078';
+                	Toast("系统正忙请稍后！");
+                    console.log(res);
+                });
+			},
+			mingpian(){
+				return this.mingpianID;
+			}
 		},
 		uptated(){
 			

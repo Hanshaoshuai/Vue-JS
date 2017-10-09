@@ -10,13 +10,13 @@
 				<box></box>
 				<div class="fankiu-content">
 					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>公司名称</div>
+						<div class="ferst"><span>*</span>企业名称</div>
 						<div class="last">
 							<textarea placeholder="" class="mint-field-core" v-model="texta"></textarea>
 						</div>
 					</div>
 					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>公司代码</div>
+						<div class="ferst"><span>*</span>企业代码</div>
 						<div class="last">
 							<textarea placeholder="" class="mint-field-core" v-model="textb"></textarea>
 						</div>
@@ -27,18 +27,18 @@
 					<div class="fankiu">
 						<div class="content-food"  ref="foods">
 							<ul>
-								<li class="src1" ref="img1" index="img1" @click.stap="dingzengGo('Dingzeng')">
+								<li class="src1" ref="img1" index="img1" @click.stap="dingzengGo('1')">
 									<span>融资定价</span><font class="img1"></font>
 								</li>
-								<li class="src2" ref="img2" index="img2" @click.stap="zuoshiGo('Zuoshi')">
+								<li class="src2" ref="img2" index="img2" @click.stap="zuoshiGo('2')">
 									<span>股价维护</span><font></font>
 								</li>
 							</ul>
 							<ul>
-								<li class="src3" ref="img3" index="img3" @click.stap="zhuanguGo('ZhuanlaoGu')">
+								<li class="src3" ref="img3" index="img3" @click.stap="zhuanguGo('3')">
 									<span>价值挖掘</span><font></font>
 								</li>
-								<li class="src4" ref="img4" index="img4" @click.stap="zhiyaGo('ZhiYa')">
+								<li class="src4" ref="img4" index="img4" @click.stap="zhiyaGo('4')">
 									<span>并购调研</span><font></font>
 								</li>
 							</ul>
@@ -94,7 +94,7 @@
 				texta:"",
 				textb:"",
 				src:"",
-				urlName:"Dingzeng",
+				ID:"1",
 				showFlag:true,
 				tucaoShow:true,
 				fankui:"45",
@@ -111,6 +111,14 @@
 //				this.tucaoShow=false;
 			},
 			shenqingGo(){
+				if(this.texta==""){
+					Toast('请填写企业名称');
+					return;
+				}
+				if(this.textb==""){
+					Toast('请填写企业代码');
+					return;
+				}
 				MessageBox.confirm('向平台申请研究报告支持').then(action => {
 				  	Toast('申请成功，客服将在24小时内联系您');
 				});
@@ -126,22 +134,22 @@
 			},
 			dingzengGo(name){
 				console.log(name)
-				this.urlName=name;
+				this.ID=name;
 				this.src=this.$refs.img1.getAttribute("index");
 //				window.location.href="#/faxian/WoyaoRongzi/0/Dingzeng";
 			},
 			zuoshiGo(name){
-				this.urlName=name;
+				this.ID=name;
 				this.src=this.$refs.img2.getAttribute("index")
 //				window.location.href="#/faxian/WoyaoRongzi/0/Zuoshi";
 			},
 			zhuanguGo(name){
-				this.urlName=name;
+				this.ID=name;
 				this.src=this.$refs.img3.getAttribute("index")
 //				window.location.href="#/faxian/WoyaoRongzi/0/ZhuanlaoGu";
 			},
 			zhiyaGo(name){
-				this.urlName=name;
+				this.ID=name;
 				this.src=this.$refs.img4.getAttribute("index")
 //				window.location.href="#/faxian/WoyaoRongzi/0/ZhiYa";
 			}

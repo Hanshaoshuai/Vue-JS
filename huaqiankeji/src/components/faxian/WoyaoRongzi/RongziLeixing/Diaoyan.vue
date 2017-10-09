@@ -10,33 +10,34 @@
 				<box></box>
 				<div class="fankiu-content">
 					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>公司名称</div>
+						<div class="ferst"><span>*</span>企业名称</div>
 						<div class="last">
 							<textarea placeholder="" class="mint-field-core" v-model="texta"></textarea>
 						</div>
 					</div>
 					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>公司代码</div>
+						<div class="ferst"><span>*</span>企业代码</div>
 						<div class="last">
 							<textarea placeholder="" class="mint-field-core" v-model="textb"></textarea>
 						</div>
 					</div>
 					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>项目推荐</div>
+						<div class="ferst"><span>*</span>企业推荐</div>
 						<div class="last neirong">
 							<textarea placeholder="请填写直营业务、投资亮点等" class="mint-field-core" v-model="textc"></textarea>
 						</div>
 						<li>{{x}}/100</li>
 					</div>
 					<div class="zhuying_1 liangdian_1">
-						<div class="ferst"><span>*</span>公司所在行业标签<font>（选标签）</font></div>
+						<div class="ferst"><span>*</span>企业所在行业标签<font>（选标签）</font></div>
 						<ul ref="biaoqian">
-							<span class="bianse" @click.stap="xuanze('0')">行业标签</span>
+							<span v-for="(item,index) in BiaoQian[0]" @click.stap="xuanze(index)" :id="item.id">{{item.title}}</span>
+							<!--<span class="bianse" @click.stap="xuanze('0')">行业标签</span>
 							<span @click.stap="xuanze('1')">行业标签</span>
 							<span @click.stap="xuanze('2')">行业标签</span>
 							<span @click.stap="xuanze('3')">行业标签</span>
 							<span @click.stap="xuanze('4')">行业标签</span>
-							<span @click.stap="xuanze('5')">行业标签</span>
+							<span @click.stap="xuanze('5')">行业标签</span>-->
 						</ul>
 					</div>
 					<div class="zhuying_1">
@@ -76,7 +77,7 @@
 					<div class="zhuying_1">
 						<div class="ferst"><span>*</span>调研地址</div>
 						<div class="last number">
-							<input v-model="numberg" placeholder="输入数字" number="true" type="number" class="mint-field-core">
+							<input v-model="numberg" placeholder="请输入调研地址" type="text" class="mint-field-core">
 						</div>
 					</div>
 					<div class="zhuying_1">
@@ -101,13 +102,14 @@
 					</ul>
 				</div>
 			</div>
-			<pipei ref="pipeiShow"></pipei>
+			<pipei ref="pipeiShow" :token="token"></pipei>
 			<tishi ref="tishiShow" :xingXi="xingXi" :content="content"></tishi>
 		</div>
 	</transition>
 </template>
 
 <script type="text/ecmascript">
+	import {URL} from '../../../../common/js/path';
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
 	import box from "../../../box.vue";
@@ -119,12 +121,14 @@
 	
 	export default {
 		props:{
-//			food:{
+			token:{
 //				type:Object
-//			}
+			},
+			BiaoQian:{}
 		},
 		data () {
 			return {
+				type:"",		//创建类型
 				x:"0",			//字的个数
 				y:1,			//判断是否选择标签；》=1为选择；
 				numbera:"",
@@ -151,8 +155,23 @@
 					m:true,
 					u:true
 				},
-				content:""			//给下级要传的参数
+				content:"",			//给下级要传的参数
+				XiangmuID:"12",
+				biaoQianID:[],		//储存标签id
+				biaoQianid:'',		//储存标签id字符串
 			}
+		},
+		mounted(){
+			console.log(this.$route.params.type)
+			console.log(this.token)
+			console.log(this.BiaoQian)
+			this.type=this.$route.params.type
+			this.$nextTick(function() {
+				var spans=this.$refs.biaoqian.getElementsByTagName("span")[0];
+				spans.setAttribute("class","bianse")
+				this.biaoQianID.push(spans.id);
+			});
+//			this.token=this.$route.params
 		},
 		methods:{
 			yijianHind(){
@@ -163,13 +182,31 @@
 				var spans=this.$refs.biaoqian.getElementsByTagName("span");	
 				if(spans[index].getAttribute("class")=="bianse"){			//判断是否选择标签；》=1为选择；
 					spans[index].setAttribute("class","")
-					this.y-=1
+					for(var z=0; z<this.y; z++){
+						if(this.biaoQianID[z]==spans[index].id){
+							this.biaoQianID.splice(z,1);
+//							console.log(this.biaoQianID)
+							this.biaoQianid=this.biaoQianID.join()
+							console.log(this.biaoQianid)
+							this.y-=1
+							break;
+						}
+					}
 				}else{
 					if(this.y>2){
 						Toast('最多可选三个');
 					}else{
 						spans[index].setAttribute("class","bianse");
 						this.y+=1;
+						for(var i=0; i<this.y; i++){
+							if(this.biaoQianID[i]!=spans[index].id){
+								this.biaoQianID.push(spans[index].id)
+								break;
+							}
+						}
+//						console.log(this.biaoQianID)
+						this.biaoQianid=this.biaoQianID.join()
+						console.log(this.biaoQianid)
 					}
 				}
 				console.log(this.y)
@@ -188,6 +225,34 @@
 					numberg:this.numberg,
 					numberg:this.numberh
 				}
+				var datas = {
+					token:this.token,//	token	是	[string]		
+//					uid:"",//	创建者id	是	[string]		
+					type:this.type,//	类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报	是	[string]		
+//					company:"",//	公司id	是	[string]		
+					com_name:this.texta,//	公司名称	是	[string]		
+					com_code:this.textb,//	公司代码	是	[string]		
+					main_business:"",//	主营业务	是	[string]		
+					lightspot:this.textc,//	投资亮点	是	[string]		
+					industry:this.biaoQianid,//	公司所在行业标签id	是	[string]		
+					last_year_revenue:this.numbera,//	上一年营收（单位 万）	是	[string]		
+					last_year_profit:this.numberb,//	上一年净利润（单位 万）	是	[string]		
+					predict_revenue:this.numberc,//	今年预计营收(单位:万)	是	[string]		
+					predict_profit:this.numberd,//	今年预计净利润(单位:万)	是	[string]		
+					total_finance:this.numbere,//	融资总额(单位:万)	是	[string]		
+					appraisement:this.numberf,//	投前估值(单位:万)	是	[string]		
+					city:this.numberh,//	所在城市	是	[string]		
+					transfe_share:'',//	拟转股份数	是	[string]		
+					share_price:"",//	每股价格	是	[string]		
+					is_hold:'',//	是否本人持股 1:是 2:否	是	[string]		
+					research_address:this.numberg,//	调研地址	是	[string]		
+					research_time:"",//	调研时间	是	[string]		
+					pledge_time:"",//	质押时间周期(天)	是	[string]		
+					repayment_time:"",//	还款周期(天)	是	[string]		
+					face_rate:"",//	票面利率	是	[string]		
+					is_transfe:"",//	是否转股 1:是 2:否	是	[string]		
+					remark:"",//	备注	是	[string]
+				}
 				var ok=0;
 				for(var item in CanShu){		//判断填写信息是否完整Ok=1；标签必选
 					if(!CanShu[item]=="" && this.y>=1){
@@ -197,8 +262,14 @@
 					}
 				}
 				if(ok==0){
-					this.content=this.$refs.pipeiShow;
-					this.$refs.tishiShow.tishiBlock(CanShu);//CanShu是下级要传的参数
+					this.$http.post(URL.path+'finance/create',datas,{emulateJSON:true}).then(function(res){
+						CanShu.XiangmuID=res.body.data
+						this.content=this.$refs.pipeiShow;
+						this.$refs.tishiShow.tishiBlock(CanShu);//CanShu是下级要传的参数
+						console.log(res);
+					},function(res){
+					    console.log(res.status);
+					})
 				}else{
 					Toast("请填写完整您的信息！是否已选标签...");
 				}
@@ -412,7 +483,9 @@
 						span{
 							display:inline-block;
 							float:left;
-							padding:0.08rem 0.24rem;
+							width:1.04rem;
+							text-align:center;
+							padding:0.08rem 0;
 							background:#f2f2f2;
 							color:#acacac;
 							border-radius:0.3rem;

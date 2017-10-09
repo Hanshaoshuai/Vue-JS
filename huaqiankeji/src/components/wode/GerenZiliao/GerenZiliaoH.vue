@@ -5,7 +5,7 @@
 				<span class="xiangmu-left"><img src="../img/back.png"/></span>
 				<span>个人资料</span>
 			</div>
-			<div class="box">
+			<div class="box" ref="box">
 				<div style="width:100%;height:0.45rem;"></div>
 				<div class="guQuan">
 					<div class="fankiu border-topbottom">
@@ -18,8 +18,8 @@
 						<div class="fankiu border-topbottom">
 							<div class="content-food">
 								<span>关注领域</span>
-								<span class="lasst" @click.stap="bianji('1')">编辑</span>
-								<ul>
+								<span ref="bianji" class="lasst" @click.stap="bianji('1')">编辑</span>
+								<ul v-if="BianJi==0" class="first">
 									<li>
 										<input readOnly="true" v-model="numbera" placeholder="食品、食品、食品" type="text" class="mint-field-core">
 									</li>
@@ -30,12 +30,17 @@
 										<input readOnly="true" v-model="numberc" placeholder="食品" type="text" class="mint-field-core">
 									</li>-->
 								</ul>
+								<div v-if="BianJi==1" class="zhuying_1 liangdian_1">
+									<ul class="last" ref="biaoqian">
+										<span v-for="(item,index) in BiaoQian[0]" :id='item.id' @click.stap="xuanze(index,item.id)">{{item.title}}</span>
+									</ul>
+								</div>
 							</div>
 						</div>
 						<div class="fankiu border-bottom">
 							<div class="content-food">
 								<span>投资阶段</span>
-								<ul>
+								<ul v-if="BianJi==0" class="first">
 									<li>
 										<input readOnly="true" v-model="numberd" placeholder="天使、VC、PE" type="text" class="mint-field-core">
 									</li>
@@ -46,33 +51,53 @@
 										<input readOnly="true" v-model="numberf" placeholder="PE" type="text" class="mint-field-core">
 									</li>-->
 								</ul>
+								<div  v-if="BianJi==1" class="zhuying_1 liangdian_1" ref="foods1">
+									<ul class="last"  ref="biaoqian1">
+										<li v-for="(item,index) in BiaoQian[1]" class="src0" :id='item.id' @click.stap="xuanze1(index,item.id)">
+											<span>{{item.title}}</span><font class="img1"></font>
+										</li>
+									</ul>
+								</div>
 							</div>
 						</div>
 						<div class="fankiu border-bottom dangeDiyu">
 							<div class="content-food">
 								<span>单个投资额</span>
-								<ul>
+								<ul v-if="BianJi==0" class="first">
 									<li>
 										<input readOnly="true" v-model="numberg" placeholder="2000万-5000万" type="text" class="mint-field-core">
 									</li>
 								</ul>
+								<div v-if="BianJi==1" class="type-conts">
+									<ul>
+										<input v-model="numbere" placeholder="输入数字" number="true" type="number" class="mint-field-core border">
+										<font>万&nbsp;至</font>
+										<input v-model="numberf" placeholder="输入数字" number="true" type="number" class="mint-field-core border">
+										<font>万&nbsp;</font>
+									</ul>
+								</div>
 							</div>
 						</div>
 						<div class="fankiu border-bottom dangeDiyu">
 							<div class="content-food">
 								<span>地域要求</span>
-								<ul>
+								<ul v-if="BianJi==0" class="first">
 									<li>
 										<input readOnly="true" v-model="numberh" placeholder="长三角、珠三角、北京" type="text" class="mint-field-core">
 									</li>
 								</ul>
+								<div v-if="BianJi==1" class="xiaolv">
+									<ul>
+										<textarea placeholder="请填写地域要求如：长三角、珠三角、北京" class="mint-field-core ziyuanChongzu" v-model="texta"></textarea>
+									</ul>
+								</div>
 							</div>
 						</div>
 					</div>
-					<box style="background:#FCE7E6"></box>
-					<div ref="yitouAnli" class="sousuo-content border-topbottom">
+					<div style="height:0.06rem;width:100%;background:#f5f4f9"></div>
+					<div ref="guquanBian" class="sousuo-content border-topbottom">
 						<div class="content-header">
-							<span>已投案例</span><span  class="lasst" @click.stap="bianji('2')">编辑</span>
+							<span>已投案例</span><span  class="lasst" @click.stap="bianji('0')">编辑</span>
 						</div>
 						<div class="xiaolv anli">
 							<div class="anli-list border-top">
@@ -99,26 +124,26 @@
 							</div>
 						</div>
 					</div>
-					<box style="background:#FCE7E6"></box>
+					<div style="height:0.06rem;width:100%;background:#f5f4f9"></div>
 					<div ref="chanYe" class="sousuo-content border-topbottom">
 						<div class="content-header border-topbottom">
-							<span>产业资源</span><span  class="lasst" @click.stap="bianji('3')">编辑</span>
+							<span>产业资源</span><span ref="bianji3" class="lasst" @click.stap="bianji('3')">编辑</span>
 						</div>
 						<div class="xiaolv anli">
-							<ul>
+							<ul class="first">
 								<li>
 									<textarea readOnly="true" placeholder="请用文字表述您所在机构能给企业带来的产业资源" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
 								</li>
 							</ul>
 						</div>
 					</div>
-					<box style="background:#FCE7E6"></box>
+					<div style="height:0.06rem;width:100%;background:#f5f4f9"></div>
 					<div ref="chongGou" class="sousuo-content border-topbottom">
 						<div class="content-header border-topbottom">
-							<span>并购重组</span><span  class="lasst" @click.stap="bianji('4')">编辑</span>
+							<span>并购重组</span><span ref="bianji4" class="lasst" @click.stap="bianji('4')">编辑</span>
 						</div>
 						<div class="xiaolv anli">
-							<ul>
+							<ul class="first">
 								<li>
 									<textarea readOnly="true" placeholder="请用文字表述您有意愿进行收购和出售的资产" class="mint-field-core ziyuanChongzu" v-model="textd"></textarea>
 								</li>
@@ -127,6 +152,8 @@
 					</div>
 				</div>
 				<box style="background:#FCE7E6"></box>
+				
+				
 				<div class="zhaiQuan">
 					<box style="background:#FCE7E6"></box>
 					<div class="fankiu border-topbottom bottom-a">
@@ -137,239 +164,147 @@
 					<div class="fankiu border-topbottom">
 						<div class="content-food">
 							<span>投资方式</span>
-							<span class="lasst" @click.stap="bianji()">编辑</span>
-							<div class="content-touzi"  ref="foods">
+							<span class="lasst" ref="text2" @click.stap="bianji2('5')">编辑</span>
+							<div v-if="BianJi2==0" class="content-touzi" ref="foods">
 								<ul>
-									<li class="src1" @click.stap="types('0')">
+									<li class="src1" id='5'>
 										<span>融资租赁</span><font class="img1"></font>
 									</li>
-									<li class="src0" @click.stap="types('1')">
+									<li class="src1" id="4">
 										<span>股权质押</span><font class="img1"></font>
 									</li>
+									
+								</ul>
+							</div>
+							<div v-if="BianJi2==1" class="content-touzi" ref="foods">
+								<ul>
+									<li class="src1" id='5' @click.stap="types('0','5')">
+										<span>融资租赁</span><font class="img1"></font>
+									</li>
+									<li class="src0" id="4" @click.stap="types('1','4')">
+										<span>股权质押</span><font class="img1"></font>
+									</li>
+									
 								</ul>
 							</div>
 						</div>
 					</div>
-					<!--<div ref="chanYe" class="sousuo-content border-topbottom">
-						<div class="content-header border-topbottom">
-							<span>企业要求</span><span  class="lasst" @click.stap="bianji('3')">编辑</span>
-						</div>
-						<div class="xiaolv anli">
-							<ul>
-								<li>
-									<textarea readOnly="true" placeholder="营收收入不低于2亿元" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
-									<textarea readOnly="true" placeholder="净利润不低于2000万元" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
-								</li>
-							</ul>
-						</div>
-					</div>-->
-					<div class="sousuo-content border-topbottom" @click.stap="zuoshiGo()">
+					<div style="height:0.06rem;width:100%;background:#f5f4f9"></div>
+					<div class="sousuo-content border-topbottom">
 						<div class="content-header">
-							<span>企业要求</span><span  class="lasst" @click.stap="bianji('3')">编辑</span>
+							<span>企业要求</span><span ref="text3" class="lasst" @click.stap="bianji3('3')">编辑</span>
 						</div>
 						<div class="shouru">
-							<div class="anli-list border-topbottom">
-								<textarea readOnly="true" placeholder="营收收入不低于2亿元" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
-									
+							<div v-if="BianJi3==0">
+								<div class="anli-list">
+									<textarea readOnly="true" placeholder="营收收入不低于2亿元" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+										
+								</div>
+								<div class="anli-list border-bottom">
+									<textarea readOnly="true" placeholder="净利润不低于2000万元" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+								</div>
 							</div>
-							<div class="anli-list border-topbottom">
-								<textarea readOnly="true" placeholder="净利润不低于2000万元" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
-							</div>
+							<ul v-if="BianJi3==1">
+								<div>
+									<span>营业收入不低于</span>
+									<input v-model="numbera" placeholder="输入数字" number="true" type="number" class="mint-field-core border"><font>亿元</font>
+								</div>
+								<div>
+									<span>净利润不低于</span>
+									<input v-model="numberb" placeholder="输入数字" number="true" type="number" class="mint-field-core border"><font>万</font>
+								</div>
+							</ul>
 						</div>
 					</div>
-						
-						
-						
-						<div class="fankiu border-bottom dangeDiyu">
-							<div class="content-food">
-								<span>您能提供的年化资金成本范围</span>
-								<ul>
-									<li>
-										<input readOnly="true" v-model="numberg" placeholder="1000万-3000万" type="text" class="mint-field-core">
-									</li>
-								</ul>
-							</div>
-						</div>
-						<div class="fankiu border-bottom dangeDiyu">
-							<div class="content-food">
-								<span>从接触项目到放款的时间周期不超过</span>
-								<ul>
-									<li>
-										<input readOnly="true" v-model="numberg" placeholder="30天" type="text" class="mint-field-core">
-									</li>
-								</ul>
-							</div>
-						</div>
-						<div class="fankiu border-bottom dangeDiyu">
-							<div class="content-food">
-								<span>地域要求</span>
-								<ul>
-									<li>
-										<input readOnly="true" v-model="numberh" placeholder="长三角、珠三角、北京" type="text" class="mint-field-core">
-									</li>
-								</ul>
-							</div>
-						</div>
-						<div class="fankiu border-bottom dangeDiyu">
-							<div class="content-food">
-								<span>借债主题是</span>
-								<ul>
-									<li>
-										<input readOnly="true" v-model="numberh" placeholder="万象信托有限公司" type="text" class="mint-field-core">
-									</li>
-								</ul>
-							</div>
-						</div>
-					</div>
-					<box style="background:#FCE7E6"></box>
-					<div ref="yitouAnli" class="sousuo-content border-topbottom">
-						<div class="content-header">
-							<span>已投案例</span><span  class="lasst" @click.stap="bianji('2')">编辑</span>
-						</div>
-						<div class="xiaolv anli">
-							<div class="anli-list border-top">
-								<span>
-									<input readOnly="true" v-model="numberi" placeholder="天立泰" type="text" class="mint-field-core">
-								</span>
-								<span class="center">
-									<input readOnly="true" v-model="numberj" placeholder="58658 万" type="text" class="mint-field-core">
-								</span>
-								<span>
-									<input readOnly="true" v-model="numberk" placeholder="反徐小平" type="text" class="mint-field-core">
-								</span>
-							</div>
-							<div class="anli-list border-top">
-								<span>
-									<input readOnly="true" v-model="numberl" placeholder="天立泰" type="text" class="mint-field-core">
-								</span>
-								<span class="center">
-									<input readOnly="true" v-model="numberm" placeholder="58658 万" type="text" class="mint-field-core">
-								</span>
-								<span>
-									<input readOnly="true" v-model="numbern" placeholder="反徐小平" type="text" class="mint-field-core">
-								</span>
-							</div>
-						</div>
-					</div>
-					
-					
-					
-					
-					
-					<div class="type-content">
-						<div class="type-cont">
+					<div class="fankiu border-bottom dangeDiyu">
+						<div class="content-food">
 							<span>您能提供的年化资金成本范围</span>
-							<ul>
-								<input v-model="numberb" placeholder="输入数字" number="true" type="number" class="mint-field-core border">
-								%&nbsp;至
-								<input v-model="numberTob" placeholder="输入数字" number="true" type="number" class="mint-field-core border">%&nbsp;
+							<ul v-if="BianJi3==0" class="first">
+								<li>
+									<input readOnly="true" v-model="numberg" placeholder="1000万-3000万" type="text" class="mint-field-core">
+								</li>
 							</ul>
-						</div>
-					</div>
-					<div class="type-content">
-						<div class="type-cont">
-							<span>您的单笔能提供的投资规模？</span>
-							<ul>
+							<ul v-if="BianJi3==1" class="last">
 								<input v-model="numberc" placeholder="输入数字" number="true" type="number" class="mint-field-core border">
-								万&nbsp;至
-								<input v-model="numberToc" placeholder="输入数字" number="true" type="number" class="mint-field-core border">万&nbsp;
-							</ul>
-						</div>
-					</div>
-					<div class="type-content">
-						<div class="type-cont">
-							<span>从接触项目到放款的时间周期不超过？</span>
-							<ul>
+								<font>%&nbsp;至</font>
 								<input v-model="numberd" placeholder="输入数字" number="true" type="number" class="mint-field-core border">
-								天
+								<font>%&nbsp;</font>
 							</ul>
 						</div>
 					</div>
-					<div class="type-content">
-						<div class="type-cont">
-							<span>您是否有地域要求（选填）？</span>
-							<ul class="type-padding">
-								<!--<textarea placeholder="用户填文字，后台审核的时候填写标准化的标签" rows="4" class="mint-field-core border" v-model="introductionA"></textarea>-->
-								<mt-field  class="border" placeholder="用户填文字，后台审核的时候填写标准化的标签" type="textarea" rows="4" v-model="introductionA"></mt-field>
+					<div class="fankiu border-bottom dangeDiyu">
+						<div class="content-food">
+							<span>从接触项目到放款的时间周期不超过</span>
+							<ul v-if="BianJi3==0" class="first">
+								<li>
+									<input readOnly="true" v-model="numberg" placeholder="30天" type="text" class="mint-field-core">
+								</li>
+							</ul>
+							<ul v-if="BianJi3==1" class="last">
+								<input v-model="numberg" placeholder="输入数字" number="true" type="number" class="mint-field-core border">
+								<font>天</font>
 							</ul>
 						</div>
 					</div>
-					<div class="type-content">
-						<div class="type-cont">
-							<span>借债主题是（选填）？</span>
-							<ul class="type-padding">
-								<!--<textarea placeholder="用户填文字，后台审核的时候填写标准化的标签" rows="4" class="mint-field-core border" v-model="introductionB"></textarea>-->
-								<mt-field  class="border" placeholder="用户填文字，后台审核的时候填写标准化的标签" type="textarea" rows="4" v-model="introductionB"></mt-field>
+					<div class="fankiu border-bottom dangeDiyu">
+						<div class="content-food">
+							<span>地域要求</span>
+							<ul v-if="BianJi3==0" class="first">
+								<li>
+									<input readOnly="true" v-model="numberh" placeholder="长三角、珠三角、北京" type="text" class="mint-field-core">
+								</li>
 							</ul>
-						</div>
-					</div>
-					<box style="background:#FCE7E6"></box>
-					<div class="sousuo-content border-topbottom" @click.stap="zuoshiGo()">
-						<div class="content-header">
-							<span>地域要求</span><span>编辑</span>
-						</div>
-						<div class="xiaolv anli">
-							<div class="anli-list">
-								<span >长三角、珠三角、北京</span>
-								<!--<span class="center">反徐小平</span>
-								<span >58658&nbsp;万</span>-->
+							<div v-if="BianJi3==1" class="xiaolv anli">
+								<ul>
+									<textarea placeholder="请填写地域要求如：长三角、珠三角、北京" class="mint-field-core ziyuanChongzu" v-model="texta"></textarea>
+								</ul>
 							</div>
 						</div>
 					</div>
-					<box style="background:#FCE7E6"></box>
-					<div class="sousuo-content border-topbottom" @click.stap="zuoshiGo()">
-						<div class="content-header">
-							<span>借债主体</span><span>编辑</span>
-						</div>
-						<div class="xiaolv anli">
-							<div class="anli-list">
-								<span >万象信托有限公司</span>
-								<!--<span class="center">反徐小平</span>
-								<span >58658&nbsp;万</span>-->
+					<div style="height:0.06rem;width:100%;background:#f5f4f9"></div>
+					<div class="fankiu border-bottom dangeDiyu">
+						<div class="content-food">
+							<span>借债主题是</span><span ref="text4" class="lasst" @click.stap="bianji4('2')">编辑</span>
+							<ul v-if="BianJi4==0" class="first">
+								<li>
+									<input readOnly="true" v-model="numberh" placeholder="万象信托有限公司" type="text" class="mint-field-core">
+								</li>
+							</ul>
+							<div v-if="BianJi4==1" class="xiaolv anli">
+								<ul>
+									<textarea placeholder="请填写资金出借方的公司全称" class="mint-field-core ziyuanChongzu" v-model="texta"></textarea>
+								</ul>
 							</div>
 						</div>
 					</div>
-					<box style="background:#FCE7E6"></box>
-					<div class="sousuo-content border-topbottom" @click.stap="zuoshiGo()">
-						<div class="content-header">
-							<span>已投项目</span><span>编辑</span>
-						</div>
-						<div class="xiaolv anli">
-							<div class="anli-list">
-								<span >天立泰</span>
-								<span class="center">反徐小平</span>
-								<span >58658&nbsp;万</span>
-							</div>
-							<div class="anli-list">
-								<span >天立泰</span>
-								<span class="center">反徐小平</span>
-								<span >58658&nbsp;万</span>
-							</div>
-						</div>
+				</div>
+				<div style="height:0.06rem;width:100%;background:#f5f4f9"></div>
+				<div ref="yitouAnli" class="sousuo-content border-topbottom">
+					<div class="content-header">
+						<span>已投案例</span><span ref="text5" class="lasst" @click.stap="bianji5('2')">编辑</span>
 					</div>
-					<box style="background:#FCE7E6"></box>
-					<div class="sousuo-content border-topbottom" @click.stap="zuoshiGo()">
-						<div class="content-header">
-							<span>产业资源</span><span>编辑</span>
+					<div class="xiaolv anli">
+						<div class="anli-list border-top">
+							<span>
+								<input readOnly="true" v-model="numberi" placeholder="天立泰" type="text" class="mint-field-core">
+							</span>
+							<span class="center">
+								<input readOnly="true" v-model="numberj" placeholder="58658 万" type="text" class="mint-field-core">
+							</span>
+							<span>
+								<input readOnly="true" v-model="numberk" placeholder="反徐小平" type="text" class="mint-field-core">
+							</span>
 						</div>
-						<div class="xiaolv anli">
-							<div class="anli-list">
-								<span >天反徐小平反徐小平立反徐小平泰</span>
-								<!--<span class="center">反徐小平</span>
-								<span >58658&nbsp;万</span>-->
-							</div>
-						</div>
-					</div>
-					<div class="sousuo-content border-topbottom" @click.stap="zuoshiGo()">
-						<div class="content-header">
-							<span>并购重组</span><span>编辑</span>
-						</div>
-						<div class="xiaolv anli">
-							<div class="anli-list">
-								<span >天立并购重并购重组组反并购重组徐小平泰</span>
-								<!--<span class="center">反徐小平</span>
-								<span >58658&nbsp;万</span>-->
-							</div>
+						<div class="anli-list border-top">
+							<span>
+								<input readOnly="true" v-model="numberl" placeholder="天立泰" type="text" class="mint-field-core">
+							</span>
+							<span class="center">
+								<input readOnly="true" v-model="numberm" placeholder="58658 万" type="text" class="mint-field-core">
+							</span>
+							<span>
+								<input readOnly="true" v-model="numbern" placeholder="反徐小平" type="text" class="mint-field-core">
+							</span>
 						</div>
 					</div>
 				</div>
@@ -386,7 +321,9 @@
 </template>
 
 <script type="text/ecmascript">
+	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
+	import { Toast } from 'mint-ui';
 	import box from "../../box.vue";
 //	import youhuiquan from "../../shendu/PeixunZixun/YouhuiQuan.vue";
 //	import fankuixinxi from "./FankuiXinxi.vue";
@@ -400,6 +337,13 @@
 		},
 		data () {
 			return {
+				y:1,			//判断是否选择标签；》=1为选择；
+				BianJi:'0',
+				BianJi2:"0",
+				BianJi3:"0",
+				BianJi4:"0",
+				BianJi5:'0',
+				BiaoQian:"",
 				numbera:"",
 				numberb:"",
 				numberc:"",
@@ -417,6 +361,7 @@
 				numberToa:"",
 				numberTob:"",
 				numberToc:"",
+				texta:'',
 				textc:"",
 				textd:"",
 				fankui:"45",
@@ -428,9 +373,21 @@
 				tucaoShow:true,
 				urlName:"Dingzeng",
 				typeLi:"",
+				biaoQianID:[],		//储存标签id
+				biaoQianID1:[],		//储存标签id
+				biaoQianID2:[],		//储存标签id
+				scrollTop:""
 			}
 		},
+		mounted(){
+//			this.$refs.box.addEventListener('scroll', this.handleScroll)	//做一个scroll监听
+		},
 		methods:{
+			handleScroll(){
+//				this.scrollTop = this.$refs.box.scrollTop
+//				sessionStorage.setItem("gerenZiliaoH",scrollTop)
+//			  	console.log(sessionStorage.getItem("gerenZiliaoH"))
+			},
 			yijianHind(){
 				history.go(-1)
 			},
@@ -451,7 +408,35 @@
 			},
 			bianji(id){
 				if(id==1){
-					var textInputs = this.$refs.guanzhuLingyu.getElementsByClassName("mint-field-core");
+					if(this.BianJi==1){
+						this.BianJi=0;
+						this.$refs.bianji.innerText="编辑";
+					}else{
+						this.BianJi=1;
+						this.$refs.bianji.innerText="取消"
+						//获取标签
+						var datas = {
+							token:this.$route.params.token//	token	是	[string]	URL获取的参数
+						}
+						this.$http.post(URL.path1+'login/three',datas,{emulateJSON:true}).then(function(res){
+							this.BiaoQian=res.body.data
+							this.$nextTick(function() {
+								var spans=this.$refs.biaoqian.getElementsByTagName("span")[0];
+								var spans1=this.$refs.biaoqian1.getElementsByTagName("span")[0];
+								spans.setAttribute("class","bianse")
+								spans1.setAttribute("class","bianse")
+								this.biaoQianID.push(spans.id);
+								this.biaoQianID1.push(spans.id);
+								
+							});
+							console.log(this.BiaoQian);
+						},function(res){
+						    console.log(res.status);
+						})
+					}
+				}
+				if(id==0){
+					var textInputs = this.$refs.guquanBian.getElementsByClassName("mint-field-core");
 					var length=textInputs.length;
 					for(var i=0; i<length; i++){
 						textInputs[i].removeAttribute("readOnly")		//点击编辑   input去除属性readOnly即可编辑
@@ -459,7 +444,39 @@
 					textInputs[0].focus();		//点击编辑   input获取焦点
 					console.log();
 				}
-				if(id==2){
+				if(id==3 || id==4){
+					if(id==3){
+						if(this.$refs.bianji3.innerText=="编辑"){
+							this.$refs.bianji3.innerText="取消";
+							var textInputs = this.$refs.chanYe.getElementsByClassName("mint-field-core");
+							textInputs[0].removeAttribute("readOnly")		//点击编辑   input去除属性readOnly即可编辑
+							textInputs[0].focus();		//点击编辑   input获取焦点
+							console.log();
+						}else{
+							this.$refs.bianji3.innerText="编辑";
+							var textInputs = this.$refs.chanYe.getElementsByClassName("mint-field-core");
+							textInputs[0].setAttribute("readOnly","readOnly")		//点击编辑   input去除属性readOnly即可编辑
+							textInputs[0].focus();		//点击编辑   input获取焦点
+							console.log();
+						}
+					}else{
+						if(this.$refs.bianji4.innerText=="编辑"){
+							this.$refs.bianji4.innerText="取消";
+							var textInputs = this.$refs.chongGou.getElementsByClassName("mint-field-core");
+							textInputs[0].removeAttribute("readOnly")		//点击编辑   input去除属性readOnly即可编辑
+							textInputs[0].focus();		//点击编辑   input获取焦点
+							console.log();
+						}else{
+							this.$refs.bianji4.innerText="编辑";
+							var textInputs = this.$refs.chongGou.getElementsByClassName("mint-field-core");
+							textInputs[0].setAttribute("readOnly","readOnly")		//点击编辑   input去除属性readOnly即可编辑
+							textInputs[0].focus();		//点击编辑   input获取焦点
+							console.log();
+						}
+					}
+					
+				}
+				if(id==4){
 					var textInputs = this.$refs.yitouAnli.getElementsByClassName("mint-field-core");
 					var length=textInputs.length;
 					for(var i=0; i<length; i++){
@@ -468,27 +485,131 @@
 					textInputs[0].focus();		//点击编辑   input获取焦点
 					console.log();
 				}
-				if(id==3){
-					var textInputs = this.$refs.chanYe.getElementsByClassName("mint-field-core");
-					textInputs[0].removeAttribute("readOnly")		//点击编辑   input去除属性readOnly即可编辑
-					textInputs[0].focus();		//点击编辑   input获取焦点
-					console.log();
+			},
+			bianji2(id){
+				this.handleScroll();
+				if(this.BianJi2==1){
+					this.BianJi2=0;
+					this.$refs.text2.innerText="编辑";
+				}else{
+					this.BianJi2=1;
+					this.$refs.text2.innerText="取消"
 				}
-				if(id==4){
-					var textInputs = this.$refs.chongGou.getElementsByClassName("mint-field-core");
-					textInputs[0].removeAttribute("readOnly")		//点击编辑   input去除属性readOnly即可编辑
-					textInputs[0].focus();		//点击编辑   input获取焦点
-					console.log();
+				
+			},
+			bianji3(){
+				this.handleScroll();
+				if(this.BianJi3==1){
+					this.BianJi3=0;
+					this.$refs.text3.innerText="编辑";
+				}else{
+					this.BianJi3=1;
+					this.$refs.text3.innerText="取消"
 				}
 			},
-			types(id){
+			bianji4(){
+				this.handleScroll();
+				if(this.BianJi4==1){
+					this.BianJi4=0;
+					this.$refs.text4.innerText="编辑";
+				}else{
+					this.BianJi4=1;
+					this.$refs.text4.innerText="取消"
+				}
+			},
+			bianji5(){
+				this.handleScroll();
+				if(this.BianJi5==1){
+					this.BianJi5=0;
+					this.$refs.text5.innerText="编辑";
+				}else{
+					this.BianJi5=1;
+					this.$refs.text5.innerText="取消"
+				}
+			},
+			xuanze(index){
+				var spans=this.$refs.biaoqian.getElementsByTagName("span");	
+				var length=spans.length;
+				if(spans[index].getAttribute("class")=="bianse"){			//判断是否选择标签；》=1为选择；
+					spans[index].setAttribute("class","")
+					for(var z=0; z<this.y; z++){
+						if(this.biaoQianID[z]==spans[index].id){
+							this.biaoQianID.splice(z,1);
+							console.log(this.biaoQianID)
+							this.y-=1
+							break;
+						}
+					}
+				}else{
+					if(this.y>2){
+						Toast('最多可选三个');
+					}else{
+						spans[index].setAttribute("class","bianse");
+						this.y+=1;
+						for(var i=0; i<this.y; i++){
+							if(this.biaoQianID[i]!=spans[index].id){
+								this.biaoQianID.push(spans[index].id)
+								break;
+							}
+						}
+						console.log(this.biaoQianID)
+					}
+				}
+			},
+			xuanze1(index){
+				var spans=this.$refs.biaoqian1.getElementsByTagName("span");	
+				var length=spans.length;
+				if(spans[index].getAttribute("class")=="bianse"){			//判断是否选择标签；》=1为选择；
+					spans[index].setAttribute("class","")
+					for(var z=0; z<this.y; z++){
+						if(this.biaoQianID1[z]==spans[index].id){
+							this.biaoQianID1.splice(z,1);
+							console.log(this.biaoQianID1)
+							this.y-=1
+							break;
+						}
+					}
+				}else{
+					if(this.y>2){
+						Toast('最多可选三个');
+					}else{
+						spans[index].setAttribute("class","bianse");
+						this.y+=1;
+						for(var i=0; i<this.y; i++){
+							if(this.biaoQianID1[i]!=spans[index].id){
+								this.biaoQianID1.push(spans[index].id)
+								break;
+							}
+						}
+						console.log(this.biaoQianID1)
+					}
+				}
+			},
+			types(index,id){
 				var typeLi=this.$refs.foods.getElementsByTagName("li");
 				var length=typeLi.length;
 				this.urlName=id;
-				for(var i=0; i<length; i++){
-					typeLi[i].setAttribute("class","src0");
+				if(typeLi[index].getAttribute("class")=="src1"){			//判断是否选择标签；》=1为选择；
+					typeLi[index].setAttribute("class","src0")
+					for(var z=0; z<this.y; z++){
+						if(this.biaoQianID2[z]==typeLi[index].id){
+							this.biaoQianID2.splice(z,1);
+							console.log(this.biaoQianID2)
+							this.y-=1
+							break;
+						}
+					}
+				}else{
+					typeLi[index].setAttribute("class","src1");
+					this.y+=1;
+					for(var i=0; i<this.y; i++){
+						if(this.biaoQianID2[i]!=typeLi[index].id){
+							this.biaoQianID2.push(typeLi[index].id)
+							break;
+						}
+					}
+					console.log(this.biaoQianID2)
 				}
-				typeLi[id].setAttribute("class","src1")
 			}
 			
 //			show(){
@@ -515,6 +636,8 @@
 //			}
 		},
 		updated(){
+//			this.$refs.box.scrollTop=0;
+//			this.$refs.box.scrollTop=this.scrollTop
 //			if(!this.betterscroll){
 //				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
 //					click:true
@@ -603,29 +726,80 @@
 						float:right;
 						color:#ff7a59;
 					}
-					ul{
+					.first{
 						padding-top:0.14rem;
 						height:0.31rem;
 						display:flex;
 						justify-content:space-between;
 						li{
 							width:100%;
-							/*width:1rem;*/
 							height:0.31rem;
 							float:left;
 							font-size:0.16rem;
 							display:inline-block;
 							.mint-field-core::-webkit-input-placeholder{
-							  /*color: #ff7a59;*/
 							}
 							.mint-field-core{
 								width:100%;
 								height:100%;
-								/*text-align:center;*/
 								line-height:0.3rem;
-								/*background:#fddcd0;*/
-								/*border-radius:0.2rem;*/
-								/*color:#ff7a59;*/
+							}
+						}
+					}
+					.liangdian_1{
+						width:100%;
+						padding-top:0.14rem;
+						.last{
+							width:100%;
+							overflow:hidden;
+							span{
+								display:inline-block;
+								float:left;
+								width:1.04rem;
+								text-align:center;
+								padding:0.08rem 0;
+								background:#f2f2f2;
+								color:#acacac;
+								border-radius:0.3rem;
+								margin:0 0.08rem 0.1rem 0;
+								font-size:0.14rem;
+							}
+							span:nth-child(3n){
+								margin-right:0;
+							}
+							.bianse{
+								background:#fddcd0;
+								color:#ff7a59;
+							}
+						}
+					}
+					.xiaolv{
+						width:100%;
+						span{
+							line-height:0.16rem;
+						}
+						ul{
+							width:100%;
+							.mint-field-core::-webkit-input-placeholder{
+							  color: #787777;
+							}
+							.ziyuanChongzu{
+								resize: none;
+								min-height:1.02rem;
+								line-height:0.2rem;
+								&::-webkit-scrollbar{width:0;height:0}
+								border:1px solid #d2d2d2;
+							}
+							.mint-field-core{
+								width:96%;
+								height:100%;
+								text-align:left;
+								background:#fff;
+								border-radius:0;
+								color:#787777;
+								font-size:0.16rem;
+								padding:0.06rem 2%;
+								margin:0.16rem 0 0 0;
 							}
 						}
 					}
@@ -650,7 +824,7 @@
 			
 			.dangeDiyu{
 				.content-food{
-					ul{
+					.first{
 						li{
 							width:100%;
 							.mint-field-core::-webkit-input-placeholder{
@@ -665,6 +839,56 @@
 								color:#787777;
 								font-size:0.16rem;
 							}
+						}
+					}
+					.type-conts{
+						flex:1;
+						padding:0.16rem 0 0 0;
+						background:#fff;
+						font-size:0.14rem;
+						ul{
+							width:100%;
+							overflow:hidden;
+							color: #787777;
+							.mint-field-core::-webkit-input-placeholder{
+							color: #d2d2d2;
+							}
+							.mint-field-core{
+								border:0.008rem solid #d2d2d2;
+								width:0.6rem;
+								margin:0;
+								padding:0.04rem 0.14rem;
+								margin:0.06rem 0.1rem;
+							}
+						}
+					}
+					.last{
+						padding-top:0.1rem;
+						font{
+							color:#959595;
+						}
+						.shouru{
+							padding:0 0.1rem;
+							span{
+								display:inline-block;
+								width:1.13rem;
+							}
+						}
+						.mint-field-core::-webkit-input-placeholder{
+							color: #d2d2d2;
+						}
+						.mint-field-core{
+							border:0.008rem solid #d2d2d2;
+							width:0.6rem;
+							margin:0;
+							padding:0.04rem 0.14rem;
+							margin:0.06rem 0.1rem;
+						}
+						li{
+							display:inline-block;
+							margin:0;
+							padding:0.08rem 0.18rem;
+							margin:0.06rem 0.1rem;
 						}
 					}
 				}
@@ -696,20 +920,12 @@
 							margin:0.06rem 0.1rem;
 						}
 					}
-			    /*-webkit-box-pack: center;
-			    justify-content: center;
-			    -webkit-box-align: center;
-			    align-items: center;*/
 			   	}
 			}
 			.sousuo-content{
 				width:100%;
 				height:auto;
 				background:#fff;
-				/*padding-bottom:0.2rem;*/
-				/*margin:0.05rem 0;*/
-				/*display:flex;*/
-				/*flex-direction:column;*/
 				.content-header{
 					padding:0.08rem 5%;
 					font-size:0.18rem;
@@ -732,24 +948,46 @@
 						padding:0.05rem 5%;
 						li{
 							width:100%;
-							.mint-field-core::-webkit-input-placeholder{
-							  color: #787777;
-							}
-							.ziyuanChongzu{
-								resize: none;
-								min-height:1.02rem;
-								line-height:0.2rem;
-								&::-webkit-scrollbar{width:0;height:0}
-							}
-							.mint-field-core{
-								width:100%;
-								height:100%;
-								text-align:left;
-								background:#fff;
-								border-radius:0;
-								color:#787777;
-								font-size:0.16rem;
-							}
+						}
+						.mint-field-core::-webkit-input-placeholder{
+						  color: #787777;
+						}
+						.mint-field-core{
+							width:100%;
+							height:100%;
+							text-align:left;
+							background:#fff;
+							border-radius:0;
+							color:#787777;
+							font-size:0.16rem;
+						}
+						.ziyuanChongzu{
+							resize: none;
+							min-height:1.02rem;
+							line-height:0.2rem;
+							&::-webkit-scrollbar{width:0;height:0}
+						}
+					}
+					ul{
+						.mint-field-core::-webkit-input-placeholder{
+						  color: #787777;
+						}
+						.ziyuanChongzu{
+							resize: none;
+							min-height:1.02rem;
+							line-height:0.2rem;
+							&::-webkit-scrollbar{width:0;height:0}
+						}
+						.mint-field-core{
+							width:96%;
+							height:100%;
+							text-align:left;
+							background:#fff;
+							border-radius:0;
+							color:#787777;
+							font-size:0.16rem;
+							padding:0.06rem 2%;
+							margin:0.06rem 0 0 0;
 						}
 					}
 				}
@@ -800,6 +1038,7 @@
 					background:#fff;
 					ul{
 					width:100%;
+					margin-top:0.1rem;
 					height:0.37rem;
 					display:flex;
 					justify-content:flex-start;
@@ -846,6 +1085,9 @@
 					width:100%;
 					.anli-list{
 						padding:0 5%;
+						&:last-child{
+							padding-bottom:0.16rem;
+						}
 						.ziyuanChongzu{
 							resize: none;
 							line-height:0.2rem;
@@ -853,12 +1095,36 @@
 						}
 						.mint-field-core{
 							width:100%;
-							height:0.4rem;
+							height:0.2rem;
 							text-align:left;
 							background:#fff;
 							border-radius:0;
 							color:#787777;
 							font-size:0.16rem;
+						}
+					}
+					ul{
+						padding:0 5%;
+						padding-bottom:0.16rem;
+						font{
+							color:#959595;
+						}
+						.shouru{
+							padding:0 0.1rem;
+							span{
+								display:inline-block;
+								width:1.13rem;
+							}
+						}
+						.mint-field-core::-webkit-input-placeholder{
+							color: #d2d2d2;
+						}
+						.mint-field-core{
+							border:0.008rem solid #d2d2d2;
+							width:0.6rem;
+							margin:0;
+							padding:0.04rem 0.14rem;
+							margin:0.06rem 0.1rem;
 						}
 					}
 				}

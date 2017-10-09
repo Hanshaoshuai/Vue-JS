@@ -17,10 +17,10 @@
 						</div>
 						<div class="content-touzi"  ref="foods">
 							<ul>
-								<li class="src1" @click.stap="types('0')">
+								<li class="src1" id='4' @click.stap="types('0','4')">
 									<span>融资租赁</span><font class="img1"></font>
 								</li>
-								<li class="src0" @click.stap="types('1')">
+								<li class="src0" id="5" @click.stap="types('1','5')">
 									<span>股权质押</span><font class="img1"></font>
 								</li>
 								
@@ -40,7 +40,7 @@
 							</div>
 							<div class="shouru">
 								<span>净利润不低于</span>
-								<input v-model="numberToa" placeholder="输入数字" number="true" type="number" class="mint-field-core border"><font>万</font>
+								<input v-model="numberb" placeholder="输入数字" number="true" type="number" class="mint-field-core border"><font>万</font>
 							</div>
 							<!--<li class="border">
 								<input v-model="number" placeholder="请输入数字" number="true" type="number" class="mint-field-core">
@@ -58,9 +58,9 @@
 							<font></font><span>您实际能提供的年化资金成本范围？</span>
 						</div>
 						<ul>
-							<input v-model="numberb" placeholder="输入数字" number="true" type="number" class="mint-field-core border">
+							<input v-model="numberc" placeholder="输入数字" number="true" type="number" class="mint-field-core border">
 							<font>%&nbsp;至</font>
-							<input v-model="numberTob" placeholder="输入数字" number="true" type="number" class="mint-field-core border">
+							<input v-model="numberd" placeholder="输入数字" number="true" type="number" class="mint-field-core border">
 							<font>%&nbsp;</font>
 						</ul>
 					</div>
@@ -71,9 +71,9 @@
 							<font></font><span>您的单笔能提供的投资规模？</span>
 						</div>
 						<ul>
-							<input v-model="numberc" placeholder="输入数字" number="true" type="number" class="mint-field-core border">
+							<input v-model="numbere" placeholder="输入数字" number="true" type="number" class="mint-field-core border">
 							<font>万&nbsp;至</font>
-							<input v-model="numberToc" placeholder="输入数字" number="true" type="number" class="mint-field-core border">
+							<input v-model="numberf" placeholder="输入数字" number="true" type="number" class="mint-field-core border">
 							<font>万&nbsp;</font>
 						</ul>
 					</div>
@@ -84,7 +84,7 @@
 							<font></font><span>从接触项目到放款的时间不超过？</span>
 						</div>
 						<ul>
-							<input v-model="numberd" placeholder="输入数字" number="true" type="number" class="mint-field-core border">
+							<input v-model="numberg" placeholder="输入数字" number="true" type="number" class="mint-field-core border">
 							<font>天</font>
 						</ul>
 					</div>
@@ -97,7 +97,7 @@
 						</div>
 						<div class="xiaolv anli">
 							<ul>
-								<textarea placeholder="请填写资金出借方的公司全称" class="mint-field-core ziyuanChongzu" v-model="introductionA"></textarea>
+								<textarea placeholder="请填写资金出借方的公司全称" class="mint-field-core ziyuanChongzu" v-model="texta"></textarea>
 							</ul>
 						</div>
 					</div>
@@ -109,15 +109,15 @@
 						</div>
 						<div class="xiaolv anli">
 							<ul>
-								<textarea placeholder="选填..." class="mint-field-core ziyuanChongzu" v-model="introductionB"></textarea>
+								<textarea placeholder="选填..." class="mint-field-core ziyuanChongzu" v-model="textb"></textarea>
 							</ul>
 						</div>
 					</div>
 				</div>
 				
-				<div class="type-food" @click.stop="ToHoom">
+				<div class="type-food" @click.stop="ToHoom()">
 					<div class="type-food-text">
-						<span>进入首页</span>
+						<span>确定</span>
 					</div>
 				</div>
 			</div>
@@ -126,6 +126,8 @@
 </template>
 
 <script type="text/ecmascript">
+	import {URL} from '../../../common/js/path';
+	import { Toast } from 'mint-ui';
 	import { Field } from 'mint-ui';
 //	import BScroll from "better-scroll";
 //	import {formatDate} from "../../common/js/date.js";
@@ -136,27 +138,37 @@
 	
 	export default {
 		props:{
-//			food:{
+			XiajiCanshu:{
 //				type:Object
-//			}
+			},
+			typeID:{}
 		},
 		data () {
 			return {
+				y:1,			//判断是否选择标签；》=1为选择；
+				biaoQianID:[],		//储存标签id
+				biaoQianid:'',		//储存标签id字符串
 				numbera:"",
-				numberToa:"",
 				numberb:"",
-				numberTob:"",
 				numberc:"",
-				numberToc:"",
 				numberd:"",
+				numbere:"",
+				numberf:"",
+				numberg:"",
 				block:false,
-				introductionA:"",
-				introductionB:"",
+				texta:"",
+				textb:"",
 				showFlag:true,
 				urlName:"Dingzeng",
 //				onlyContent:true,
 //				times:20177111129
 			}
+		},
+		mounted(){
+			this.$nextTick(function() {
+				var typeLi=this.$refs.foods.getElementsByTagName("li")[0];
+				this.biaoQianID.push(typeLi.id);
+			});
 		},
 		methods:{
 			yijianHind(){
@@ -166,17 +178,97 @@
 			Tozhaiquan(){
 				this.showFlag=true;
 			},
-			ToHoom(){
-				window.location.href="#/faxian";
+			xuanze(index){
+				
 			},
-			types(id){
+			ToHoom(){
+				var CanShu={				//给下级要传的参数
+					texta:this.texta,
+					textb:this.textb,
+					numbera:this.numbera,
+					numberb:this.numberb,
+					numberc:this.numberc,
+					numberd:this.numberd,
+					numbere:this.numbere,
+					numberf:this.numberf,
+					numberg:this.numberg,
+//					XiangmuID:this.XiangmuID
+				}
+				var datas={
+					id:this.XiajiCanshu.id,			//	uid	是	[string]		
+					investment_type:this.typeID,			//投资类型 1:股权投资 2:债权投资 3:股债兼投	是	[string]		
+					interested:'',				//感兴趣的行业多个用逗号分割	是	[string]		
+					single_project_max:this.numbere,			//单笔投资最大值	是	[string]		
+					single_project_min:this.numberf,			//单笔投资最小值	是	[string]		
+					fund_stage:'',			//投资阶段 15债转股 16债权 17 新三板 62PE 63 VC 64 天使投资 75PreIPO	是	[string]		
+					territory:this.texta,			//地域要求	是	[string]		
+					investment_way:this.biaoQianid,			//投资方式 1:定增 2:接老股 3:二级市场 4:融资租赁 5:股权质押 6:双创债	是	[string]		
+					revenue_min:this.numbera,			//最低营收要求	是	[string]		
+					profit_min:this.numberb,			//最低净利润要求	是	[string]		
+					fund_min:this.numberc,			//最小年化资金成本范围	是	[string]		
+					fund_max:this.numberd,			//最大年化资金成本范围	是	[string]		
+					loan_time:this.numberg,			//放款时间	是	[string]		
+					borrow:this.textb				//借债主体	是	[string]
+				}
+				var ok=0;
+				for(var item in CanShu){		//判断填写信息是否完整Ok=1；标签必选
+					if(!CanShu[item]=="" && this.y>=1){
+						
+					}else{
+						ok+=1;
+					}
+				}
+				if(ok==0){
+					this.$http.post(URL.path+'regist/regist2',datas,{emulateJSON:true}).then(function(res){
+						if(res.body.returnCode=='200'){
+							Toast('资料完善成功');
+							console.log(res.body)
+							window.location.href="#/faxian";
+						}else{
+							window.location.href="#/denglu"
+							Toast(res.body.msg);
+						}
+					},function(res){
+					    console.log(res.status);
+					})
+				}else{
+					Toast("请填写完整您的信息！是否已选标签...");
+				}
+			},
+			types(index,id){
 				var typeLi=this.$refs.foods.getElementsByTagName("li");
 				var length=typeLi.length;
 				this.urlName=id;
-				for(var i=0; i<length; i++){
-					typeLi[i].setAttribute("class","src0");
+//				for(var i=0; i<length; i++){
+//					typeLi[i].setAttribute("class","src0");
+//				}
+//				typeLi[id].setAttribute("class","src1")
+				
+				if(typeLi[index].getAttribute("class")=="src1"){			//判断是否选择标签；》=1为选择；
+					typeLi[index].setAttribute("class","src0")
+					for(var z=0; z<this.y; z++){
+						if(this.biaoQianID[z]==typeLi[index].id){
+							this.biaoQianID.splice(z,1);
+//							console.log(this.biaoQianID)
+							this.biaoQianid=this.biaoQianID.join()
+							console.log(this.biaoQianid)
+							this.y-=1
+							break;
+						}
+					}
+				}else{
+					typeLi[index].setAttribute("class","src1");
+					this.y+=1;
+					for(var i=0; i<this.y; i++){
+						if(this.biaoQianID[i]!=typeLi[index].id){
+							this.biaoQianID.push(typeLi[index].id)
+							break;
+						}
+					}
+//					console.log(this.biaoQianID)
+					this.biaoQianid=this.biaoQianID.join()
+					console.log(this.biaoQianid)
 				}
-				typeLi[id].setAttribute("class","src1")
 			}
 //			show(){
 ////				dom更新后在执行使用$refs

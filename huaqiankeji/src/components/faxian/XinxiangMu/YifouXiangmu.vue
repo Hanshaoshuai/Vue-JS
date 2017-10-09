@@ -14,7 +14,7 @@
 			</div>
 			<div class="box">
 				<div style="width:100%;height:0.55rem;"></div>
-				<div class="tishi-bottom" @click.stop="xiangqing()">
+				<div class="tishi-bottom" @click.stop="xiangqing('1')">
 					<div class="borders">
 						<ul>
 							<li class="tishi-center">
@@ -53,7 +53,8 @@
 					</div>
 				</div>
 			</div>
-			<xiangmuxiangqing ref="xiangqingShow"></xiangmuxiangqing>
+			<router-view :TouziToken="TouziToken" :XiangmuID="XiangmuID"></router-view>
+			<!--<xiangmuxiangqing ref="xiangqingShow"></xiangmuxiangqing>-->
 		</div>
 	</transition>
 </template>
@@ -61,34 +62,45 @@
 <script type="text/ecmascript">
 	import { Field } from 'mint-ui';
 	import box from "../../box.vue";
-	import xiangmuxiangqing from "./XiangmuXiangqing.vue";
+//	import xiangmuxiangqing from "./XiangmuXiangqing.vue";
 	
 	
 	export default {
 		props:{
-//			food:{
+			setscrollTop:{
 //				type:Object
-//			}
+			},
+			datas:{},
+//			TouziToken:{}
 		},
 		data () {
 			return {
+				XiangmuID:"",
+				TouziToken:"",
 				fankui:"45",
 				genjin:"458",
 				introduction:"",
 				times:20177111129,
 				showFlag:false,
-				tucaoShow:false,
+				tucaoShow:true,
 			}
+		},
+		mounted(){
+			this.TouziToken=this.$route.params.token;
+			console.log(this.TouziToken)
 		},
 		methods:{
 			yijianHind(){
-				this.tucaoShow=false;
+				history.go(-1)
+//				this.tucaoShow=false;
 			},
 			yifouBlock(){
 				this.tucaoShow=true;
 			},
-			xiangqing(){
-				this.$refs.xiangqingShow.xiangqingBlock();
+			xiangqing(XiangmuID){
+				this.XiangmuID=XiangmuID;
+				window.location.href="#/faxian/YifouXiangmu/"+this.TouziToken+"/XiangmuXiangqing/"+this.XiangmuID;
+//				this.$refs.xiangqingShow.xiangqingBlock();
 			}
 			
 //			show(){
@@ -126,7 +138,7 @@
 		},
 		components:{
 			box,
-			xiangmuxiangqing
+//			xiangmuxiangqing
 //			fankuixinxi
 		}
 	}
@@ -151,7 +163,7 @@
 		top:0;
 		left:0;
 		right:0;
-		z-index:230;
+		z-index:300;
 		.searchBox {
 			position:fixed;
 			top:0;
@@ -159,7 +171,7 @@
 		    width: 100%;
 		    height:0.45rem;
 		    background-color:#ff7a59;
-		    z-index:240;
+		    z-index:310;
 		    .home-search {
 			    height: 100%;
 			    line-height:0.45rem;

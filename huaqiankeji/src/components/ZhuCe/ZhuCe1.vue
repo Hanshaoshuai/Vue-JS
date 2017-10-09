@@ -1,93 +1,87 @@
 <template>
 	<transition name="fade">
 		<div class="zhuce">
-			<div class="searchBox">
+			<div class="xiangmu-header" @click.stap="yijianHind()">
+				<span class="xiangmu-left"><img src="./img/back.png"/></span>
+				<span>填写基本信息</span>
+			</div>
+			<!--<div class="searchBox">
 				<div class="home-search">
 					<span>填写基本信息</span>
 				</div>
-			</div>
+			</div>-->
 			<div class="contents">
 				<div class="wanshan">
 					<div style="width:100%;height:0.45rem;"></div>
 					<div class="logo">
 						<div class="zhuce-content">
 							<div class="cont-left">
-								<touxiang></touxiang>
+								<touxiang ref="touxiangID"></touxiang>
 								<span>上传头像</span>
 								<!--<div class="left-img border"><img src=""/></div>-->
 							</div>
 							<div class="cont-right">
-								<mingpian></mingpian>
+								<mingpian ref="mingpianID"></mingpian>
 								<span>上传名片</span>
 								<!--<div class="right-img border"><img src=""/></div>-->
 							</div>
 						</div>
 					</div>
 					<div class="zhuying_1 liangdian_1 border-top">
-						<div class="ferst">选择您的行业身份<font></font></div>
+						<div class="ferst">选择您的行业身份<font></font></div>	<!--类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商-->
 						<ul ref="biaoqian">
-							<span class="bianse" @click.stap="xuanze('0')">投资机构</span>
-							<span @click.stap="xuanze('1')">财务顾问</span>
-							<span @click.stap="xuanze('2')">企&nbsp;业</span>
-							<span @click.stap="xuanze('3')">合格投资人</span>
-							<span @click.stap="xuanze('4')">研究咨询</span>
-							<span @click.stap="xuanze('5')">做市商</span>
-							<span @click.stap="xuanze('6')">后续添加</span>
+							<span class="bianse" @click.stap="xuanze('0','2')">投资机构</span>
+							<span @click.stap="xuanze('1','7')">财务顾问</span>
+							<span @click.stap="xuanze('2','1')">企&nbsp;业</span>
+							<span @click.stap="xuanze('3','3')">合格投资人</span>
+							<span @click.stap="xuanze('4','4')">研究咨询</span>
+							<span @click.stap="xuanze('5','6')">做市商</span>
+							<!--<span @click.stap="xuanze('6')">后续添加</span>-->
 						</ul>
 					</div>
 					<transition name="fades">
 						<div v-show="Leixing" class="zhuying_1 liangdian_1 border-topbottom">
 							<div class="ferst">您是什么类型的投资机构<font></font></div>
 							<ul ref="biaoqian2">
-								<span class="bianse" @click.stap="xuanze2('0','Guquan')">股权投资</span>
-								<span @click.stap="xuanze2('1','Zaiquan')">债权投资</span>
-								<span @click.stap="xuanze2('2','Guzhai')">股债兼投</span>
+								<span class="bianse" @click.stap="xuanze2('0','Guquan','1')">股权投资</span>
+								<span @click.stap="xuanze2('1','Zaiquan','2')">债权投资</span>
+								<span @click.stap="xuanze2('2','Guzhai','3')">股债兼投</span>
 							</ul>
 						</div>
 					</transition>
 					<div class="zhuce-food" @click.stop="XiaYibu()">
-						<span>下一步</span>
+						<span>{{butten}}</span>
 					</div>
 				</div>
 			</div>
-			<!--<type0 ref="show" id="0"></type0>-->
-			<!--<type1 ref="show" id="1"></type1>
-			<type2 ref="show" id="2"></type2>
-			<type3 ref="show" id="3"></type3>
-			<type4 ref="show" id="4"></type4>
-			<type5 ref="show" id="5"></type5>-->
-			<router-view></router-view>
+			<router-view :XiajiCanshu="XiajiCanshu" :typeID="typeID"></router-view>
 		</div>
 	</transition>
 </template>
 
 <script type="text/ecmascript">
+	import {URL} from '../../common/js/path';
 	import { Toast } from 'mint-ui';
 	import { Field } from 'mint-ui';
 	import mingpian from "../ShangchuanMingpian.vue";
 	import touxiang from "../ShangchuanTouxiang.vue";
-//	import type0 from "./type0.vue";
-//	import type1 from "./type1.vue";
-//	import type2 from "./type2.vue";
-//	import type3 from "./type3.vue";
-//	import type4 from "./type4.vue";
-//	import type5 from "./type5.vue";
 
 	
 	
 	export default {
 		props:{
-//			food:{
+			datas:{
 //				type:Object
-//			}
+			}
 		},
 		data () {
 			return {
+				XiajiCanshu:'',
+				token:"DxZGPSUsZsp48LUdWYWpca2HXxwfUDZY1zfFHzyhidbfov0BKWrnwiuKVhpqkFa5",
+				contens:"",
+				type:"2",
 				Leixing:true,
-				phone:"",
-				captcha:"",
-				password:"",
-				passwords:"",
+				butten:"下一步",
 				classId:"0",
 				Type:{
 					show0:0,
@@ -101,29 +95,135 @@
 				showFlag:false,
 				onlyContent:true,
 				index:"0",
-				JigouType:"Guquan"
+				JigouType:"Guquan",
+				typeID:"1",
 			}
 		},
+		mounted(){
+			console.log(this.datas);//上一级传的参数；
+									//phone:this.phone,  //手机号
+									//texts:this.texts,	//验证码
+									//pwd: this.pwd, //密码
+		},
 		methods:{
-			fanhui(){
-				window.location.href="#/denglu";
-//				history.go(-1)
+			yijianHind(){
+				history.go(-1)
 //				window.location.href="#/faxian";
 			},
 			XiaYibu(){
-				if(this.index==0){
-					window.location.href="#/zhuce/ZhuCe1/12/"+this.JigouType;
+				console.log(this.$refs.touxiangID.touxiangID);
+				console.log(this.$refs.mingpianID.mingpianID);
+				if(this.$refs.touxiangID.touxiangID==''){
+					Toast("请上传头像");
+					return;
+				}
+				if(this.$refs.mingpianID.mingpianID==''){
+					Toast("请上传名片");
+					return;
+				}
+				var data={			//财务顾问  做市商直接注册
+					phone:this.datas['phone'],	//	手机号	是	[string]	
+					card:this.$refs.mingpianID.mingpianID,					//	名片	名片id	是	[string]	
+					ctype:this.type,		//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商	是	[string]	
+					smscode:this.datas['texts'],			//短信验证码	是	[string]	
+					repwd:this.datas['pwd'],				//重复密码	是	[string]	
+					pwd:this.datas['pwd'],				//密码	是	[string]	
+					photo:this.$refs.touxiangID.touxiangID				//头像id	是	[string]
+				}
+				if(this.index==0){		//投资机构下一步
+					this.$http.post(URL.path+'regist/go',data,{emulateJSON:true}).then(function(res){
+	                    console.log(res);
+						if(res.body.returnCode=='200'){
+							Toast('注册成功请进行下一步完善信息');
+							this.XiajiCanshu={
+						        id:res.body.data.id,
+						        phone:res.body.data.phone,
+						        nickname:res.body.data.nickname,
+						        token:res.body.data.token
+						    }
+							localStorage.setItem("userID",res.body.data.id);
+							localStorage.setItem("token",res.body.data.token);
+							localStorage.setItem("type",this.type);
+							console.log(this.XiajiCanshu)
+							window.location.href="#/zhuce/ZhuCe1/"+res.body.data.token+"/"+this.JigouType;
+						}else{
+							window.location.href="#/denglu"
+							Toast(res.body.msg);
+						}
+	                },function(res){
+	                	this.mingpianID=1;
+	                	Toast("系统正忙请稍后！");
+	                    console.log(res);
+	                });
 				}else{
-					window.location.href="#/zhuce/ZhuCe1/12/type"+this.index;
+					if(this.index==1 || this.index==5){
+						this.$http.post(URL.path+'regist/go',data,{emulateJSON:true}).then(function(res){
+		                    console.log(res);
+							if(res.body.returnCode=='200'){
+								Toast('注册成功');
+								this.XiajiCanshu={
+							        id:res.body.data.id,
+							        phone:res.body.data.phone,
+							        nickname:res.body.data.nickname,
+							        token:res.body.data.token
+							    }
+								localStorage.setItem("userID",res.body.data.id);
+								localStorage.setItem("token",res.body.data.token);
+								localStorage.setItem("type",this.type);
+								console.log(this.XiajiCanshu)
+								window.location.href="#/faxian"
+							}else{
+								window.location.href="#/denglu"
+								Toast(res.body.msg);
+							}
+		                },function(res){
+		                	this.mingpianID=1;
+		                	Toast("系统正忙请稍后！");
+		                    console.log(res);
+		                });
+					}else{
+						this.$http.post(URL.path+'regist/go',data,{emulateJSON:true}).then(function(res){
+		                    console.log(res);
+							if(res.body.returnCode=='200'){
+								Toast('注册成功请进行下一步完善信息');
+								this.XiajiCanshu={
+							        id:res.body.data.id,
+							        type:this.type,
+							        phone:res.body.data.phone,
+							        nickname:res.body.data.nickname,
+							        token:res.body.data.token
+							    }
+								localStorage.setItem("userID",res.body.data.id);
+								localStorage.setItem("token",res.body.data.token);
+								localStorage.setItem("type",this.type);
+								console.log(this.XiajiCanshu)
+								window.location.href="#/zhuce/ZhuCe1/"+this.type+"/type"+this.index;
+							}else{
+								window.location.href="#/denglu"
+								Toast(res.body.msg);
+							}
+		                },function(res){
+		                	this.mingpianID=1;
+		                	Toast("系统正忙请稍后！");
+		                    console.log(res);
+		                });
+					}
 				}
 				
 				
 			},
-			xuanze(index){
+			xuanze(index,type){
+				this.type=type;
+				console.log(index)
 //				console.log(this.$refs.biaoqian.getElementsByTagName("span"))
 				var spans=this.$refs.biaoqian.getElementsByTagName("span")
 				var length=spans.length;
 				this.index=index;
+				if(this.index==1 || this.index==5){		//类型1和5 直接下一步；
+					this.butten="确定"
+				}else{
+					this.butten="下一步"
+				}
 				if(index==0){
 					this.Leixing=true;
 				}else{
@@ -136,10 +236,11 @@
 				}
 				spans[index].setAttribute("class","bianse")
 			},
-			xuanze2(index,type){
+			xuanze2(index,type,id){
 //				console.log(this.$refs.biaoqian.getElementsByTagName("span"))
 				var spans=this.$refs.biaoqian2.getElementsByTagName("span")
 				var length=spans.length;
+				this.typeID=id;
 				this.JigouType=type;
 				for(var i=0; i<length; i++){
 					if(spans[i].getAttribute("class")=="bianse"){
@@ -195,15 +296,6 @@
 		components:{
 			mingpian,
 			touxiang
-//			type0
-//			type1,
-//			type2,
-//			type3,
-//			type4,
-//			type5
-//			cartcontrol,
-//			ratingselect,
-//			split
 		}
 	}
 </script>
@@ -239,30 +331,28 @@
 		width:100%;
 		height:100%;
 		z-index:200;
-		.searchBox {
+		.xiangmu-header{
 			position:fixed;
 			top:0;
 			left:0;
-		    width: 100%;
-		    height:0.45rem;
-		    background-color:#ff7a59;
-		    z-index:21;
-		    .home-search {
-			    height: 100%;
-			    line-height:0.45rem;
-			    font-size: 0.2rem;
-			    text-align: center;
-			    color:#fff;
-				.fanhui-butten{
-					position:absolute;
-					height:100%;
-					padding-left:0.16rem;
-					display:inline-block;
-					top:0.04rem;
-					left:0;
-					img{
-						height:0.2rem;
-					}
+			width:100%;
+			height:0.46rem;
+			font-weight:600;
+			background:#ff7a59;
+			font-size:0.2rem;
+			text-align:center;
+			line-height:0.45rem;
+			color:#fff;
+			z-index:300;
+			.xiangmu-left{
+				position:absolute;
+				height:100%;
+				padding-left:0.16rem;
+				display:inline-block;
+				top:0.04rem;
+				left:0;
+				img{
+					height:0.2rem;
 				}
 			}
 		}

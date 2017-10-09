@@ -17,69 +17,70 @@
 				<box></box>-->
 				<div class="fankiu-content">
 					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>公司名称</div>
+						<div class="ferst"><span>*</span>企业名称</div>
 						<div class="last">
 							<textarea readOnly="true" placeholder="" class="mint-field-core" v-model="texta"></textarea>
 						</div>
 					</div>
 					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>公司代码</div>
+						<div class="ferst"><span>*</span>企业代码</div>
 						<div class="last">
 							<textarea readOnly="true" placeholder="" class="mint-field-core" v-model="textb"></textarea>
 						</div>
 					</div>
 					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>项目推荐</div>
+						<div class="ferst"><span>*</span>企业推荐</div>
 						<div class="last neirong">
-							<textarea readOnly="true" placeholder="" class="mint-field-core" v-model="textc"></textarea>
+							<textarea readOnly="true" placeholder="请填写直营业务、投资亮点等" class="mint-field-core" v-model="textc"></textarea>
 						</div>
 						<li>{{x}}/100</li>
 					</div>
-					<div class="zhuying_1 liangdian_1">
-						<div class="ferst"><span>*</span>公司所在行业标签<font>（选标签）</font></div>
+					<div v-if="industry" class="zhuying_1 liangdian_1">
+						<div class="ferst"><span>*</span>企业所在行业标签<font>（选标签）</font></div>
 						<ul ref="biaoqian">
-							<span class="bianse" @click.stap="xuanze('0')">行业标签</span>
-							<span @click.stap="xuanze('1')">行业标签</span>
+							<span v-if="BianJi==0" v-for="(item,index) in industry" class="bianse">{{item}}</span>
+							<span v-if="BianJi==1" v-for="(item,index) in BiaoQian" @click.stap="xuanze(index)">{{item.title}}</span>
+							<!--<span @click.stap="xuanze('1')">行业标签</span>
 							<span @click.stap="xuanze('2')">行业标签</span>
 							<span @click.stap="xuanze('3')">行业标签</span>
 							<span @click.stap="xuanze('4')">行业标签</span>
-							<span @click.stap="xuanze('5')">行业标签</span>
+							<span @click.stap="xuanze('5')">行业标签</span>-->
 						</ul>
 					</div>
 					<div class="zhuying_1">
 						<div class="ferst"><span>*</span>上一财年营收、净利润</div>
 						<div class="last number last-bottom">
-							<input readOnly="true" v-model="numbera" placeholder="" number="true" type="number" class="mint-field-core">
+							<input readOnly="true" v-model="numbera" placeholder="请填写年营业" number="true" type="number" class="mint-field-core">
 							<span>亿元</span>
 						</div>
 						<div class="last number">
-							<input readOnly="true" v-model="numberb" placeholder="" number="true" type="number" class="mint-field-core">
+							<input readOnly="true" v-model="numberb" placeholder="请填写净利润" number="true" type="number" class="mint-field-core">
 							<span>万元</span>
 						</div>
 					</div>
 					<div class="zhuying_1">
 						<div class="ferst"><span>*</span>今年预计营收、净利润</div>
 						<div class="last number last-bottom">
-							<input readOnly="true" v-model="numberc" placeholder="" number="true" type="number" class="mint-field-core">
+							<input readOnly="true" v-model="numberc" placeholder="请填写预计营收" number="true" type="number" class="mint-field-core">
 							<span>亿元</span>
 						</div>
 						<div class="last number">
-							<input readOnly="true" v-model="numberd" placeholder="" number="true" type="number" class="mint-field-core">
+							<input readOnly="true" v-model="numberd" placeholder="请填写净利润" number="true" type="number" class="mint-field-core">
 							<span>万元</span>
 						</div>
 					</div>
 					<div class="zhuying_1 jihua">
 						<div class="ferst"><span>*</span>融资计划</div>
 						<div class="last number last-bottom">
-							<input readOnly="true" v-model="numbere" placeholder="" number="true" type="number" class="mint-field-core">
+							<input readOnly="true" v-model="numbere" placeholder="请填写融资估值" number="true" type="number" class="mint-field-core">
 							<span>亿元</span>
 						</div>
 						<div class="last number last-bottom">
-							<input readOnly="true" v-model="numberf" placeholder="" number="true" type="number" class="mint-field-core">
+							<input readOnly="true" v-model="numberf" placeholder="请填写融资总额" number="true" type="number" class="mint-field-core">
 							<span>万元</span>
 						</div>
 						<div class="last number last-bottom">
-							<input readOnly="true" v-model="numberg" placeholder="" number="true" type="number" class="mint-field-core">
+							<input readOnly="true" v-model="numberg" placeholder="请填写每股价格" number="true" type="number" class="mint-field-core">
 							<span>元/股</span>
 						</div>
 					</div>
@@ -98,7 +99,7 @@
 					<div class="zhuying_1">
 						<div class="ferst"><span>*</span>所在省份</div>
 						<div class="last number">
-							<input readOnly="true" v-model="numberh" placeholder="" type="text" class="mint-field-core">
+							<input readOnly="true" v-model="numberh" placeholder="请填写省份" type="text" class="mint-field-core">
 						</div>
 					</div>
 					<div class="times">
@@ -112,8 +113,8 @@
 					</div>
 				</div>
 				<div class="baoming border-top">
-					<span :class="butenRight" @click.stap="buGen()">重编辑</span>
-					<span class="border-right" :class="butenLeft" @click.stap="xiayibuGo()">继续投递</span>
+					<span v-show="none" :class="butenRight" @click.stap="buGen()">重编辑</span>
+					<span class="border-right" :class="butenLeft" @click.stap="xiayibuGo()">{{toudi}}</span>
 					<!--<span class="border-right" :class="butenLeft" @click.stap="genJin()">我要报名</span>
 					<span :class="butenRight" @click.stap="buGen()">不参加</span>-->
 				</div>
@@ -126,7 +127,7 @@
 					</ul>
 				</div>-->
 			</div>
-			<pipei ref="pipeiShow"></pipei>
+			<pipei ref="pipeiShow" :token="token" :type="type" :XiangmuID="XiangmuID"></pipei>
 			<tishi ref="tishiShow" :xingXi="xingXi" :content="content"></tishi>
 		</div>
 	</transition>
@@ -145,29 +146,36 @@
 	
 	export default {
 		props:{
-//			food:{
+			token:{
 //				type:Object
-//			}
+			},
+			XiangmuID:{}
 		},
 		data () {
 			return {
+				data:"",
+				industry:"",
 				butenLeft:"butenLeft",
 				butenRight:"",
+				BianJi:0,
+				BiaoQian:"",
+				datas:"",
+				type:"",		//项目类型
 				x:"0",			//字的个数
 				y:1,			//判断是否选择标签；》=1为选择；
-				numbera:"123",	//上一财年营收、净利润		请填写年营业
-				numberb:"123",	//上一财年营收、净利润		请填写净利润
-				numberc:"123",	//今年预计营收、净利润		请填写预计营收
-				numberd:"23",	//今年预计营收、净利润		请填写净利润
-				numbere:"23",	//融资计划		请填写融资估值
-				numberf:"231",	//融资计划		请填写融资总额
-				numberg:"123",	//融资计划		请填写每股价格
-				numberh:"12",	//所在省份
-				texta:"食品、食品、食品",	//公司名称
-				textb:"梵蒂冈",	//公司代码
-				textc:"321",	//项目推荐		请填写直营业务、投资亮点等
-				fankui:"45",
-				genjin:"458",
+				numbera:"",	//上一财年营收、净利润		请填写年营业
+				numberb:"",	//上一财年营收、净利润		请填写净利润
+				numberc:"",	//今年预计营收、净利润		请填写预计营收
+				numberd:"",	//今年预计营收、净利润		请填写净利润
+				numbere:"",	//融资计划		请填写融资估值
+				numberf:"",	//融资计划		请填写融资总额
+				numberg:"",	//融资计划		请填写每股价格
+				numberh:"",	//所在省份
+				texta:"",	//公司名称
+				textb:"",	//公司代码
+				textc:"",	//项目推荐		请填写直营业务、投资亮点等
+				fankui:"",
+				genjin:"",
 				introduction:"",
 				times:20177111129,
 				showFlag:false,
@@ -179,8 +187,38 @@
 					m:true,
 					u:true
 				},
-				content:""			//给下级要传的参数
+				content:"",			//给下级要传的参数
+				none:true,
+				toudi:'继续投递'
 			}
+		},
+		mounted(){
+			var datas = {
+				token:this.token,
+				item_id:this.XiangmuID,			//	项目id
+			}
+			this.datas=datas;
+			console.log(this.token)
+			//历史项目详情
+			this.$http.post(URL.path+'finance/item_detail',datas,{emulateJSON:true}).then(function(res){
+				this.data=res.body.data[0]
+				this.texta=this.data.com_name
+				this.textb=this.data.com_code
+				this.textc=this.data.lightspot
+				this.numbera=this.data.last_year_revenue
+				this.numberb=this.data.last_year_profit
+				this.numberc=this.data.predict_revenue
+				this.numberd=this.data.predict_profit
+				this.numbere=this.data.appraisement
+				this.numberf=this.data.total_finance
+				this.numberg=this.data.share_price
+				this.numberh=this.data.city
+				this.industry=this.data.industry
+				this.type=this.data.type
+				console.log(this.data);
+			},function(res){
+			    console.log(res.status);
+			})
 		},
 		methods:{
 			yijianHind(){
@@ -205,40 +243,6 @@
 			xiayibuGo(){
 				this.butenLeft="butenLeft";
 				this.butenRight="";
-				var datas = {
-					token:this.$route.params,//	token	是	[string]		
-					uid:"126",//	创建者id	是	[string]		
-					type:"1",//	类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报	是	[string]		
-					company:"666",//	公司id	是	[string]		
-					com_name:"dfg",//	公司名称	是	[string]		
-					com_code:"123456",//	公司代码	是	[string]		
-					main_business:"",//	主营业务	是	[string]		
-					lightspot:this.textc,//	投资亮点	是	[string]		
-					industry:"",//	公司所在行业标签id	是	[string]		
-					last_year_revenue:this.numbera,//	上一年营收（单位 万）	是	[string]		
-					last_year_profit:this.numberb,//	上一年净利润（单位 万）	是	[string]		
-					predict_revenue:this.numberc,//	今年预计营收(单位:万)	是	[string]		
-					predict_profit:this.numberd,//	今年预计净利润(单位:万)	是	[string]		
-					total_finance:this.numberf,//	融资总额(单位:万)	是	[string]		
-					appraisement:this.numbere,//	投前估值(单位:万)	是	[string]		
-					city:this.numberh,//	所在城市	是	[string]		
-					transfe_share:"",//	拟转股份数	是	[string]		
-					share_price:"",//	每股价格	是	[string]		
-					is_hold:"",//	是否本人持股 1:是 2:否	是	[string]		
-					research_address:"",//	调研地址	是	[string]		
-					research_time:"",//	调研时间	是	[string]		
-					pledge_time:"",//	质押时间周期(天)	是	[string]		
-					repayment_time:"",//	还款周期(天)	是	[string]		
-					face_rate:"",//	票面利率	是	[string]		
-					is_transfe:"",//	是否转股 1:是 2:否	是	[string]		
-					remark:"",//	备注	是	[string]
-				}
-				this.$http.post(URL.path+'finance/create',datas,{emulateJSON:true}).then(function(res){
-					var data=res.data
-					console.log(res);
-				},function(res){
-				    console.log(res.status);
-				})
 				var CanShu={				//给下级要传的参数
 					texta:this.texta,
 					textb:this.textb,
@@ -250,7 +254,8 @@
 					numbere:this.numbere,
 					numberf:this.numberf,
 					numberg:this.numberg,
-					numberh:this.numberh
+					numberh:this.numberh,
+					XiangmuID:this.XiangmuID
 				}
 				var ok=0;
 				for(var item in CanShu){		//判断填写信息是否完整Ok=1；标签必选
@@ -270,27 +275,42 @@
 //				this.$refs.pipeiShow.pipeiBlock();
 			},
 			buGen(){
+				this.none=false;
 				var textInputs = this.$refs.guanzhuLingyu.getElementsByClassName("mint-field-core");
 				var length=textInputs.length;
-				this.numbera=""	//上一财年营收、净利润		请填写年营业
-				this.numberb=""	//上一财年营收、净利润		请填写净利润
-				this.numberc=""	//今年预计营收、净利润		请填写预计营收
-				this.numberd=""	//今年预计营收、净利润		请填写净利润
-				this.numbere=""	//融资计划		请填写融资估值
-				this.numberf=""	//融资计划		请填写融资总额
-				this.numberg=""	//融资计划		请填写每股价格
-				this.numberh=""	//所在省份
-				this.texta=""	//公司名称
-				this.textb=""	//公司代码
-				this.textc=""
+//				this.numbera=""	//上一财年营收、净利润		请填写年营业
+//				this.numberb=""	//上一财年营收、净利润		请填写净利润
+//				this.numberc=""	//今年预计营收、净利润		请填写预计营收
+//				this.numberd=""	//今年预计营收、净利润		请填写净利润
+//				this.numbere=""	//融资计划		请填写融资估值
+//				this.numberf=""	//融资计划		请填写融资总额
+//				this.numberg=""	//融资计划		请填写每股价格
+//				this.numberh=""	//所在省份
+//				this.texta=""	//公司名称
+//				this.textb=""	//公司代码
+//				this.textc=""
+				//获取标签
+				if(this.industry){
+					this.$http.post(URL.path1+'login/three',this.datas,{emulateJSON:true}).then(function(res){
+						this.BianJi=1;
+						this.$nextTick(function() {
+							var spans=this.$refs.biaoqian.getElementsByTagName("span")[0];
+							spans.setAttribute("class","bianse")
+						});
+						this.BiaoQian=res.body.data[0]
+						console.log(this.BiaoQian);
+					},function(res){
+					    console.log(res.status);
+					})
+				}
 				for(var i=0; i<length; i++){
 					textInputs[i].value="";
 					textInputs[i].removeAttribute("readOnly")		//点击编辑   input去除属性readOnly即可编辑
 				}
 				textInputs[0].focus();
 				this.types=0;
-				this.butenRight="butenRight";
-				this.butenLeft="";
+				this.butenRight="";
+				this.butenLeft="butenLeft";
 			}
 			
 //			show(){
@@ -514,7 +534,9 @@
 						span{
 							display:inline-block;
 							float:left;
-							padding:0.08rem 0.24rem;
+							width:1.04rem;
+							text-align:center;
+							padding:0.08rem 0;
 							background:#f2f2f2;
 							color:#acacac;
 							border-radius:0.3rem;
