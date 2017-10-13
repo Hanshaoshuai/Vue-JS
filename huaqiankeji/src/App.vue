@@ -1,13 +1,13 @@
 <template>
   <div id="app" >
-  	<div class="content"><keep-alive><router-view :token="token" :TouziToken="TouziToken"></router-view></keep-alive></div>
+  	<div class="content"><keep-alive><router-view :userContent="userContent"></router-view></keep-alive></div>
     <div class="food border-top">
     	<div class="tab-item border-right">
     		<router-link to="/faxian" ref="fx">
     			<span class="icon-faxian"></span>
     			<font>发现</font>
     		</router-link>
-    		<li>6</li>
+    		<li v-if="ZongHe">{{ZongHe}}</li>
     	</div>
     	<!--<div class="tab-item">
     		<router-link to="/shendu">
@@ -52,14 +52,8 @@
 		name: 'app',
 	  data () {
 	    return {
-	    	token:"N8KCEuwCyhOSviBLwm9PhbrZEQ1aUJBhHMkL7XNv5cEqBF2xs1DQSupWBgxWpz5w",
-	    	TouziToken:{token:'DxZGPSUsZsp48LUdWYWpca2HXxwfUDZY1zfFHzyhidbfov0BKWrnwiuKVhpqkFa5'},
-	      page: '1',
-				limit: '15',
-				type: '3',
-				show:true,
-				imgsrc:"",
-				fxsrc:""
+	    	userContent:"",
+	    	ZongHe:""
 	    }
 	  },
 	  methods:{
@@ -68,29 +62,27 @@
 	  	}
 	  },
 	  mounted(){
-//	  	this.$refs.wrapper.addEventListener('location.href', this.locations) //做一个所有的location监听
+//	  	this.ZongHe=this.$refs.content.ZongHe;
+//	  	console.log(this.ZongHe)
+//	  this.$refs.wrapper.addEventListener('location.href', this.locations) //做一个所有的location监听
 	  	var fx=this.$refs.fx.$el.getAttribute("class")
 	  	this.imgsrc=fx;
 	  	console.log(URL.path)
 	  	if(localStorage.getItem("userID")&&localStorage.getItem("userID")!==""){
-//	  		console.log(localStorage.getItem("userID"))
+	  		this.userContent={
+	  			userID:localStorage.getItem("userID"),			//用户ID
+					token:localStorage.getItem("token"),		//用户token
+					phone:localStorage.getItem("phone"),		//用户电话
+					type:localStorage.getItem("type"),			//用户类型
+					photo:localStorage.getItem("photo"),	//用户头像id
+					photourl:localStorage.getItem("photourl")	//用户头像URL地址
+	  		}
+	  		console.log(this.userContent)
 //	  		window.location.href="#/denglu";
 	  	}else{
-//	  		console.log(localStorage.getItem("userID"))
-//	  		window.location.href="#/denglu";
+	  		window.location.href="#/denglu";
+	  		return;
 	  	}
-			var datas = {
-				terminalNo: '3',
-				page: this.page,
-				limit: this.limit,
-				ctype: this.type,
-			}
-//	  	this.$http.post(URL.path+'api/index.php/welcome',datas,{emulateJSON:true}).then(function(res){
-//      var data=res.data
-//      alert("成功");
-//	    },function(res){
-//	        console.log(res.status);
-//	    })
 	  },
 	  uptated(){
 	  	
@@ -194,8 +186,12 @@
 	.mint-toast .mint-toast-text{
 		line-height:0.2rem;
 		font-size:0.16rem;
+		z-index:3000;
 	}
 	.mint-indicator-wrapper{
+		z-index:3000;
+	}
+	.mint-toast .is-placemiddle{
 		z-index:3000;
 	}
 </style>

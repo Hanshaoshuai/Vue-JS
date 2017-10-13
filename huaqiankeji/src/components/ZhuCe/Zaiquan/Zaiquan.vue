@@ -97,7 +97,7 @@
 						</div>
 						<div class="xiaolv anli">
 							<ul>
-								<textarea placeholder="请填写资金出借方的公司全称" class="mint-field-core ziyuanChongzu" v-model="texta"></textarea>
+								<textarea placeholder="请填写地域要求如：长三角、珠三角、北京" class="mint-field-core ziyuanChongzu" v-model="texta"></textarea>
 							</ul>
 						</div>
 					</div>

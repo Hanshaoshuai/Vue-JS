@@ -62,7 +62,8 @@
 		props:{
 			token:{
 //				type:Object
-			}
+			},
+			beiAnidC:{},
 		},
 		data () {
 			return {
@@ -108,7 +109,7 @@
 					texta:this.texta,
 					textb:this.textb,
 					textc:this.textc,
-					textd:this.textd,
+//					textd:this.textd,
 					texte:this.texte,
 				}
 				for(var item in CanShu){		//判断填写信息是否完整Ok=1；标签必选
@@ -117,10 +118,31 @@
 						return;
 					}
 				}
-				this.$http.post(URL.path+'finance/create',datas,{emulateJSON:true}).then(function(res){
-					CanShu.XiangmuID=res.body.data
-					this.content=this.$refs.pipeiShow;
-					this.$refs.tishiShow.tishiBlock(CanShu);//CanShu是下级要传的参数
+				//添加备案
+				var params={
+		    		token:this.token,
+					com_name:this.texta,			//	公司全称	是	[string]		
+					com_short:this.textb,			//	公司简称	是	[string]		
+					commission:this.textd,			//	佣金协定	是	[string]		
+					total_finance:this.textc,		//	投资总额 单位：万	是	[string]		
+					remark:this.texte,				//	有效投资认定	是	[string]		
+					license:'',						//	营业执照	是	[string]		
+					predict_revenue:'',				//	今年预计营收	是	[string]		
+					predict_profit:'',				//	今年预计净利润	是	[string]		
+					id:this.beiAnidC				//	备案id id为空时创建，不为空时修改	是	[string]
+		    	}
+				console.log(params)
+				this.$http.post(URL.path+'finance/record',params,{emulateJSON:true}).then(function(res){
+					this.type=res.body.data.id
+					if(this.beiAnidC==""){
+						Toast("您已创建成功");
+						history.go(-2)
+//						window.location.href="#/wode/RongziBeian/7";
+					}
+					if(res.body.data.id==true){
+						Toast("您已添加成功");
+						history.go(-2)
+					}
 					console.log(res);
 				},function(res){
 				    console.log(res.status);

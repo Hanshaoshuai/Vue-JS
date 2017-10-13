@@ -77,7 +77,7 @@
 				showFlag:true,
 				onlyContent:false,
 				tishi:"",
-				type:"2.5",
+				type:"1.2.5",
 				shoujis:false,
 				mimas:false
 			}
@@ -98,35 +98,51 @@
 					phone: this.phone,  //手机号
 					pwd: this.password,   //密码
 					version: this.type,//版本号
-					terminalNo: '3'
+					terminalNo: 'terminalNo'
 				}
 				if(!phone.test(this.phone)) {
-					this.tishi="输入手机号有误";
 					Toast('输入手机号有误');
 					return;
 				}else{
 					ph=1;
 				}
 				if(!this.password) {
-					this.tishi="请输入密码";
 					Toast('请输入密码');
 					return;
 				}else{
 					pw=1;
 				}
 				if(ph==1 && pw==1){
-//					Indicator.open({spinnerType: 'fading-circle'});
-//					this.$http.post(URL.path+'login',{datas},{emulateJSON:true}).then(function(res){
-//						if(res.status==200){
-//							localStorage.setItem("userID",userID);		//本地储存
-//							Indicator.close();
-//							console.log(res);
-//							window.location.href="#/fanxian";
-//						}
-//                      
-//                  },function(res){
-//                      console.log(res);
-//                  });
+//			返回		1	returnCode	200成功201错误	是	[string]	
+//					2	msg	msg		是	[string]	
+//					3	id	id		是	[string]	
+//					4	phone		phone	是	[string]	
+//					5	nickname	nickname	是	[string]	
+//					6	photo		photo	是	[string]	
+//					7	token		token	是	[string]
+					Indicator.open({spinnerType: 'fading-circle'});
+					this.$http.post(URL.path1+'login',datas,{emulateJSON:true}).then(function(res){
+						Indicator.close();
+						if(res.body.returnCode==200){	//本地储存
+							localStorage.setItem("userID",res.body.data.id);		//用户ID
+							localStorage.setItem("token",res.body.data.token);		//用户token
+							localStorage.setItem("phone",res.body.data.phone);		//用户电话
+							localStorage.setItem("type",res.body.data.ctype);		//用户类型
+							localStorage.setItem("photo",res.body.data.photo.id);	//用户头像id
+							localStorage.setItem("photourl",res.body.data.photo.url);	//用户头像URL地址
+							console.log(res.body);
+							Toast('登录成功');
+							window.location.href="#/fanxian";
+						}
+						if(res.body.returnCode=='0011'){
+							Toast(res.body.msg);
+						}
+                        
+                    },function(res){
+                    	Indicator.close();
+                    	Toast('系统繁忙请稍后再试');
+                        console.log(res);
+                    });
 					
 					
 //				  	this.$http.get(url).then(function(response){
@@ -134,9 +150,9 @@
 //						if(response.body != "0" && response.body != "2"){
 //							Indicator.close();
 //							localStorage.setItem("userID",userID);
-							if(confirm("已成功登陆是否进入首页?")){
-								window.location.href="#/fanxian";
-							}
+//							if(confirm("已成功登陆是否进入首页?")){
+//								window.location.href="#/fanxian";
+//							}
 //						}else{
 //							Toast("此账号未注册请您立即注册")
 //						}
@@ -209,6 +225,13 @@
 	  	/*transform: translateX(4.17rem);
 	  	transform:rotate(360deg);*/
 	  	opacity: 0;
+	}
+	.mint-toast .mint-toast-text{
+		line-height:0.2rem;
+		font-size:0.16rem;
+	}
+	.mint-indicator-wrapper{
+		z-index:3000;
 	}
 	.denglu{
 		position:fixed;

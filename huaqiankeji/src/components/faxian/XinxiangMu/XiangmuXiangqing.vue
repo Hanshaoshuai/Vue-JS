@@ -105,6 +105,7 @@
 <script type="text/ecmascript">
 	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
+	import { Toast } from 'mint-ui';
 	import box from "../../box.vue";
 	import tishi from "../../Tishi.vue";
 //	import youhuiquan from "../../shendu/PeixunZixun/YouhuiQuan.vue";
@@ -115,7 +116,7 @@
 		props:{
 			datas:{},
 			XiangmuID:{},
-			TouziToken:{}
+			userContent:{}
 //			food:{
 //				type:Object
 //			}
@@ -151,7 +152,7 @@
 			console.log("jjjjjjjjjjjj")
 			//项目详情
 			var data = {
-				token:this.TouziToken.token,
+				token:this.userContent.token,
 				item_id:this.$route.params.XiangmuID			//	项目id
 			}
 			console.log(this.data)
@@ -174,11 +175,13 @@
 				this.$refs.xinxiShow.xinxiBlock();
 			},
 			chakanBA(){
-				window.location.href="#/faxian/XinxiangMu/"+this.TouziToken.token+"/XiangmuXiangqing/"+this.data.uid+'/BP';
+				window.location.href="#/faxian/XinxiangMu/"+this.userContent.token+"/XiangmuXiangqing/"+this.data.uid+'/BP';
 			},
 			liuYanTo(){
 				if(this.types==1){			//跳转到留言页面
-					window.location.href="#/fankuixinxi/"+this.TouziToken.token+"/"+this.data.uid+'/1';
+					window.location.href="#/fankuixinxi/"+this.userContent.token+"/"+this.data.uid+'/1';
+				}else{
+					Toast("亲，你还没有跟进是不可以给对方留言的");
 				}
 //				this.liuYans="liuYan";
 			},
@@ -200,6 +203,8 @@
 					    this.xingXi.text="您申请向对方换取名片失败，请稍后再试..."
 						this.$refs.tishiShow.tishiBlock(this.mingPian,this.token);//CanShu是下级要传的参数
 					})
+				}else{
+					Toast("亲，你还没有跟进是不可以给对方换取名片的");
 				}
 //				this.jiaoHuans="jiaoHuan";
 			},
@@ -208,13 +213,30 @@
 			},
 			genJin(){
 				this.types=1;
-				if(this.wanchengDu==""){
+				if(this.wanchengDu=="0"){
 					this.$refs.tishiShow.tishiBlock(this.content);//CanShu是下级要传的参数
 				}else{
 					this.butenLeft="butenLeft";
 					this.liuYans="liuYan";
 					this.jiaoHuans="jiaoHuan";
 					this.butenRight="";
+					var params={
+			      		token:this.$route.params.token,
+			      		item_id:this.XiangmuID,		//	项目id	是	[string]		
+						follow:"3"			//	跟进状态 1:停止跟进 2:已过会 3:跟进	是	[string]
+			      	}
+		//			投资人更改反馈进度
+					this.$http.post(URL.path+'finance/update_feedback',params,{emulateJSON:true}).then(function(res){
+						this.data=res.body.data;
+						if(res.body.returnCode=='201'){
+							
+						}
+						Toast("亲，您已跟进可以给对方留言或换名片啦");
+						console.log("跟进");
+						console.log(res.body);
+					},function(res){
+					    console.log(res);
+					})
 				}
 			},
 			buGen(){
@@ -224,6 +246,23 @@
 				this.butenLeft="";
 				this.liuYans="";
 				this.jiaoHuans="";
+				var params={
+		      		token:this.$route.params.token,
+		      		item_id:this.XiangmuID,		//	项目id	是	[string]		
+					follow:"1"			//	跟进状态 1:停止跟进 2:已过会 3:跟进	是	[string]
+		      	}
+	//			投资人更改反馈进度
+				this.$http.post(URL.path+'finance/update_feedback',params,{emulateJSON:true}).then(function(res){
+					this.data=res.body.data;
+					if(res.body.returnCode=='201'){
+						
+					}
+					Toast("亲，不跟进是不可以给对方留言或换名片");
+					console.log("跟进");
+					console.log(res.body);
+				},function(res){
+				    console.log(res);
+				})
 			}
 			
 //			show(){

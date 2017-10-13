@@ -207,6 +207,12 @@
 			console.log(this.token)
 			//历史项目详情
 			this.$http.post(URL.path+'finance/item_detail',datas,{emulateJSON:true}).then(function(res){
+				var shifou;
+				if(this.data.share_price=="1"){
+					shifou='是'
+				}else{
+					shifou='否'
+				}
 				this.data=res.body.data[0]
 				this.texta=this.data.com_name
 				this.textb=this.data.com_code
@@ -217,7 +223,7 @@
 				this.numberd=this.data.predict_profit
 				this.numbere=this.data.appraisement
 				this.numberf=this.data.total_finance
-				this.numberg=this.data.share_price
+				this.numberg=shifou
 				this.numberh=this.data.city
 				this.industry=this.data.industry
 				this.type=this.data.type
@@ -247,6 +253,16 @@
 				console.log(this.y)
 			},
 			xiayibuGo(){
+				var yes;
+				if(this.numberg=='是'){
+					this.yes='1'
+				}else{
+					if(this.numberg=='否'){
+						this.yes='2'
+					}else{
+						this.numberg='';
+					}
+				}
 				this.butenLeft="butenLeft";
 				this.butenRight="";
 				var CanShu={				//给下级要传的参数
@@ -273,7 +289,7 @@
 				}
 				if(ok==0){
 					this.content=this.$refs.pipeiShow;
-					this.$refs.tishiShow.tishiBlock(CanShu);//CanShu是下级要传的参数
+					this.$refs.tishiShow.tishiBlock(CanShu,'pipei');//CanShu是下级要传的参数
 				}else{
 					Toast("请填写完整您的信息！是否已选标签...");
 				}

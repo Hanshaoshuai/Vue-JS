@@ -58,7 +58,7 @@
 						</div>
 						<div class="xiaolv anli">
 							<ul>
-								<textarea placeholder="请填写资金出借方的公司全称" class="mint-field-core ziyuanChongzu" v-model="texta"></textarea>
+								<textarea placeholder="请填写地域要求如：长三角、珠三角、北京" class="mint-field-core ziyuanChongzu" v-model="texta"></textarea>
 							</ul>
 						</div>
 					</div>
@@ -181,18 +181,18 @@
 					}
 				}
 				if(ok==0){
-					this.$http.post(URL.path+'regist/regist2',datas,{emulateJSON:true}).then(function(res){
-						if(res.body.returnCode=='200'){
-							Toast('再进行下一步资料完善');
-							console.log(res.body)
+//					this.$http.post(URL.path+'regist/regist2',datas,{emulateJSON:true}).then(function(res){
+//						if(res.body.returnCode=='200'){
+							Toast('进行下一步资料完善');
+//							console.log(res.body)
 							window.location.href="#/zhuce/ZhuCe1/"+this.$route.params.token+"/Guzhai/Guzhaiquan";
-						}else{
-							window.location.href="#/denglu"
-							Toast(res.body.msg);
-						}
-					},function(res){
-					    console.log(res.status);
-					})
+//						}else{
+//							window.location.href="#/denglu"
+//							Toast(res.body.msg);
+//						}
+//					},function(res){
+//					    console.log(res.status);
+//					})
 				}else{
 					Toast("请填写完整您的信息！是否已选标签...");
 				}

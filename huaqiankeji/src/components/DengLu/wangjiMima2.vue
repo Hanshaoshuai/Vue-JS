@@ -93,6 +93,14 @@
 				}else{
 					ph=1;
 				}
+				if(!xinmima1.test(this.xinmima2)) {
+					Toast('密码格式错误');
+					return;
+				}
+				if(!this.xinmima1) {
+					Toast('请输入新密码');
+					return;
+				}
 				if(!this.xinmima2) {
 					Toast('请输入二次密码');
 					return;

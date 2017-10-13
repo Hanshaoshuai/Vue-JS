@@ -2,10 +2,8 @@
 	<div class="tupian">
 		<div class="left-img" id="preview">
 			<label>
-				<form enctype="multipart/form-data" method="post" name="fileinfo" ref="forms">
 				<img ref="" id="imghead" src='./mingpian.png'>
-				<input class="inputs" ref="file" type="file" @change="previewImage()" />
-				</form>
+				<input class="inputs" id="file" ref="file" type="file" @change="previewImage()" />
 			</label>
 		</div>
 	</div>
@@ -14,39 +12,40 @@
 <script type="text/ecmascript">
 	import {URL} from '../common/js/path';
 	import { Toast } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 	export default {
 		props:{
-//			seller:{
-//				type:Object
+//			imgurl:{
+////				
 //			}
 		},
 		data () {
 			return {
-				mingpianID:""
+				mingpianID:"",
+				imgSrc:"",
+				imgurl:''
 			}
 		},
 		mounted(){
-			
+			console.log(this.imgurl)
 		},
 		methods:{
 			previewImage(){
 				var file=this.$refs.file
 				var thata=this;
-				console.log(file.files[0])
+				console.log(event);
+//				console.log(file.files[0])
 	          	var div = document.getElementById('preview');
 	          	if(file.files && file.files[0]){
-	          		var formData = new FormData();
-						formData.append('pic', file.files[0]); // 文件数据
-						formData.append('flag', '1'); // 其他的一些参数
-						thata.shangchuan(formData)
-						
-						
 	              	var img = document.getElementById('imghead');
 	              	img.onload = function(){
 	              		if(this.clientWidth>this.clientHeight){
-	              			this.style.width="0.75rem";
+	              			this.style.width="auto";
+	              			this.style.height="100%";
 	              		}else{
-	              			this.style.height="0.75rem";
+//	              			this.style.height="0.75rem";
+	              			this.style.width="100%";
+	              			this.style.height="auto";
 	              		}
 ////	              		this.style.width="0.75rem";
 ////	              		console.log(this.clientWidth)
@@ -62,13 +61,12 @@
 					        Toast('图片只能是jpg,gif,png');  
 					        return ;
 					    } 
-	              		img.src = evt.target.result;
-						var zipFormData = new FormData();
-						zipFormData.append('filename', file.files[0],file.files[0].name)
-						
-						console.log(file.files[0].name)
-						
-	              		thata.shangchuan(zipFormData)
+//	              		img.src = evt.target.result;
+						var zipFormData = new FormData();			//把要传的内容和参数放到   formdata中
+						zipFormData.append('upload_file', file.files[0]);
+						zipFormData.append('terminalNo', 3);
+						console.log(zipFormData)
+	              		thata.shangchuan(zipFormData,img)
 	              	}
 	              	reader.readAsDataURL(file.files[0]);
 	          	}else{
@@ -79,31 +77,31 @@
 	            	img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
 	          	}
 	        },
-			shangchuan(urlfrom){
+			shangchuan(urlfrom,img){
+				Indicator.open({spinnerType: 'fading-circle'});
 				console.log(urlfrom)
-				var data={
-					upload_file:urlfrom,
-					terminalNo:3
-				}
-				this.$http.post(URL.path2+'upload/photo',data,{emulateJSON:true}).then(function(res){
+//				var data={
+//					upload_file:urlfrom,
+//					terminalNo:3
+//				}
+				this.$http.post(URL.path1+'upload/photo',urlfrom,{emulateJSON:true}).then(function(res){
                     console.log(res);
-                    if(res.body.returnCode=='0011'){
-						Toast(res.body.msg);
+                    Indicator.close();
+					if(res.body.returnCode=='200'){
+						var data=res.body.data
+						this.mingpianID=data.id;
+						localStorage.setItem("MingpianImg",res.body.data.url);
+						img.src=localStorage.getItem("MingpianImg");
+//						this.imgurl=localStorage.getItem("MingpianImg");
+						this.$emit("to-parent",res.body.data.url);
 					}else{
-						if(res.body.returnCode=='200'){
-							this.timesgo();
-						}else{
-							Toast("系统正忙请稍后！");
-						}
+						Toast("上传失败请重新上传");
 					}
                 },function(res){
-                	this.mingpianID='5078';
+                	Indicator.close();
                 	Toast("系统正忙请稍后！");
                     console.log(res);
                 });
-			},
-			mingpian(){
-				return this.mingpianID;
 			}
 		},
 		uptated(){

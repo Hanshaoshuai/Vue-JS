@@ -224,8 +224,19 @@
 //					this.You(type,cont)
 //					this.FasongShijian();
 					this.$nextTick(function(){
+						var img = this.$refs.contentTexte.getElementsByTagName("img");
+						var num = img.length;
 						var contentTexte=this.$refs.contentTexte;
 						contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
+						for(var i=0; i<num; i++){
+							if (img[i].clientWidth>img[i].clientHeight) {
+								img[i].style.height="100%"
+								img[i].style.width="auto"
+							}else{
+								img[i].style.width="100%"
+								img[i].style.height="auto"
+							}
+						}
 					});
 				},function(res){
 				    console.log(res);

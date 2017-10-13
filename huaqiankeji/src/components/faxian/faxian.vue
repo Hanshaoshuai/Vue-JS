@@ -2,7 +2,7 @@
 	<!--<transition name="fade">-->
 		<div class="faxian">
 			<div class="searchBox">
-				<div class="home-search" @click.stop="sousuo">
+				<div class="home-search" @click.stop="sousuo()">
 					<img src="./img/circle_hot_search.png"/>
 					<span>搜公司，碰碰运气吧</span>
 				</div>
@@ -24,40 +24,40 @@
 							</div>
 							<div class="gaikuang-content">
 								<div class="gaikuang-list border-right">
-									<span>{{jia}}家</span>
-									<span>入驻企业</span>
+									<span>{{dongTai[0] && dongTai[0].content}}家</span>
+									<span>{{dongTai[0] && dongTai[0].title}}</span>
 								</div>
 								<div class="gaikuang-list border-right">
-									<span>{{ge}}人</span>
-									<span>机构投资人</span>
+									<span>{{dongTai[0] && dongTai[1].content}}个</span>
+									<span>{{dongTai[0] && dongTai[1].title}}</span>
 								</div>
 								<div class="gaikuang-list">
-									<span>{{ren}}个</span>
-									<span>本周新增融资人</span>
+									<span>{{dongTai[0] && dongTai[2].content}}次</span>
+									<span>{{dongTai[0] && dongTai[2].title}}</span>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="ContentType clearbox">
-						<!--<div v-if="x" class="TypeList" @click.stop="XiangMuGo()">
+						<div v-if="t" class="TypeList" @click.stop="XiangMuGo()">
 							<div class="TypeList-img">
-								<li><span>{{XiangmuShu}}</span></li>
+								<li><span v-if="XiangmuShu">{{XiangmuShu}}</span></li>
 							</div>
 							<div class="TypeList-text border-right">
 								<span>新项目</span>
 								<span class="text-coler">智能匹配全国投资机构</span>
 							</div>
 						</div>
-						<div v-if="q" class="TypeList" @click.stop="qiyefankuiGo()">
+						<div v-if="t" class="TypeList" @click.stop="qiyefankuiGo()">
 							<div class="TypeList-img">
-								<li class="fankui"><span>{{FankuiShu}}</span></li>
+								<li class="fankui"><span v-if="FankuiShu!=='0'">{{FankuiShu}}</span></li>
 							</div>
 							<div class="TypeList-text">
 								<span>企业反馈</span>
 								<span class="text-coler">查看反馈留言箱</span>
 							</div>
-						</div>-->
-						<div v-if="w" class="TypeList" @click.stop="rongziGo()">
+						</div>
+						<div v-if="q" class="TypeList" @click.stop="rongziGo()">
 							<div class="TypeList-img">
 								<li></li>
 							</div>
@@ -66,9 +66,9 @@
 								<span class="text-coler">智能匹配全国投资机构</span>
 							</div>
 						</div>
-						<div v-if="t" class="TypeList" @click.stop="touzifankuiGo()">
+						<div v-if="q" class="TypeList" @click.stop="touzifankuiGo()">
 							<div class="TypeList-img">
-								<li  class="fankui"><span>{{FankuiShu}}</span></li>
+								<li class="fankui"><span v-if="FankuiShu!=='0'">{{FankuiShu}}</span></li>
 							</div>
 							<div class="TypeList-text">
 								<span>投资人反馈</span>
@@ -177,7 +177,7 @@
 					</div>
 					
 					
-					<div class="tucao" @click.stop="yijianFankui()">
+<!--意见反馈-->		<div class="tucao" @click.stop="yijianFankui()">
 						<img src="./img/hongbao.png" alt="" />
 					</div>
 					
@@ -218,9 +218,15 @@
 <!--循环遍历data-->	<li v-for="item in list" class="page-loadmore-listitem">
 						<div v-for="(item,index) in data" class="ContentText " @click.stop="contblock(item.id,item.type)">
 							<div class="TextMame">
-								<div class="margin">
+								<div class="margin">		<!--类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报 6：公司调研-->
 									<span class="texts">{{item.com_name}}</span>
-									<span class="texts">定增{{item.type}}</span>
+									<span v-if="item.type==1" class="texts">定增{{item.type}}</span>
+									<span v-if="item.type==2" class="texts">做市{{item.type}}</span>
+									<span v-if="item.type==3" class="texts">转老股{{item.type}}</span>
+									<span v-if="item.type==4" class="texts">股权质押{{item.type}}</span>
+									<span v-if="item.type==5" class="texts">融资租赁{{item.type}}</span>
+									<span v-if="item.type==6" class="texts">研报支持{{item.type}}</span>
+									<span v-if="item.type==7" class="texts">公司调研{{item.type}}</span>
 								</div>
 								<div class="TypeList">
 									<span v-for="(name,index) in item.industry" class="texts">{{name.title}}</span>
@@ -287,14 +293,16 @@
 			<!--<DingzengZhaiyao ref="show"></DingzengZhaiyao>-->
 			<!--<GuquanZhaiyao ref="GuquanShow"></GuquanZhaiyao>-->
 			<!--<yijian ref="yijianShow"></yijian>-->
-			<router-view :setscrollTop="scrollTop" :datas="datas" :TouziToken='TouziToken'></router-view>
+			<router-view :setscrollTop="scrollTop" :datas="datas" :userContent='userContent' :type="type"></router-view>
 		</div>
 	<!--</transition>-->
 </template>
 
 <script type="text/ecmascript">
+//	import {formatDate} from "../../common/js/date.js";
 	import { Indicator } from 'mint-ui';
 	import {URL} from '../../common/js/path';
+	import { Toast } from 'mint-ui';
 //	import xiangmu from "./XinxiangMu/XinxiangMu.vue";
 //	import fankui from "./Fankui/Fankui.vue";
 //	import DingzengZhaiyao from "./DingzengZhaiyao.vue";
@@ -310,14 +318,14 @@
 	
 	export default {
 		props:{
-//			token:{},
-			TouziToken:{}
 //			food:{
 //				type:Object
 //			}
 		},
 		data () {
 			return {
+				dongTai:"",
+				userContent:"",
 				token:"",
 				userID:'',
 				type:"",
@@ -329,16 +337,15 @@
 				datas:"",
 //				TouziToken:"",
 				ResChild:"",
-				x:true,
-				q:true,
-				w:true,
-				t:true,
+				t:false,
+//				t1:false,
+				q:false,
+//				q1:false,
 				times:20177111129,
 				showList:false,
 				onlyContent:true,
 				mySwiper:"",
 				scrollTop:"",
-				
 				list: [],
 		        allLoaded: false,
 //		        autoFill:true,
@@ -348,29 +355,33 @@
 		        promps:false,
 		        scrollTop:"",
 		        XiangmuShu:"",
-		        FankuiShu:""
+		        FankuiShu:"",
+		        ZongHe:""
 			}
 		},
-		mounted() {//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商
-//			console.log(localStorage.getItem("token"))
-//			console.log(localStorage.getItem("userID"))
-//			console.log(localStorage.getItem("type"))
-			this.token=localStorage.getItem("token")
-			this.token=localStorage.getItem("userID")
-			this.type=localStorage.getItem("type")
-			
+		mounted() {	//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商
+			this.userContent={
+	  			userID:localStorage.getItem("userID"),			//用户ID
+				token:localStorage.getItem("token"),		//用户token
+				phone:localStorage.getItem("phone"),		//用户电话
+				type:localStorage.getItem("type"),			//用户类型
+				photo:localStorage.getItem("photo"),	//用户头像id
+				photourl:localStorage.getItem("photourl")	//用户头像URL地址
+	  		}
+			this.type=this.userContent['type'];
+			this.userType(this.type)
+			console.log(this.userContent)
 	    	var datas = {		//相应参数
 				token:"N8KCEuwCyhOSviBLwm9PhbrZEQ1aUJBhHMkL7XNv5cEqBF2xs1DQSupWBgxWpz5w",//	token	是	[string]		
 				page:"",		
 				size:""	
 			}
 	    	var token={
-	    		token:'DxZGPSUsZsp48LUdWYWpca2HXxwfUDZY1zfFHzyhidbfov0BKWrnwiuKVhpqkFa5',
-	    		ok:"jdfj"
+	    		token:this.userContent.token
 	    	}
-	    	this.datas=datas;
+	    	this.token=token;
 //	    	this.TouziToken=token;
-	    	this.qinQiu();
+	    	this.qinQiu(token);
 //			投资机构收到的新项目数
 			this.$http.post(URL.path+'finance/new_item',token,{emulateJSON:true}).then(function(res){
 				this.XiangmuShu=res.body.data.new_item;
@@ -389,24 +400,59 @@
 			},function(res){
 			    console.log(res);
 			})
+//			获取企融直通车动态数据
+			this.$http.post(URL.path+'common/dynamic',token,{emulateJSON:true}).then(function(res){
+				this.dongTai=res.body.data
+				console.log("获取企融直通车动态数据");
+				console.log(this.dongTai[0].content);
+				console.log(res);
+			},function(res){
+			    console.log(res);
+			})
 	    	
 	    	
 //	    	console.log("计算高度")
 	      	this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
 	      	this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
-//	      	this.$nextTick(function() {
-////				if(!this.mySwiper){
-//	             	this.mySwiper = new Swiper(".swiper-container",{
-//						direction:"vertical",
-//						autoplay :2000,
-//						speed : 2000,//改变Swiper的切换时间曲线
-//						loop:true,
-//						autoplayDisableOnInteraction:false,
+	      	this.$nextTick(function() {
+	      		this.ZongHe=this.XiangmuShu*1+this.FankuiShu*1
+	      		this.Zongshu();
+//           	this.mySwiper = new Swiper(".swiper-container",{
+//					direction:"vertical",
+//					autoplay :2000,
+//					speed : 2000,//改变Swiper的切换时间曲线
+//					loop:true,
+//					autoplayDisableOnInteraction:false,
 ////						pagination:".swiper-pagination"
-//					})
-//			});
+//				})
+			});
 	    },
-		methods:{
+		methods:{	//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商
+			Zongshu(){
+				//广播
+//				this.$emit("ZongHe",this.ZongHe);
+			},
+			userType(type){
+//				t:false,
+//				t1:false,
+//				q:false,
+//				q1:false,
+				if(type==2){
+					this.q=true;
+//					this.q1=true;
+					return;
+				}
+				if(type==1){
+					this.t=true;
+//					this.t1=true;
+					return;
+				}
+				if(type==7){
+					this.t=true;
+//					this.t1=true;
+					return;
+				}
+			},
 			handleTopChange(status) {    //头部函数
 //	      		console.log("top")
 		        this.topStatus = status;
@@ -437,7 +483,7 @@
 		        setTimeout(() => {
 		          	let lastValue = this.list.length;   
 		          	if (lastValue < 3) {
-		          		this.qinQiu();
+		          		this.qinQiu(this.token);
 //			            for (let i = 1; i <= 10; i++) {
 //			              	this.list.push(lastValue + i);
 //			            }
@@ -453,40 +499,35 @@
 		        }, 1500);
 	      	},
 			sousuo(){
-				window.location.href="#/sousuo/"+this.TouziToken["token"];
+				window.location.href="#/faxian/sousuo/";
 			},
 			rongziGo(){
-				window.location.href="#/faxian/WoyaoRongzi/"+this.datas["token"];
+				window.location.href="#/faxian/WoyaoRongzi/"+this.userContent["token"];
 			},
 			touzifankuiGo(){
-				console.log(this.datas)
-				window.location.href="#/faxian/Fankui/"+this.datas["token"];
-//				this.$refs.fankuiShow.fankuiBlock(this.datas);
+				console.log(this.userContent)
+				window.location.href="#/faxian/Fankui/"+this.userContent["token"];
 			},
 			XiangMuGo(){
-//				console.log(this.datas)
-				window.location.href="#/faxian/XinxiangMu/"+this.TouziToken["token"];
+				window.location.href="#/faxian/XinxiangMu/"+this.userContent["token"];
 				this.scrollTop=sessionStorage.getItem("scrollTop")
-//				this.$refs.xiangmuShow.xiangmuBlock(this.scrollTop,this.datas);
 			},
 			qiyefankuiGo(){
-				console.log(this.TouziToken)
-				window.location.href="#/faxian/Fankui/"+this.TouziToken["token"];
-//				this.$refs.fankuiShow.fankuiBlock(this.datas);
+				console.log(this.userContent)
+				window.location.href="#/faxian/Fankui/"+this.userContent["token"];
 			},
-			contblock(id,type){
-				if(type==1 || type==2 ||type==3){
-					window.location.href="#/faxian/DingzengZhaiyao/"+this.TouziToken["token"]+'/'+id;
+			contblock(id,type){		//<!--类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报 7:公司调研-->
+				if(type==1 || type==2 ||type==3 || type==7){
+					window.location.href="#/faxian/DingzengZhaiyao/"+this.userContent["token"]+'/'+id;
 				}else{
-					window.location.href="#/faxian/GuquanZhaiyao/"+this.TouziToken["token"]+'/'+id;
+					window.location.href="#/faxian/GuquanZhaiyao/"+this.userContent["token"]+'/'+id;
 				}
-//				this.$refs.show.listShow();
 			},
 			Guquanzhaiyao(){
 				this.$refs.GuquanShow.Guquanblock();
 			},
 			yijianFankui(){
-				window.location.href="#/faxian/Yijian/"+this.TouziToken["token"];
+				window.location.href="#/faxian/Yijian/"+this.userContent["token"];
 //				this.$refs.yijianShow.fankiuShow();
 			},
 			faxianScroll () {
@@ -494,29 +535,19 @@
 			  sessionStorage.setItem("faxianScroll",scrollTop)
 //			  console.log(sessionStorage.getItem("faxianScroll"))
 			},
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
-			qinQiu(){		//类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报
+			qinQiu(token){		//类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报
+				console.log(token)
 				Indicator.open({spinnerType: 'fading-circle'});
 	//	    	首页项目列表（非自己收到的项目）接口
-				this.$http.post(URL.path+'finance/get_item_list',this.datas,{emulateJSON:true}).then(function(res){
+				this.$http.post(URL.path+'finance/get_item_list',token,{emulateJSON:true}).then(function(res){
 					Indicator.close();
 					this.data=res.body.data
 					console.log("首页项目列表成功");
 					console.log(this.data)
 				},function(res){
 				    console.log(res);
+				    Indicator.close();
+				    Toast("系统繁忙请稍后再试")
 				})
 				if(this.list.length==0){
 					this.list.push(this.data);
@@ -729,7 +760,7 @@
 				    		span{
 				    			font-size:0.18rem;
 				    			line-height:0.18rem;
-				    			font-weight:bold;
+				    			/*font-weight:bold;*/
 				    		}
 				    	}
 					    .gaikuang-content{
@@ -745,7 +776,7 @@
 					    		margin-top:0.13rem;
 					    		span{
 					    			font-size:0.15rem;
-					    			font-weight:500;
+					    			/*font-weight:500;*/
 					    			display:block;
 					    			line-height:0.14rem;
 					    			padding-bottom:0.10rem;
@@ -830,7 +861,7 @@
 							text-align:center;
 							span{
 								&:first-child{
-									font-weight:600;
+									/*font-weight:600;*/
 								}
 							}
 							.text-coler{
@@ -924,7 +955,7 @@
 						line-height:0.16rem;
 						margin-top:0.02rem;
 						color:#323232;
-						font-weight:600;
+						/*font-weight:600;*/
 					}
 				}
 				.ContentText{
@@ -954,7 +985,7 @@
 							span{
 								display:inline-block;
 								line-height:0.2rem;
-								font-weight:600;
+								/*font-weight:600;*/
 								&:first-child{
 									min-width:31%;
 									margin-right:0.1rem;

@@ -52,7 +52,7 @@
 								<p>资经理资经理资主营业经理主营业资经理资主营业经理资经理资经理{{item.lightspot}}</p>
 							</div>
 						</div>
-						<div class="jieshu"><font>保密信息，禁止传播</font><span @click.stop="jieshu()">结束项目</span></div>
+						<div class="jieshu"><font>保密信息，禁止传播</font><span @click.stop="jieshu(item.id)">结束项目</span></div>
 						<div class="times border">
 							<span class="text-center">1小时前</span>
 							<span>发布</span>
@@ -89,9 +89,9 @@
 	      		<p class="page-loadmore-desc" v-show="promps">暂无数据</p>
 	      	</transition>
 	    </div>
-	    	<tishi ref="tishiShow" :xingXi="texts"></tishi>
+	    	<tishi ref="tishiShow" :xingXi="texts" :token="token" :XiangmuID="XiangmuID"></tishi>
 			<!--<yifouxiangmu ref="yifouShou"></yifouxiangmu>-->
-			<router-view :TouziToken="TouziToken" :XiangmuID="XiangmuID"></router-view>
+			<router-view :userContent="userContent" :XiangmuID="XiangmuID"></router-view>
 		</div>
 	</transition>
 </template>
@@ -99,6 +99,7 @@
 <script type="text/ecmascript">
 	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
+	import { Toast } from 'mint-ui';
 	import box from "../../box.vue";
 	import tishi from "../../Tishi.vue";
 //	import yifouxiangmu from "./YifouXiangmu.vue";
@@ -110,10 +111,11 @@
 //				type:Object
 			},
 			datas:{},
-			TouziToken:{}
+			userContent:{}
 		},
 		data () {
 			return {
+				token:"",
 				data:"",
 				XiangmuID:"",
 				fankui:"45",
@@ -143,13 +145,20 @@
 	    	console.log("计算高度")
 	      	this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
 	      	this.$refs.wrapper.addEventListener('scroll', this.handleScroll)	//做一个scroll监听
-	      	console.log(this.TouziToken)
+	      	console.log(this.userContent)
+	      	var token={
+	      		token:this.userContent['token']
+	      	}
+	      	this.token=this.userContent['token'];
 //			项目列表（投资人收到的项目）
 			if(this.data==""){
-				this.$http.post(URL.path+'finance/received_item_list',this.TouziToken,{emulateJSON:true}).then(function(res){
+				this.$http.post(URL.path+'finance/received_item_list',token,{emulateJSON:true}).then(function(res){
 					this.data=res.body.data;
+					if(res.body.returnCode=='201'){
+						Toast("亲！您暂无收到新项目哦...")
+					}
 					console.log("投资人收到的项目列表");
-					console.log(this.data);
+					console.log(res.body);
 				},function(res){
 				    console.log(res);
 				})
@@ -226,18 +235,18 @@
 				
 			},
 			yifouXiangmu(){
-				window.location.href="#/faxian/YifouXiangmu/"+this.TouziToken['token'];
+				window.location.href="#/faxian/YifouXiangmu/"+this.userContent['token'];
 //				this.$refs.yifouShou.yifouBlock();
 			},
 			xiangqing(XiangmuID){
 				console.log(XiangmuID)
 				this.XiangmuID=XiangmuID
-				window.location.href="#/faxian/XinxiangMu/"+this.TouziToken['token']+"/XiangmuXiangqing"+'/'+XiangmuID;
+				window.location.href="#/faxian/XinxiangMu/"+this.userContent['token']+"/XiangmuXiangqing"+'/'+XiangmuID;
 //				this.$refs.xiangqingShow.xiangqingBlock();
 			},
-			jieshu(){
+			jieshu(XiangmuID){
 //				this.texts="您要结束xxx公司项目的原因是？"
-				this.$refs.tishiShow.tishiBlock();
+				this.$refs.tishiShow.tishiBlock('','',XiangmuID);
 			},
 			handleScroll () {
 			  var scrollTop = this.$refs.wrapper.scrollTop

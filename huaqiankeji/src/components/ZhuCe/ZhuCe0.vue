@@ -113,6 +113,7 @@
 					return;
 				}
 				window.location.href="#/zhuce/ZhuCe1/"+this.token;
+//				window.location.href="#/zhuce/ZhuCe1/"+this.token+','+this.phone+','+this.texts+','+this.password;
 //				Indicator.open({spinnerType: 'fading-circle'});
 //				this.$http.post(URL.path+'api/index.php/login/login',{datas},{emulateJSON:true}).then(function(res){
 //                  console.log(res);

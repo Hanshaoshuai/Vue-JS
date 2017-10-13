@@ -7,39 +7,51 @@
 			</div>
 			<div class="box" ref="box">
 				<div style="width:100%;height:0.55rem;"></div>
-				<div class="sousuo-content">
+				<div v-if="beianType=='7'" class="sousuo-content">
 					<li class="beian-first">
 						2017年 10月 8日
-					</li>
-					<ul ref="index1" class="content-header" index="type1"  @click.stap="typeName('0')">
+					</li>				<!--1:未审核 2:已审核 3:进行中 4:已结束 5未通过-->
+					<ul v-if="item.status=='2'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id)">
 						<li class="beian-last">
 							<div class="content-top">
-								<span>天立泰&nbsp;(34565645)</span>
-								<span>做市</span>
-								<font>已通过</font>
+								<span>{{item.com_short}}</span>
+								<span></span>
+								<font>已审核</font>
 							</div>
 							<!--<div class="content-bottom">
 								<span>1小时前</span>
 							</div>-->
 						</li>
 					</ul>
-					<ul ref="index1" class="content-header" index="type1"  @click.stap="typeName('1')">
+					<ul v-if="item.status=='1'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id)">
 						<li class="beian-last">
 							<div class="content-top">
-								<span>天立泰&nbsp;(34565645)</span>
-								<span>做市</span>
-								<font>申请中</font>
+								<span>{{item.com_short}}</span>
+								<span></span>
+								<font>未审核</font>
 							</div>
 							<!--<div class="content-bottom">
 								<span>1小时前</span>
 							</div>-->
 						</li>
 					</ul>
-					<ul ref="index1" class="content-header" index="type1"  @click.stap="typeName('2')">
+					<ul v-if="item.status=='4'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id)">
 						<li class="beian-last">
 							<div class="content-top">
-								<span>天立泰&nbsp;(34565645)</span>
-								<span>做市</span>
+								<span>{{item.com_short}}</span>
+								<span></span>
+								<font>已结束</font>
+							</div>
+							<!--<div class="content-bottom">
+								<span>1小时前</span>
+							</div>-->
+						</li>
+					</ul>
+					<ul v-if="item.status=='5'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id)">
+						<li class="beian-last">
+							<div class="content-top">
+								<span>{{item.com_short}}</span>
+								<span></span>
 								<font>未通过</font>
 							</div>
 							<!--<div class="content-bottom">
@@ -49,39 +61,51 @@
 					</ul>
 					<box></box>
 				</div>
-				<div class="sousuo-content">
+				<div  v-if="beianType=='1'" class="sousuo-content">
 					<li class="beian-first">
 						2017年 10月 8日
 					</li>
-					<ul ref="index1" class="content-header" index="type1"  @click.stap="typeName1('0')">
+					<ul v-if="item.status=='2'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id)">
 						<li class="beian-last">
 							<div class="content-top">
-								<span>天立泰&nbsp;(34565645)</span>
-								<span>做市</span>
-								<font>已通过</font>
+								<span>{{item.com_short}}</span>
+								<span></span>
+								<font>已审核</font>
 							</div>
 							<!--<div class="content-bottom">
 								<span>1小时前</span>
 							</div>-->
 						</li>
 					</ul>
-					<ul ref="index1" class="content-header" index="type1"  @click.stap="typeName1('1')">
+					<ul v-if="item.status=='1'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName1(item.id)">
 						<li class="beian-last">
 							<div class="content-top">
-								<span>天立泰&nbsp;(34565645)</span>
-								<span>做市</span>
-								<font>申请中</font>
+								<span>{{item.com_short}}</span>
+								<span></span>
+								<font>未审核</font>
 							</div>
 							<!--<div class="content-bottom">
 								<span>1小时前</span>
 							</div>-->
 						</li>
 					</ul>
-					<ul ref="index1" class="content-header" index="type1"  @click.stap="typeName1('2')">
+					<ul v-if="item.status=='4'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName1(item.id)">
 						<li class="beian-last">
 							<div class="content-top">
-								<span>天立泰&nbsp;(34565645)</span>
-								<span>做市</span>
+								<span>{{item.com_short}}</span>
+								<span></span>
+								<font>已结束</font>
+							</div>
+							<!--<div class="content-bottom">
+								<span>1小时前</span>
+							</div>-->
+						</li>
+					</ul>
+					<ul v-if="item.status=='5'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName1(item.id)">
+						<li class="beian-last">
+							<div class="content-top">
+								<span>{{item.com_short}}</span>
+								<span></span>
 								<font>未通过</font>
 							</div>
 							<!--<div class="content-bottom">
@@ -96,24 +120,27 @@
 			<div class="butten">
 				<span @click.stop="Xinzeng()">新&nbsp;&nbsp;增</span>
 			</div>
-			<router-view :token="token"></router-view>
+			<router-view :token="token" :beiAnidQ="beiAnidQ" :beiAnidC="beiAnidC"></router-view>
 		</div>
 	</transition>
 </template>
 
 <script type="text/ecmascript">
+	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
+	import { Toast } from 'mint-ui';
 	import box from "../../box.vue";
 	
 	export default {
 		props:{
-//			food:{
+			token:{
 //				type:Object
-//			}
+			},
+			beianType:{}
 		},
 		data () {
 			return {
-				token:'1',
+				data:"",
 				x:'1',
 				urlName:"Dingzeng",
 				fankui:"45",
@@ -131,13 +158,48 @@
 					type4:"ZuLin",
 					type5:"Diaoyan"
 				},
-				beianType:"0"
+				beiAnidQ:"",
+				beiAnidC:""
 			}
 		},
 		mounted() {
-			if(this.beianType==0){
-				
-			}else{
+			console.log(this.beianType);
+			if(this.beianType=='1'){
+//				企业项目备案列表
+				var params={
+		    		token:this.token,
+		    	}
+				this.$http.post(URL.path+'finance/record_list',params,{emulateJSON:true}).then(function(res){
+					this.data=res.body.data.id;
+					if(this.data.length=='0'){
+						Toast("您暂无备注，请添加备案...")
+						window.location.href="#/wode/RongziBeian/"+this.token+"/TianQiBeian";
+						return;
+					}
+					console.log(res);
+				},function(res){
+				    console.log(res);
+				})
+				return;
+			}
+			if(this.beianType=='7'){
+//				财务顾问项目备案列表
+				var params={
+		    		token:this.token,
+		    	}
+				console.log(params)
+				this.$http.post(URL.path+'finance/record_list',params,{emulateJSON:true}).then(function(res){
+					this.data=res.body.data.id;
+					if(this.data.length=='0'){
+						Toast("您暂无备案，请添加备案...")
+						window.location.href="#/wode/RongziBeian/"+this.token+"/XinzengQiye";
+						return;
+					}
+					console.log(res);
+				},function(res){
+				    console.log(res);
+				})
+				return;
 			}
 			this.$nextTick(function() {
 				this.boxUl=this.$refs.box.getElementsByTagName("ul");
@@ -150,17 +212,25 @@
 //				this.tucaoShow=false;
 			},
 			typeName(id){
+				this.beiAnidC=id;
 				window.location.href="#/wode/RongziBeian/"+this.token+"/BeianXiangqing/"+id;
 			},
 			typeName1(id){
+				this.beiAnidQ=id;
 				window.location.href="#/wode/RongziBeian/"+this.token+"/QiyeBeianXiang/"+id;
 			},
 			Xinzeng(){
-				if(this.beianType==0){
+				if(this.beianType=='7'){
+					this.beiAnidC="";
 					window.location.href="#/wode/RongziBeian/"+this.token+"/XinzengQiye";
-				}else{
-					window.location.href="#/wode/RongziBeian/"+this.token+"/TianQiBeian";
+					return;
 				}
+				if(this.beianType=='1'){
+					this.beiAnidQ="";
+					window.location.href="#/wode/RongziBeian/"+this.token+"/TianQiBeian";
+					return;
+				}
+				
 				
 			}
 //			show(){

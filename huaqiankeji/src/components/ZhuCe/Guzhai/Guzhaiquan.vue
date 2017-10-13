@@ -96,7 +96,7 @@
 						</div>
 						<div class="xiaolv anli">
 							<ul>
-								<textarea placeholder="请填写资金出借方的公司全称" class="mint-field-core ziyuanChongzu" v-model="texta"></textarea>
+								<textarea placeholder="请填写地域要求如：长三角、珠三角、北京" class="mint-field-core ziyuanChongzu" v-model="texta"></textarea>
 							</ul>
 						</div>
 					</div>
@@ -194,20 +194,24 @@
 //					XiangmuID:this.XiangmuID
 				}
 				var datas={
-					id:this.CanShu.id,			//	uid	是	[string]		
-					investment_type:this.CanShu.typeID,			//投资类型 1:股权投资 2:债权投资 3:股债兼投	是	[string]		
-					interested:'',				//感兴趣的行业多个用逗号分割	是	[string]		
-					single_project_max:this.numbere,			//单笔投资最大值	是	[string]		
-					single_project_min:this.numberf,			//单笔投资最小值	是	[string]		
-					fund_stage:'',			//投资阶段 15债转股 16债权 17 新三板 62PE 63 VC 64 天使投资 75PreIPO	是	[string]		
+					id:this.CanShu.id,				//	uid	是	[string]	
+					investment_type:this.CanShu.typeID,		//投资类型 1:股权投资 2:债权投资 3:股债兼投	是	[string]		
+					interested:this.CanShu.biaoQianid,		//感兴趣的行业多个用逗号分割	是	[string]		
+					single_project_max:this.numbere,		//单笔投资最大值	是	[string]		
+					single_project_min:this.numberf,		//单笔投资最小值	是	[string]		
+					fund_stage:this.biaoQianid1,			//投资阶段 15债转股 16债权 17 新三板 62PE 63 VC 64 天使投资 75PreIPO	是	[string]		
 					territory:this.texta,			//地域要求	是	[string]		
-					investment_way:this.biaoQianid,			//投资方式 1:定增 2:接老股 3:二级市场 4:融资租赁 5:股权质押 6:双创债	是	[string]		
-					revenue_min:this.numbera,			//最低营收要求	是	[string]		
-					profit_min:this.numberb,			//最低净利润要求	是	[string]		
-					fund_min:this.numberc,			//最小年化资金成本范围	是	[string]		
-					fund_max:this.numberd,			//最大年化资金成本范围	是	[string]		
-					loan_time:this.numberg,			//放款时间	是	[string]		
-					borrow:this.textb				//借债主体	是	[string]
+					
+					investment_way:this.biaoQianid,			//投资方式 1:定增 2:接老股 3:二级市场 4:融资租赁 5:股权质押 6:双创债	是	[string]
+					single_project_max2:this.numbere,		//单笔投资最大值	是	[string]		
+					single_project_min2:this.numberf,		//单笔投资最小值	是	[string]		
+					revenue_min:this.numbera,				//最低营收要求	是	[string]		
+					profit_min:this.numberb,				//最低净利润要求	是	[string]		
+					fund_min:this.numberc,					//最小年化资金成本范围	是	[string]		
+					fund_max:this.numberd,					//最大年化资金成本范围	是	[string]		
+					loan_time:this.numberg,					//放款时间	是	[string]		
+					borrow:this.textb,						//借债主体	是	[string]
+					territory2:this.texta			//地域要求	是	[string]
 				}
 				var ok=0;
 				for(var item in CanShu){		//判断填写信息是否完整Ok=1；标签必选

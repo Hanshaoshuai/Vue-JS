@@ -28,7 +28,7 @@
 						</div>
 					</div>
 					<div class="zhuying_1 liangdian_1 border-top">
-						<div class="ferst">选择您的行业身份<font></font></div>	<!--类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商-->
+						<div class="ferst">选择您的行业身份<font></font></div>	<!--类型 1:企业 2:投资机构 3:合格投资人 4咨询机构/研究咨询 5:券商研究员/财务顾问 6:新三板做市商-->
 						<ul ref="biaoqian">
 							<span class="bianse" @click.stap="xuanze('0','2')">投资机构</span>
 							<span @click.stap="xuanze('1','7')">财务顾问</span>
@@ -69,13 +69,14 @@
 	
 	
 	export default {
-		props:{
-			datas:{
-//				type:Object
-			}
-		},
+		props:['datas'],
+//			datas:{
+//				type: Object
+//			}
+//		},
 		data () {
 			return {
+//				datas:'',
 				XiajiCanshu:'',
 				token:"DxZGPSUsZsp48LUdWYWpca2HXxwfUDZY1zfFHzyhidbfov0BKWrnwiuKVhpqkFa5",
 				contens:"",
@@ -97,9 +98,13 @@
 				index:"0",
 				JigouType:"Guquan",
 				typeID:"1",
+				TouziType:""
 			}
 		},
 		mounted(){
+//			console.log(this.$route.params.token)
+//			this.datas=this.$route.params.token.split(',');
+			
 			console.log(this.datas);//上一级传的参数；
 									//phone:this.phone,  //手机号
 									//texts:this.texts,	//验证码
@@ -131,6 +136,7 @@
 					photo:this.$refs.touxiangID.touxiangID				//头像id	是	[string]
 				}
 				if(this.index==0){		//投资机构下一步
+					localStorage.setItem("typeID",this.typeID);
 					this.$http.post(URL.path+'regist/go',data,{emulateJSON:true}).then(function(res){
 	                    console.log(res);
 						if(res.body.returnCode=='200'){
@@ -143,8 +149,10 @@
 						    }
 							localStorage.setItem("userID",res.body.data.id);
 							localStorage.setItem("token",res.body.data.token);
+							localStorage.setItem("phone",res.body.data.phone);
 							localStorage.setItem("type",this.type);
 							console.log(this.XiajiCanshu)
+//							window.location.href="#/zhuce/ZhuCe1/"+res.body.data.token+','+res.body.data.id+','+this.typeID+"/"+this.JigouType;
 							window.location.href="#/zhuce/ZhuCe1/"+res.body.data.token+"/"+this.JigouType;
 						}else{
 							window.location.href="#/denglu"
@@ -169,6 +177,7 @@
 							    }
 								localStorage.setItem("userID",res.body.data.id);
 								localStorage.setItem("token",res.body.data.token);
+								localStorage.setItem("phone",res.body.data.phone);
 								localStorage.setItem("type",this.type);
 								console.log(this.XiajiCanshu)
 								window.location.href="#/faxian"

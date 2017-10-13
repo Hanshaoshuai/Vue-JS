@@ -35,6 +35,7 @@
 					</div>
 				</div>
 			</div>
+			<router-view :token="token"></router-view>
 		</div>
 	</transition>
 </template>
@@ -47,9 +48,9 @@
 	
 	export default {
 		props:{
-//			food:{
+			token:{
 //				type:Object
-//			}
+			}
 		},
 		data () {
 			return {
@@ -66,12 +67,14 @@
 				history.go(-1);
 			},
 			miMa(){
+				window.location.href="#/wode/shezhi/"+this.token+"/ShezhiMima";
 //				this.tucaoShow=true;
 			},
 			lianXi(){
 //				this.$refs.yifouShou.yifouBlock();
 			},
 			qingChu(){
+				Toast("清楚成功")
 //				this.$refs.xiangqingShow.xiangqingBlock();
 			},
 			tuiChu(){
@@ -141,7 +144,7 @@
 		top:0;
 		left:0;
 		right:0;
-		z-index:1000;
+		z-index:200;
 		.xiangmu-header{
 			position:fixed;
 			top:0;

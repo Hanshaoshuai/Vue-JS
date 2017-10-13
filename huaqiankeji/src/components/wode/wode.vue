@@ -3,7 +3,7 @@
 		<div class="wode">
 			<div class="searchBox">
 				<div class="home-search">
-					<img src=""/>
+					<img ref="images" :src="photourl"/>
 				</div>
 				<div class="header-name">
 					<font>A</font>
@@ -32,12 +32,16 @@
 							<span>约谈率</span>
 						</li>
 					</ul>
-					<box></box>
-					<div class="dujia-header border-top" @click.stop="ziliaoShow(type.h)">
+					<box></box>		<!--类型 1:企业 2:投资机构 3:合格投资人 4咨询机构/研究咨询 5:券商研究员/财务顾问 6:新三板做市商-->
+					<div v-if="!investment_type" class="dujia-header border-top" @click.stop="ziliaoShow(type)">
 						<span><font class="kuaixuna"></font>个人资料</span>
 						<a class="wancheng">完成度78%</a><span></span>
 					</div>
-					<div class="dujia-header border-top" @click.stop="RongziBeian()">
+					<div v-if="investment_type" class="dujia-header border-top" @click.stop="ziliaoShow(type,investment_type)">
+						<span><font class="kuaixuna"></font>个人资料</span>
+						<a class="wancheng">完成度78%</a><span></span>
+					</div>
+					<div v-show="beianShow" class="dujia-header border-top" @click.stop="RongziBeian()">
 						<span><font class="kuaixunb"></font>融资项目备案</span>
 						<span></span>
 					</div>
@@ -62,7 +66,7 @@
 			</div>
 			<!--<bidu ref="biduShow"></bidu>-->
 			<!--<jilu ref="jiluShow"></jilu>-->
-			<router-view :token="token"></router-view>
+			<router-view :token="token" :beianType="beianType" :userContent="userContent"></router-view>
 		</div>
 	<!--</transition>-->
 </template>
@@ -80,43 +84,72 @@
 	
 	export default {
 		props:{
-			token:{},
-			TouziToken:{}
 //			food:{
 //				type:Object
 //			}
 		},
 		data () {
 			return {
+				userContent:"",
+				token:"",
+				userID:'',
+				beianType:"",
+				photourl:'',
 				block:false,
 				times:20177111129,
 				showFlag:false,
 				onlyContent:true,
-				type:{
-					a:"A",
-					b:"B",
-					c:"C",
-					d:"D",
-					e:"E",
-					f:"F",
-					g:"G",
-					h:"H"
-				}
+				type:"",
+				investment_type:'',		//用户的投资类型；   是投资机构时才会出现
+				beianShow:false
 			}
 		},
 		mounted(){
-			console.log(this.token)
+			this.userContent={
+	  			userID:localStorage.getItem("userID"),			//用户ID
+				token:localStorage.getItem("token"),		//用户token
+				phone:localStorage.getItem("phone"),		//用户电话
+				type:localStorage.getItem("type"),			//用户类型
+				photo:localStorage.getItem("photo"),		//用户头像id
+				photourl:localStorage.getItem("TouxiangImg")	//用户头像URL地址
+	  		}
+			this.token=this.userContent["token"];
+			this.beianType=this.userContent["type"];
+			this.photourl=this.userContent["photourl"];
+			this.type=this.userContent["type"];
+			console.log(this.userContent)
+			if(this.userContent["type"]=='2'){
+				this.investment_type=localStorage.getItem("typeID");		//用户的投资类型；   是投资机构时才会出现的参数
+			}
+			if(this.userContent["type"]=='1' || this.userContent["type"]=='7'){
+				this.beianShow=true;
+			}
+			console.log(this.investment_type)
+			this.$nextTick(function(){
+				var images = this.$refs.images;
+				if (images.clientWidth>images.clientHeight) {
+					images.style.height="100%"
+					images.style.width="auto"
+				}else{
+					images.style.width="100%"
+					images.style.height="auto"
+				}
+			});
 		},
 		methods:{
 			biduGo(){
 //				this.$refs.biduShow.biduBlock();
-				window.location.href="#/wode/shezhi/0";
+				window.location.href="#/wode/shezhi/"+this.userContent["token"];
 			},
-			ziliaoShow(id){
-				window.location.href="#/wode/ziliao"+id+"/"+this.TouziToken["token"];
+			ziliaoShow(id,Tid){			//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构/研究咨询 5:券商研究员/财务顾问 6:新三板做市商
+				if(id=='2'){
+					window.location.href="#/wode/ZiliaoT"+Tid+"/"+this.userContent["token"];//1:股权投资   2:债权投资   3:股债兼投
+				}else{
+					window.location.href="#/wode/Ziliao"+id+"/"+this.userContent["token"];
+				}
 			},
 			RongziBeian(){
-				window.location.href="#/wode/RongziBeian/0";
+				window.location.href="#/wode/RongziBeian/"+this.beianType;
 			},
 			jiluGo(){
 				window.location.href="#/wode/jilu/0";
@@ -180,7 +213,6 @@
 			left:0;
 			width:100%;
 		    padding:0.26rem 0 0.18rem 0;
-		    background-color: #00C850;
 		    background-image:url("./img/bgbg.png");
 		    background-size:100%;
 		    background-position:0 -0.2rem;
@@ -279,7 +311,7 @@
 					}
 					span{
 						font-size:0.16rem;
-		    			font-weight:500;
+		    			/*font-weight:500;*/
 		    			line-height:0.34rem;
 		    			vertical-align: top;
 						&:first-child{

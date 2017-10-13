@@ -12,6 +12,7 @@
 <script type="text/ecmascript">
 	import {URL} from '../common/js/path';
 	import { Toast } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 	export default {
 		props:{
 //			seller:{
@@ -37,9 +38,12 @@
 	              	var img = document.getElementById('imgheads');
 	              	img.onload = function(){
 	              		if(this.clientWidth>this.clientHeight){
-	              			this.style.width="0.75rem";
+	              			this.style.width="auto";
+	              			this.style.height="100%";
 	              		}else{
-	              			this.style.height="0.75rem";
+//	              			this.style.height="0.75rem";
+	              			this.style.width="100%";
+	              			this.style.height="auto";
 	              		}
 //	              		this.style.width="1rem";
 ////	              		console.log(this.clientWidth)
@@ -55,12 +59,13 @@
 					        Toast('图片只能是jpg,gif,png');  
 					        return ;
 					    } 
-	              		img.src = evt.target.result;
-	              		var zipFormData = new FormData();
-						zipFormData.append('filename', file.files[0], 'test.zip')
+//	              		img.src = evt.target.result;
+	              		var zipFormData = new FormData();		//把要传的内容和参数放到   formdata中
+						zipFormData.append('upload_file', file.files[0]);
+						zipFormData.append('terminalNo', 3);
 	              		
 	              		console.log(zipFormData)
-	              		thata.shangchuan(zipFormData)
+	              		thata.shangchuan(zipFormData,img)
 	              	}
 	              	reader.readAsDataURL(file.files[0]);
 	          	}else{
@@ -71,25 +76,26 @@
 	            	img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;
 	          	}
 	        },
-			shangchuan(urlfrom){
+			shangchuan(urlfrom,img){
+				Indicator.open({spinnerType: 'fading-circle'});
 				console.log(urlfrom)
-				var data={
-					upload_file:urlfrom,
-					terminalNo:3
-				}
-				this.$http.post(URL.path2+'upload/photo',data,{emulateJSON:true}).then(function(res){
+//				var data={
+//					upload_file:urlfrom,
+//					terminalNo:3
+//				}
+				this.$http.post(URL.path1+'upload/photo',urlfrom,{emulateJSON:true}).then(function(res){
                     console.log(res);
-                    if(res.body.returnCode=='0011'){
-						Toast(res.body.msg);
+                    Indicator.close();
+					if(res.body.returnCode=='200'){
+						var data=res.body.data
+						this.touxiangID=data.id;
+						localStorage.setItem("TouxiangImg",res.body.data.url);
+						img.src=localStorage.getItem("TouxiangImg");
 					}else{
-						if(res.body.returnCode=='200'){
-							this.timesgo();
-						}else{
-							Toast("系统正忙请稍后！");
-						}
+						Toast("上传失败请重新上传");
 					}
                 },function(res){
-                	this.touxiangID='5093';
+                	Indicator.close();
                 	Toast("系统正忙请稍后！");
                     console.log(res);
                 });

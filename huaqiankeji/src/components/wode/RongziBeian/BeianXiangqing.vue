@@ -67,10 +67,12 @@
 		props:{
 			token:{
 //				type:Object
-			}
+			},
+			beiAnidC:{}
 		},
 		data () {
 			return {
+				data:"",
 				type:"",		//创建类型
 				x:"0",			//字的个数
 				texta:"",
@@ -96,16 +98,32 @@
 				XiangmuID:"1",
 			}
 		},
-		mounted(){
+		mounted(){		//<!--1:未审核 2:已审核 3:进行中 4:已结束 5未通过-->
 			console.log(this.$route.params.type)
 			console.log(this.token)
-			if(this.$route.params.type!=='2'){
+			if(this.$route.params.type=='2'){
 				this.showFlag=false;
 			}
 			this.type=this.$route.params.type
 			this.$nextTick(function() {
 				
 			});
+//			项目备案详情
+			var params={
+	    		token:this.token,
+	    		id:this.beiAnidC		//	备案id
+	    	}
+			this.$http.post(URL.path+'finance/record_detail',params,{emulateJSON:true}).then(function(res){
+				this.data=res.body.data.id;
+				this.texta=this.data.com_name;
+				this.textb=this.data.com_short;
+				this.textc=this.data.total_finance;
+				this.textd=this.data.commission;
+				this.texte=this.data.remark;
+				console.log(res);
+			},function(res){
+			    console.log(res);
+			})
 //			this.token=this.$route.params
 		},
 		methods:{
@@ -129,7 +147,7 @@
 					texta:this.texta,
 					textb:this.textb,
 					textc:this.textc,
-					textd:this.textd,
+//					textd:this.textd,
 					texte:this.texte,
 				}
 				for(var item in CanShu){		//判断填写信息是否完整Ok=1；标签必选
@@ -138,13 +156,28 @@
 						return;
 					}
 				}
-				this.$http.post(URL.path+'finance/create',datas,{emulateJSON:true}).then(function(res){
-					CanShu.XiangmuID=res.body.data
-					this.content=this.$refs.pipeiShow;
-					this.$refs.tishiShow.tishiBlock(CanShu);//CanShu是下级要传的参数
+				//修改备案
+				var params={
+		    		token:this.token,
+					com_name:this.texta,			//	公司全称	是	[string]		
+					com_short:this.textb,			//	公司简称	是	[string]		
+					commission:this.textd,			//	佣金协定	是	[string]		
+					total_finance:this.textc,		//	投资总额 单位：万	是	[string]		
+					remark:this.texte,				//	有效投资认定	是	[string]		
+					license:'',						//	营业执照	是	[string]		
+					predict_revenue:'',				//	今年预计营收	是	[string]		
+					predict_profit:'',				//	今年预计净利润	是	[string]		
+					id:this.beiAnidC				//	备案id id为空时创建，不为空时修改	是	[string]
+		    	}
+				this.$http.post(URL.path+'finance/record',params,{emulateJSON:true}).then(function(res){
 					console.log(res);
+					if(res.body.data.id==true){
+						Toast("您已修改成功");
+						this.showFlag=true;
+						this.showFlag1=false;
+					}
 				},function(res){
-				    console.log(res.status);
+				    console.log(res);
 				})
 			},
 			dingzengBlock(){

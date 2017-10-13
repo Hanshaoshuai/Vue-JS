@@ -7,18 +7,24 @@
 			</div>
 			<div class="box">
 				<div style="width:100%;height:0.45rem;"></div>
-				<box></box>
+				<div class="logo">
+					<ul>
+						<li @click.stap="shangChuan()">
+							<img :src="imgUrl" alt="" />
+						</li>
+						<span>上传营业执照</span>
+					</ul>
+				</div>
 				<div ref="guanzhuLingyu" class="fankiu-content">
 					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>企业全称</div>
-						<div class="last">
-							<textarea placeholder="请输入企业全称" class="mint-field-core" v-model="texta"></textarea>
+						<div class="ferst"><span>*</span>今年预计营收、净利润</div>
+						<div class="last number last-bottom">
+							<input v-model="texta" placeholder="请填写预计营收" number="true" type="number" class="mint-field-core">
+							<span>亿元</span>
 						</div>
-					</div>
-					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>企业简称</div>
-						<div class="last">
-							<textarea placeholder="请输入企业简称" class="mint-field-core" v-model="textb"></textarea>
+						<div class="last number">
+							<input v-model="textb" placeholder="请填写净利润" number="true" type="number" class="mint-field-core">
+							<span>万元</span>
 						</div>
 					</div>
 					<div class="zhuying_1">
@@ -26,18 +32,6 @@
 						<div class="last number">
 							<input v-model="textc" placeholder="输入数字" number="true" type="number" class="mint-field-core">
 							<span>万元</span>
-						</div>
-					</div>
-					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>财顾费用协定</div>
-						<div class="last neirong">
-							<textarea placeholder="填写与企业约定的财顾费用条款，例如：实现融资额的3%" class="mint-field-core" v-model="textd"></textarea>
-						</div>
-					</div>
-					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>有效投递认定期</div>
-						<div class="last neirong">
-							<textarea placeholder="例如：投资人开始跟进项目后一年内做出的投资为有效投资" class="mint-field-core" v-model="texte"></textarea>
 						</div>
 					</div>
 				</div>
@@ -62,7 +56,8 @@
 		props:{
 			token:{
 //				type:Object
-			}
+			},
+			beiAnidQ:{}
 		},
 		data () {
 			return {
@@ -71,8 +66,6 @@
 				texta:"",
 				textb:"",
 				textc:"",
-				textd:"",
-				texte:"",
 				fankui:"45",
 				genjin:"458",
 				introduction:"",
@@ -87,6 +80,7 @@
 				},
 				content:"",			//给下级要传的参数
 				XiangmuID:"1",
+				imgUrl:""
 			}
 		},
 		mounted(){
@@ -108,23 +102,50 @@
 					texta:this.texta,
 					textb:this.textb,
 					textc:this.textc,
-					textd:this.textd,
-					texte:this.texte,
+				}
+				if(this.imgUrl==""){
+					Toast("请上传您的营业执照...");
+					return;
 				}
 				for(var item in CanShu){		//判断填写信息是否完整Ok=1；标签必选
 					if(CanShu[item]==""){
-						Toast("请填写完整您的信息！是否已选标签...");
+						Toast("请填写完整您的信息...");
 						return;
 					}
 				}
-				this.$http.post(URL.path+'finance/create',datas,{emulateJSON:true}).then(function(res){
-					CanShu.XiangmuID=res.body.data
-					this.content=this.$refs.pipeiShow;
-					this.$refs.tishiShow.tishiBlock(CanShu);//CanShu是下级要传的参数
+				//添加企业备案
+				var params={
+		    		token:this.token,
+					com_name:this.texta,			//	公司全称	是	[string]		
+					com_short:this.textb,			//	公司简称	是	[string]		
+					commission:'',				//	佣金协定	是	[string]		
+					total_finance:this.textc,		//	投资总额 单位：万	是	[string]		
+					remark:this.texte,				//	有效投资认定	是	[string]		
+					license:'',						//	营业执照	是	[string]		
+					predict_revenue:'',				//	今年预计营收	是	[string]		
+					predict_profit:'',				//	今年预计净利润	是	[string]		
+					id:this.beiAnidQ				//	备案id id为空时创建，不为空时修改	是	[string]
+		    	}
+				console.log(params)
+				this.$http.post(URL.path+'finance/record',params,{emulateJSON:true}).then(function(res){
+					this.type=res.body.data.id
+					if(this.beiAnidQ==""){
+						Toast("您已创建成功");
+						history.go(-2)
+//						window.location.href="#/wode/RongziBeian/7";
+					}
+					if(res.body.data.id==true){
+						Toast("您已添加成功");
+						history.go(-2)
+					}
 					console.log(res);
 				},function(res){
 				    console.log(res.status);
 				})
+			},
+			shangChuan(){
+				this.imgUrl="jdshfsgkjlgjkj"
+				alert("上传")
 			},
 			xinxiTo(){
 				this.$refs.xinxiShow.xinxiBlock();
@@ -227,6 +248,36 @@
 			height:100%;
 			background:#fff;
 			-webkit-overflow-scrolling:touch;
+			.logo{
+				width:100%;
+				height:2.16rem;
+				display:flex;
+				justify-content:center;
+				align-content:center;
+				align-items:center;
+				text-align:center;
+				ul>li{
+					border:1px solid #f5f4f9;
+					width:1.25rem;
+					height:1.25rem;
+					background-image:url("../img/mingpian.png");
+					background-size:100% 100%;
+					display:flex;
+					justify-content:center;
+					align-content:center;
+					align-items:center;
+					text-align:center;
+					img{
+						width:100%;
+					}
+				}
+				span{
+					display:inline-block;
+					margin-top:0.1rem;
+					font-size:0.16rem;
+					/*color:#*/
+				}
+			}
 			.fankiu{
 				width:100%;
 				display:flex;
@@ -313,16 +364,6 @@
 					}
 					.last-bottom{
 						margin-bottom:0.1rem;
-					}
-					.neirong{
-						min-height:1.22rem;
-						.mint-field-core{
-							resize: none;
-							background:#f5f4f9;
-							min-height:1.22rem;
-							line-height:0.2rem;
-							&::-webkit-scrollbar{width:0;height:0}
-						}
 					}
 				}
 			}

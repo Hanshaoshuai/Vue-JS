@@ -41,7 +41,7 @@
 								<p>资经理资经理资主营业经理主营业资经理资主营业经理资经理资经理</p>
 							</div>
 						</div>
-						<div class="jieshu"><font>保密信息，禁止传播</font><span @click.stop="jieshu()">移除该项目</span></div>
+						<div class="jieshu"><font>保密信息，禁止传播</font><!--<span @click.stop="jieshu()">移除该项目</span>--></div>
 						<div class="times border">
 							<span class="text-center">1小时前</span>
 							<span>发布</span>
@@ -53,7 +53,7 @@
 					</div>
 				</div>
 			</div>
-			<router-view :TouziToken="TouziToken" :XiangmuID="XiangmuID"></router-view>
+			<router-view :userContent="userContent" :XiangmuID="XiangmuID"></router-view>
 			<!--<xiangmuxiangqing ref="xiangqingShow"></xiangmuxiangqing>-->
 		</div>
 	</transition>
@@ -76,7 +76,7 @@
 		data () {
 			return {
 				XiangmuID:"",
-				TouziToken:"",
+				userContent:"",
 				fankui:"45",
 				genjin:"458",
 				introduction:"",
@@ -86,8 +86,23 @@
 			}
 		},
 		mounted(){
-			this.TouziToken=this.$route.params.token;
-			console.log(this.TouziToken)
+			this.userContent={
+				token:this.$route.params.token
+			}
+			console.log(this.userContent)
+//			已否项目列表（）
+			if(this.data==""){
+				this.$http.post(URL.path+'finance/received_item_list',this.userContent,{emulateJSON:true}).then(function(res){
+					this.data=res.body.data;
+					if(res.body.returnCode=='201'){
+						Toast("亲！您暂无收到新项目哦...")
+					}
+					console.log("投资人收到的项目列表");
+					console.log(res.body);
+				},function(res){
+				    console.log(res);
+				})
+			}
 		},
 		methods:{
 			yijianHind(){
@@ -99,7 +114,7 @@
 			},
 			xiangqing(XiangmuID){
 				this.XiangmuID=XiangmuID;
-				window.location.href="#/faxian/YifouXiangmu/"+this.TouziToken+"/XiangmuXiangqing/"+this.XiangmuID;
+				window.location.href="#/faxian/YifouXiangmu/"+this.userContent['token']+"/XiangmuXiangqing/"+this.XiangmuID;
 //				this.$refs.xiangqingShow.xiangqingBlock();
 			}
 			

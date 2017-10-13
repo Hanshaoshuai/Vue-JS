@@ -12,12 +12,12 @@
 					</div>
 				</div>
 			</div>
-			<div class="wenzhang-list">
+			<div class="wenzhang-list" ref="wrapper">
 				<div class="wenzhang-content" ref="tianjia">
 					<div class="fankiu">
 						<div class="tubiao"></div>
 						<div class="content-food" style="text-align:center;">
-							<span>已为您匹配888人</span>
+							<span>已为您匹配{{body.length}}人</span>
 						</div>
 					</div>
 					<!--<div class="sousuo-content border-topbottom">
@@ -56,13 +56,13 @@
 					</div>-->
 					<div v-for="(item,index) in body" class="sousuo-content border-topbottom">
 						<div class="content-header">
-							<font></font>
+							<font><img src="" :rul="item.thumb"/></font>
 							<div class="names">
 								<span class="border-right">{{item.uname}}</span>
 								<span>{{item.com_short}}</span>&nbsp;
 								<span>{{item.position}}</span>
 							</div>
-							<div class="borders typeA" :id="item.id"  @click.stop="xuanZe(index,item.id)"></div>
+							<div class="borders typeA" :id="item.uid"  @click.stop="xuanZe(index,item.uid)"></div>
 						</div>
 						<div class="xiaolv border-topbottom">
 							<div class="border-right">
@@ -137,13 +137,45 @@
 				xuanze:false,
 				XiaYibu:false,
 				uID:[],		//项目id
-				uID1:[]		//项目id字符串；
+				uID1:[],	//项目id字符串；
+				length:'',	//匹配项目个数
+				img:'',
+				num:"",
+				n:"",		//存储图片加载到的位置，避免每次都从第一张图片开始遍历
+				height:0
 			}
 		},
 		methods:{
 			listnone(){
 				this.showFlag=false;
 				history.go(-1)
+			},
+			faxianScroll(){
+				this.imgs()
+//				console.log(this.img[6].offsetTop)
+			},
+			imgs(){
+				var setHeight = document.documentElement.clientHeight; //可见区域高度
+				var scrollTop = this.$refs.wrapper.scrollTop; //滚动条距离顶部高度
+				for (var i = this.n; i < this.num; i++) {
+//					this.img[i].offsetTop+=200;
+					if (this.height < setHeight + scrollTop) {
+						if (this.img[i].getAttribute("src") == "") {
+							this.img[i].src = this.img[i].getAttribute("rul");
+							if (this.img[i].clientWidth>this.img[i].clientHeight) {
+								this.img[i].style.height="100%"
+								this.img[i].style.width="auto"
+							}else{
+								this.img[i].style.width="100%"
+								this.img[i].style.height="auto"
+							}
+						}else{
+							return;
+						}
+						this.n = i + 1;
+						this.height+=201;
+					}
+				}
 			},
 			pipeiBlock(CanShu){
 				Indicator.open({spinnerType: 'fading-circle'});
@@ -160,9 +192,19 @@
 				}
 				this.$http.post(URL.path+'finance/investor_list',datas,{emulateJSON:true}).then(function(res){
 					Indicator.close();
-					this.body=res.body.data
+					this.body=res.body.data;
+					this.$nextTick(function(){
+						this.img = this.$refs.tianjia.getElementsByTagName("img");
+						this.num = this.img.length;
+						this.n = 0; //存储图片加载到的位置，避免每次都从第一张图片开始遍历
+						this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+  						this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
+  						this.imgs()
+					});
 					console.log(this.body);
 				},function(res){
+					Indicator.close();
+					Toast("系统错误请稍后...")
 				    console.log(res.status);
 				})
 			},
@@ -179,6 +221,7 @@
 						borders[i].setAttribute("class","borders typeA")
 					}
 					this.uID=[];
+					this.length=this.uID.length;
 //					console.log(this.uID)
 					this.uID1=this.uID.join(';')
 					console.log(this.uID1)
@@ -192,6 +235,7 @@
 						borders[i].setAttribute("class","borders typeB");
 						this.uID.push(borders[i].id)
 					}
+					this.length=this.uID.length;
 //					console.log(this.uID)
 					this.uID1=this.uID.join(';')
 					console.log(this.uID1)
@@ -236,6 +280,7 @@
 				if(borders.getAttribute("class")=="borders typeA"){
 					this.y+=1;
 					this.uID.push(id)				//保存项目id
+					this.length=this.uID.length;
 //					console.log(this.uID)
 					this.uID1=this.uID.join(';')
 					console.log(this.uID1)
@@ -245,6 +290,7 @@
 					for(var z=0; z<this.y; z++){
 						if(this.uID[z]==id){
 							this.uID.splice(z,1);
+							this.length=this.uID.length;
 //							console.log(this.uID)
 							this.uID1=this.uID.join(';')
 							console.log(this.uID1)
@@ -282,7 +328,7 @@
 //				});
 //				this.block=true;
 				if(this.XiaYibu==true){				//判断必须选择匹配人才可以跳转
-					window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.type+'/'+this.CanShu.XiangmuID;
+					window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.type+'/'+this.CanShu.XiangmuID+'/'+this.length;
 				}else{
 					Toast("请选择匹配人");
 				}
@@ -450,9 +496,14 @@
 							width:0.43rem;
 							height:0.43rem;
 							margin-right:0.1rem;
-							border-radius:0.3rem;
+							overflow:hidden;
+							/*border-radius:0.3rem;*/
 							border:none;
 							border:2px solid #e5e4e4;
+							img{
+								width:100%;
+								height:100%;
+							}
 						}
 						.names{
 							flex:1;

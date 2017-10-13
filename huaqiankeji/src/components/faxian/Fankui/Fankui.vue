@@ -7,7 +7,7 @@
 			</div>
 			<div class="box">
 				<div style="width:100%;height:0.45rem;"></div>
-				<div class="fankiu">
+				<div class="fankiu" ref="tianjia">
 					<div v-for="(item,index) in res" class="content-food border-bottom" @click.stap="xinxiTo(item.id)">
 						<p>
 							<img class="border" :src="item.photo" alt="" />
@@ -36,6 +36,7 @@
 <script type="text/ecmascript">
 	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
+	import { Toast } from 'mint-ui';
 //	import fankuixinxi from "./FankuiXinxi.vue";
 	
 	
@@ -54,7 +55,6 @@
 				times:20177111129,
 				showFlag:false,
 				tucaoShow:true,
-				type:"1"
 			}
 		},
 		mounted(){
@@ -66,8 +66,25 @@
 			if(this.res==""){
 				this.$http.post(URL.path+'chatcomment/comment_list',this.token,{emulateJSON:true}).then(function(res){
 					this.res=res.body.data;
+					if(this.res.length=='0'){
+						Toast("亲，暂无反馈记录...")
+						return;
+					}
+					this.$nextTick(function() {
+						var img = this.$refs.tianjia.getElementsByTagName("img");
+						var num = img.length;
+						for(var i=0; i<num; i++){
+							if (img[i].clientWidth>img[i].clientHeight) {
+								img[i].style.height="100%"
+								img[i].style.width="auto"
+							}else{
+								img[i].style.width="100%"
+								img[i].style.height="auto"
+							}
+						}
+					})
 					console.log("取到评论反馈列表");
-					console.log(this.res);
+					console.log(res);
 				},function(res){
 				    console.log(res);
 				})

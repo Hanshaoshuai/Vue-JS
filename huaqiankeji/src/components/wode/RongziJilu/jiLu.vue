@@ -111,8 +111,8 @@
 			<router-view :token="token" :XiangmuID="XiangmuID"></router-view>
 			<!--<dingzengzuoshi ref="dingzengzuoshiShow"></dingzengzuoshi>-->
 			<!--<zhuanlaogu ref="zhuanlaoguShow"></zhuanlaogu>-->
-			<diaoyan ref="diaoyanShow"></diaoyan>
-			<shuangchuang ref="shuangchuangShow"></shuangchuang>
+			<!--<diaoyan ref="diaoyanShow"></diaoyan>-->
+			<!--<shuangchuang ref="shuangchuangShow"></shuangchuang>-->
 			<!--<zhiya ref="zhiyaShow"></zhiya>-->
 			<!--<zulin ref="zulinShow"></zulin>-->
 		</div>
@@ -125,8 +125,8 @@
 	import box from "../../box.vue";
 //	import dingzengzuoshi from "./DingzengZuoshi.vue";
 //	import zhuanlaogu from "./ZhuanlaoGu.vue";
-	import diaoyan from "./Diaoyan.vue";
-	import shuangchuang from "./ShuangChuang.vue";
+//	import diaoyan from "./Diaoyan.vue";
+//	import shuangchuang from "./ShuangChuang.vue";
 //	import zhiya from "./ZhiYa.vue";
 //	import zulin from "./ZuLin.vue";
 	
@@ -153,8 +153,8 @@
 					type2:"DingzengZuoshi",
 					type3:"ZhuanlaoGu1",
 					type4:"ZhiYa1",
-					type5:"ZuLin1"
-//					type5:"Diaoyan"
+					type5:"ZuLin1",
+					type7:"Diaoyan1"
 				},
 				XiangmuID:""
 			}
@@ -247,8 +247,8 @@
 			box,
 //			dingzengzuoshi,
 //			zhuanlaogu,
-			diaoyan,
-			shuangchuang,
+//			diaoyan,
+//			shuangchuang,
 //			zhiya,
 //			zulin
 		}

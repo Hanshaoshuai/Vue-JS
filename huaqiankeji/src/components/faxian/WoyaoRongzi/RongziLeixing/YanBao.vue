@@ -72,6 +72,7 @@
 </template>
 
 <script type="text/ecmascript">
+	import {URL} from '../../../../common/js/path';
 	import { Field } from 'mint-ui';
 	import { MessageBox } from 'mint-ui';
 	import { Toast } from 'mint-ui';
@@ -85,9 +86,9 @@
 	
 	export default {
 		props:{
-//			food:{
+			token:{
 //				type:Object
-//			}
+			}
 		},
 		data () {
 			return {
@@ -105,12 +106,16 @@
 				tucaoShow:true,
 			}
 		},
+		mounted(){
+			console.log(this.token)
+		},
 		methods:{
 			yijianHind(){
 				history.go(-1)
 //				this.tucaoShow=false;
 			},
 			shenqingGo(){
+				var thata=this;
 				if(this.texta==""){
 					Toast('请填写企业名称');
 					return;
@@ -120,7 +125,23 @@
 					return;
 				}
 				MessageBox.confirm('向平台申请研究报告支持').then(action => {
-				  	Toast('申请成功，客服将在24小时内联系您');
+					//研报申请接口
+					var farams={
+			      		token:this.token,
+						com_name:this.texta,			//公司全称	是	[string]		
+						com_short:this.textb,			//是	[string]
+//						:this.ID
+			      	}
+					this.$http.post(URL.path+'research/research_apply',farams,{emulateJSON:true}).then(function(res){
+						this.data=res.body.data;
+						if(res.body.returnCode=='200'){
+							Toast('申请成功，客服将在24小时内联系您');
+						}
+						console.log("申请成功");
+						console.log(res.body);
+					},function(res){
+					    console.log(res);
+					})
 				});
 			},
 			LiuchengGo(){

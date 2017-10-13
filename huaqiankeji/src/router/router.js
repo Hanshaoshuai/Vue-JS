@@ -1,4 +1,14 @@
 import Faxian from "../components/faxian/faxian.vue"
+	import Sousuo from "../components/SouSuo/SouSuo.vue"
+		import ziliao1 from "../components/SouSuo/ShenfenLeixing/GerenZiliao1.vue"
+		import ziliao3 from "../components/SouSuo/ShenfenLeixing/GerenZiliao3.vue"
+		import ziliao4 from "../components/SouSuo/ShenfenLeixing/GerenZiliao4.vue"
+		import ziliao7 from "../components/SouSuo/ShenfenLeixing/GerenZiliao7.vue"
+		import ziliao6 from "../components/SouSuo/ShenfenLeixing/GerenZiliao6.vue"
+		import ziliaoT1 from "../components/SouSuo/ShenfenLeixing/GerenZiliaoA.vue"
+		import ziliaoT2 from "../components/SouSuo/ShenfenLeixing/GerenZiliaoB.vue"
+		import ziliaoT3 from "../components/SouSuo/ShenfenLeixing/GerenZiliaoC.vue"
+		import SousuoLeixing from "../components/SouSuo/ShenfenLeixing/TypeH.vue"
 	import Yijian from "../components/faxian/yijian.vue"
 	import DingzengZhaiyao from "../components/faxian/DingzengZhaiyao.vue"
 	import GuquanZhaiyao from "../components/faxian/GuquanZhaiyao.vue"
@@ -38,17 +48,19 @@ import Wode from "../components/wode/wode.vue"
 		import ZhiYa1 from "../components/wode/RongziJilu/ZhiYa.vue"
 		import ZhuanlaoGu1 from "../components/wode/RongziJilu/ZhuanlaoGu.vue"
 		import ZuLin1 from "../components/wode/RongziJilu/ZuLin.vue"
+		import Diaoyan1 from "../components/wode/RongziJilu/Diaoyan.vue"
 	import Baoming from "../components/wode/WoyaoBaoming/Baoming.vue"
-	import ZiliaoA from "../components/wode/GerenZiliao/GerenZiliaoA.vue"
-	import ZiliaoB from "../components/wode/GerenZiliao/GerenZiliaoB.vue"
-	import ZiliaoC from "../components/wode/GerenZiliao/GerenZiliaoC.vue"
-	import ZiliaoD from "../components/wode/GerenZiliao/GerenZiliaoD.vue"
-	import ZiliaoE from "../components/wode/GerenZiliao/GerenZiliaoE.vue"
-	import ZiliaoF from "../components/wode/GerenZiliao/GerenZiliaoF.vue"
-	import ZiliaoG from "../components/wode/GerenZiliao/GerenZiliaoG.vue"
-	import ZiliaoH from "../components/wode/GerenZiliao/GerenZiliaoH.vue"
+	import Ziliao1 from "../components/wode/GerenZiliao/GerenZiliao1.vue"
+	import Ziliao3 from "../components/wode/GerenZiliao/GerenZiliao3.vue"
+	import Ziliao4 from "../components/wode/GerenZiliao/GerenZiliao4.vue"
+	import Ziliao7 from "../components/wode/GerenZiliao/GerenZiliao7.vue"
+	import Ziliao6 from "../components/wode/GerenZiliao/GerenZiliao6.vue"
+	import ZiliaoT1 from "../components/wode/GerenZiliao/GerenZiliaoA.vue"
+	import ZiliaoT2 from "../components/wode/GerenZiliao/GerenZiliaoB.vue"
+	import ZiliaoT3 from "../components/wode/GerenZiliao/GerenZiliaoC.vue"
 	import Gangwei from "../components/wode/GangweiBiangeng/Gangwei.vue"
 	import Shezhi from "../components/wode/Shezhi/Shezhi.vue"
+		import ShezhiMima from "../components/wode/Shezhi/shezhiMima.vue"
 	import RongziBeian from "../components/wode/RongziBeian/RongziBeian.vue"
 		import BeianXiangqing from "../components/wode/RongziBeian/BeianXiangqing.vue"
 		import XinzengQiye from "../components/wode/RongziBeian/XinzengQiye.vue"
@@ -74,14 +86,40 @@ import Xeiyi from "../components/faxian/WoyaoRongzi/PipeiTouziRen/QuedingXeiyi.v
 	import TouDi from "../components/faxian/WoyaoRongzi/PipeiTouziRen/TouDi.vue"
 	
 	
-import Sousuo from "../components/SouSuo/SouSuo.vue"
-	import SousuoLeixing from "../components/SouSuo/ShenfenLeixing/TypeH.vue"
 
 
 export default ({
   routes: [
     {path: '/faxian',component: Faxian,
     	children:[
+    		{path:'sousuo',component: Sousuo,
+		   		children:[
+					{
+						path:"ziliao1/:token",component:ziliao1
+					},
+					{
+						path:"ziliao3/:token",component:ziliao3
+					},
+					{
+						path:"ziliao4/:token",component:ziliao4
+					},
+					{
+						path:"ziliao7/:token",component:ziliao7
+					},
+					{
+						path:"ziliao6/:token",component:ziliao6
+					},
+					{
+						path:"ziliaoT1/:token",component:ziliaoT1
+					},
+					{
+						path:"ziliaoT2/:token",component:ziliaoT2
+					},
+					{
+						path:"ziliaoT3/:token",component:ziliaoT3
+					},
+		    	]
+		   	},
 			{
 				path:"WoyaoRongzi/:type",component:WoyaoRongzi,
 				children:[
@@ -178,80 +216,88 @@ export default ({
     {path: '/wode',component: Wode,
     	children:[
     		{
-					path:"jilu/:classid",component:Jilu,
-						children:[
-				    		{
-								path:"DingzengZuoshi",component:DingzengZuoshi
-							},
-							{
-								path:"ZhiYa1",component:ZhiYa1
-							},
-							{
-								path:"ZhuanlaoGu1",component:ZhuanlaoGu1
-							},
-							{
-								path:"ZuLin1",component:ZuLin1
-							},
-				    	]
-				},
-				{
-					path:"baoming/:classid",component:Baoming,
-						children:[
-							{
-								path:"PreIpo",component:PreIPO
-							},
-							{
-								path:"Ipo",component:IPO
-							}
-						]
-				},
-				{
-					path:"ziliaoA/:token",component:ZiliaoA
-				},
-				{
-					path:"ziliaoB/:token",component:ZiliaoB
-				},
-				{
-					path:"ziliaoC/:token",component:ZiliaoC
-				},
-				{
-					path:"ziliaoD/:token",component:ZiliaoD
-				},
-				{
-					path:"ziliaoE/:token",component:ZiliaoE
-				},
-				{
-					path:"ziliaoF/:token",component:ZiliaoF
-				},
-				{
-					path:"ziliaoG/:token",component:ZiliaoG
-				},
-				{
-					path:"ziliaoH/:token",component:ZiliaoH
-				},
-				{
-					path:"gangwei/:classid",component:Gangwei
-				},
-				{
-					path:"shezhi/:classid",component:Shezhi
-				},
-				{
-					path:"RongziBeian/:token",component:RongziBeian,
-						children:[
-				    		{
-								path:"BeianXiangqing/:type",component:BeianXiangqing
-							},
-							{
-								path:"XinzengQiye",component:XinzengQiye
-							},
-							{
-								path:"QiyeBeianXiang/:type",component:QiyeBeianXiang
-							},
-							{
-								path:"TianQiBeian",component:TianQiBeian
-							}
-				    	]
-				}
+				path:"jilu/:classid",component:Jilu,
+					children:[
+			    		{
+							path:"DingzengZuoshi",component:DingzengZuoshi
+						},
+						{
+							path:"ZhiYa1",component:ZhiYa1
+						},
+						{
+							path:"ZhuanlaoGu1",component:ZhuanlaoGu1
+						},
+						{
+							path:"ZuLin1",component:ZuLin1
+						},
+						{
+							path:"Diaoyan1",component:Diaoyan1
+						}
+			    	]
+			},
+			{
+				path:"baoming/:classid",component:Baoming,
+					children:[
+						{
+							path:"PreIpo",component:PreIPO
+						},
+						{
+							path:"Ipo",component:IPO
+						}
+					]
+			},
+			{
+				path:"Ziliao1/:token",component:Ziliao1
+			},
+			{
+				path:"Ziliao3/:token",component:Ziliao3
+			},
+			{
+				path:"Ziliao4/:token",component:Ziliao4
+			},
+			{
+				path:"Ziliao7/:token",component:Ziliao7
+			},
+			{
+				path:"Ziliao6/:token",component:Ziliao6
+			},
+			{
+				path:"ZiliaoT1/:token",component:ZiliaoT1
+			},
+			{
+				path:"ZiliaoT2/:token",component:ZiliaoT2
+			},
+			{
+				path:"ZiliaoT3/:token",component:ZiliaoT3
+			},
+			{
+				path:"gangwei/:classid",component:Gangwei
+			},
+			{
+				path:"shezhi/:token",component:Shezhi,
+					children:[
+			    		{
+							path:"ShezhiMima",component:ShezhiMima
+						}
+			    	]
+			},
+			{
+				path:"RongziBeian/:token",component:RongziBeian,
+					children:[
+			    		{
+							path:"BeianXiangqing/:type",component:BeianXiangqing
+						},
+						{
+							path:"XinzengQiye",component:XinzengQiye
+						},
+						{
+							path:"QiyeBeianXiang/:type",component:QiyeBeianXiang
+						},
+						{
+							path:"TianQiBeian",component:TianQiBeian
+						}
+			    	]
+			}
     	]
     },
     {path: '/zhuce',component: ZhuCe,
@@ -294,16 +340,8 @@ export default ({
 			}
     	]
    	},
-   	{path: '/sousuo/:token',component: Sousuo,
-   		children:[
-    		{
-				path:"SousuoLeixing",component:SousuoLeixing
-			}
-    	]
-   	},
-   	
    	{path: '/fankuixinxi/:token/:to_id/:type',component: FankuiXinxi},
-   	{path: '/Xeiyi/:token/:uID/:type/:XiangmuID',component: Xeiyi,
+   	{path: '/Xeiyi/:token/:uID/:type/:XiangmuID/:length',component: Xeiyi,
    		children:[
     		{
 				path:"TouDi",component:TouDi

@@ -58,7 +58,7 @@
 						</div>
 						<div class="xiaolv anli">
 							<ul>
-								<textarea placeholder="请填写资金出借方的公司全称" class="mint-field-core ziyuanChongzu" v-model="texta"></textarea>
+								<textarea placeholder="请填写地域要求如：长三角、珠三角、北京" class="mint-field-core ziyuanChongzu" v-model="texta"></textarea>
 							</ul>
 						</div>
 					</div>
@@ -156,7 +156,7 @@
 					interested:this.biaoQianid,				//感兴趣的行业多个用逗号分割	是	[string]		
 					single_project_max:this.numbere,			//单笔投资最大值	是	[string]		
 					single_project_min:this.numberf,			//单笔投资最小值	是	[string]		
-					fund_stage:this.biaoQianID1,			//投资阶段 15债转股 16债权 17 新三板 62PE 63 VC 64 天使投资 75PreIPO	是	[string]		
+					fund_stage:this.biaoQianid1,			//投资阶段 15债转股 16债权 17 新三板 62PE 63 VC 64 天使投资 75PreIPO	是	[string]		
 					territory:this.texta,			//地域要求	是	[string]		
 					investment_way:'',			//投资方式 1:定增 2:接老股 3:二级市场 4:融资租赁 5:股权质押 6:双创债	是	[string]		
 					revenue_min:'',			//最低营收要求	是	[string]		
@@ -184,6 +184,7 @@
 							Toast(res.body.msg);
 						}
 					},function(res){
+						Toast(res.status);
 					    console.log(res.status);
 					})
 				}else{

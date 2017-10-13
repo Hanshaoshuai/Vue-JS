@@ -283,7 +283,7 @@
 					this.$http.post(URL.path+'finance/create',datas,{emulateJSON:true}).then(function(res){
 						CanShu.XiangmuID=res.body.data
 						this.content=this.$refs.pipeiShow;
-						this.$refs.tishiShow.tishiBlock(CanShu);//CanShu是下级要传的参数
+						this.$refs.tishiShow.tishiBlock(CanShu,'pipei');//CanShu是下级要传的参数
 						console.log(res);
 					},function(res){
 					    console.log(res.status);

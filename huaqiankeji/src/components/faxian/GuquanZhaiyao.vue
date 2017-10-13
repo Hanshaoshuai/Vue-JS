@@ -1,87 +1,74 @@
 <template>
 	<transition name="fade">
 		<div v-show="showFlag" class="zhaiyao">
+			<div class="xiangmu-header"></div>
 			<div class="searchBox">
-				<div class="home-search" @click.stop="listnone">
-					<span class="fanhui-butten"><</span>
+				<div class="home-search">
+					<span class="fanhui-butten" @click.stop="listnone()"><img src="./XinxiangMu/img/back.png"/></span>
 					<span>项目摘要</span>
-					<span class="fanhui-right">分享</span>
+					<div class="fanhui-right">
+						<div @click.stop="yifouXiangmu()">
+							<font>分享</font>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="zhaiyao-list">
 				<div class="zhaiyao-content">
-					<div class="content-heder">
-						<span>天天</span>
-						<span class="text-center">54587561</span>
-						<span>定增</span>
-					</div>
-					<div class="zhuying">
-						<div class="zhuying_1">
-							<div class="ferst">主营业务</div>
-							<div class="last border">
-								
+					<div class="tishi-bottom">
+						<div class="border">
+							<ul>
+								<li class="border-bottom"></li>
+								<li class="tishi-center">
+									<div class="content-heder">
+										<span>{{data.com_name}}</span>
+										<span class="text-center">{{data.com_code}}</span>
+										<span>&nbsp;{{data.type}}</span>
+									</div>
+								</li>
+								<li class="border-bottom"></li>
+							</ul>
+							<div class="zhuying_1">
+								<div class="ferst"><span></span>主营业务</div>
+								<div class="last">
+									<p>{{data.lightspot}}资经理资经理资主营业经理主营业资经理资主营业经理资经理资经理</p>
+								</div>
+							</div>
+						</div>
+						<div class="zhuying_1 border">
+							<div class="ferst"><span></span>经营业绩</div>
+							<div class="last">
+								<p>上一财年：营收&nbsp;<span>{{data.last_year_revenue}}亿</span>&nbsp;&nbsp;净利润&nbsp;<span>{{data.last_year_profit}}万</span></p>
+								<p>今年预计：营收&nbsp;<span>{{data.predict_revenue}}亿</span>&nbsp;&nbsp;净利润&nbsp;<span>{{data.predict_profit}}万</span></p>
+							</div>
+						</div>
+						<div class="zhuying_1 border">
+							<div class="ferst"><span></span>融资计划</div>
+							<div class="last">
+								<p>融资总额：<span>{{data.total_finance}}万</span></p>
+								<p>投前估值：<span>{{data.appraisement}}万</span></p>
 							</div>
 						</div>
 					</div>
-					<div class="liangdian">
-						<div class="liangdian_1">
-							<div class="ferst">上一财年营收</div>
-							<div class="ferst">净利润</div>
-							<div class="last border">
-								
-							</div>
-						</div>
-					</div>
-					<div class="liangdian">
-						<div class="liangdian_1">
-							<div class="ferst">今年预计营收</div>
-							<div class="ferst">净利润</div>
-							<div class="last border">
-								
-							</div>
-						</div>
-					</div>
-					<div class="liangdian">
-						<div class="liangdian_1">
-							<div class="ferst">融资总额</div>
-							<div class="last border">
-								
-							</div>
-						</div>
-					</div>
-					<div class="yeji">
-						<div class="yeji_1">
-							近两年业绩
-						</div>
-						<div class="yeji_1">
-							净利润
-						</div>
-					</div>
-					<div class="zonge">
-						<div class="zonge_1">
-							融资总额
-						</div>
-					</div>
+					
+					
 					<div class="times border-topbottom">
-						<span class="times_1">领天</span>
+						<span class="text-center">领天</span>
 						<span class="text-center">1小时前</span>
 						<span>发布</span>
 					</div>
 				</div>
 			</div>
 			<div class="zhaiyao-food" @click.stop="butten"><span>{{ButtenName}}</span></div>
-			<!--<div class="tishi">
-				<div class="tishi-content">
-					
-				</div>
-			</div>-->
 		</div>
 	</transition>
 </template>
 
 <script type="text/ecmascript">
 //	import Vue from "vue";
+	import { Toast } from 'mint-ui';
 	import { MessageBox } from 'mint-ui';
+	import {URL} from '../../common/js/path';
 //	import BScroll from "better-scroll";
 //	import Vue from "vue";
 //	import {formatDate} from "../../common/js/date.js";
@@ -98,28 +85,57 @@
 		},
 		data () {
 			return {
+				data:'',
 				block:false,
 				ButtenName:"索要完整项目信息",
 				showFlag:true,
-				onlyContent:true
+				fankui:13,
+				genjin:50
+//				onlyContent:true
 			}
+		},
+		mounted(){
+			//项目详情
+			var data = {
+				token:this.$route.params.token,
+				item_id:this.$route.params.XiangmuID			//	项目id
+			}
+			console.log(this.data)
+			this.$http.post(URL.path+'finance/item_detail',data,{emulateJSON:true}).then(function(res){
+				this.data=res.body.data[0]
+				console.log(res);
+			},function(res){
+			    console.log(res.status);
+			})
 		},
 		methods:{
 			listnone(){
-				this.showFlag=false;
-			},
-			Guquanblock(){
-				this.showFlag=true;
+				history.go(-1)
+//				this.showFlag=false;
 			},
 			butten(){
 				MessageBox.confirm('您确定要联系对方并索要完整项目信息吗?').then(action => {
-					this.ButtenName="申请成功，等待反馈";
-					var tate=this;
-					setTimeout(function(){
-						tate.showFlag=false;
-						tate.ButtenName="索要完整项目信息";
-					},2000)
-				  console.log("ijfj")
+					//投资人索要项目
+					var data = {
+						token:this.$route.params.token,
+						item_id:this.$route.params.XiangmuID,			//	项目id
+						type:'1',
+						uid:this.data.uid
+					}
+					console.log(this.data)
+					this.$http.post(URL.path+'finance/demand_item',data,{emulateJSON:true}).then(function(res){
+						if(res.body.msg=="操作成功"){
+							Toast("申请成功，请您等待反馈")
+							this.ButtenName="申请成功，请您等待反馈"
+							setTimeout(function(){
+//								history.go(-1)
+								tate.ButtenName="索要完整项目信息";
+							},2000)
+							console.log(res);
+						}
+					},function(res){
+					    console.log(res.status);
+					})
 				});
 				this.block=true;
 			}
@@ -178,130 +194,157 @@
 	}
 	.zhaiyao{
 		position:fixed;
-		background:#FCE7E6;
+		background:#f5f4f9;
+		width:100%;
+		height:100%;
 		top:0;
 		left:0;
 		right:0;
 		bottom:0;
 		z-index:200;
+		.xiangmu-header{
+			position:absolute;
+			top:0;
+			left:0;
+			width:100%;
+			height:1.53rem;
+			background:#ff7a59;
+			z-index:300;
+		}
 		.searchBox {
 			position:fixed;
 			top:0;
 			left:0;
 		    width: 100%;
 		    height:0.45rem;
-		    background-color: #2ca8fe;
-		    z-index:900;
+		    background-color:#ff7a59;
+		    z-index:320;
 		    .home-search {
 			    height: 100%;
-			    padding-left:0.5rem;
 			    line-height:0.45rem;
-			    font-size: 0.16rem;
-			    .fanhui-butten{
+			    font-size: 0.2rem;
+			    text-align: center;
+			    color:#fff;
+				.fanhui-butten{
 					position:absolute;
-					top:0;
-					left:0.2rem;
+					height:100%;
+					padding-left:0.16rem;
+					display:inline-block;
+					top:0.04rem;
+					left:0;
+					z-index:330;
+					img{
+						height:0.2rem;
+					}
 				}
 			    .fanhui-right{
-			    	float:right;
-			    	margin-right:0.2rem;
+			    	position:absolute;
+			    	right:0.2rem;
+			    	top:0;
+			    	font-size: 0.16rem;
+			    	font{
+			    		display:inline-block;
+			    		/*width:0.2rem;*/
+			    		height:0.22rem;
+			    		/*background-image:url("./img/lajitong.png");*/
+			    		background-size:100% 100%;
+			    		margin-bottom:-0.05rem;
+			    	}
 			    }
 			}
 		}
+		.zhaiyao-list::-webkit-scrollbar{width:0px}
 		.zhaiyao-list{
-			width:100%;
+			position:absolute;
+			overflow-y:scroll;
+			width:94%;
+			padding-right:0.03rem;
+			margin:auto;
 			height:100%;
-			overflow-y:auto;
+			top:0;
+			left:0;
+			right:0;
+			z-index:310;
+			-webkit-overflow-scrolling:touch;/*解决苹果滑动流畅*/
 			.zhaiyao-content{
-				width: 100%;
+				width: 94%;
 				height:auto;
-				margin:0.55rem 0;
+				margin:0 auto;
+				margin-top:0.45rem;
 				padding-bottom:0.45rem;
-				.content-heder{
+				.tishi-bottom{
 					width:100%;
-					height:0.3rem;
-					background:#fff;
-					margin-top:0.12rem 0 ;
-					display:flex;
-					-webkit-box-pack:center;
-					justify-content:center;
-					-webkit-box-align:center;
-					align-items:center;
-					span{
-						display:inline-block;
-						font-weight:bold;
-						font-size:0.16rem;
+					/*height:0.36rem;*/
+					.border{
+						box-shadow: 0.01rem 0.02rem 0.04rem #dfdfdf;
 					}
-					.text-center{
-						padding:0 0.2rem;
+					ul{
+						height:0.3rem;
+						padding:0 2.5% 0 2.5%;
+						display:flex;
+						background:#fff;
+						li{
+							flex:1;
+							height:0.2rem;
+							&:first-child{
+								max-width:10%;
+							}
+							&:last-child{
+								max-width:10%;
+							}
+							&.tishi-center{
+								width:0.57rem;
+								line-height:0.36rem;
+								text-align:center;
+								font-size:0.2rem;
+								color:#323232;
+							}
+						}
 					}
-				}
-				.zhuying{
-					width:100%;
-					height:1.6rem;
-					background:#fff;
-					display:flex;
 					.zhuying_1{
-						flex:1;
-						padding:0.2rem;
+						width:100%;
+						font-size:0.16rem;
+						background:#fff;
+						margin-bottom:0.1rem;
+						span{
+							color:#2abdfc;
+						}
 						.ferst{
-							font-size:0.16rem;
-							padding-bottom:0.06rem;
+							display:flex;
+							height:0.38rem;
+							align-content: center;
+							align-items: center;
+							span{
+								display:inline-block;
+								position:relative;
+								width:0.08rem;
+								height:0.16rem;
+								background:#ff7a59;
+								margin-right:0.08rem;
+								margin-left:-0.008rem;
+								z-index:200;
+							}
 						}
 						.last{
-							padding:0.2rem;
-						}
-					}
-					
-				}
-				.liangdian{
-					width:100%;
-					height:1.4rem;
-					background:#fff;
-					display:flex;
-					.liangdian_1{
-						flex:1;
-						padding:0.2rem;
-						.ferst{
-							font-size:0.16rem;
-							padding-bottom:0.06rem;
-						}
-						.last{
-							padding:0.2rem;
+							flex:1;
+							color:#676767;
+							padding:0rem 0.14rem 0.18rem 0.14rem;
+							line-height:0.26rem;
+							/*box-shadow: 0 0.02rem 0.04rem #dedde1;*/
 						}
 					}
 				}
-				.yeji{
-					width:100%;
-					background:#fff;
-					display:flex;
-					.yeji_1{
-						flex:1;
-						padding:0.2rem;
-					}
-				}
-				.zonge{
-					width:100%;
-					background:#fff;
-					display:flex;
-					.zonge_1{
-						flex:1;
-						padding:0.2rem;
-					}
-				}
-				.times{
-					width:100%;
-					height:0.3rem;
-					background:#fff;
-					line-height:0.3rem;
-					.times_1{
-						display:inline-block;
-						padding-left:0.2rem;
-					}
-					.text-center{
-						display:inline-block;
-						padding:0 0.08rem;
-					}
+			}
+			.times{
+				width:100%;
+				height:0.33rem;
+				background:#fff;
+				line-height:0.34rem;
+				margin-top:0.08rem;
+				box-shadow:0 0.02rem 0.04rem #dedde1;
+				.text-center{
+					display:inline-block;
+					padding:0 0 0 0.14rem;
 				}
 			}
 		}
@@ -309,7 +352,7 @@
 			width:100%;
 			height:0.45rem;
 			color:#ffffff;
-			background:#007AFF;
+			background:#ff7a59;
 			position: fixed;
 			font-size:0.18rem;
 			display:flex;
@@ -319,6 +362,7 @@
 			justify-content:center;
 			-webkit-box-align:center;
 			align-items:center;
+			z-index:320;
 		}
 		.tishi{
 			width:50%;

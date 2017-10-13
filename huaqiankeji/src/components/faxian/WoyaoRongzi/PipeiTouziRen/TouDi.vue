@@ -84,7 +84,8 @@
 			this.XiangmuID=this.$route.params.XiangmuID;
 			this.type=this.$route.params.type;
 			this.uID=this.$route.params.uID;
-			
+			var x=this.uID.split(";").length;
+			console.log(x.length)
 			//发送项目	
 			var datas = {
 				token:this.token,		//	token	是	[string]		
@@ -97,7 +98,7 @@
 			this.$http.post(URL.path+'finance/send_item',datas,{emulateJSON:true}).then(function(res){
 				Indicator.close();
 				var data=res.data
-				Toast("您已成功投递"+this.uID.length+"位投资人请您注意查收投资人的反馈并及时回复");
+				Toast("您已成功投递 "+x+" 位投资人请您注意查收投资人的反馈并及时回复");
 				console.log(res);
 			},function(res){
 			    console.log(res.status);

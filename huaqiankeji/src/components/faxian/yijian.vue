@@ -21,13 +21,13 @@
 					<!--<div class="my-line bb mt20 mb20"><input type="tel" class="my-input feedback-tel" id="tel" placeholder="请留下准确的联系电话，便于我们及时联系"/></div>-->
 				</div>
 				<div class="yijian-img clearbox">
-					<div class="content-img border">
+					<!--<div class="content-img border">
 						<font>（最多添加2张）</font>
 						<div class="img-name">
 							<span>添加图片</span>
 						</div>
-					</div>
-					<fankuiimg ref="child"></fankuiimg>
+					</div>-->
+					<fankuiimg @to-parent="child" ref="child"></fankuiimg>
 				</div>
 			</div>
 			<div class="yijian-food">
@@ -41,6 +41,7 @@
 	import {URL} from '../../common/js/path';
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 	import fankuiimg from "../FankuiTupian.vue";
 //	import BScroll from "better-scroll";
 //	import Vue from "vue";
@@ -63,17 +64,34 @@
 				times:20177111129,
 				showFlag:false,
 				tucaoShow:true,
+				formData:'',
+				formData1:''
 			}
 		},
 		mounted(){
+			this.formData = new FormData();			//把要传的内容和参数放到   formdata中
 			console.log(this.$route.params.token)
+			
 		},
 		methods:{
 			yijianHind(){
 				history.go(-1)
 //				this.tucaoShow=false;
 			},
+			child(tuPian){
+				this.formData1="";
+				this.formData1=tuPian;
+				console.log(tuPian)
+				console.log(this.formData)
+			},
 			tijiao(){
+				var length=this.formData1.length;
+				for(var i=0; i<length; i++){
+					if(this.formData1[i]!=""){
+						this.formData.append('upload_file'+i,this.formData1[i]);
+					}
+				}
+//				this.formData.append('terminalNo', 3);
 				var phone=/^1[34578]\d{9}$/;
 				if(!phone.test(this.tel)) {
 					Toast('输入手机号格式有误');
@@ -87,6 +105,7 @@
 					Toast("请填写您要给出的建议内容！")
 					return;
 				}else{
+					Indicator.open({spinnerType: 'fading-circle'});
 					var data={
 						token:this.$route.params.token,
 						content: this.introduction,
@@ -94,15 +113,31 @@
 						terminalNo: '3'
 					}
 //					反馈数接口
-					this.$http.post(URL.path+'other/feedback',data,{emulateJSON:true}).then(function(res){
-						console.log(res);
-						if(res.returnCode=='200'){
-							Toast("提交成功，感谢您的宝贵意见")
-						}
-					},function(res){
-					    console.log(res);
-					})
+//					this.$http.post(URL.path+'other/feedback',data,{emulateJSON:true}).then(function(res){
+//						console.log(res);
+//						Indicator.close();
+//						if(res.body.returnCode=='200'){
+//							Toast("提交成功，感谢您的支持")
+//						}
+//					},function(res){
+//						Indicator.close();
+//						Toast("系统繁忙请稍后再试！")
+//					    console.log(res);
+//					})
 				}
+				this.$http.post(URL.path1+'upload/photos',this.formData,{emulateJSON:true}).then(function(res){
+                    console.log(res);
+                    Indicator.close();
+					if(res.body.returnCode=='200'){
+						Toast("上传成功");
+					}else{
+						Toast("上传失败请重新上传");
+					}
+                },function(res){
+                	Indicator.close();
+                	Toast("系统正忙请稍后！");
+                    console.log(res);
+                });
 			}
 //			show(){
 ////				dom更新后在执行使用$refs

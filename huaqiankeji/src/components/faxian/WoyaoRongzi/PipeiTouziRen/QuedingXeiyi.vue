@@ -49,6 +49,7 @@
 <script type="text/ecmascript">
 	import {URL} from '../../../../common/js/path';
 	import { MessageBox } from 'mint-ui';
+	import { Toast } from 'mint-ui';
 //	import BScroll from "better-scroll";
 //	import Vue from "vue";
 //	import {formatDate} from "../../common/js/date.js";
@@ -65,15 +66,28 @@
 		},
 		data () {
 			return {
+				data:"",
 				block:false,
 				ButtenName:"88",
 				showFlag:true,
-				onlyContent:true
+				onlyContent:true,
+				go:0
 			}
 		},
 		mounted(){
 			console.log(this.$route.params.token)
 			console.log(this.$route.params.XiangmuID)
+			console.log(this.$route.params.uID)
+//			获取收费协议
+			var params={
+	    		token:this.$route.params.token,
+	    	}
+			this.$http.post(URL.path+'finance/get_agreement',params,{emulateJSON:true}).then(function(res){
+				this.data=res.body.data;
+				console.log(res);
+			},function(res){
+			    console.log(res);
+			})
 		},
 		methods:{
 			listnone(){
@@ -84,7 +98,25 @@
 				
 			},
 			TongyiGo(){
-				window.location.href="#/Xeiyi/"+this.$route.params.token+"/"+this.$route.params.uID+'/'+this.$route.params.type+'/'+this.$route.params.XiangmuID+"/TouDi";
+				if(this.go==0){
+	//				同意收费协议
+					var params={
+			    		token:this.$route.params.token,
+						tiem_id:this.$route.params.XiangmuID,			//项目id	是	[string]		
+						operate:"1"			//是否同意收费协议 1:同意 2:拒绝	是	[string]	
+			    	}
+					this.$http.post(URL.path+'finance/get_agreement',params,{emulateJSON:true}).then(function(res){
+						this.data=res.body.data;
+						console.log(res);
+						this.go+=1;
+						window.location.href="#/Xeiyi/"+this.$route.params.token+"/"+this.$route.params.uID+'/'+this.$route.params.type+'/'+this.$route.params.XiangmuID+'/0'+"/TouDi";
+					},function(res){
+					    console.log(res);
+					})
+				}else{
+					Toast("亲，您已向对方投递过了，再看看其它的项目吧。")
+				}
+				
 //				this.showFlag=true;
 			},
 			ShaohouGo(){
@@ -101,7 +133,18 @@
 				
 			},
 			FangqiGo(){
-				
+//				不同意收费协议
+				var params={
+		    		token:this.$route.params.token,
+					tiem_id:this.$route.params.XiangmuID,			//项目id	是	[string]		
+					operate:"2"			//是否同意收费协议 1:同意 2:拒绝	是	[string]	
+		    	}
+				this.$http.post(URL.path+'finance/get_agreement',params,{emulateJSON:true}).then(function(res){
+					this.data=res.body.data;
+					console.log(res);
+				},function(res){
+				    console.log(res);
+				})
 			}
 //			show(){
 ////				dom更新后在执行使用$refs
@@ -163,7 +206,7 @@
 		left:0;
 		right:0;
 		bottom:0;
-		z-index:2800;
+		z-index:200;
 		.xiangmu-header{
 			position:fixed;
 			top:0;
