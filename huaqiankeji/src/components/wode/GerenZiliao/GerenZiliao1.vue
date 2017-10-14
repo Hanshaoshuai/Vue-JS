@@ -22,12 +22,6 @@
 									<li>
 										<input readOnly="true" v-model="numbera" :placeholder="numbera" type="text" class="mint-field-core">
 									</li>
-									<!--<li>
-										<input readOnly="true" v-model="numberb" placeholder="食品" type="text" class="mint-field-core">
-									</li>
-									<li>
-										<input readOnly="true" v-model="numberc" placeholder="食品" type="text" class="mint-field-core">
-									</li>-->
 								</ul>
 								<div v-if="BianJi==1" class="zhuying_1 liangdian_1">
 									<ul class="last" ref="biaoqian">
@@ -60,11 +54,11 @@
 						<div class="shouru">
 							<div v-if="BianJi3==0">
 								<div class="anli-list">
-									<textarea readOnly="true" placeholder="营收收入不低于2亿元" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+									<textarea readOnly="true" :placeholder="numberTod" class="mint-field-core ziyuanChongzu"></textarea>
 										
 								</div>
 								<div class="anli-list border-bottom">
-									<textarea readOnly="true" placeholder="净利润不低于2000万元" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+									<textarea readOnly="true" :placeholder="numberToc" class="mint-field-core ziyuanChongzu"></textarea>
 								</div>
 							</div>
 							<ul v-if="BianJi3==1">
@@ -118,8 +112,10 @@
 				numberb:"",
 				numberc:"",
 				textc:"",
-				fankui:"45",
-				genjin:"458",
+				textd:"",
+				texte:"",
+				numberTod:"",
+				numberToc:"",
 				introductionA:"",
 				introductionB:"",
 				times:20177111129,
@@ -141,6 +137,14 @@
 	    	}
 			this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
 				this.data=res.body.data;
+				
+				this.numberb=this.data.info.profit_min;//营业收入不低于    将要改变的数据
+				this.numberc=this.data.info.revenue_min;//净利润不低于	将要改变的数据
+				this.numberTod='营收收入不低于'+this.data.info.profit_min+'亿元';  //要插到页面的
+				this.numberToc='净利润不低于'+this.data.info.revenue_min+'万元';				//要插到页面的地区
+				this.textd=this.data.info.profit_min;//原来的数据
+				this.texte=this.data.info.revenue_min;//原来的数据
+				
 				var SuozaiHangye=this.data.info.industry
 				var x=[];
 				var y=[];
@@ -169,7 +173,45 @@
 				history.go(-1)
 			},
 			baocun(){
-				alert('保存成功')
+				console.log(this.oDbiaoQianID)
+				console.log(this.biaoQianid)
+				var nuwID;
+				var nuwID1;
+				var max_nuwID2;
+				var min_nuwID2;
+				if(this.BianJi=='0'){		//原来数据
+					nuwID=this.oDbiaoQianID;
+				}else{						//改后数据
+					nuwID=this.biaoQianid;
+				}
+				if(this.BianJi3=='0'){		//原来数据
+					max_nuwID2=this.textd;
+					min_nuwID2=this.texte;
+				}else{						//改后数据
+					max_nuwID2=this.numberb;
+					min_nuwID2=this.numberc;
+				}
+				var datas={
+					id:localStorage.getItem("userID"),//	用户id	是	[string]			
+					ctype:'1',					//	类型 1企业 4研究机构	是	[string]		
+					industry:nuwID,				//	所属行业标签，多个用 逗号分割	是	[string]
+//					revenue_min:max_nuwID2,			//最低营收要求	是	[string]		
+//					profit_min:min_nuwID2,			//最低净利润要求	是	[string]
+				}
+				console.log(datas)
+				this.$http.post(URL.path+'regist/com_regist2',datas,{emulateJSON:true}).then(function(res){
+					if(res.body.returnCode=='200'){
+						Toast('您已保存成功');
+						console.log(res.body)
+//						window.location.href="#/faxian";
+					}else{
+//						window.location.href="#/denglu"
+						Toast(res.body.msg);
+					}
+				},function(res){
+					Toast(res.status);
+				    console.log(res.status);
+				})
 			},
 			zuoshiBlock(){
 				this.tucaoShow=true;
@@ -188,6 +230,10 @@
 			},
 			bianji(id){
 				if(id==1){
+					this.y=1;
+					this.biaoQianID=[];
+					this.biaoQianid='';
+					console.log(this.biaoQianID)
 					if(this.BianJi==1){
 						this.BianJi=0;
 						this.$refs.bianji.innerText="编辑";
@@ -909,12 +955,9 @@
 						font{
 							color:#959595;
 						}
-						.shouru{
-							padding:0 0.1rem;
-							span{
-								display:inline-block;
-								width:1.13rem;
-							}
+						span{
+							display:inline-block;
+							width:1.13rem;
 						}
 						.mint-field-core::-webkit-input-placeholder{
 							color: #d2d2d2;

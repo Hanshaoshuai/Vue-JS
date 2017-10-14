@@ -20,14 +20,8 @@
 								<span ref="bianji" class="lasst" @click.stap="bianji('1')">编辑</span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
-										<input readOnly="true" v-model="numbera" placeholder="食品、食品、食品" type="text" class="mint-field-core">
+										<input readOnly="true" :placeholder="numbera" type="text" class="mint-field-core">
 									</li>
-									<!--<li>
-										<input readOnly="true" v-model="numberb" placeholder="食品" type="text" class="mint-field-core">
-									</li>
-									<li>
-										<input readOnly="true" v-model="numberc" placeholder="食品" type="text" class="mint-field-core">
-									</li>-->
 								</ul>
 								<div v-if="BianJi==1" class="zhuying_1 liangdian_1">
 									<ul class="last" ref="biaoqian">
@@ -41,18 +35,25 @@
 				<div style="height:0.06rem;width:100%;background:#f5f4f9"></div>
 				<div ref="yitouAnli" class="sousuo-content border-topbottom">
 					<div class="content-header">
-						<span>已投案例</span><span ref="text5" class="lasst" @click.stap="bianji5('5')">编辑</span>
+						<span>已投案例</span>
+						<font>（仅自己可见）</font>
+						<span v-if="bianList" ref="text5" class="lasst" @click.stap="bianji5('5')">编辑</span>
+						<span v-if="!bianList" ref='text5' class="lasst" @click.stap="baocunList()">保存</span>
 					</div>
 					<div class="xiaolv anli">
-						<div class="anli-list border-top">
+						<div v-for="(item,index) in YitouList" class="anli-list border-top">
 							<span>
-								<input readOnly="true" v-model="numberi" placeholder="天立泰" type="text" class="mint-field-core">
+								{{item.com_short}}
+								<!--<input readOnly="true" v-model="numberi" placeholder="天立泰" type="text" class="mint-field-core">-->
 							</span>
 							<span class="center">
-								<input readOnly="true" v-model="numberj" placeholder="58658 万" type="text" class="mint-field-core">
+								<input v-if="item.investment" readOnly="true" :placeholder="item.investment" type="text" class="mint-field-core">
+								<input @blur="Blurs(item.item_id,item.id,index)" :class="Wancent" v-if="!item.investment" readOnly="true" :placeholder="item.investment" type="text" class="mint-field-core">
+								<font>万</font>
 							</span>
 							<span>
-								<input readOnly="true" v-model="numberk" placeholder="反徐小平" type="text" class="mint-field-core">
+								{{item.create_time}}
+								<!--<input readOnly="true" v-model="numberk" placeholder="反徐小平" type="text" class="mint-field-core">-->
 							</span>
 						</div>
 					</div>
@@ -114,6 +115,7 @@
 		},
 		data () {
 			return {
+				data:"",
 				y:1,			//判断是否选择标签；》=1为选择；
 				BianJi:'0',
 				BianJi2:"0",
@@ -135,9 +137,11 @@
 				numberToa:"",
 				numberTob:"",
 				numberToc:"",
+				numberTod:"",
 				texta:'',
 				textc:"",
 				textd:"",
+				texte:'',
 				fankui:"45",
 				genjin:"458",
 				introductionA:"",
@@ -151,7 +155,14 @@
 				biaoQianid:'',		//储存标签id字符串
 				biaoQianID1:[],		//储存标签id
 				biaoQianID2:[],		//储存标签id
-				scrollTop:""
+				scrollTop:"",
+				
+				YitouList:'',		//已投案例接口   已投项目列表	数据
+				com_short:'',		//已投案例接口   已投项目列表	公司简称
+				create_time:'',		//已投案例接口   已投项目列表	日期
+				Wancent:"",
+				bianList:true,
+				textInputs:""		//已投案input  DOM;
 			}
 		},
 		mounted(){
@@ -162,13 +173,34 @@
 	    		terminalNo:3
 	    	}
 			this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
-				this.XiangmuShu=res.body.data.new_item;
-//				this.XiangmuShu=res;
+				this.data=res.body.data;
 				console.log("个人资料");
 				console.log(res);
+				
+				this.numberb=this.data.info.profit_min;//营业收入不低于    将要改变的数据
+				this.numberc=this.data.info.revenue_min;//净利润不低于	将要改变的数据
+				this.numberTod='营收收入不低于'+this.data.info.profit_min+'亿元';  //要插到页面的
+				this.numberToc='净利润不低于'+this.data.info.revenue_min+'万元';				//要插到页面的地区
+				this.textd=this.data.info.profit_min;//原来的数据
+				this.texte=this.data.info.revenue_min;//原来的数据
+				
+				var SuozaiHangye=this.data.info.interested
+				var x=[];
+				var y=[];
+				for(var item in SuozaiHangye){
+//					console.log(SuozaiHangye[item].title)
+//					console.log(SuozaiHangye[item].id)
+					x.push(SuozaiHangye[item].id);
+					y.push(SuozaiHangye[item].title);
+				}
+				this.oDbiaoQianID=x.join(',');
+				this.numbera=y.join('、');
+				console.log(this.oDbiaoQianID);
 			},function(res){
 			    console.log(res);
 			})
+			//已投案例接口   已投项目列表		调用
+			this.YitouLiebiao();
 //			this.$refs.box.addEventListener('scroll', this.handleScroll)	//做一个scroll监听
 		},
 		methods:{
@@ -181,7 +213,62 @@
 				history.go(-1)
 			},
 			baocun(){
-				alert('保存成功')
+				console.log(this.oDbiaoQianID)
+				console.log(this.biaoQianid)
+				var nuwID;
+				var nuwID1;
+				var max_nuwID2;
+				var min_nuwID2;
+				if(this.BianJi=='0'){		//原来数据
+					nuwID=this.oDbiaoQianID;
+				}else{						//改后数据
+					nuwID=this.biaoQianid;
+				}
+				if(this.BianJi3=='0'){		//原来数据
+					max_nuwID2=this.textd;
+					min_nuwID2=this.texte;
+				}else{						//改后数据
+					max_nuwID2=this.numberb;
+					min_nuwID2=this.numberc;
+				}
+				var datas={
+					id:localStorage.getItem("userID"),//	用户id	是	[string]			
+					ctype:'4',					//	类型 1企业 4研究机构	是	[string]		
+					industry:nuwID,				//	所属行业标签，多个用 逗号分割	是	[string]
+//					revenue_min:max_nuwID2,			//最低营收要求	是	[string]		
+//					profit_min:min_nuwID2,			//最低净利润要求	是	[string]
+				}
+				console.log(datas)
+				this.$http.post(URL.path+'regist/com_regist2',datas,{emulateJSON:true}).then(function(res){
+					if(res.body.returnCode=='200'){
+						Toast('您已保存成功');
+						console.log(res.body)
+//						window.location.href="#/faxian";
+					}else{
+//						window.location.href="#/denglu"
+						Toast(res.body.msg);
+					}
+				},function(res){
+					Toast(res.status);
+				    console.log(res.status);
+				})
+			},
+			baocunList(){
+				this.Wancent="";
+				this.bianList=true;
+//				var textInputs = this.$refs.yitouAnli.getElementsByClassName("mint-field-core");
+				var length=this.textInputs.length;
+				for(var i=0; i<length; i++){
+					if(this.textInputs[i].getAttribute("placeholder")==""){
+						if(this.textInputs[i].value==""){
+							this.textInputs[i].removeAttribute("readOnly");		//点击编辑   input去除属性readOnly即可编辑
+							this.Wancent="Wancent";
+						}else{
+							this.textInputs[i].setAttribute("readOnly","readOnly")		//点击编辑   input去除属性readOnly即可编辑
+//							Toast("亲，您的数据已提交，不可重复编辑如有问题请联系客服")
+						}
+					}
+				}
 			},
 			zuoshiBlock(){
 				this.tucaoShow=true;
@@ -198,8 +285,26 @@
 			baoMing(){
 				this.$refs.youhuiShow.YouhuiBlock();
 			},
+			YitouLiebiao(){
+//				已投案例接口   已投项目列表
+				var anliParam={
+		    		token:this.userContent.token,
+		    		type:'1'			//1:股权 2：债权 3：其他	是	[string]
+		    	}
+				this.$http.post(URL.path+'finance/get_deliver_list',anliParam,{emulateJSON:true}).then(function(res){
+					console.log(res);
+					if(res.body.returnCode=='200'){
+						this.YitouList=res.body.data;
+					}
+				},function(res){
+				    console.log(res);
+				})
+			},
 			bianji(id){
 				if(id==1){
+					this.y=1;
+					this.biaoQianID=[];
+					this.biaoQianid='';
 					if(this.BianJi==1){
 						this.BianJi=0;
 						this.$refs.bianji.innerText="编辑";
@@ -299,17 +404,30 @@
 			},
 			bianji5(id){
 				this.handleScroll();
-				if(this.$refs.text5.innerText=="编辑"){
-					this.$refs.text5.innerText="取消";
-					var textInputs = this.$refs.yitouAnli.getElementsByClassName("mint-field-core");
-					textInputs[0].removeAttribute("readOnly")		//点击编辑   input去除属性readOnly即可编辑
-					textInputs[0].focus();		//点击编辑   input获取焦点
-					console.log();
-				}else{
-					this.$refs.text5.innerText="编辑";
-					var textInputs = this.$refs.yitouAnli.getElementsByClassName("mint-field-core");
-					textInputs[0].setAttribute("readOnly","readOnly")		//点击编辑   input去除属性readOnly即可编辑
-					textInputs[0].focus();		//点击编辑   input获取焦点
+				if(this.bianList==true){
+					this.bianList=false;
+					this.textInputs = this.$refs.yitouAnli.getElementsByClassName("mint-field-core");
+					var length=this.textInputs.length;
+					for(var i=0; i<length; i++){
+						if(this.textInputs[i].getAttribute("placeholder")==""){
+							if(i==0){
+								Toast("亲，提交时确保数据正确再保持，慎重！");
+							}
+							if(this.textInputs[i].value==""){
+								this.textInputs[i].removeAttribute("readOnly");		//点击编辑   input去除属性readOnly即可编辑
+								this.Wancent="Wancent";
+							}else{
+								this.textInputs[i].setAttribute("readOnly","readOnly")		//点击编辑   input去除属性readOnly即可编辑
+							}
+						}else{
+							
+						}
+					}
+					if(i==0){
+						Toast("亲，暂无可编辑数据！");
+						this.bianList=true;
+					}
+//						textInputs[0].focus();		//点击编辑   input获取焦点
 					console.log();
 				}
 			},
@@ -744,6 +862,10 @@
 							color:#ff7a59;
 						}
 					}
+					font{
+						font-size:0.14rem;
+						color:#787777;
+					}
 				}
 				.xiaolv{
 					width:100%;
@@ -815,7 +937,7 @@
 						}
 						.mint-field-core{
 							width:100%;
-							height:100%;
+							/*height:100%;*/
 							text-align:left;
 							background:#fff;
 							border-radius:0;
@@ -826,7 +948,13 @@
 							  color:#44bfff;
 							}
 							.mint-field-core{
+								width:50%;
 								color:#44bfff;
+								padding-left:0.06rem;
+								box-sizing:border-box;
+							}
+							.Wancent{
+								border:0.008rem solid #7d7d7d;
 							}
 						}
 					}

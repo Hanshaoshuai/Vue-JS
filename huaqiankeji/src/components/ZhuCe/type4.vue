@@ -99,8 +99,9 @@
 				var datas={
 					id:this.XiajiCanshu.id,//	用户id	是	[string]			
 					ctype:this.XiajiCanshu.type,//	类型 1企业 4研究机构	是	[string]		
-					industry:this.biaoQianID1,//	所属行业标签，多个用 逗号分割	是	[string]		
+					industry:this.biaoQianID1,	//	所属行业标签，多个用 逗号分割	是	[string]
 				}
+				console.log(datas)
 				if(this.y>=1){
 					window.location.href="#/faxian";
 				}else{
@@ -134,7 +135,7 @@
 					for(var z=0; z<this.y; z++){
 						if(this.biaoQianID[z]==typeLi[index].id){
 							this.biaoQianID.splice(z,1);
-							console.log(this.biaoQianID)
+//							console.log(this.biaoQianID)
 							this.biaoQianID1=this.biaoQianID.join()
 							console.log(this.biaoQianID1)
 							this.y-=1
@@ -150,7 +151,7 @@
 							break;
 						}
 					}
-					console.log(this.biaoQianID)
+//					console.log(this.biaoQianID)
 					this.biaoQianID1=this.biaoQianID.join()
 					console.log(this.biaoQianID1)
 				}

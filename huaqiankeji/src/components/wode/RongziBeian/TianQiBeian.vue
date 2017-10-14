@@ -10,6 +10,7 @@
 				<div class="logo">
 					<ul>
 						<li @click.stap="shangChuan()">
+							<mingpian @to-parent="child" class="mingpians" ref="mingpianID"></mingpian>
 							<img :src="imgUrl" alt="" />
 						</li>
 						<span>上传营业执照</span>
@@ -50,7 +51,7 @@
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
 	import box from "../../box.vue";
-	
+	import mingpian from "../../ShangchuanMingpian.vue";
 	
 	export default {
 		props:{
@@ -96,6 +97,10 @@
 			yijianHind(){
 				history.go(-1)
 //				this.tucaoShow=false;
+			},
+			child(MingpianImg){
+				this.imgUrl=MingpianImg
+				console.log(MingpianImg)
 			},
 			BeiAn(){
 				var CanShu={				//给下级要传的参数
@@ -144,8 +149,7 @@
 				})
 			},
 			shangChuan(){
-				this.imgUrl="jdshfsgkjlgjkj"
-				alert("上传")
+				
 			},
 			xinxiTo(){
 				this.$refs.xinxiShow.xinxiBlock();
@@ -192,6 +196,7 @@
 		},
 		components:{
 			box,
+			mingpian
 		}
 	}
 </script>
@@ -257,6 +262,7 @@
 				align-items:center;
 				text-align:center;
 				ul>li{
+					position:relative;
 					border:1px solid #f5f4f9;
 					width:1.25rem;
 					height:1.25rem;
@@ -269,6 +275,12 @@
 					text-align:center;
 					img{
 						width:100%;
+					}
+					.mingpians{
+						position:absolute;
+						top:0.25rem;
+						left:0;
+						opacity:0;
 					}
 				}
 				span{

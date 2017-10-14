@@ -14,7 +14,7 @@
 				<!--<div style="width:100%;height:0.5rem;"></div>-->
 	    		<!--mt-loadmore中添加:auto-fill="autoFill"属性  不够高是会自动撑开屏幕-->
 	      		<mt-loadmore :top-method="loadTop" @translate-change="translateChange" @top-status-change="handleTopChange" :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :bottom-all-loaded="allLoaded" :top-distance=40 :bottom-distance=40 ref="loadmore">
-		        <ul class="page-loadmore-list">
+		        <ul ref="boxcontent" class="page-loadmore-list">
 				<!--<div class="FadeContent">-->
 					<div class="banner">
 						<img src="./img/bg.jpg"/>
@@ -111,115 +111,16 @@
 							<span class="text">你可以联系的其他正在融资项目</span>
 						</div>
 					</div>
-					<div class="ContentText " @click.stop="contblock()">
-						<div class="TextMame">
-							<div class="margin">
-								<span class="texts">天立泰</span>
-								<span class="texts">定增</span>
-							</div>
-							<div class="TypeList">
-								<span class="texts">天立泰</span>
-								<span class="texts">定增万</span>
-								<span class="texts">天立泰</span>
-								<span class="texts">定增万</span>
-								<span class="texts">天立泰</span>
-								<span class="texts">定增万</span>
-								<span class="texts">天立泰</span>
-								<span class="texts">定增万</span>
-							</div>
-						</div>
-						<div class="BottomText">
-							<span class="texts">他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以联系的</span>
-						</div>
-						<div class="ContentTime border-top" @click.stop="Guquanzhaiyao()">
-							<div class="tishi-left">
-								<span>企业</span>
-								<span>{{}}小时前</span>&nbsp;发布
-							</div>
-							<div class="tishi-right">
-								<span>{{}}反馈</span>
-								<span>{{}}跟进</span>
-							</div>
-							<li></li>
-							<ol class="ol"></ol>
-						</div>
-					</div>
-					<div class="ContentText " @click.stop="contblock()">
-						<div class="TextMame">
-							<div class="margin">
-								<span class="texts">天立泰</span>
-								<span class="texts">定增</span>
-							</div>
-							<div class="TypeList">
-								<span class="texts">天立泰</span>
-								<span class="texts">定增万</span>
-								<span class="texts">天立泰</span>
-								<span class="texts">定增万</span>
-								<span class="texts">天立泰</span>
-								<span class="texts">定增万</span>
-								<span class="texts">天立泰</span>
-								<span class="texts">定增万</span>
-							</div>
-						</div>
-						<div class="BottomText">
-							<span class="texts">他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以联系的</span>
-						</div>
-						<div class="ContentTime border-top" @click.stop="Guquanzhaiyao()">
-							<div class="tishi-left">
-								<span>企业</span>
-								<span>{{}}小时前</span>&nbsp;发布
-							</div>
-							<div class="tishi-right">
-								<span>{{}}反馈</span>
-								<span>{{}}跟进</span>
-							</div>
-						</div>
-					</div>
-					
-					
-<!--意见反馈-->		<div class="tucao" @click.stop="yijianFankui()">
+<!--意见反馈-->		
+					<!--<div class="tucao" @click.stop="yijianFankui()">
 						<img src="./img/hongbao.png" alt="" />
-					</div>
+					</div>-->
 					
-					
-					<div class="ContentText " @click.stop="contblock()">
-						<div class="TextMame">
-							<div class="margin">
-								<span class="texts">天立泰</span>
-								<span class="texts">定增</span>
-							</div>
-							<div class="TypeList">
-								<span class="texts">天立泰</span>
-								<span class="texts">定增万</span>
-								<span class="texts">天立泰</span>
-								<span class="texts">定增万</span>
-								<span class="texts">天立泰</span>
-								<span class="texts">定增万</span>
-								<span class="texts">天立泰</span>
-								<span class="texts">定增万</span>
-							</div>
-						</div>
-						<div class="BottomText">
-							<span class="texts">他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以联系的</span>
-						</div>
-						<div class="ContentTime border-top" @click.stop="Guquanzhaiyao()">
-							<div class="tishi-left">
-								<span>企业</span>
-								<span>{{}}小时前</span>&nbsp;发布
-							</div>
-							<div class="tishi-right">
-								<span>{{}}反馈</span>
-								<span>{{}}跟进</span>
-							</div>
-							<li></li>
-							<ol class="ol"></ol>
-						</div>
-					</div>
 <!--循环遍历data-->	<li v-for="item in list" class="page-loadmore-listitem">
-						<div v-for="(item,index) in data" class="ContentText " @click.stop="contblock(item.id,item.type)">
+						<div v-for="(item,index) in data" class="Content" >
+						<div  class="ContentText" :id="index" @click.stop="contblock(item.id,item.type)">
 							<div class="TextMame">
 								<div class="margin">		<!--类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报 6：公司调研-->
-									<span class="texts">{{item.com_name}}</span>
 									<span v-if="item.type==1" class="texts">定增{{item.type}}</span>
 									<span v-if="item.type==2" class="texts">做市{{item.type}}</span>
 									<span v-if="item.type==3" class="texts">转老股{{item.type}}</span>
@@ -227,16 +128,10 @@
 									<span v-if="item.type==5" class="texts">融资租赁{{item.type}}</span>
 									<span v-if="item.type==6" class="texts">研报支持{{item.type}}</span>
 									<span v-if="item.type==7" class="texts">公司调研{{item.type}}</span>
+									<span class="texts">{{item.com_name}}</span>
 								</div>
 								<div class="TypeList">
 									<span v-for="(name,index) in item.industry" class="texts">{{name.title}}</span>
-									<!--<span class="texts">定增万</span>
-									<span class="texts">天立泰</span>
-									<span class="texts">定增万</span>
-									<span class="texts">天立泰</span>
-									<span class="texts">定增万</span>
-									<span class="texts">天立泰</span>
-									<span class="texts">定增万</span>-->
 								</div>
 							</div>
 							<div class="BottomText">
@@ -251,8 +146,9 @@
 									<span>{{}}反馈</span>
 									<span>{{}}跟进</span>
 								</div>
-								<li></li>
-								<ol class="ol"></ol>
+							</div>
+							<li class="li"></li>
+							<ol class="ol"></ol>
 							</div>
 						</div>
 					</li>
@@ -288,11 +184,6 @@
 		      	<div style="width:100%;height:0.6rem;"></div>
 		    </div>
 			<!--</div>-->
-			<!--<xiangmu ref="xiangmuShow" :setscrollTop="scrollTop" :token="token"></xiangmu>-->
-			<!--<fankui ref="fankuiShow"></fankui>-->
-			<!--<DingzengZhaiyao ref="show"></DingzengZhaiyao>-->
-			<!--<GuquanZhaiyao ref="GuquanShow"></GuquanZhaiyao>-->
-			<!--<yijian ref="yijianShow"></yijian>-->
 			<router-view :setscrollTop="scrollTop" :datas="datas" :userContent='userContent' :type="type"></router-view>
 		</div>
 	<!--</transition>-->
@@ -303,18 +194,6 @@
 	import { Indicator } from 'mint-ui';
 	import {URL} from '../../common/js/path';
 	import { Toast } from 'mint-ui';
-//	import xiangmu from "./XinxiangMu/XinxiangMu.vue";
-//	import fankui from "./Fankui/Fankui.vue";
-//	import DingzengZhaiyao from "./DingzengZhaiyao.vue";
-//	import GuquanZhaiyao from "./GuquanZhaiyao.vue";
-//	import yijian from "./yijian.vue";
-//	import BScroll from "better-scroll";
-//	import Vue from "vue";
-//	import {formatDate} from "../../common/js/date.js";
-//	import cartcontrol from "../cartcontrol/cartcontrol.vue";
-//	import ratingselect from "../ratingselect/ratingselect.vue";
-//	import split from "../split/split.vue";
-	
 	
 	export default {
 		props:{
@@ -324,6 +203,8 @@
 		},
 		data () {
 			return {
+				yici:'0',
+				imgSrc:"/dist/hongbao.png",
 				dongTai:"",
 				userContent:"",
 				token:"",
@@ -374,14 +255,14 @@
 	    	var datas = {		//相应参数
 				token:"N8KCEuwCyhOSviBLwm9PhbrZEQ1aUJBhHMkL7XNv5cEqBF2xs1DQSupWBgxWpz5w",//	token	是	[string]		
 				page:"",		
-				size:""	
+				size:'4'	
 			}
 	    	var token={
 	    		token:this.userContent.token
 	    	}
 	    	this.token=token;
 //	    	this.TouziToken=token;
-	    	this.qinQiu(token);
+//	    	this.qinQiu(token);
 //			投资机构收到的新项目数
 			this.$http.post(URL.path+'finance/new_item',token,{emulateJSON:true}).then(function(res){
 				this.XiangmuShu=res.body.data.new_item;
@@ -427,7 +308,7 @@
 //				})
 			});
 	    },
-		methods:{	//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商
+		methods:{	//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商 7:财务顾问
 			Zongshu(){
 				//广播
 //				this.$emit("ZongHe",this.ZongHe);
@@ -437,20 +318,10 @@
 //				t1:false,
 //				q:false,
 //				q1:false,
-				if(type==2){
+				if(type==1 || type==7){
 					this.q=true;
-//					this.q1=true;
-					return;
-				}
-				if(type==1){
+				}else{
 					this.t=true;
-//					this.t1=true;
-					return;
-				}
-				if(type==7){
-					this.t=true;
-//					this.t1=true;
-					return;
 				}
 			},
 			handleTopChange(status) {    //头部函数
@@ -479,7 +350,7 @@
 	        	this.bottomStatus = status;
 	      	},
 	      	loadBottom() {
-//	      		console.log("bot")
+	      		console.log("bot")
 		        setTimeout(() => {
 		          	let lastValue = this.list.length;   
 		          	if (lastValue < 3) {
@@ -541,9 +412,15 @@
 	//	    	首页项目列表（非自己收到的项目）接口
 				this.$http.post(URL.path+'finance/get_item_list',token,{emulateJSON:true}).then(function(res){
 					Indicator.close();
-					this.data=res.body.data
+					this.data=res.body.data;
 					console.log("首页项目列表成功");
 					console.log(this.data)
+					this.$nextTick(function(){
+						if(this.yici=='0'){
+							this.tuCao();
+							this.yici=1;
+						}
+					});
 				},function(res){
 				    console.log(res);
 				    Indicator.close();
@@ -553,6 +430,33 @@
 					this.list.push(this.data);
 				}else{
 					this.list.push(this.data);
+				}
+			},
+			tuCao(){
+				var that=this;
+				var box=document.getElementsByClassName('ContentText');
+				var child=document.getElementsByClassName('Content')[1];
+				console.log(child)
+				var div=document.createElement("div");
+				var img=document.createElement("img");
+				div.style.width="100%";
+				div.style.minHeight="1rem";
+				div.style.background="#00A0DC";
+				div.style.margin='0.13rem 0 0.13rem 0';
+				div.style.overflow="hidden";
+				img.style.width='100%';
+    			img.style.float='left';
+				div.appendChild(img);
+				child.appendChild(div);
+				div.onclick=function(){
+					that.yijianFankui();
+				}
+				img.src=this.imgSrc;
+				for(var i=0; i<4; i++){
+					if(i==0 || i==2){
+						box[i].getElementsByClassName('li')[0].style.display="none";
+						box[i].getElementsByClassName('ol')[0].style.display="none";
+					}
 				}
 			}
 		},
@@ -1067,27 +971,27 @@
 					    		}
 					    	}
 					    }
-					    li{
-					    	width:0.1rem;
-					    	height:0.21rem;
-					    	position:absolute;
-					    	left:0.12rem;
-					    	bottom:-0.15rem;
-					    	background-image:url("./img/lianjie.png");
-					    	background-size:100% 100%;
-					    	z-index:1000;
-					    }
-					    ol{
-					    	width:0.1rem;
-					    	height:0.21rem;
-					    	position:absolute;
-					    	right:0.12rem;
-					    	bottom:-0.15rem;
-					    	background-image:url("./img/lianjie.png");
-					    	background-size:100% 100%;
-					    	z-index:1000;
-					    }
 					}
+					li{
+				    	width:0.1rem;
+				    	height:0.21rem;
+				    	position:absolute;
+				    	left:0.12rem;
+				    	top:-0.15rem;
+				    	background-image:url("./img/lianjie.png");
+				    	background-size:100% 100%;
+				    	z-index:1000;
+				    }
+				    ol{
+				    	width:0.1rem;
+				    	height:0.21rem;
+				    	position:absolute;
+				    	right:0.12rem;
+				    	top:-0.15rem;
+				    	background-image:url("./img/lianjie.png");
+				    	background-size:100% 100%;
+				    	z-index:1000;
+				    }
 				}
 				.tishi-bottom{
 					width:92.5%;

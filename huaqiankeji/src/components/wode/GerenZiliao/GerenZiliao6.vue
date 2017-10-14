@@ -333,11 +333,12 @@
 								this.textInputs[i].setAttribute("readOnly","readOnly")		//点击编辑   input去除属性readOnly即可编辑
 							}
 						}else{
-							if(i==0){
-								Toast("亲，暂无可编辑数据！");
-								this.bianList=true;
-							}
+							
 						}
+					}
+					if(i==0){
+						Toast("亲，暂无可编辑数据！");
+						this.bianList=true;
 					}
 //						textInputs[0].focus();		//点击编辑   input获取焦点
 					console.log();

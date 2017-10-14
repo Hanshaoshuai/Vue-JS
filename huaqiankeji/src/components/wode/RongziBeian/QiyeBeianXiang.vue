@@ -10,6 +10,7 @@
 				<div class="logo">
 					<ul>
 						<li @click.stap="shangChuan()">
+							<mingpian @to-parent="child" class="mingpians" ref="mingpianID"></mingpian>
 							<img :src="imgUrl" alt="" />
 						</li>
 						<span>上传营业执照</span>
@@ -55,7 +56,7 @@
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
 	import box from "../../box.vue";
-	
+	import mingpian from "../../ShangchuanMingpian.vue";
 	
 	export default {
 		props:{
@@ -88,7 +89,7 @@
 				},
 				content:"",			//给下级要传的参数
 				XiangmuID:"1",
-				imgUrl:""
+				imgUrl:''
 			}
 		},
 		mounted(){				//<!--1:未审核 2:已审核 3:进行中 4:已结束 5未通过-->
@@ -108,7 +109,7 @@
 	    	}
 			this.$http.post(URL.path+'finance/record_detail',params,{emulateJSON:true}).then(function(res){
 				this.data=res.body.data.id;
-				this.imgUrl=this.data.remark;
+				this.imgUrl=localStorage.getItem("MingpianImg");
 				this.texta=this.data.com_name;
 				this.textb=this.data.com_short;
 				this.textc=this.data.total_finance;
@@ -122,6 +123,10 @@
 			yijianHind(){
 				history.go(-1)
 //				this.tucaoShow=false;
+			},
+			child(MingpianImg){
+				this.imgUrl=MingpianImg
+				console.log(MingpianImg)
 			},
 			XiuGai(){
 				var textInputs = this.$refs.guanzhuLingyu.getElementsByClassName("mint-field-core");
@@ -176,7 +181,7 @@
 			},
 			shangChuan(){
 				if(this.showFlag1==true){
-					alert("上传")
+					
 				}
 			},
 			dingzengBlock(){
@@ -221,6 +226,7 @@
 		},
 		components:{
 			box,
+			mingpian
 		}
 	}
 </script>
@@ -286,6 +292,7 @@
 				align-items:center;
 				text-align:center;
 				ul>li{
+					position:relative;
 					border:1px solid #f5f4f9;
 					width:1.25rem;
 					height:1.25rem;
@@ -298,6 +305,12 @@
 					text-align:center;
 					img{
 						width:100%;
+					}
+					.mingpians{
+						position:absolute;
+						top:0.25rem;
+						left:0;
+						opacity:0;
 					}
 				}
 				span{

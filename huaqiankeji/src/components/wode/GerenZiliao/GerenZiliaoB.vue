@@ -24,10 +24,10 @@
 							<span class="lasst" ref="text2" @click.stap="bianji2('5')">编辑</span>
 							<div v-if="BianJi2==0" class="content-touzi" ref="foods">
 								<ul>
-									<li class="src1" id='5'>
+									<li v-show="x" class="src1" id='5'>
 										<span>融资租赁</span><font class="img1"></font>
 									</li>
-									<li class="src1" id="4">
+									<li v-show="z" class="src1" id="4">
 										<span>股权质押</span><font class="img1"></font>
 									</li>
 									
@@ -54,11 +54,11 @@
 						<div class="shouru">
 							<div v-if="BianJi3==0">
 								<div class="anli-list">
-									<textarea readOnly="true" placeholder="营收收入不低于2亿元" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+									<textarea readOnly="true" :placeholder="numberTod" class="mint-field-core ziyuanChongzu"></textarea>
 										
 								</div>
 								<div class="anli-list border-bottom">
-									<textarea readOnly="true" placeholder="净利润不低于2000万元" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+									<textarea readOnly="true" :placeholder="numberToc" class="mint-field-core ziyuanChongzu"></textarea>
 								</div>
 							</div>
 							<ul v-if="BianJi3==1">
@@ -68,7 +68,7 @@
 								</div>
 								<div>
 									<span>净利润不低于</span>
-									<input v-model="numberb" placeholder="输入数字" number="true" type="number" class="mint-field-core border"><font>万</font>
+									<input v-model="numberb" placeholder="输入数字" number="true" type="number" class="mint-field-core border"><font>万元</font>
 								</div>
 							</ul>
 						</div>
@@ -78,7 +78,7 @@
 							<span>您能提供的年化资金成本范围</span>
 							<ul v-if="BianJi3==0" class="first">
 								<li>
-									<input readOnly="true" v-model="numberg" placeholder="1000万-3000万" type="text" class="mint-field-core">
+									<input readOnly="true" :placeholder="numberj" type="text" class="mint-field-core">
 								</li>
 							</ul>
 							<ul v-if="BianJi3==1" class="last">
@@ -91,10 +91,28 @@
 					</div>
 					<div class="fankiu border-bottom dangeDiyu">
 						<div class="content-food">
+							<span>单笔投资额</span>
+							<ul v-if="BianJi3==0" class="first">
+								<li>
+									<input readOnly="true" :placeholder="numberTog" type="text" class="mint-field-core">
+								</li>
+							</ul>
+							<div v-if="BianJi3==1" class="type-conts">
+								<ul>
+									<input v-model="numbern" number="true" type="number" class="mint-field-core border">
+									<font>万&nbsp;至</font>
+									<input v-model="numbero" number="true" type="number" class="mint-field-core border">
+									<font>万&nbsp;</font>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="fankiu border-bottom dangeDiyu">
+						<div class="content-food">
 							<span>从接触项目到放款的时间周期不超过</span>
 							<ul v-if="BianJi3==0" class="first">
 								<li>
-									<input readOnly="true" v-model="numberg" placeholder="30天" type="text" class="mint-field-core">
+									<input readOnly="true" :placeholder="numberg1" type="text" class="mint-field-core">
 								</li>
 							</ul>
 							<ul v-if="BianJi3==1" class="last">
@@ -108,12 +126,12 @@
 							<span>地域要求</span>
 							<ul v-if="BianJi3==0" class="first">
 								<li>
-									<input readOnly="true" v-model="numberh" placeholder="长三角、珠三角、北京" type="text" class="mint-field-core">
+									<input readOnly="true" :placeholder="texte" type="text" class="mint-field-core">
 								</li>
 							</ul>
 							<div v-if="BianJi3==1" class="xiaolv anli">
 								<ul>
-									<textarea placeholder="请填写地域要求如：长三角、珠三角、北京" class="mint-field-core ziyuanChongzu" v-model="texta"></textarea>
+									<textarea placeholder="" class="mint-field-core ziyuanChongzu" v-model="textg"></textarea>
 								</ul>
 							</div>
 						</div>
@@ -124,7 +142,7 @@
 							<span>借债主题是</span><span ref="text4" class="lasst" @click.stap="bianji4('2')">编辑</span>
 							<ul v-if="BianJi4==0" class="first">
 								<li>
-									<input readOnly="true" v-model="numberh" placeholder="万象信托有限公司" type="text" class="mint-field-core">
+									<input readOnly="true" :placeholder="numberh" type="text" class="mint-field-core">
 								</li>
 							</ul>
 							<div v-if="BianJi4==1" class="xiaolv anli">
@@ -191,6 +209,9 @@
 		},
 		data () {
 			return {
+				L:0,
+				x:false,
+				z:false,
 				data:"",
 				y:1,			//判断是否选择标签；》=1为选择；
 				BianJi:'0',
@@ -206,21 +227,29 @@
 				numbere:"",
 				numberf:"",
 				numberg:"",
+				nuwNumberg:"",
+				numberg1:"",
 				numberh:"",
 				numberi:"",
 				numberj:"",
 				numberk:"",
+				numbern:"",
+				numbero:"",
 				numberToa:"",
 				numberTob:"",
 				numberToc:"",
+				numberTog:"",
+				numberToh:"",
+				numberToi:"",
 				texta:'',
 				textc:"",
 				textd:"",
-				fankui:"45",
-				genjin:"458",
-				introductionA:"",
-				introductionB:"",
-				times:20177111129,
+				numberTod:"",
+				numberToc:"",
+				texte:"",
+				textg:"",
+				SuozaiHangye:'',
+				SuozaiHangye1:'',
 				showFlag:true,
 				tucaoShow:true,
 				urlName:"Dingzeng",
@@ -230,7 +259,8 @@
 				oDbiaoQianID:'',		//后台获取的储存标签id
 				
 				biaoQianID1:[],		//储存标签id
-				biaoQianID2:[],		//储存标签id
+				biaoQianID2:['5'],		//储存标签id
+				biaoQianid2:'5',		//储存标签id 字符串新
 				scrollTop:"",
 				YitouList:'',		//已投案例接口   已投项目列表	数据
 				com_short:'',		//已投案例接口   已投项目列表	公司简称
@@ -249,17 +279,46 @@
 	    	}
 			this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
 				this.data=res.body.data;
-				var SuozaiHangye=this.data.info.interested;
-				console.log(SuozaiHangye);
-				var x=[];
-				var y=[];
-				for(var item in SuozaiHangye){
-					x.push(SuozaiHangye[item].id);
-					y.push(SuozaiHangye[item].title);
+				this.numbera=this.data.info.profit_min;//营业收入不低于    将要改变的数据
+				this.numberb=this.data.info.revenue_min;//净利润不低于	将要改变的数据
+				this.numberTod='营收收入不低于'+this.data.info.profit_min+'亿元';  //要插到页面的
+				this.numberToc='净利润不低于'+this.data.info.revenue_min+'万元';				//要插到页面的地区
+				this.textc=this.data.info.profit_min;//原来的数据
+				this.textd=this.data.info.revenue_min;//原来的数据
+				
+				this.numberToh=this.data.info.single_project_max;	//原数据
+				this.numberToi=this.data.info.single_project_min;	//原数据
+				this.numbern=this.data.info.single_project_max;	//单笔投资额  将要改变的数据
+				this.numbero=this.data.info.single_project_min;	//单笔投资额  将要改变的数据
+				this.numberTog=this.numberToi+'万 - '+this.numberToh+'万';  //要插到页面的
+				
+				this.numbere=this.data.info.fund_min;//原来的数据
+				this.numberf=this.data.info.fund_max;//原来的数据
+				this.numberj=this.numbere+'万 - '+this.numberf+'万'
+				this.numberc=this.data.info.fund_min;//您能提供的年化资金成本范围    将要改变的数据
+				this.numberd=this.data.info.fund_max;//您能提供的年化资金成本范围    将要改变的数据
+				
+				this.nuwNumberg=this.data.info.loan_time;//从接触项目到放款的时间周期不超过    原来的数据
+				this.numberg1=this.data.info.loan_time+'天';
+				this.numberg=this.data.info.loan_time;//从接触项目到放款的时间周期不超过    将要改变的数据
+				
+				this.texte=this.data.info.territory//地域要求	原来的数据
+				this.textg=this.data.info.territory;//地域要求	 将要改变的数据
+				
+				this.numberh=this.data.info.borrow//请填写资金出借方的公司全称	原来的数据
+				this.texta=this.data.info.borrow;//请填写资金出借方的公司全称	将要改变的数据
+				
+				this.SuozaiHangye1=this.data.info.investment_way;		//投资方式		原来的数据字符串
+				var SuozaiHangye=this.data.info.investment_way;		//投资方式		原来的数据字符串
+				this.SuozaiHangye=SuozaiHangye.split(',');
+				for(var i=0; i<SuozaiHangye.length; i++){
+					if(SuozaiHangye[i]==5){
+						this.x=true;
+					}
+					if(SuozaiHangye[i]==4){
+						this.z=true;
+					}
 				}
-				this.oDbiaoQianID=x.join(',');
-				this.numbera=y.join('、');
-				console.log(this.oDbiaoQianID);
 				console.log(res);
 			},function(res){
 			    console.log(res);
@@ -278,7 +337,79 @@
 				history.go(-1)
 			},
 			baocun(){
-				alert('保存成功')
+				var nuwID;
+				var nuwID1;
+				var max_nuwID2;
+				var min_nuwID2;
+				var territory;
+				var loan_time;
+				var borrow;
+				var investment_way;
+				var single_project_min;
+				var single_project_max;
+				if(this.BianJi3=='0'){		//原来数据
+					nuwID=this.textc;
+					nuwID1=this.textd;
+					min_nuwID2=this.numbere;
+					max_nuwID2=this.numberf;
+					territory=this.texte;
+					loan_time=this.nuwNumberg;
+					single_project_min=this.numberToi;
+					single_project_max=this.numberToh;
+				}else{						//改后数据
+					nuwID=this.numbera;
+					nuwID1=this.numberb;
+					min_nuwID2=this.numberc;
+					max_nuwID2=this.numberd;
+					territory=this.textg;
+					loan_time=this.numberg;
+					single_project_min=this.numbero;
+					single_project_max=this.numbern;
+				}
+				if(this.BianJi4=='0'){
+					borrow=this.numberh;
+				}else{
+					borrow=this.texta;
+				}
+				if(this.BianJi2=='0'){
+					investment_way=this.SuozaiHangye1;
+				}else{
+					investment_way=this.biaoQianid2;
+				}
+				var datas={
+					id:localStorage.getItem("userID"),				//	uid	是	[string]		
+					investment_type:localStorage.getItem("type"),	//投资类型 1:股权投资 2:债权投资 3:股债兼投	是	[string]		
+					interested:'',					//感兴趣的行业多个用逗号分割	是	[string]		
+					single_project_max:single_project_max,			//单笔投资最大值	是	[string]		
+					single_project_min:single_project_min,			//单笔投资最小值	是	[string]		
+					fund_stage:'',					//投资阶段 15债转股 16债权 17 新三板 62PE 63 VC 64 天使投资 75PreIPO	是	[string]		
+					territory:territory,			//地域要求	是	[string]		
+					investment_way:investment_way,	//投资方式 1:定增 2:接老股 3:二级市场 4:融资租赁 5:股权质押 6:双创债	是	[string]		
+					revenue_min:nuwID,				//最低营收要求	是	[string]		
+					profit_min:nuwID1,				//最低净利润要求	是	[string]		
+					fund_min:min_nuwID2,			//最小年化资金成本范围	是	[string]		
+					fund_max:max_nuwID2,			//最大年化资金成本范围	是	[string]		
+					loan_time:loan_time,			//放款时间	是	[string]		
+					borrow:borrow					//借债主体	是	[string]
+				}
+				console.log(datas)
+				this.$http.post(URL.path+'regist/regist2',datas,{emulateJSON:true}).then(function(res){
+					if(res.body.returnCode=='200'){
+						Toast('您已保存成功');
+						console.log(res.body)
+//						window.location.href="#/faxian";
+					}else{
+//						window.location.href="#/denglu"
+						Toast(res.body.msg);
+					}
+				},function(res){
+					Toast(res.status);
+				    console.log(res.status);
+				})
+				
+				
+				
+				
 			},
 			baocunList(){
 				this.Wancent="";
@@ -416,6 +547,14 @@
 				}else{
 					this.BianJi2=1;
 					this.$refs.text2.innerText="取消"
+					var typeLi=this.$refs.foods.getElementsByTagName("li");
+					if(typeLi[0].getAttribute("class")=="src1"){
+						this.biaoQianID2=['5'];
+						this.biaoQianid2='5';
+					}else{
+						this.biaoQianID2=[];
+						this.biaoQianid2='';
+					}
 				}
 				
 			},
@@ -466,19 +605,6 @@
 //						textInputs[0].focus();		//点击编辑   input获取焦点
 					console.log();
 				}
-//				if(this.$refs.text5.innerText=="编辑"){
-//					this.$refs.text5.innerText="取消";
-//					var textInputs = this.$refs.yitouAnli.getElementsByClassName("mint-field-core");
-//					textInputs[0].removeAttribute("readOnly")		//点击编辑   input去除属性readOnly即可编辑
-//					textInputs[0].focus();		//点击编辑   input获取焦点
-//					console.log();
-//				}else{
-//					this.$refs.text5.innerText="编辑";
-//					var textInputs = this.$refs.yitouAnli.getElementsByClassName("mint-field-core");
-//					textInputs[0].setAttribute("readOnly","readOnly")		//点击编辑   input去除属性readOnly即可编辑
-//					textInputs[0].focus();		//点击编辑   input获取焦点
-//					console.log();
-//				}
 			},
 			xuanze(index){
 				var spans=this.$refs.biaoqian.getElementsByTagName("span");	
@@ -547,7 +673,9 @@
 					for(var z=0; z<this.y; z++){
 						if(this.biaoQianID2[z]==typeLi[index].id){
 							this.biaoQianID2.splice(z,1);
-							console.log(this.biaoQianID2)
+//							console.log(this.biaoQianID2)
+							this.biaoQianid2=this.biaoQianID2.join()
+							console.log(this.biaoQianid2)
 							this.y-=1
 							break;
 						}
@@ -561,7 +689,9 @@
 							break;
 						}
 					}
-					console.log(this.biaoQianID2)
+//					console.log(this.biaoQianID2)
+					this.biaoQianid2=this.biaoQianID2.join()
+					console.log(this.biaoQianid2)
 				}
 			}
 			
@@ -589,16 +719,7 @@
 //			}
 		},
 		updated(){
-//			this.$refs.box.scrollTop=0;
-//			this.$refs.box.scrollTop=this.scrollTop
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
+			
 		},
 		components:{
 			box
@@ -1088,12 +1209,9 @@
 						font{
 							color:#959595;
 						}
-						.shouru{
-							padding:0 0.1rem;
-							span{
-								display:inline-block;
-								width:1.13rem;
-							}
+						span{
+							display:inline-block;
+							width:1.13rem;
 						}
 						.mint-field-core::-webkit-input-placeholder{
 							color: #d2d2d2;

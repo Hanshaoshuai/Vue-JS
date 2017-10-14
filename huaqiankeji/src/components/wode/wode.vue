@@ -6,10 +6,10 @@
 					<img ref="images" :src="photourl"/>
 				</div>
 				<div class="header-name">
-					<font>A</font>
+					<font>{{data.uname}}</font>
 					<div class="header-content">
-						<span>天太</span>
-						<span>张中</span>
+						<span>{{data.com_name}}</span>
+						<span>{{data.position}}</span>
 					</div>
 				</div>
 				<div class="jifen"><font></font><span>积分 666</span></div>
@@ -18,17 +18,20 @@
 			<div class="box">
 				<div class="FadeContent">
 					<div style="width:100%;height:1.06rem;"></div>
-					<ul class="content-header ziliao">
+					<ul v-if="type!=1 || type!=7" class="content-header ziliao">
 						<li>
-							<span>186</span>
+							<span v-if="data.received_item_nums=='0'" class="zanwu">暂无</span>
+							<span v-if="data.received_item_nums!='0'">{{data.received_item_nums}}</span>
 							<span>收获项目数</span>
 						</li>
 						<li class="border-rightleft">
-							<span>97%</span>
+							<span v-if="inof=='0'" class="zanwu">暂无</span>
+							<span v-if="inof!='0'">{{inof}}%</span>
 							<span>反馈率</span>
 						</li>
 						<li>
-							<span>100%</span>
+							<span v-if="data.exchange_card=='0'" class="zanwu">暂无</span>
+							<span v-if="data.exchange_card!='0'">{{data.exchange_card}}%</span>
 							<span>约谈率</span>
 						</li>
 					</ul>
@@ -73,6 +76,7 @@
 
 <script type="text/ecmascript">
 	import box from "../box.vue"
+	import {URL} from '../../common/js/path';
 //	import BScroll from "better-scroll";
 //	import bidu from "./RongziBidu/biDu.vue";
 //	import jilu from "./RongziJilu/jiLu.vue";
@@ -90,13 +94,15 @@
 		},
 		data () {
 			return {
+				data:"",
+				inof:"",
 				userContent:"",
 				token:"",
 				userID:'',
 				beianType:"",
 				photourl:'',
 				block:false,
-				times:20177111129,
+				numberb:'',
 				showFlag:false,
 				onlyContent:true,
 				type:"",
@@ -135,6 +141,30 @@
 					images.style.height="auto"
 				}
 			});
+			var params={
+	    		token:this.userContent.token,
+	    		terminalNo:3
+	    	}
+			this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
+				this.data=res.body.data;
+				this.inof=res.body.data.info.feedback;
+				console.log("个人资料");
+				console.log(res);
+//				if(this.data.exchange_card==0){
+//					this.numberb="暂无"
+//				}else{
+//					this.numberb=this.data.exchange_card;//约谈率
+//				}
+				
+//				this.numberc=this.data.info.revenue_min;//净利润不低于	将要改变的数据
+//				this.numberTod='营收收入不低于'+this.data.info.profit_min+'亿元';  //要插到页面的
+//				this.numberToc='净利润不低于'+this.data.info.revenue_min+'万元';				//要插到页面的地区
+//				this.textd=this.data.info.profit_min;//原来的数据
+//				this.texte=this.data.info.revenue_min;//原来的数据
+				
+			},function(res){
+			    console.log(res);
+			})
 		},
 		methods:{
 			biduGo(){
@@ -232,6 +262,7 @@
 			.header-name{
 				padding-left:0.11rem;
 				height:100%;
+				color:#fff;
 				font{
 					font-size:0.2rem;
 					line-height:0.34rem;
@@ -296,6 +327,10 @@
 								padding-top:0.1rem;
 								color:#737373;
 							}
+						}
+						.zanwu{
+							color:#ff7a59;
+							font-size:0.14rem;
 						}
 					}
 				}

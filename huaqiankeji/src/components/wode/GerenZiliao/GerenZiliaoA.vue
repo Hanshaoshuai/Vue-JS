@@ -28,12 +28,6 @@
 									<li>
 										<input readOnly="true" v-model="numbera" placeholder="食品、食品、食品" type="text" class="mint-field-core">
 									</li>
-									<!--<li>
-										<input readOnly="true" v-model="numberb" placeholder="食品" type="text" class="mint-field-core">
-									</li>
-									<li>
-										<input readOnly="true" v-model="numberc" placeholder="食品" type="text" class="mint-field-core">
-									</li>-->
 								</ul>
 								<div v-if="BianJi==1" class="zhuying_1 liangdian_1">
 									<ul class="last" ref="biaoqian">
@@ -49,17 +43,11 @@
 									<li>
 										<input readOnly="true" v-model="numberd" placeholder="天使、VC、PE" type="text" class="mint-field-core">
 									</li>
-									<!--<li>
-										<input readOnly="true" v-model="numbere" placeholder="VC" type="text" class="mint-field-core">
-									</li>
-									<li>
-										<input readOnly="true" v-model="numberf" placeholder="PE" type="text" class="mint-field-core">
-									</li>-->
 								</ul>
 								<div  v-if="BianJi==1" class="zhuying_1 liangdian_1" ref="foods1">
 									<ul class="last"  ref="biaoqian1">
 										<li v-for="(item,index) in BiaoQian[1]" class="src0" :id='item.id' @click.stap="xuanze1(index,item.id)">
-											<span>{{item.title}}</span><font class="img1"></font>
+											<span :id='item.id'>{{item.title}}</span><font class="img1"></font>
 										</li>
 									</ul>
 								</div>
@@ -70,14 +58,14 @@
 								<span>单个投资额</span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
-										<input readOnly="true" v-model="numberg" placeholder="2000万-5000万" type="text" class="mint-field-core">
+										<input readOnly="true" :placeholder="numberTod" type="text" class="mint-field-core">
 									</li>
 								</ul>
 								<div v-if="BianJi==1" class="type-conts">
 									<ul>
-										<input v-model="numbere" placeholder="输入数字" number="true" type="number" class="mint-field-core border">
+										<input v-model="numbere" number="true" type="number" class="mint-field-core border">
 										<font>万&nbsp;至</font>
-										<input v-model="numberf" placeholder="输入数字" number="true" type="number" class="mint-field-core border">
+										<input v-model="numberf" number="true" type="number" class="mint-field-core border">
 										<font>万&nbsp;</font>
 									</ul>
 								</div>
@@ -88,12 +76,12 @@
 								<span>地域要求</span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
-										<input readOnly="true" v-model="numberh" placeholder="长三角、珠三角、北京" type="text" class="mint-field-core">
+										<input readOnly="true" v-model="numberh" :placeholder="numberToc" type="text" class="mint-field-core">
 									</li>
 								</ul>
 								<div v-if="BianJi==1" class="xiaolv">
 									<ul>
-										<textarea placeholder="请填写地域要求如：长三角、珠三角、北京" class="mint-field-core ziyuanChongzu" v-model="texta"></textarea>
+										<textarea class="mint-field-core ziyuanChongzu" v-model="texta"></textarea>
 									</ul>
 								</div>
 							</div>
@@ -183,6 +171,7 @@
 			return {
 				data:"",
 				y:1,			//判断是否选择标签；》=1为选择；
+				y1:1,			//判断是否选择标签；》=1为选择；
 				BianJi:'0',
 				BianJi2:"0",
 				BianJi3:"0",
@@ -190,19 +179,17 @@
 				BianJi5:'0',
 				BiaoQian:"",
 				numbera:"",
-				numberb:"",
-				numberc:"",
 				numberd:"",
 				numbere:"",
 				numberf:"",
 				numberg:"",
 				numberh:"",
 				numberi:"",
-				numberj:"",
 				numberk:"",
 				numberToa:"",
 				numberTob:"",
-				numberToc:"",
+				numberToc:"",	//要插到页面的
+				numberTod:"",	//要插到页面的
 				texta:'',
 				textc:"",
 				textd:"",
@@ -216,16 +203,16 @@
 				urlName:"Dingzeng",
 				typeLi:"",
 				biaoQianID:[],		//储存标签id
-				biaoQianid:'',		//储存标签id字符串
-				oDbiaoQianID:'',		//后台获取的储存标签id
+				biaoQianid:'',		//储存标签id字符串	将要上传的改变数据
+				oDbiaoQianID:'',		//原后台获取的储存标签id
 				
 				biaoQianID1:[],		//储存标签id
-				biaoQianid1:'',		//储存标签id字符串
-				oDbiaoQianID1:'',		//后台获取的储存标签id
+				biaoQianid1:'',		//储存标签id字符串	将要上传的改变数据
+				oDbiaoQianID1:'',		//原后台获取的储存标签id
 				
 				biaoQianID2:[],		//储存标签id
 				biaoQianid2:'',		//储存标签id字符串
-				oDbiaoQianID2:'',		//后台获取的储存标签id
+				oDbiaoQianID2:'',		//原后台获取的储存标签id
 				scrollTop:"",
 				YitouList:'',		//已投案例接口   已投项目列表	数据
 				com_short:'',		//已投案例接口   已投项目列表	公司简称
@@ -243,6 +230,14 @@
 	    	}
 			this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
 				this.data=res.body.data;
+				this.numberToa=this.data.info.single_project_max;	//原数据
+				this.numberTob=this.data.info.single_project_min;	//原数据
+				this.numbere=this.data.info.single_project_max;		//将要改变的数据
+				this.numberf=this.data.info.single_project_min;		//将要改变的数据
+				this.numberTod=this.numberToa+'万 - '+this.numberTob+'万';  //要插到页面的
+				this.numberToc=this.data.info.territory;				//要插到页面的地区
+				this.texta=this.data.info.territory;		//要插到页面的地区	将要改变的数据
+				var fund_stage=this.data.info.fund_stage;
 				var SuozaiHangye=this.data.info.interested;
 				var fund_stage=this.data.info.fund_stage;
 				console.log(SuozaiHangye);
@@ -282,7 +277,54 @@
 				history.go(-1)
 			},
 			baocun(){
-				alert('保存成功')
+				var nuwID;
+				var nuwID1;
+				var max_nuwID2;
+				var min_nuwID2;
+				var territory;
+				if(this.BianJi=='0'){		//原来数据
+					nuwID=this.oDbiaoQianID;
+					nuwID1=this.oDbiaoQianID1;
+					max_nuwID2=this.numberToa;
+					min_nuwID2=this.numberTob;
+					territory=this.numberToc
+				}else{						//改后数据
+					nuwID=this.biaoQianid;
+					nuwID1=this.biaoQianid1;
+					max_nuwID2=this.numbere;
+					min_nuwID2=this.numberf;
+					territory=this.texta;
+				}
+				var datas={
+					id:localStorage.getItem("userID"),			//	uid	是	[string]		
+					investment_type:localStorage.getItem("type"),			//投资类型 1:股权投资 2:债权投资 3:股债兼投	是	[string]		
+					interested:nuwID,					//感兴趣的行业多个用逗号分割	是	[string]		
+					single_project_max:max_nuwID2,			//单笔投资最大值	是	[string]		
+					single_project_min:min_nuwID2,			//单笔投资最小值	是	[string]		
+					fund_stage:nuwID1,			//投资阶段 15债转股 16债权 17 新三板 62PE 63 VC 64 天使投资 75PreIPO	是	[string]		
+					territory:territory,			//地域要求	是	[string]		
+					investment_way:'',			//投资方式 1:定增 2:接老股 3:二级市场 4:融资租赁 5:股权质押 6:双创债	是	[string]		
+					revenue_min:'',			//最低营收要求	是	[string]		
+					profit_min:'',			//最低净利润要求	是	[string]		
+					fund_min:'',			//最小年化资金成本范围	是	[string]		
+					fund_max:'',			//最大年化资金成本范围	是	[string]		
+					loan_time:'',			//放款时间	是	[string]		
+					borrow:''				//借债主体	是	[string]
+				}
+				console.log(datas)
+				this.$http.post(URL.path+'regist/regist2',datas,{emulateJSON:true}).then(function(res){
+					if(res.body.returnCode=='200'){
+						Toast('您已保存成功');
+						console.log(res.body)
+//						window.location.href="#/faxian";
+					}else{
+//						window.location.href="#/denglu"
+						Toast(res.body.msg);
+					}
+				},function(res){
+					Toast(res.status);
+				    console.log(res.status);
+				})
 			},
 			baocunList(){
 				this.Wancent="";
@@ -352,6 +394,12 @@
 			},
 			bianji(id){
 				if(id==1){
+					this.y=1;
+					this.biaoQianID=[];
+					this.biaoQianid='';
+					this.y1=1;
+					this.biaoQianID1=[];
+					this.biaoQianid1='';
 					if(this.BianJi==1){
 						this.BianJi=0;
 						this.$refs.bianji.innerText="编辑";
@@ -370,8 +418,8 @@
 								spans.setAttribute("class","bianse")
 								spans1.setAttribute("class","bianse")
 								this.biaoQianID.push(spans.id);
-								this.biaoQianID1.push(spans.id);
-								
+								this.biaoQianID1.push(spans1.id);
+								console.log(spans1.id)
 							});
 							console.log(this.BiaoQian);
 						},function(res){
@@ -527,23 +575,23 @@
 				var length=spans.length;
 				if(spans[index].getAttribute("class")=="bianse"){			//判断是否选择标签；》=1为选择；
 					spans[index].setAttribute("class","")
-					for(var z=0; z<this.y; z++){
+					for(var z=0; z<this.y1; z++){
 						if(this.biaoQianID1[z]==spans[index].id){
 							this.biaoQianID1.splice(z,1);
 //							console.log(this.biaoQianID1)
 							this.biaoQianid1=this.biaoQianID1.join()
 							console.log(this.biaoQianid1)
-							this.y-=1
+							this.y1-=1
 							break;
 						}
 					}
 				}else{
-					if(this.y>2){
+					if(this.y1>2){
 						Toast('最多可选三个');
 					}else{
 						spans[index].setAttribute("class","bianse");
-						this.y+=1;
-						for(var i=0; i<this.y; i++){
+						this.y1+=1;
+						for(var i=0; i<this.y1; i++){
 							if(this.biaoQianID1[i]!=spans[index].id){
 								this.biaoQianID1.push(spans[index].id)
 								break;

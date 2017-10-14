@@ -23,11 +23,11 @@
 							<span class="lasst" ref="text2" @click.stap="bianji2('5')">编辑</span>
 							<div v-if="BianJi2==0" class="content-touzi" ref="foods">
 								<ul>
-									<li class="src1" id='5'>
-										<span>融资租赁</span><font class="img1"></font>
+									<li v-show="x" class="src1" id='5'>
+										<span>定增</span><font class="img1"></font>
 									</li>
-									<li class="src1" id="4">
-										<span>股权质押</span><font class="img1"></font>
+									<li v-show="z" class="src1" id="4">
+										<span>接老股</span><font class="img1"></font>
 									</li>
 									
 								</ul>
@@ -35,10 +35,10 @@
 							<div v-if="BianJi2==1" class="content-touzi" ref="foods">
 								<ul>
 									<li class="src1" id='5' @click.stap="types('0','5')">
-										<span>融资租赁</span><font class="img1"></font>
+										<span>定增</span><font class="img1"></font>
 									</li>
 									<li class="src0" id="4" @click.stap="types('1','4')">
-										<span>股权质押</span><font class="img1"></font>
+										<span>接老股</span><font class="img1"></font>
 									</li>
 									
 								</ul>
@@ -51,7 +51,7 @@
 							<span>单笔投资额</span><span ref="text3" class="lasst" @click.stap="bianji3('3')">编辑</span>
 							<ul v-if="BianJi3==0" class="first">
 								<li>
-									<input readOnly="true" v-model="numberg" placeholder="2000万-5000万" type="text" class="mint-field-core">
+									<input readOnly="true" :placeholder="numberTog" type="text" class="mint-field-core">
 								</li>
 							</ul>
 							<ul v-if="BianJi3==1" class="last">
@@ -148,6 +148,9 @@
 		},
 		data () {
 			return {
+				L:0,
+				x:false,
+				z:false,
 				y:1,			//判断是否选择标签；》=1为选择；
 				BianJi:'0',
 				BianJi2:"0",
@@ -169,13 +172,16 @@
 				numberToa:"",
 				numberTob:"",
 				numberToc:"",
+				numberToh:'',
+				numberToi:"",
+				numberTog:"",
 				texta:'',
 				textc:"",
 				textd:"",
 				fankui:"45",
 				genjin:"458",
-				introductionA:"",
-				introductionB:"",
+				SuozaiHangye1:"",
+				SuozaiHangye:"",
 				times:20177111129,
 				showFlag:true,
 				tucaoShow:true,
@@ -202,8 +208,24 @@
 	    		terminalNo:3
 	    	}
 			this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
-				this.XiangmuShu=res.body.data.new_item;
-//				this.XiangmuShu=res;
+				this.data=res.body.data;
+				this.numberToh=this.data.info.single_project_max;	//原数据
+				this.numberToi=this.data.info.single_project_min;	//原数据
+				this.numberf=this.data.info.single_project_max;	//单笔投资额  将要改变的数据
+				this.numbere=this.data.info.single_project_min;	//单笔投资额  将要改变的数据
+				this.numberTog=this.numberToi+'万 - '+this.numberToh+'万';  //要插到页面的
+				
+				this.SuozaiHangye1=this.data.info.investment_way;		//投资方式		原来的数据字符串
+				var SuozaiHangye=this.data.info.investment_way;		//投资方式		原来的数据字符串
+				this.SuozaiHangye=SuozaiHangye.split(',');
+				for(var i=0; i<SuozaiHangye.length; i++){
+					if(SuozaiHangye[i]==5){
+						this.x=true;
+					}
+					if(SuozaiHangye[i]==4){
+						this.z=true;
+					}
+				}
 				console.log("个人资料");
 				console.log(res);
 			},function(res){
@@ -223,7 +245,44 @@
 				history.go(-1)
 			},
 			baocun(){
-				alert('保存成功')
+				var max_nuwID2;
+				var min_nuwID2;
+				var investment_way;
+				if(this.BianJi3=='0'){		//原来数据
+					min_nuwID2=this.numberc;
+					max_nuwID2=this.numberd;
+				}else{						//改后数据
+					min_nuwID2=this.numbere;
+					max_nuwID2=this.numberf;
+				}
+				if(this.BianJi2=='0'){
+					investment_way=this.SuozaiHangye1;
+				}else{
+					investment_way=this.biaoQianid2;
+				}
+				var datas={
+					id:localStorage.getItem("userID"),			//	uid	是	[string]		
+					ctype:localStorage.getItem("type"),			//投资类型 1:股权投资 2:债权投资 3:股债兼投	是	[string]		
+					investment_way:investment_way,			//	投资方式	是	[string]		
+					single_project_max:max_nuwID2,		//	单笔投资最大值	是	[string]		
+					single_project_min:min_nuwID2,		//	单笔投资最小值	是	[string]		
+					board:"",					//	是否有新三板账户 1有 2 没有	是	[string]		
+					know_risk:""				//	是否了解新三板风险 1 了解， 2 不了解	是	[string]
+				}
+				console.log(datas)
+				this.$http.post(URL.path+'regist/personal',datas,{emulateJSON:true}).then(function(res){
+					if(res.body.returnCode=='200'){
+						Toast('您已保存成功');
+						console.log(res.body)
+//						window.location.href="#/faxian";
+					}else{
+//						window.location.href="#/denglu"
+						Toast(res.body.msg);
+					}
+				},function(res){
+					Toast(res.status);
+				    console.log(res.status);
+				})
 			},
 			baocunList(){
 				this.Wancent="";
@@ -314,6 +373,14 @@
 				}else{
 					this.BianJi2=1;
 					this.$refs.text2.innerText="取消"
+					var typeLi=this.$refs.foods.getElementsByTagName("li");
+					if(typeLi[0].getAttribute("class")=="src1"){
+						this.biaoQianID2=['5'];
+						this.biaoQianid2='5';
+					}else{
+						this.biaoQianID2=[];
+						this.biaoQianid2='';
+					}
 				}
 				
 			},
@@ -355,14 +422,15 @@
 								this.textInputs[i].setAttribute("readOnly","readOnly")		//点击编辑   input去除属性readOnly即可编辑
 							}
 						}else{
-							if(i==0){
-								Toast("亲，暂无可编辑数据！");
-								this.bianList=true;
-							}
+							
 						}
 					}
 //						textInputs[0].focus();		//点击编辑   input获取焦点
 					console.log();
+				}
+				if(i==0){
+					Toast("亲，暂无可编辑数据！");
+					this.bianList=true;
 				}
 			},
 			xuanze(index){
@@ -448,7 +516,7 @@
 							break;
 						}
 					}
-					console.log(this.biaoQianID2)
+//					console.log(this.biaoQianID2)
 					this.biaoQianid2=this.biaoQianID2.join()
 					console.log(this.biaoQianid2)
 				}

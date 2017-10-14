@@ -171,7 +171,7 @@
 		    	}
 				this.$http.post(URL.path+'finance/record_list',params,{emulateJSON:true}).then(function(res){
 					this.data=res.body.data.id;
-					if(this.data.length=='0'){
+					if(res.body.data.length=='0'){
 						Toast("您暂无备注，请添加备案...")
 						window.location.href="#/wode/RongziBeian/"+this.token+"/TianQiBeian";
 						return;
@@ -189,13 +189,13 @@
 		    	}
 				console.log(params)
 				this.$http.post(URL.path+'finance/record_list',params,{emulateJSON:true}).then(function(res){
+					console.log(res);
 					this.data=res.body.data.id;
-					if(this.data.length=='0'){
+					if(res.body.data.length=='0'){
 						Toast("您暂无备案，请添加备案...")
 						window.location.href="#/wode/RongziBeian/"+this.token+"/XinzengQiye";
 						return;
 					}
-					console.log(res);
 				},function(res){
 				    console.log(res);
 				})

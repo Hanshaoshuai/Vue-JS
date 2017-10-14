@@ -122,6 +122,7 @@
 <script type="text/ecmascript">
 	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
+	import { Toast } from 'mint-ui';
 	import box from "../../box.vue";
 //	import dingzengzuoshi from "./DingzengZuoshi.vue";
 //	import zhuanlaogu from "./ZhuanlaoGu.vue";
@@ -169,6 +170,9 @@
 			}
 			this.$http.post(URL.path+'finance/creae_list',datas,{emulateJSON:true}).then(function(res){
 				this.data=res.body.data;
+				if(this.data.length==0){
+					Toast("暂无融资记录")
+				}
 				console.log(res.body.data);
 			},function(res){
 			    console.log(res.status);
