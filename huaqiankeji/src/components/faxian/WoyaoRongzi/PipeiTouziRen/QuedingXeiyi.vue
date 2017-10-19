@@ -11,18 +11,19 @@
 					<div class="fankiu">
 						<div class="beijing"></div>
 						<div class="content-food" style="text-align:center;">
-							<font class="border-bottom"></font><span>收费协议摘要</span><font class="border-bottom"></font>
+							<font class="border-bottom"></font><span>{{data.title}}</span><font class="border-bottom"></font>
 						</div>
 						<div class="content-bottom">
 							<ul>
-								<li><span>若您本次投递的投资人及其所属投资机构:</span></li>
+								<li ref="profile" class="profile"></li>
+								<!--<li><span>若您本次投递的投资人及其所属投资机构:</span></li>
 								<li><span>1、通过企融直通车APP与您取得联系</span></li>
 								<li><span>2、在一年之内投资了您的公司</span></li>
 								<li><span>3、在一年之内投资了您的公司</span></li>
 								<li><span>4、若您本次投递的投资人及其所属投资机构</span></li>
 								<li><span>5、若您本次投递的投资人及其所属投资机构</span></li>
 								<li><span>6、若您本次投递的投资人及其所属投资机构</span></li>
-								<li><span>7、若您本次投递的投资人及其所属投资机构</span></li>
+								<li><span>7、若您本次投递的投资人及其所属投资机构</span></li>-->
 								<li class="fuwu"><span>我们将按照总投资额的1%收取平台服务费</span></li>
 								<li class="imgs" @click.stop="ChakanGo()"><img src="../img/3.png"/><span>查看完整协议</span></li>
 							</ul>
@@ -41,7 +42,7 @@
 					</div>
 				</div>
 			</div>
-			<router-view></router-view>
+			<router-view :data="data"></router-view>
 		</div>
 	<!--</transition>-->
 </template>
@@ -50,6 +51,7 @@
 	import {URL} from '../../../../common/js/path';
 	import { MessageBox } from 'mint-ui';
 	import { Toast } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 //	import BScroll from "better-scroll";
 //	import Vue from "vue";
 //	import {formatDate} from "../../common/js/date.js";
@@ -78,14 +80,19 @@
 			console.log(this.$route.params.token)
 			console.log(this.$route.params.XiangmuID)
 			console.log(this.$route.params.uID)
-//			获取收费协议
+			Indicator.open({spinnerType: 'fading-circle'});
+//				获取收费协议
 			var params={
 	    		token:this.$route.params.token,
+				type:this.$route.params.XiangmuID	//类型 1定增 2做市 3转老股 4股权质押 5融资租赁
 	    	}
 			this.$http.post(URL.path+'finance/get_agreement',params,{emulateJSON:true}).then(function(res){
 				this.data=res.body.data;
+				Indicator.close();
+				this.$refs.profile.innerHTML=res.body.data.profile
 				console.log(res);
 			},function(res){
+				Indicator.close();
 			    console.log(res);
 			})
 		},
@@ -93,31 +100,20 @@
 			listnone(){
 //				this.showFlag=false;
 				history.go(-1)
+				this.go=0
 			},
 			ChakanGo(){
-				
+//				获取收费协议详情
+				window.location.href="#/Xeiyi/"+this.$route.params.token+"/"+this.$route.params.uID+'/'+this.$route.params.type+'/'+this.$route.params.XiangmuID+'/0'+"/XieyiXiangqing";
 			},
 			TongyiGo(){
-				if(this.go==0){
-	//				同意收费协议
-					var params={
-			    		token:this.$route.params.token,
-						tiem_id:this.$route.params.XiangmuID,			//项目id	是	[string]		
-						operate:"1"			//是否同意收费协议 1:同意 2:拒绝	是	[string]	
-			    	}
-					this.$http.post(URL.path+'finance/get_agreement',params,{emulateJSON:true}).then(function(res){
-						this.data=res.body.data;
-						console.log(res);
-						this.go+=1;
-						window.location.href="#/Xeiyi/"+this.$route.params.token+"/"+this.$route.params.uID+'/'+this.$route.params.type+'/'+this.$route.params.XiangmuID+'/0'+"/TouDi";
-					},function(res){
-					    console.log(res);
-					})
-				}else{
-					Toast("亲，您已向对方投递过了，再看看其它的项目吧。")
-				}
-				
-//				this.showFlag=true;
+//				if(this.go==0){
+//					this.go+=1;
+					window.location.href="#/Xeiyi/"+this.$route.params.token+"/"+this.$route.params.uID+'/'+this.$route.params.type+'/'+this.$route.params.XiangmuID+'/0'+"/TouDi";
+	//				this.showFlag=true;
+//				}else{
+//					Toast("您已投递过了")
+//				}
 			},
 			ShaohouGo(){
 //				MessageBox.confirm('您确定要联系对方并索要完整项目信息吗?').then(action => {
@@ -133,18 +129,7 @@
 				
 			},
 			FangqiGo(){
-//				不同意收费协议
-				var params={
-		    		token:this.$route.params.token,
-					tiem_id:this.$route.params.XiangmuID,			//项目id	是	[string]		
-					operate:"2"			//是否同意收费协议 1:同意 2:拒绝	是	[string]	
-		    	}
-				this.$http.post(URL.path+'finance/get_agreement',params,{emulateJSON:true}).then(function(res){
-					this.data=res.body.data;
-					console.log(res);
-				},function(res){
-				    console.log(res);
-				})
+				
 			}
 //			show(){
 ////				dom更新后在执行使用$refs

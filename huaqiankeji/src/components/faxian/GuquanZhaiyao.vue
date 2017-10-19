@@ -23,7 +23,14 @@
 									<div class="content-heder">
 										<span>{{data.com_name}}</span>
 										<span class="text-center">{{data.com_code}}</span>
-										<span>&nbsp;{{data.type}}</span>
+										<span v-if="data.type==1" class="texts">&nbsp;定增</span>
+										<span v-if="data.type==2" class="texts">&nbsp;做市</span>
+										<span v-if="data.type==3" class="texts">&nbsp;转老股</span>
+										<span v-if="data.type==4" class="texts">&nbsp;股权质押</span>
+										<span v-if="data.type==5" class="texts">&nbsp;融资租赁</span>
+										<span v-if="data.type==6" class="texts">&nbsp;研报支持</span>
+										<span v-if="data.type==7" class="texts">&nbsp;公司调研</span>
+										<!--<span>&nbsp;{{data.type}}</span>-->
 									</div>
 								</li>
 								<li class="border-bottom"></li>

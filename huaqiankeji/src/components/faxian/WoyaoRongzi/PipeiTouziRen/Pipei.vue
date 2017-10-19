@@ -20,40 +20,6 @@
 							<span>已为您匹配{{body.length}}人</span>
 						</div>
 					</div>
-					<!--<div class="sousuo-content border-topbottom">
-						<div class="content-header">
-							<font></font>
-							<div class="names">
-								<span class="border-right">徐小平</span>
-								<span>真格基金</span>&nbsp;
-								<span>徐小平</span>
-							</div>
-							<div class="borders typeA"  @click.stop="xuanZe('0')"></div>
-						</div>
-						<div class="xiaolv border-topbottom">
-							<div class="border-right">
-								<li><font>235</font></li>
-								<span>收获项目数</span>
-							</div>
-							<div class="border-right">
-								<li><font class="center">2&nbsp;%</font></li>
-								<span class="center">反馈率</span>
-							</div>
-							<div class="border-right">
-								<li><font>200&nbsp;%</font></li>
-								<span>约谈率</span>
-							</div>
-						</div>
-						<div class="leimu">
-							<div class="zhonglei">
-								<span class="jieduan">阶段：PE</span>
-								<span  class="dangbi">单笔投资：1000万-2000万</span>
-								<span  class="zijin">资金成本：年化20%-30%</span>
-								<span  class="fangkuan">放款速度：不超过90天</span>
-								<span  class="lingyu">领域：医疗、军事</span>
-							</div>
-						</div>
-					</div>-->
 					<div v-for="(item,index) in body" class="sousuo-content border-topbottom">
 						<div class="content-header">
 							<font><img src="" :rul="item.thumb"/></font>
@@ -96,7 +62,7 @@
 			</div>
 			<div class="zhaiyao-food">
 				<div class="ferst"><font>您已选择</font><span ref="size" class="ferst-child">{{ButtenName}}</span><font>个投资人</font></div>
-				<span class="last" @click.stop="butten">下一步</span>
+				<span class="last" @click.stop="butten()">下一步</span>
 			</div>
 			<!--<router-view></router-view>-->
 		</div>
@@ -317,18 +283,42 @@
 				this.play();			//调用底部的数量更改动画；
 			},
 			butten(){
-//				MessageBox.confirm('您确定要联系对方并索要完整项目信息吗?').then(action => {
-//					this.ButtenName="申请成功，等待反馈";
-//					var tate=this;
-//					setTimeout(function(){
-//						tate.showFlag=false;
-//						tate.ButtenName="索要完整项目信息";
-//					},2000)
-//				  console.log("ijfj")
-//				});
-//				this.block=true;
 				if(this.XiaYibu==true){				//判断必须选择匹配人才可以跳转
-					window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.type+'/'+this.CanShu.XiangmuID+'/'+this.length;
+					Indicator.open({spinnerType: 'fading-circle'});
+	//				MessageBox.confirm('您确定要联系对方并索要完整项目信息吗?').then(action => {
+	//					this.ButtenName="申请成功，等待反馈";
+	//					var tate=this;
+	//					setTimeout(function(){
+	//						tate.showFlag=false;
+	//						tate.ButtenName="索要完整项目信息";
+	//					},2000)
+	//				  console.log("ijfj")
+	//				});
+	//				this.block=true;
+					//判断是否是白名单	是白名单直接投递	
+					var yes;
+					var datas = {
+						token:this.token,		//	token	是	[string]		
+					}
+					this.$http.post(URL.path+'finance/is_white',datas,{emulateJSON:true}).then(function(res){
+						Indicator.close();
+						if(res.body.returnCode==200){
+							yes=res.body.data;
+							window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.CanShu['type']+'/'+this.CanShu['XiangmuID']+'/'+this.length+"/TouDi";
+						}else{
+							yes=res.body.data;
+							if(this.XiaYibu==true){				//判断必须选择匹配人才可以跳转
+								window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.CanShu['type']+'/'+this.CanShu['XiangmuID']+'/'+this.length;
+							}else{
+								Toast("请选择匹配人");
+							}
+						}
+						console.log(res);
+					},function(res){
+						Indicator.close();
+						Toast("系统错误请稍后...")
+					    console.log(res.status);
+					})
 				}else{
 					Toast("请选择匹配人");
 				}

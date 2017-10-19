@@ -12,13 +12,13 @@
 						<span>{{data.position}}</span>
 					</div>
 				</div>
-				<div class="jifen"><font></font><span>积分 666</span></div>
+				<!--<div class="jifen"><font></font><span>积分 666</span></div>-->
 			</div>
 			
 			<div class="box">
 				<div class="FadeContent">
 					<div style="width:100%;height:1.06rem;"></div>
-					<ul v-if="type!=1 || type!=7" class="content-header ziliao">
+					<ul v-show="blockCont" class="content-header ziliao">
 						<li>
 							<span v-if="data.received_item_nums=='0'" class="zanwu">暂无</span>
 							<span v-if="data.received_item_nums!='0'">{{data.received_item_nums}}</span>
@@ -38,17 +38,17 @@
 					<box></box>		<!--类型 1:企业 2:投资机构 3:合格投资人 4咨询机构/研究咨询 5:券商研究员/财务顾问 6:新三板做市商-->
 					<div v-if="!investment_type" class="dujia-header border-top" @click.stop="ziliaoShow(type)">
 						<span><font class="kuaixuna"></font>个人资料</span>
-						<a class="wancheng">完成度78%</a><span></span>
+						<a v-if="completeness" class="wancheng">完成度{{completeness}}%</a><span></span>
 					</div>
 					<div v-if="investment_type" class="dujia-header border-top" @click.stop="ziliaoShow(type,investment_type)">
 						<span><font class="kuaixuna"></font>个人资料</span>
-						<a class="wancheng">完成度78%</a><span></span>
+						<a v-if="completeness" class="wancheng">完成度{{completeness}}%</a><span></span>
 					</div>
 					<div v-show="beianShow" class="dujia-header border-top" @click.stop="RongziBeian()">
 						<span><font class="kuaixunb"></font>融资项目备案</span>
 						<span></span>
 					</div>
-					<div class="dujia-header border-top" @click.stop="jiluGo()">
+					<div v-show="block" class="dujia-header border-top" @click.stop="jiluGo()">
 						<span><font class="kuaixunc"></font>历史融资记录</span>
 						<span></span>
 					</div>
@@ -101,13 +101,15 @@
 				userID:'',
 				beianType:"",
 				photourl:'',
-				block:false,
+				block:true,
+				blockCont:true,
 				numberb:'',
 				showFlag:false,
 				onlyContent:true,
 				type:"",
 				investment_type:'',		//用户的投资类型；   是投资机构时才会出现
-				beianShow:false
+				beianShow:false,
+				completeness:""
 			}
 		},
 		mounted(){
@@ -123,12 +125,18 @@
 			this.beianType=this.userContent["type"];
 			this.photourl=this.userContent["photourl"];
 			this.type=this.userContent["type"];
+			if(this.type=='1' || this.type=='7'){
+				this.blockCont=false;
+			}
 			console.log(this.userContent)
 			if(this.userContent["type"]=='2'){
 				this.investment_type=localStorage.getItem("typeID");		//用户的投资类型；   是投资机构时才会出现的参数
 			}
 			if(this.userContent["type"]=='1' || this.userContent["type"]=='7'){
 				this.beianShow=true;
+				this.block=true;
+			}else{
+				this.block=false;
 			}
 			console.log(this.investment_type)
 			this.$nextTick(function(){
@@ -148,6 +156,7 @@
 			this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
 				this.data=res.body.data;
 				this.inof=res.body.data.info.feedback;
+				this.completeness=res.body.data.info.completeness;
 				console.log("个人资料");
 				console.log(res);
 //				if(this.data.exchange_card==0){
@@ -254,6 +263,7 @@
 			    background: #ffffff;
 			    margin-left:4.9%;
 			    border-radius:0.06rem;
+			    overflow:hidden;
 			    img{
 			    	width:100%;
 			    	height:100%;

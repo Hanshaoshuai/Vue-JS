@@ -25,36 +25,43 @@
 			
 			<div class="box">
 				<div v-for="(item,index) in data" class="tishi-bottom" @click.stop="xiangqing(item.id)">
-					<div class="tubiao"></div>
+					<div v-if="item.is_read=='0'" class="tubiao"></div>
 					<div class="borders">
 						<ul>
 							<li class="tishi-center">
 								<div class="content-heder">
 									<span>{{item.com_name}}</span>
 									<span class="text-center">{{item.com_code}}</span>
-									<span>&nbsp;{{item.type}}</span>
+									<span v-if="item.type==1" class="texts">&nbsp;定增</span>
+									<span v-if="item.type==2" class="texts">&nbsp;做市</span>
+									<span v-if="item.type==3" class="texts">&nbsp;转老股</span>
+									<span v-if="item.type==4" class="texts">&nbsp;股权质押</span>
+									<span v-if="item.type==5" class="texts">&nbsp;融资租赁</span>
+									<span v-if="item.type==6" class="texts">&nbsp;研报支持</span>
+									<span v-if="item.type==7" class="texts">&nbsp;公司调研</span>
+									<!--<span>&nbsp;{{item.type}}</span>-->
 								</div>
 							</li>
 						</ul>
 						<div class="fankiu">
 							<div class="content-food border-bottom">
 								<span class="laizi">来自：</span>
-								<img class="border" src="" alt="" />
-								<span>&nbsp;王美丽&nbsp;</span>
+								<!--<img class="border" src="" alt="" />-->
+								<span>&nbsp;{{item.uname}}&nbsp;</span>
 								<font class="bbb border-left"></font>
-								<span>投资经理</span>
-								<span>&nbsp;&nbsp;董秘</span>
+								<span>{{item.short}}</span>
+								<span>&nbsp;&nbsp;{{item.position}}</span>
 							</div>
 						</div>
 						<div class="zhuying_1">
 							<div class="ferst">今年预计收入{{item.predict_revenue}}亿，净利润{{item.predict_profit}}万</div>
 							<div class="last">
-								<p>资经理资经理资主营业经理主营业资经理资主营业经理资经理资经理{{item.lightspot}}</p>
+								<p>{{item.lightspot}}</p>
 							</div>
 						</div>
-						<div class="jieshu"><font>保密信息，禁止传播</font><span @click.stop="jieshu(item.id)">结束项目</span></div>
+						<div class="jieshu"><font>保密信息，禁止传播</font><span v-if="item.follow=='1' && item.end_follow!=1 && item.end_follow!=2" @click.stop="jieshu(item.id)">结束项目</span></div>
 						<div class="times border">
-							<span class="text-center">1小时前</span>
+							<span class="text-center">{{item.create_time}}小时前</span>
 							<span>发布</span>
 							<div class="times-name">
 								<font></font>
@@ -100,6 +107,7 @@
 	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 	import box from "../../box.vue";
 	import tishi from "../../Tishi.vue";
 //	import yifouxiangmu from "./YifouXiangmu.vue";
@@ -142,6 +150,7 @@
 			}
 		},
 		mounted() {
+			Indicator.open({spinnerType: 'fading-circle'});
 	    	console.log("计算高度")
 	      	this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
 	      	this.$refs.wrapper.addEventListener('scroll', this.handleScroll)	//做一个scroll监听
@@ -154,12 +163,14 @@
 			if(this.data==""){
 				this.$http.post(URL.path+'finance/received_item_list',token,{emulateJSON:true}).then(function(res){
 					this.data=res.body.data;
+					Indicator.close();
 					if(res.body.returnCode=='201'){
 						Toast("亲！您暂无收到新项目哦...")
 					}
 					console.log("投资人收到的项目列表");
 					console.log(res.body);
 				},function(res){
+					Indicator.close();
 				    console.log(res);
 				})
 			}	
@@ -241,6 +252,17 @@
 			xiangqing(XiangmuID){
 				console.log(XiangmuID)
 				this.XiangmuID=XiangmuID
+				//已读项目标记
+				var farams={
+		      		token:this.token,		//	token	是	[string]		
+					item_id:XiangmuID		//	项目id
+		      	}
+				this.$http.post(URL.path+'finance/read_item',farams,{emulateJSON:true}).then(function(res){
+					console.log("已标记");
+					console.log(res.body);
+				},function(res){
+				    console.log(res);
+				})
 				window.location.href="#/faxian/XinxiangMu/"+this.userContent['token']+"/XiangmuXiangqing"+'/'+XiangmuID;
 //				this.$refs.xiangqingShow.xiangqingBlock();
 			},

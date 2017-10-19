@@ -7,8 +7,47 @@
 					<span class="fanhui-butten" @click.stop="listnone()"><img src="./XinxiangMu/img/back.png"/></span>
 					<span>项目摘要</span>
 					<div class="fanhui-right">
-						<div @click.stop="yifouXiangmu()">
-							<font>分享</font>
+						<div>
+							<div ref="dcontent" id="dcontent" class="dcontent">
+								<!--<br/>-->
+								<!--<p class="heading">分享内容：</p>-->
+								<textarea style="display:none;" ref="sharecontent" id="sharecontent" rows="3">我正在使用HBuilder+HTML5开发移动应用，赶紧跟我一起来体验！</textarea>
+								<!--<br/><br/>-->
+								<!--<p class="heading">分享图片：</p>-->
+								<table style="width:100%; display:none;">
+									<tbody>
+										<tr>
+											<td style="width:30%"><div class="button button-select" onclick="shareCameraPicture()">拍照</div></td>
+											<td style="width:30%"><div class="button button-select" onclick="shareGalleryPicture()">相册选取</div></td>
+											<td style="width:30%"><div class="button button-select" onclick="shareLogoPicture()">使用logo图</div></td>
+										</tr>
+									</tbody>
+								</table>
+								<img style="display:none;" ref="pic" id="pic" src="./logo.png"/>
+								<!--<br/>-->
+								<div style="display:none;" class="button" onclick="shareShow()">分 享</div>
+								<div style="display:none;" class="button" onclick="shareSystem()">系统分享</div>
+								<!--<div style="padding: 0.5em 1em;"><hr color="#EEE"/></div>-->
+								
+								
+								<p style="display:none;" class="heading">链接地址：</p>
+								<input style="display:none;" ref="sharehref" id="sharehref" class="sharehref" type="url" value="https://www.baidu.com/?tn=57095150_2_oem_dg" placeholder="请输入要分享的链接地址"/>
+								<p style="display:none;" class="heading">链接标题：</p>
+								<input style="display:none;" ref="sharehrefTitle" id="sharehrefTitle" class="sharehref" type="text" value="DCloud HBuilder-做最好的HTML5开发工具" placeholder="请输入要分享的链接标题"/>
+								<p style="display:none;" class="heading">链接描述：</p>
+								<input style="display:none;" ref="sharehrefDes" id="sharehrefDes" class="sharehref" type="text" value="我正在使用HBuilder+HTML5开发移动应用，赶紧跟我一起来体验！" placeholder="请输入要分享的链接描述"/>
+								<div class="button" @click.stop="shareHref()">分享链接</div>
+								<!--v-on:click="increment"-->
+								
+								
+								<!--<br/><br/>-->
+								<!--<div style="padding: 0.5em 1em;"><hr color="#EEE"/></div>-->
+								<p style="display:none;" class="des">如果需要解除分享中绑定的用户信息，请点击解除授权：</p>
+								<div style="display:none;" class="button" onclick="cancelAuth()">解除授权</div>
+							</div>
+							<div ref="output" id="output" style="display:none;">
+								Share模块管理客户端的社交分享功能，提供调用终端社交软件的分享能力。通过plus.share可获取社交分享管理对象。
+							</div>
 						</div>
 					</div>
 				</div>
@@ -23,7 +62,14 @@
 									<div class="content-heder">
 										<span>{{data.com_name}}</span>
 										<span class="text-center">{{data.com_code}}</span>
-										<span>&nbsp;{{data.type}}</span>
+										<span v-if="data.type==1" class="texts">&nbsp;定增</span>
+										<span v-if="data.type==2" class="texts">&nbsp;做市</span>
+										<span v-if="data.type==3" class="texts">&nbsp;转老股</span>
+										<span v-if="data.type==4" class="texts">&nbsp;股权质押</span>
+										<span v-if="data.type==5" class="texts">&nbsp;融资租赁</span>
+										<span v-if="data.type==6" class="texts">&nbsp;研报支持</span>
+										<span v-if="data.type==7" class="texts">&nbsp;公司调研</span>
+										<!--<span>&nbsp;{{data.type}}</span>-->
 									</div>
 								</li>
 								<li class="border-bottom"></li>
@@ -59,13 +105,15 @@
 					</div>
 				</div>
 			</div>
-			<div class="zhaiyao-food" @click.stop="butten"><span>{{ButtenName}}</span></div>
+			<div v-show="utype" class="zhaiyao-food" @click.stop="butten()"><span>{{ButtenName}}</span></div>
 		</div>
 	</transition>
 </template>
 
 <script type="text/ecmascript">
 //	import Vue from "vue";
+	import {common} from "../../common/js/common.js";
+	import {common1} from "../../common/js/common1.js";
 	import { Toast } from 'mint-ui';
 	import { MessageBox } from 'mint-ui';
 	import {URL} from '../../common/js/path';
@@ -90,11 +138,23 @@
 				ButtenName:"索要完整项目信息",
 				showFlag:true,
 				fankui:13,
-				genjin:50
+				genjin:50,
+				utype:true,
+				sharecontent:"",
+				pic:"",
+				sharehref:'',
+				sharehrefTitle:'',
+				sharehrefDes:"",
+				output:"",
+				dcontent:""
+				
 //				onlyContent:true
 			}
 		},
 		mounted(){
+			if(localStorage.getItem("type")=='1' || localStorage.getItem("type")=='7'){
+				this.utype=false;
+			};
 			//项目详情
 			var data = {
 				token:this.$route.params.token,
@@ -104,6 +164,11 @@
 			this.$http.post(URL.path+'finance/item_detail',data,{emulateJSON:true}).then(function(res){
 				this.data=res.body.data[0]
 				console.log(res);
+				this.$nextTick(function(){
+					this.output=this.$refs.output
+					this.dcontent=this.$refs.dcontent;
+//					common(this.output,this.dcontent,window);
+				});
 			},function(res){
 			    console.log(res.status);
 			})
@@ -112,6 +177,18 @@
 			listnone(){
 				history.go(-1)
 //				this.showFlag=false;
+			},
+			shareHref(){
+				this.dcontent=this.$refs.dcontent;
+				this.sharecontent=this.$refs.sharecontent;
+				this.pic=this.$refs.pic;
+				this.sharehref=this.$refs.sharehref;
+				this.sharehrefTitle=this.$refs.sharehrefTitle;
+				this.sharehrefDes=this.$refs.sharehrefDes;
+				this.output=this.$refs.output;
+				console.log(this.sharehref.value)
+//				common(this.output,this.dcontent,window);
+				common1(this.sharecontent,this.pic,this.sharehref,this.sharehrefTitle,this.sharehrefDes,this.output);
 			},
 			butten(){
 				MessageBox.confirm('您确定要联系对方并索要完整项目信息吗?').then(action => {

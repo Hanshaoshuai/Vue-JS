@@ -69,13 +69,13 @@
 						</div>
 					</div>
 					<div class="times">
-						<span class="times_1">领天</span>
+						<!--<span class="times_1">领天</span>
 						<span class="text-center">1小时前</span>
 						<span>发布</span>
 						<div class="times-name">
 							<span>{{fankui}}反馈</span>
 							<span class="text-center">{{genjin}}跟进</span>
-						</div>
+						</div>-->
 					</div>
 				</div>
 				<div class="baoming border-top">
@@ -103,6 +103,7 @@
 	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 	import box from "../../box.vue";
 	import pipei from "../../faxian/WoyaoRongzi/PipeiTouziRen/Pipei.vue";
 	import tishi from "../../Tishi.vue";
@@ -115,7 +116,8 @@
 			token:{
 //				type:Object
 			},
-			XiangmuID:{}
+			XiangmuID:{},
+			is_send:{}
 		},
 		data () {
 			return {
@@ -153,10 +155,15 @@
 				},
 				content:"",			//给下级要传的参数
 				none:true,
-				toudi:'继续投递'
+				toudi:'投递'
 			}
 		},
 		mounted(){
+			if(this.is_send=='1'){
+				this.none=false;
+				this.toudi='继续投递';
+			}
+			Indicator.open({spinnerType: 'fading-circle'});
 			var datas = {
 				token:this.token,
 				item_id:this.XiangmuID,			//	项目id
@@ -165,6 +172,7 @@
 			console.log(this.token)
 			//历史项目详情
 			this.$http.post(URL.path+'finance/item_detail',datas,{emulateJSON:true}).then(function(res){
+				Indicator.close();
 				this.data=res.body.data[0]
 				this.texta=this.data.com_name
 				this.textb=this.data.com_code
@@ -180,6 +188,7 @@
 				this.type=this.data.type
 				console.log(this.data);
 			},function(res){
+				Indicator.close();
 			    console.log(res.status);
 			})
 		},
@@ -400,6 +409,7 @@
 						border:1px solid #ebebeb;
 						/*background:#f5f4f9;*/
 						.mint-field-core{
+							color: #787777;
 							resize: none;
 							font-size:0.14rem;
 							/*background:#f5f4f9;*/
@@ -433,7 +443,7 @@
 							top:0;
 						}
 						.mint-field-core::-webkit-input-placeholder{
-							color:#afafaf;
+							color: #787777;
 						}
 					}
 					.last-bottom{
@@ -450,37 +460,6 @@
 					height:0.3rem;
 					background:#fff;
 					line-height:0.3rem;
-					.times_1{
-						display:inline-block;
-						padding-left:0.2rem;
-					}
-					.text-center{
-						display:inline-block;
-						padding:0 0.08rem;
-					}
-					.times-name{
-						float:right;
-						margin-right:0.1rem;
-					}
-				}
-				.times{
-					width:100%;
-					height:0.3rem;
-					background:#fff;
-					line-height:0.3rem;
-					font-size:0.12rem;
-					.times_1{
-						display:inline-block;
-						padding-left:0.2rem;
-					}
-					.text-center{
-						display:inline-block;
-						padding:0 0.08rem;
-					}
-					.times-name{
-						float:right;
-						margin-right:0.1rem;
-					}
 				}
 			}
 			.baoming{

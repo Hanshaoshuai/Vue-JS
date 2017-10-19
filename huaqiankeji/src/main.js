@@ -7,7 +7,8 @@ import Mint from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import App from './App.vue'
 
-
+import VueScroller from 'vue-scroller'
+Vue.use(VueScroller)
 //import './common/stylus/index.scss'
 
 //Vue.use相当于全局注册

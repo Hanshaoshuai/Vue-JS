@@ -23,10 +23,10 @@
 							<span class="lasst" ref="text2" @click.stap="bianji2('5')">编辑</span>
 							<div v-if="BianJi2==0" class="content-touzi" ref="foods">
 								<ul>
-									<li v-show="x" class="src1" id='5'>
+									<li v-show="x" class="src1" id='1'>
 										<span>定增</span><font class="img1"></font>
 									</li>
-									<li v-show="z" class="src1" id="4">
+									<li v-show="z" class="src1" id="2">
 										<span>接老股</span><font class="img1"></font>
 									</li>
 									
@@ -34,10 +34,10 @@
 							</div>
 							<div v-if="BianJi2==1" class="content-touzi" ref="foods">
 								<ul>
-									<li class="src1" id='5' @click.stap="types('0','5')">
+									<li class="src1" id='1' @click.stap="types('0','1')">
 										<span>定增</span><font class="img1"></font>
 									</li>
-									<li class="src0" id="4" @click.stap="types('1','4')">
+									<li class="src0" id="2" @click.stap="types('1','2')">
 										<span>接老股</span><font class="img1"></font>
 									</li>
 									
@@ -74,6 +74,9 @@
 						<span v-if="!bianList" ref='text5' class="lasst" @click.stap="baocunList()">保存</span>
 					</div>
 					<div class="xiaolv anli">
+						<div v-if="!YitouList" class="anli-list border-top">
+							<span>暂无案例</span>
+						</div>
 						<div v-for="(item,index) in YitouList" class="anli-list border-top">
 							<span>
 								{{item.com_short}}
@@ -93,38 +96,44 @@
 				</div>
 				<div style="height:0.06rem;width:100%;background:#f5f4f9"></div>
 				<div class="guQuan">
-					<div ref="chanYe" class="sousuo-content border-topbottom">
+					<div class="sousuo-content border-topbottom">
 						<div class="content-header border-topbottom">
 							<span>产业资源</span><span ref="bianji3" class="lasst" @click.stap="bianji('3')">编辑</span>
 						</div>
 						<div class="xiaolv anli">
-							<ul class="first">
+							<ul v-if="BianJi5==0" class="first">
 								<li>
 									<textarea readOnly="true" placeholder="请用文字表述您所在机构能给企业带来的产业资源" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+								</li>
+							</ul>
+							<ul v-if="BianJi5==1" class="first">
+								<li>
+									<textarea ref="chanYe" placeholder="请用文字表述您所在机构能给企业带来的产业资源" class="mint-field-core ziyuanChongzu" v-model="textc1"></textarea>
 								</li>
 							</ul>
 						</div>
 					</div>
 					<div style="height:0.06rem;width:100%;background:#f5f4f9"></div>
-					<div ref="chongGou" class="sousuo-content border-topbottom">
+					<div class="sousuo-content border-topbottom">
 						<div class="content-header border-topbottom">
 							<span>并购重组</span><span ref="bianji4" class="lasst" @click.stap="bianji('4')">编辑</span>
 						</div>
 						<div class="xiaolv anli">
-							<ul class="first">
+							<ul v-if="BianJi4==0" class="first">
 								<li>
 									<textarea readOnly="true" placeholder="请用文字表述您有意愿进行收购和出售的资产" class="mint-field-core ziyuanChongzu" v-model="textd"></textarea>
+								</li>
+							</ul>
+							<ul v-if="BianJi4==1" class="first">
+								<li>
+									<textarea ref="chongGou" placeholder="请用文字表述您有意愿进行收购和出售的资产" class="mint-field-core ziyuanChongzu" v-model="textd1"></textarea>
 								</li>
 							</ul>
 						</div>
 					</div>
 				</div>
 				<box></box>
-				<div class="butten">
-					<ul>
-						<li><span @click.stop="liuYan()">留言</span></li>
-					</ul>
-				</div>
+				<box></box>
 			</div>
 			<!--<youhuiquan ref="youhuiShow"></youhuiquan>-->
 		</div>
@@ -135,6 +144,7 @@
 	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 	import box from "../../box.vue";
 //	import youhuiquan from "../../shendu/PeixunZixun/YouhuiQuan.vue";
 //	import fankuixinxi from "./FankuiXinxi.vue";
@@ -178,6 +188,8 @@
 				texta:'',
 				textc:"",
 				textd:"",
+				textc1:"",
+				textd1:"",
 				fankui:"45",
 				genjin:"458",
 				SuozaiHangye1:"",
@@ -201,6 +213,7 @@
 			}
 		},
 		mounted(){
+			Indicator.open({spinnerType: 'fading-circle'});
 			console.log(this.userContent)
 //			个人资料
 			var params={
@@ -208,6 +221,7 @@
 	    		terminalNo:3
 	    	}
 			this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
+				Indicator.close();
 				this.data=res.body.data;
 				this.numberToh=this.data.info.single_project_max;	//原数据
 				this.numberToi=this.data.info.single_project_min;	//原数据
@@ -215,20 +229,26 @@
 				this.numbere=this.data.info.single_project_min;	//单笔投资额  将要改变的数据
 				this.numberTog=this.numberToi+'万 - '+this.numberToh+'万';  //要插到页面的
 				
+				this.textc=this.data.info.resources;		//原数据
+				this.textd=this.data.info.restructuring;	//原数据
+				this.textc1=this.data.info.resources;		//将要改变的数据
+				this.textd1=this.data.info.restructuring;	//将要改变的数据
+				
 				this.SuozaiHangye1=this.data.info.investment_way;		//投资方式		原来的数据字符串
 				var SuozaiHangye=this.data.info.investment_way;		//投资方式		原来的数据字符串
 				this.SuozaiHangye=SuozaiHangye.split(',');
 				for(var i=0; i<SuozaiHangye.length; i++){
-					if(SuozaiHangye[i]==5){
+					if(SuozaiHangye[i]==1){
 						this.x=true;
 					}
-					if(SuozaiHangye[i]==4){
+					if(SuozaiHangye[i]==2){
 						this.z=true;
 					}
 				}
 				console.log("个人资料");
 				console.log(res);
 			},function(res){
+				Indicator.close();
 			    console.log(res);
 			})
 			//已投案例接口   已投项目列表		调用
@@ -248,17 +268,29 @@
 				var max_nuwID2;
 				var min_nuwID2;
 				var investment_way;
+				var textc1;		//将要改变的数据
+				var textd1;		//将要改变的数据
 				if(this.BianJi3=='0'){		//原来数据
-					min_nuwID2=this.numberc;
-					max_nuwID2=this.numberd;
+					min_nuwID2=this.numberToi;
+					max_nuwID2=this.numberToh;
 				}else{						//改后数据
 					min_nuwID2=this.numbere;
 					max_nuwID2=this.numberf;
 				}
 				if(this.BianJi2=='0'){
-					investment_way=this.SuozaiHangye1;
+					investment_way=this.SuozaiHangye1;	//原来数据
 				}else{
-					investment_way=this.biaoQianid2;
+					investment_way=this.biaoQianid2;	//改后数据
+				}
+				if(this.BianJi4=='0'){		//原来数据
+					textd1=this.data.info.restructuring;
+				}else{						//改后数据
+					textd1=this.textd1;
+				}
+				if(this.BianJi5=='0'){
+					textc1=this.data.info.resources;
+				}else{
+					textc1=this.textc1;
 				}
 				var datas={
 					id:localStorage.getItem("userID"),			//	uid	是	[string]		
@@ -267,7 +299,9 @@
 					single_project_max:max_nuwID2,		//	单笔投资最大值	是	[string]		
 					single_project_min:min_nuwID2,		//	单笔投资最小值	是	[string]		
 					board:"",					//	是否有新三板账户 1有 2 没有	是	[string]		
-					know_risk:""				//	是否了解新三板风险 1 了解， 2 不了解	是	[string]
+					know_risk:"",				//	是否了解新三板风险 1 了解， 2 不了解	是	[string]
+					resources:textc1,
+					restructuring:textd1
 				}
 				console.log(datas)
 				this.$http.post(URL.path+'regist/personal',datas,{emulateJSON:true}).then(function(res){
@@ -336,30 +370,26 @@
 					if(id==3){
 						if(this.$refs.bianji3.innerText=="编辑"){
 							this.$refs.bianji3.innerText="取消";
-							var textInputs = this.$refs.chanYe.getElementsByClassName("mint-field-core");
-							textInputs[0].removeAttribute("readOnly")		//点击编辑   input去除属性readOnly即可编辑
-							textInputs[0].focus();		//点击编辑   input获取焦点
-							console.log();
+							this.BianJi5=1;
+							this.$nextTick(function() {
+								this.$refs.chanYe.focus();	//点击编辑   input获取焦点
+								console.log();
+							})
 						}else{
 							this.$refs.bianji3.innerText="编辑";
-							var textInputs = this.$refs.chanYe.getElementsByClassName("mint-field-core");
-							textInputs[0].setAttribute("readOnly","readOnly")		//点击编辑   input去除属性readOnly即可编辑
-							textInputs[0].focus();		//点击编辑   input获取焦点
-							console.log();
+							this.BianJi5=0;
 						}
 					}else{
 						if(this.$refs.bianji4.innerText=="编辑"){
 							this.$refs.bianji4.innerText="取消";
-							var textInputs = this.$refs.chongGou.getElementsByClassName("mint-field-core");
-							textInputs[0].removeAttribute("readOnly")		//点击编辑   input去除属性readOnly即可编辑
-							textInputs[0].focus();		//点击编辑   input获取焦点
-							console.log();
+							this.BianJi4=1;
+							this.$nextTick(function() {
+								this.$refs.chongGou.focus();	//点击编辑   input获取焦点
+								console.log();
+							})
 						}else{
 							this.$refs.bianji4.innerText="编辑";
-							var textInputs = this.$refs.chongGou.getElementsByClassName("mint-field-core");
-							textInputs[0].setAttribute("readOnly","readOnly")		//点击编辑   input去除属性readOnly即可编辑
-							textInputs[0].focus();		//点击编辑   input获取焦点
-							console.log();
+							this.BianJi4=0;
 						}
 					}
 					
@@ -375,8 +405,8 @@
 					this.$refs.text2.innerText="取消"
 					var typeLi=this.$refs.foods.getElementsByTagName("li");
 					if(typeLi[0].getAttribute("class")=="src1"){
-						this.biaoQianID2=['5'];
-						this.biaoQianid2='5';
+						this.biaoQianID2=['1'];
+						this.biaoQianid2='1';
 					}else{
 						this.biaoQianID2=[];
 						this.biaoQianid2='';
@@ -1062,25 +1092,6 @@
 							margin:0;
 							padding:0.04rem 0.14rem;
 							margin:0.06rem 0.1rem;
-						}
-					}
-				}
-			}
-			.butten{
-				width:100%;
-				ul{
-					width:100%;
-					li{
-						width:100%;
-						padding:0.21rem 0 0.28rem 0;
-						text-align:center;
-						span{
-							display:inline-block;
-							padding:0.11rem 0.4rem;
-							background:#ff7a59;
-							color:#fff;
-							border-radius:0.04rem;
-							border:0.008rem solid #cccccc;
 						}
 					}
 				}

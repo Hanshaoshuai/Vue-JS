@@ -128,6 +128,7 @@
 	import {URL} from '../../../common/js/path';
 	import { Toast } from 'mint-ui';
 	import { Field } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 //	import BScroll from "better-scroll";
 //	import {formatDate} from "../../common/js/date.js";
 //	import cartcontrol from "../cartcontrol/cartcontrol.vue";
@@ -197,14 +198,14 @@
 					id:this.CanShu.id,				//	uid	是	[string]	
 					investment_type:this.CanShu.typeID,		//投资类型 1:股权投资 2:债权投资 3:股债兼投	是	[string]		
 					interested:this.CanShu.biaoQianid,		//感兴趣的行业多个用逗号分割	是	[string]		
-					single_project_max:this.CanShu.numbere,		//单笔投资最大值	是	[string]		
-					single_project_min:this.CanShu.numberf,		//单笔投资最小值	是	[string]		
+					single_project_max:this.CanShu.numberf,		//单笔投资最大值	是	[string]		
+					single_project_min:this.CanShu.numbere,		//单笔投资最小值	是	[string]		
 					fund_stage:this.CanShu.biaoQianid1,			//投资阶段 15债转股 16债权 17 新三板 62PE 63 VC 64 天使投资 75PreIPO	是	[string]		
 					territory:this.CanShu.texta,			//地域要求	是	[string]		
 					
 					investment_way:this.biaoQianid,			//投资方式 1:定增 2:接老股 3:二级市场 4:融资租赁 5:股权质押 6:双创债	是	[string]
-					single_project_max2:this.numbere,		//单笔投资最大值	是	[string]		
-					single_project_min2:this.numberf,		//单笔投资最小值	是	[string]		
+					single_project_max2:this.numberf,		//单笔投资最大值	是	[string]		
+					single_project_min2:this.numbere,		//单笔投资最小值	是	[string]		
 					revenue_min:this.numbera,				//最低营收要求	是	[string]		
 					profit_min:this.numberb,				//最低净利润要求	是	[string]		
 					fund_min:this.numberc,					//最小年化资金成本范围	是	[string]		
@@ -222,7 +223,9 @@
 					}
 				}
 				if(ok==0){
+					Indicator.open({spinnerType: 'fading-circle'});
 					this.$http.post(URL.path+'regist/regist2',datas,{emulateJSON:true}).then(function(res){
+						Indicator.close();
 						if(res.body.returnCode=='200'){
 							Toast('资料完善成功');
 							console.log(res.body)
@@ -235,6 +238,7 @@
 					    console.log(res.status);
 					})
 				}else{
+					Indicator.close();
 					Toast("请填写完整您的信息！是否已选标签...");
 				}
 			},

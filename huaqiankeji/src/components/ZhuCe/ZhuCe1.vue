@@ -63,6 +63,7 @@
 	import {URL} from '../../common/js/path';
 	import { Toast } from 'mint-ui';
 	import { Field } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 	import mingpian from "../ShangchuanMingpian.vue";
 	import touxiang from "../ShangchuanTouxiang.vue";
 
@@ -129,15 +130,17 @@
 				var data={			//财务顾问  做市商直接注册
 					phone:this.datas['phone'],	//	手机号	是	[string]	
 					card:this.$refs.mingpianID.mingpianID,					//	名片	名片id	是	[string]	
-					ctype:this.type,		//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商	是	[string]	
+					ctype:this.type,		//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商 7:财务顾问	是	[string]	
 					smscode:this.datas['texts'],			//短信验证码	是	[string]	
 					repwd:this.datas['pwd'],				//重复密码	是	[string]	
 					pwd:this.datas['pwd'],				//密码	是	[string]	
 					photo:this.$refs.touxiangID.touxiangID				//头像id	是	[string]
 				}
 				if(this.index==0){		//投资机构下一步
+					Indicator.open({spinnerType: 'fading-circle'});
 					localStorage.setItem("typeID",this.typeID);
 					this.$http.post(URL.path+'regist/go',data,{emulateJSON:true}).then(function(res){
+						Indicator.close();
 	                    console.log(res);
 						if(res.body.returnCode=='200'){
 							Toast('注册成功请进行下一步完善信息');
@@ -159,13 +162,16 @@
 							Toast(res.body.msg);
 						}
 	                },function(res){
+	                	Indicator.close();
 	                	this.mingpianID=1;
 	                	Toast("系统正忙请稍后！");
 	                    console.log(res);
 	                });
 				}else{
 					if(this.index==1 || this.index==5){
+						Indicator.open({spinnerType: 'fading-circle'});
 						this.$http.post(URL.path+'regist/go',data,{emulateJSON:true}).then(function(res){
+							Indicator.close();
 		                    console.log(res);
 							if(res.body.returnCode=='200'){
 								Toast('注册成功');
@@ -186,12 +192,15 @@
 								Toast(res.body.msg);
 							}
 		                },function(res){
+		                	Indicator.close();
 		                	this.mingpianID=1;
 		                	Toast("系统正忙请稍后！");
 		                    console.log(res);
 		                });
 					}else{
+						Indicator.open({spinnerType: 'fading-circle'});
 						this.$http.post(URL.path+'regist/go',data,{emulateJSON:true}).then(function(res){
+							Indicator.close();
 		                    console.log(res);
 							if(res.body.returnCode=='200'){
 								Toast('注册成功请进行下一步完善信息');
@@ -204,6 +213,7 @@
 							    }
 								localStorage.setItem("userID",res.body.data.id);
 								localStorage.setItem("token",res.body.data.token);
+								localStorage.setItem("phone",res.body.data.phone);
 								localStorage.setItem("type",this.type);
 								console.log(this.XiajiCanshu)
 								window.location.href="#/zhuce/ZhuCe1/"+this.type+"/type"+this.index;
@@ -212,6 +222,7 @@
 								Toast(res.body.msg);
 							}
 		                },function(res){
+		                	Indicator.close();
 		                	this.mingpianID=1;
 		                	Toast("系统正忙请稍后！");
 		                    console.log(res);
@@ -223,7 +234,7 @@
 			},
 			xuanze(index,type){
 				this.type=type;
-				console.log(index)
+				console.log(type)
 //				console.log(this.$refs.biaoqian.getElementsByTagName("span"))
 				var spans=this.$refs.biaoqian.getElementsByTagName("span")
 				var length=spans.length;

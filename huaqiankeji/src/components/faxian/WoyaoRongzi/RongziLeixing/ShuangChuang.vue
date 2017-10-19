@@ -167,7 +167,7 @@
 					numberf:this.numberf,
 					numberg:this.numberg,
 					numberf:this.numberh,
-					numberf:this.numberi
+					numberf:this.numberi,
 				}
 				var ok=0;
 				for(var item in CanShu){		//判断填写信息是否完整Ok=1；标签必选

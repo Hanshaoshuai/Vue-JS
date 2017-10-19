@@ -6,14 +6,17 @@
 				<div class="home-search">
 					<input v-model="texts" placeholder="请输入网址" type="url" class="mint-field-core sousuo">
 				</div>
+				<span class="sousuoGo" @click.stap="sousuoGo()">搜索</span>
 				<!--<span @click.stop="sousuoTo">搜索</span>-->
 			</div>
-			<div class="box" ref="wrapper">
+			<!--<div class="box" ref="wrapper">-->
+				<scroller class="box"  :on-infinite="infinite" ref="myscroller">
 				<div class="wenzhang-content" ref="tianjia">
-					<div v-for="(item,index) in data" class="sousuo-content border-topbottom" @click.stop="xiangQing('2','3')">
-<!--循环遍历-->		<!--<div v-for="(item,index) in data" class="sousuo-content border-topbottom" @click.stop="xiangQing(item.ctype,'3')">-->
+					<!--<div v-for="(item,index) in data" class="sousuo-content border-topbottom" @click.stop="xiangQing('7','3',item.id)">-->
+<!--循环遍历-->		<div v-for="(item,index) in data" class="sousuo-content border-topbottom" @click.stop="xiangQing(item.ctype,item.investment_type,item.id)">
 						<div class="content-header">
-							<font><img src="" :rul="item.photo"/></font>
+							<!--<font><img src="" :rul="item.photo"/></font>-->
+							<font><img :src="item.photo"/></font>
 							<div class="names">
 								<span class="border-right">{{item.uname}}</span>
 								<span>{{item.com_name}}</span>&nbsp;
@@ -37,22 +40,24 @@
 						<div class="leimu">
 							<div class="zhonglei">
 								<span class="jieduan">阶段：PE</span>
-								<span  class="dangbi">单笔投资：1000万-2000万</span>
-								<span  class="zijin">资金成本：年化20%-30%</span>
-								<span  class="fangkuan">放款速度：不超过90天</span>
-								<span  class="lingyu">领域：医疗、军事</span>
+								<span class="dangbi">单笔投资：1000万-2000万</span>
+								<span class="zijin">资金成本：年化20%-30%</span>
+								<span class="fangkuan">放款速度：不超过90天</span>
+								<span class="lingyu">领域：医疗、军事</span>
 							</div>
 						</div>
 					</div>
-				</div>			
-			</div>
-			<router-view :userContent="userContent"></router-view>
+				</div>
+				</scroller>
+			<!--</div>-->
+			<router-view :userContent="userContent" :uid="uid"></router-view>
 			<!--<router-view :setscrollTop="scrollTop" :datas="datas" :TouziToken='TouziToken'></router-view>-->
 		</div>
 	</transition>
 </template>
 
 <script type="text/ecmascript">
+	import VueScroller from 'vue-scroller'
 	import {URL} from '../../common/js/path';
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
@@ -77,6 +82,7 @@
 		data () {
 			return {
 				data:"",
+				uid:"",
 				texts:'',
 				times:20177111129,
 				showList:false,
@@ -87,7 +93,9 @@
 				num:"",
 				n:"",		//存储图片加载到的位置，避免每次都从第一张图片开始遍历
 				height:0,
-				page:1
+				page:1,
+				noData: '',
+            	moveList: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
 			}
 		},
 		mounted(){
@@ -97,8 +105,10 @@
 			yijianHind(){
 				history.go(-1)
 			},
-			xiangQing(id,Tid){		//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构/研究咨询 5:券商研究员/财务顾问 6:新三板做市商
+			xiangQing(id,Tid,uid){		//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构/研究咨询 5:券商研究员 6:新三板做市商 7:财务顾问
 //				window.location.href="#/faxian/sousuo/"+this.$route.params.token+'/'+"SousuoLeixing";
+				this.uid=uid;
+				console.log(Tid)
 				if(id=='2'){
 					window.location.href="#/faxian/sousuo/ZiliaoT"+Tid+"/"+this.userContent["token"];//1:股权投资   2:债权投资   3:股债兼投
 				}else{
@@ -132,18 +142,92 @@
 						this.height+=201;
 					}
 				}
-			}
+			},
+			sousuoGo(newVal){
+				this.height=0;
+				console.log("开始搜索")
+				var thata=this;
+				if(this.texts!==""){
+					Indicator.open({spinnerType: 'fading-circle'});
+					var thata=this;
+//					clearTimeout(this.timer);
+//					this.timer=setTimeout(function(){
+						//搜索接口地址
+	//					var url = 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd='+newVal;
+	//					that.requestData(url)
+						var params={
+				    		terminalNo:3,
+				    		ctype:4,
+//							ctype:thata.type,			//用户身份
+	//						interested:			//1,2,3,4,5,6
+							kw:this.texts,					//关键词搜索
+							page:thata.page
+				    	}
+						console.log(params)
+						thata.$http.post(URL.path1+'welcome',params,{emulateJSON:true}).then(function(res){
+							this.page=this.page*1;
+							this.page=this.page+=1;
+							Indicator.close();
+							thata.data=res.body.data;
+							if(thata.data.length=='0'){
+								Toast("暂无您想要的结果！")
+							}
+//							this.$nextTick(function(){
+//								this.img = this.$refs.tianjia.getElementsByTagName("img");
+//								this.num = this.img.length;
+//								this.n = 0; //存储图片加载到的位置，避免每次都从第一张图片开始遍历
+//								this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+//	      						this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
+//	      						this.imgs()
+//							});
+							console.log(res);
+						},function(res){
+							Indicator.close();
+						    console.log(res);
+						})
+//					},500)
+				}
+//			}
 		},
-		watch:{
-			texts:function(newVal){
+			infinite(done) {
+                console.log(this.noData)
+                if(this.noData) {
+                setTimeout(()=>{
+                    this.$refs.myscroller.finishInfinite(2);
+                })
+                return;
+                }
+                let self = this;
+                let start = this.moveList.length;
+
+                setTimeout(() => {
+                    for(let i = start + 1; i < start + 10; i++) {
+                        self.moveList.push(i)
+                    }
+                    if(start > 30) {
+                        self.noData = "没有更多数据"
+                    }
+                    self.$refs.myscroller.resize();
+                    done()
+                }, 1500)
+
+            },
+            refresh() {
+                console.log('refresh')
+            }
+
+		},
+//		watch:{
+//			texts:function(newVal){
+			sousuoGo(newVal){
 				Indicator.open({spinnerType: 'fading-circle'});
 				this.height=0;
 				console.log("开始搜索")
 				var thata=this;
-				if(newVal!==""){
+				if(this.texts!==""){
 					var thata=this;
-					clearTimeout(this.timer);
-					this.timer=setTimeout(function(){
+//					clearTimeout(this.timer);
+//					this.timer=setTimeout(function(){
 						//搜索接口地址
 	//					var url = 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd='+newVal;
 	//					that.requestData(url)
@@ -152,7 +236,7 @@
 				    		ctype:6,
 //							ctype:thata.type,			//用户身份
 	//						interested:			//1,2,3,4,5,6
-							kw:newVal,					//关键词搜索
+							kw:this.texts,					//关键词搜索
 							page:thata.page
 				    	}
 						console.log(params)
@@ -177,9 +261,9 @@
 							Indicator.close();
 						    console.log(res);
 						})
-					},500)
+//					},500)
 				}
-			}
+//			}
 		},
 		events:{
 			
@@ -262,30 +346,46 @@
 		    	z-index:10000;
 		    }*/
 		    .home-search {
-		    	position: absolute;
+		    	position:absolute;
 		    	margin:auto;
 		    	top:0;
-		    	left:0.2rem;
+		    	left:0;
 		    	right:0;
 		    	bottom:0;
-			    width: 80%;
+			    width: 78%;
 			    height: 0.3rem;
+			    z-index:300;
 			    /*background: #ffffff;*/
 			    /*color: #CACACA;*/
 			    font-size: 0.14rem;
 			    .sousuo{
-			    	border-radius:0.1rem;
+			    	border-radius:0.3rem;
 			    	padding-left:4%;
 			    	width:96%;
 			    	height:100%;
 			    }
 			}
+			.sousuoGo{
+		    	display:inline-block;
+		    	position:absolute;
+		    	height:0.28rem;
+		    	top:0.08rem;
+		    	right:0;
+		    	color:#fff;
+		    	line-height: 0.3rem;
+		    	padding:0 0.1rem;
+		    	border-radius:0.1rem;
+		    	/*border-left:1px solid #F2F2F2;*/
+		    	/*box-shadow: -0.02rem 0.02rem 0rem #e4e3e8;*/
+		    	/*box-sizing:border-box;*/
+		    	z-index:600;
+		    }
 		}
 		.box::-webkit-scrollbar{width:0px;}
 		.box{
 			width:100%;
 			height:100%;
-			overflow-y:auto;
+			/*overflow-y:scroll;*/
 			-webkit-overflow-scrolling:touch;  		/*解决ios滑动*/
 			.wenzhang-content{
 				width:95%;
@@ -317,7 +417,7 @@
 							overflow:hidden;
 							img{
 								width:100%;
-								/*height:100%;*/
+								height:100%;
 							}
 						}
 						.names{

@@ -11,11 +11,11 @@
 				<div class="fankiu border">
 					<div class="content-food">
 						<span class="laizi">来自：</span>
-						<img class="border" src="" alt="" />
+						<!--<img class="border" src="" alt="" />-->
 						<span>&nbsp;{{data.uname}}&nbsp;</span>
 						<font class="bbb border-left"></font>
-						<span>投资经理</span>
-						<span>&nbsp;&nbsp;董秘</span>
+						<span>{{data.com_short}}</span>
+						<span>&nbsp;&nbsp;{{data.position}}</span>
 						<div class="tousu"><span>投诉</span></div>
 					</div>
 				</div>
@@ -27,7 +27,14 @@
 								<div class="content-heder">
 									<span>{{data.com_name}}</span>
 									<span class="text-center">{{data.com_code}}</span>
-									<span>&nbsp;{{data.type}}</span>
+									<span v-if="data.type==1" class="texts">&nbsp;定增</span>
+									<span v-if="data.type==2" class="texts">&nbsp;做市</span>
+									<span v-if="data.type==3" class="texts">&nbsp;转老股</span>
+									<span v-if="data.type==4" class="texts">&nbsp;股权质押</span>
+									<span v-if="data.type==5" class="texts">&nbsp;融资租赁</span>
+									<span v-if="data.type==6" class="texts">&nbsp;研报支持</span>
+									<span v-if="data.type==7" class="texts">&nbsp;公司调研</span>
+									<!--<span>&nbsp;{{data.type}}</span>-->
 								</div>
 							</li>
 							<li class="border-bottom"></li>
@@ -35,7 +42,7 @@
 						<div class="zhuying_1">
 							<div class="ferst"><span></span>项目推荐</div>
 							<div class="last">
-								<p>{{data.lightspot}}资经理资经理资主营业经理主营业资经理资主营业经理资经理资经理</p>
+								<p>{{data.lightspot}}</p>
 							</div>
 						</div>
 					</div>
@@ -73,7 +80,7 @@
 					</div>
 				</div>
 				<box></box>
-				<div class="butten">
+				<div v-if="data.end_follow!='2'" class="butten">
 					<div class="tousu"><span>保密信息，禁止传播</span></div>
 					<ul>
 						<li @click.stap="liuYanTo()"><span :class="liuYans"></span><p>留言询问</p></li>
@@ -89,9 +96,9 @@
 					<!--</ul>-->
 				</div>
 			</div>
-			<div class="baoming border-top">
-				<span class="border-right" :class="butenLeft" @click.stap="genJin()">跟进</span>
-				<span :class="butenRight" @click.stap="buGen()">暂不跟进</span>
+			<div v-if="data.end_follow!='2'" class="baoming border-top">
+				<span class="border-right" :class="butenLeft" @click.stap="genJin()">{{genjins}}</span>
+				<span :class="butenRight" @click.stap="buGen()">{{bugen}}</span>
 				<!--<span class="border-right" :class="butenLeft" @click.stap="genJin()">我要报名</span>
 				<span :class="butenRight" @click.stap="buGen()">不参加</span>-->
 			</div>
@@ -106,6 +113,7 @@
 	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 	import box from "../../box.vue";
 	import tishi from "../../Tishi.vue";
 //	import youhuiquan from "../../shendu/PeixunZixun/YouhuiQuan.vue";
@@ -145,10 +153,13 @@
 				},
 				content:"xiangmuXiangqing",			//给下级要传的参数
 				mingPian:"huanQu",
-				types:"0"
+				types:"0",
+				genjins:"跟进",
+				bugen:"暂不跟进"
 			}
 		},
 		mounted(){
+			Indicator.open({spinnerType: 'fading-circle'});
 			console.log("jjjjjjjjjjjj")
 			//项目详情
 			var data = {
@@ -157,9 +168,30 @@
 			}
 			console.log(this.data)
 			this.$http.post(URL.path+'finance/item_detail',data,{emulateJSON:true}).then(function(res){
+				Indicator.close();
 				this.data=res.body.data[0]
+				if(this.data.follow==1){
+					this.types=1;
+					this.butenLeft="butenLeft";
+					this.liuYans="liuYan";
+					this.jiaoHuans="jiaoHuan";
+					this.butenRight="";
+					this.bugen="停止跟进"
+				}else{
+//					this.types=0;
+					this.butenLeft="butenLeft";
+					this.liuYans="";
+					this.jiaoHuans="";
+				}
+				if(this.data.end_follow==1){
+					this.butenLeft="butenLeft";
+					this.liuYans="";
+					this.jiaoHuans="";
+					this.genjins="继续跟进"
+				}
 				console.log(res);
 			},function(res){
+				Indicator.close();
 			    console.log(res.status);
 			})
 		},
@@ -212,27 +244,56 @@
 				this.$refs.youhuiShow.YouhuiBlock();
 			},
 			genJin(){
-				this.types=1;
-				if(this.wanchengDu=="0"){
-					this.$refs.tishiShow.tishiBlock(this.content);//CanShu是下级要传的参数
+				if(this.data.end_follow!=1){
+					this.types=1;
+					if(this.wanchengDu=="0"){
+						this.$refs.tishiShow.tishiBlock(this.content);//CanShu是下级要传的参数
+					}else{
+						this.butenLeft="butenLeft";
+						this.liuYans="liuYan";
+						this.jiaoHuans="jiaoHuan";
+						this.butenRight="";
+						var params={
+				      		token:this.$route.params.token,
+				      		item_id:this.XiangmuID,		//	项目id	是	[string]		
+							follow:"1"			//	跟进状态 1:跟进 2:不跟进	是	[string]
+				      	}
+			//			投资人更改反馈进度
+						this.$http.post(URL.path+'finance/item_follow',params,{emulateJSON:true}).then(function(res){
+	//						this.data=res.body.data;
+							if(res.body.returnCode=='201'){
+								
+							}
+							this.genjins="跟进中"
+							this.bugen="停止跟进"
+							Toast("亲，您已跟进可以给对方留言或换名片啦");
+							console.log("跟进");
+							console.log(res.body);
+						},function(res){
+						    console.log(res);
+						})
+					}
 				}else{
-					this.butenLeft="butenLeft";
-					this.liuYans="liuYan";
-					this.jiaoHuans="jiaoHuan";
-					this.butenRight="";
 					var params={
 			      		token:this.$route.params.token,
 			      		item_id:this.XiangmuID,		//	项目id	是	[string]		
-						follow:"3"			//	跟进状态 1:停止跟进 2:已过会 3:跟进	是	[string]
+						follow:"3"			//	跟进状态 1:停止跟进 2:已过会 3:继续跟进	是	[string]
 			      	}
 		//			投资人更改反馈进度
 					this.$http.post(URL.path+'finance/update_feedback',params,{emulateJSON:true}).then(function(res){
-						this.data=res.body.data;
+	//					this.data=res.body.data;
 						if(res.body.returnCode=='201'){
 							
 						}
-						Toast("亲，您已跟进可以给对方留言或换名片啦");
-						console.log("跟进");
+						this.genjins="跟进中"
+						this.bugen="停止跟进"
+						this.types=1;
+						this.butenLeft="butenLeft";
+						this.liuYans="liuYan";
+						this.jiaoHuans="jiaoHuan";
+						this.butenRight="";
+						Toast("您跟进了该项目");
+						console.log("继续跟进");
 						console.log(res.body);
 					},function(res){
 					    console.log(res);
@@ -242,27 +303,53 @@
 			buGen(){
 				this.types=0;
 //				this.butenRight="butenRight";
-				this.butenLeft="";
-				this.butenLeft="";
+				this.butenLeft="butenLeft";
 				this.liuYans="";
 				this.jiaoHuans="";
-				var params={
-		      		token:this.$route.params.token,
-		      		item_id:this.XiangmuID,		//	项目id	是	[string]		
-					follow:"1"			//	跟进状态 1:停止跟进 2:已过会 3:跟进	是	[string]
-		      	}
-	//			投资人更改反馈进度
-				this.$http.post(URL.path+'finance/update_feedback',params,{emulateJSON:true}).then(function(res){
-					this.data=res.body.data;
-					if(res.body.returnCode=='201'){
-						
-					}
-					Toast("亲，不跟进是不可以给对方留言或换名片");
-					console.log("跟进");
-					console.log(res.body);
-				},function(res){
-				    console.log(res);
-				})
+				if(this.data.follow==0){
+					var params={
+			      		token:this.$route.params.token,
+			      		item_id:this.XiangmuID,		//	项目id	是	[string]		
+						follow:"2"			//	跟进状态 1:跟进 2:不跟进	是	[string]
+			      	}
+		//			投资人更改反馈进度
+					this.$http.post(URL.path+'finance/item_follow',params,{emulateJSON:true}).then(function(res){
+	//					this.data=res.body.data;
+						if(res.body.returnCode=='201'){
+							
+						}
+						Toast("亲，不跟进是不可以给对方留言或换名片");
+						console.log("跟进");
+						console.log(res.body);
+					},function(res){
+					    console.log(res);
+					})
+				}
+				if(this.data.follow!=0){
+					var params={
+			      		token:this.$route.params.token,
+			      		item_id:this.XiangmuID,		//	项目id	是	[string]		
+						follow:"1"			//	跟进状态 1:停止跟进 2:已过会 3:继续跟进	是	[string]
+			      	}
+		//			投资人更改反馈进度
+					this.$http.post(URL.path+'finance/update_feedback',params,{emulateJSON:true}).then(function(res){
+	//					this.data=res.body.data;
+						if(res.body.returnCode=='201'){
+							
+						}
+						this.types=0;
+						this.genjins="继续跟进"
+						this.bugen="停止跟进"
+						this.butenLeft="butenLeft";
+						this.liuYans="";
+						this.jiaoHuans="";
+						Toast("您已停止跟进该项目");
+						console.log("停止");
+						console.log(res.body);
+					},function(res){
+					    console.log(res);
+					})
+				}
 			}
 			
 //			show(){
@@ -401,7 +488,7 @@
 					}
 					.tousu{
 						position:absolute;
-						top:0.19rem;
+						top:0.15rem;
 						right:0.16rem;
 						width:0.48rem;
 						height:0.15rem;

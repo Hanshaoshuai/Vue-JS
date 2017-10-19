@@ -37,12 +37,14 @@
 	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 //	import fankuixinxi from "./FankuiXinxi.vue";
 	
 	
 	export default {
 		props:{
-			datas:{}
+			datas:{},
+			FankuiShu:{}
 //			food:{
 //				type:Object
 //			}
@@ -64,7 +66,9 @@
 				token:this.$route.params.token
 			}
 			if(this.res==""){
+				Indicator.open({spinnerType: 'fading-circle'});
 				this.$http.post(URL.path+'chatcomment/comment_list',this.token,{emulateJSON:true}).then(function(res){
+					Indicator.close();
 					this.res=res.body.data;
 					if(this.res.length=='0'){
 						Toast("亲，暂无反馈记录...")
@@ -86,6 +90,7 @@
 					console.log("取到评论反馈列表");
 					console.log(res);
 				},function(res){
+					Indicator.close();
 				    console.log(res);
 				})
 			}
@@ -101,6 +106,29 @@
 			xinxiTo(to_id){///Xeiyi/:token/:uID/:type/:XiangmuID
 				console.log(to_id)
 				console.log(this.datas);
+				//标记已读反馈
+				var farams={
+		      		token:this.$route.params.token,		//	token	是	[string]		
+					from_id:to_id		//	项目id
+		      	}
+				var farams1={
+		      		token:this.$route.params.token,		//	token	是	[string]		
+		      	}
+				this.$http.post(URL.path+'chatcomment/read_chat',farams,{emulateJSON:true}).then(function(res){
+					console.log("反馈已读");
+					console.log(res.body);
+					this.$http.post(URL.path+'chatcomment/get_feedback_num',farams1,{emulateJSON:true}).then(function(res){
+						var FankuiShu=res.body.data[0].feedback_num;
+						this.FankuiShu=FankuiShu
+						this.$emit("to-parent",FankuiShu);
+						console.log("企业获取反馈个数");
+						console.log(res);
+					},function(res){
+					    console.log(res);
+					})
+				},function(res){
+				    console.log(res);
+				})
 				window.location.href="#/fankuixinxi/"+this.$route.params.token+'/'+to_id+'/'+this.type;
 			}
 			
@@ -206,6 +234,8 @@
 					p{
 						display:inline-block;
 						position:relative;
+						width:0.46rem;
+						height:0.46rem;
 						font{
 							display:inline-block;
 							width:0.18rem;

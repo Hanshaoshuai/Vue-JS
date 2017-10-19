@@ -79,7 +79,12 @@
 			},
 			tuiChu(){
 				if(localStorage.getItem("userID")&&localStorage.getItem("userID")!==""){
-					localStorage.removeItem('userID');
+					localStorage.removeItem("userID");		//用户ID
+					localStorage.removeItem("token");		//用户token
+					localStorage.removeItem("phone");		//用户电话
+					localStorage.removeItem("type");		//用户类型
+					localStorage.removeItem("photo");	//用户头像id
+					localStorage.removeItem("photourl");	//用户头像URL地址
 					Toast('退出成功');
 			  	}else{
 			  		Toast('您已处于未登录状态');

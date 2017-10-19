@@ -78,6 +78,7 @@
 	import {URL} from '../../../common/js/path';
 	import { Toast } from 'mint-ui';
 	import { Field } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 //	import BScroll from "better-scroll";
 //	import {formatDate} from "../../common/js/date.js";
 //	import cartcontrol from "../cartcontrol/cartcontrol.vue";
@@ -112,10 +113,13 @@
 			}
 		},
 		mounted(){
+			Indicator.open({spinnerType: 'fading-circle'});
 			var datas = {
-				token:this.$route.params.token//	token	是	[string]	URL获取的参数
+				token:localStorage.getItem("token")
+//				token:this.$route.params.token//	token	是	[string]	URL获取的参数
 			}
 			this.$http.post(URL.path1+'login/three',datas,{emulateJSON:true}).then(function(res){
+				Indicator.close();
 				var data=res.body.data
 				this.BiaoQian=res.body.data
 				this.$nextTick(function() {
@@ -128,6 +132,7 @@
 				});
 				console.log(this.BiaoQian);
 			},function(res){
+				Indicator.close();
 			    console.log(res.status);
 			})
 		},
@@ -150,21 +155,41 @@
 //					XiangmuID:this.XiangmuID
 				}
 				var ok=0;
-				var datas={
-					id:this.XiajiCanshu.id,			//	uid	是	[string]		
-					investment_type:this.typeID,			//投资类型 1:股权投资 2:债权投资 3:股债兼投	是	[string]		
-					interested:this.biaoQianid,				//感兴趣的行业多个用逗号分割	是	[string]		
-					single_project_max:this.numbere,			//单笔投资最大值	是	[string]		
-					single_project_min:this.numberf,			//单笔投资最小值	是	[string]		
-					fund_stage:this.biaoQianid1,			//投资阶段 15债转股 16债权 17 新三板 62PE 63 VC 64 天使投资 75PreIPO	是	[string]		
-					territory:this.texta,			//地域要求	是	[string]		
-					investment_way:'',			//投资方式 1:定增 2:接老股 3:二级市场 4:融资租赁 5:股权质押 6:双创债	是	[string]		
-					revenue_min:'',			//最低营收要求	是	[string]		
-					profit_min:'',			//最低净利润要求	是	[string]		
-					fund_min:'',			//最小年化资金成本范围	是	[string]		
-					fund_max:'',			//最大年化资金成本范围	是	[string]		
-					loan_time:'',			//放款时间	是	[string]		
-					borrow:''				//借债主体	是	[string]
+				var datas
+				if(this.$route.params.token==0){
+					datas={
+						id:localStorage.getItem("userID"),			//	uid	是	[string]		
+						investment_type:1,			//投资类型 1:股权投资 2:债权投资 3:股债兼投	是	[string]		
+						interested:this.biaoQianid,				//感兴趣的行业多个用逗号分割	是	[string]		
+						single_project_max:this.numberf,			//单笔投资最大值	是	[string]		
+						single_project_min:this.numbere,			//单笔投资最小值	是	[string]		
+						fund_stage:this.biaoQianid1,			//投资阶段 15债转股 16债权 17 新三板 62PE 63 VC 64 天使投资 75PreIPO	是	[string]		
+						territory:this.texta,			//地域要求	是	[string]		
+						investment_way:'',			//投资方式 1:定增 2:接老股 3:二级市场 4:融资租赁 5:股权质押 6:双创债	是	[string]		
+						revenue_min:'',			//最低营收要求	是	[string]		
+						profit_min:'',			//最低净利润要求	是	[string]		
+						fund_min:'',			//最小年化资金成本范围	是	[string]		
+						fund_max:'',			//最大年化资金成本范围	是	[string]		
+						loan_time:'',			//放款时间	是	[string]		
+						borrow:''				//借债主体	是	[string]
+					}
+				}else{
+					datas={
+						id:this.XiajiCanshu.id,			//	uid	是	[string]		
+						investment_type:this.typeID,			//投资类型 1:股权投资 2:债权投资 3:股债兼投	是	[string]		
+						interested:this.biaoQianid,				//感兴趣的行业多个用逗号分割	是	[string]		
+						single_project_max:this.numbere,			//单笔投资最大值	是	[string]		
+						single_project_min:this.numberf,			//单笔投资最小值	是	[string]		
+						fund_stage:this.biaoQianid1,			//投资阶段 15债转股 16债权 17 新三板 62PE 63 VC 64 天使投资 75PreIPO	是	[string]		
+						territory:this.texta,			//地域要求	是	[string]		
+						investment_way:'',			//投资方式 1:定增 2:接老股 3:二级市场 4:融资租赁 5:股权质押 6:双创债	是	[string]		
+						revenue_min:'',			//最低营收要求	是	[string]		
+						profit_min:'',			//最低净利润要求	是	[string]		
+						fund_min:'',			//最小年化资金成本范围	是	[string]		
+						fund_max:'',			//最大年化资金成本范围	是	[string]		
+						loan_time:'',			//放款时间	是	[string]		
+						borrow:''				//借债主体	是	[string]
+					}
 				}
 				for(var item in CanShu){		//判断填写信息是否完整Ok=1；标签必选
 					if(!CanShu[item]=="" && this.y>=1 && this.y1>=1){
@@ -174,7 +199,9 @@
 					}
 				}
 				if(ok==0){
+					Indicator.open({spinnerType: 'fading-circle'});
 					this.$http.post(URL.path+'regist/regist2',datas,{emulateJSON:true}).then(function(res){
+						Indicator.close();
 						if(res.body.returnCode=='200'){
 							Toast('资料完善成功');
 							console.log(res.body)
@@ -184,6 +211,7 @@
 							Toast(res.body.msg);
 						}
 					},function(res){
+						Indicator.close();
 						Toast(res.status);
 					    console.log(res.status);
 					})

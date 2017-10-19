@@ -113,6 +113,12 @@
 				this.texta=this.data.com_name;
 				this.textb=this.data.com_short;
 				this.textc=this.data.total_finance;
+				if(res.body.data.id.status!=='1'){
+					this.showFlag=false;
+				}
+				if(res.body.data.id.status==5){
+					this.showFlag=true;
+				}
 				console.log(res);
 			},function(res){
 			    console.log(res);

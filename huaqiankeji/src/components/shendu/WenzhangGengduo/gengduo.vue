@@ -40,10 +40,10 @@
 </template>
 
 <script type="text/ecmascript">
-//	import Vue from "vue";
+	import {URL} from '../../../common/js/path';
 	import { MessageBox } from 'mint-ui';
 	import yuedu from "../WenzhangGengduo/wenzhang.vue";
-	
+	import { Indicator } from 'mint-ui';
 //	import BScroll from "better-scroll";
 //	import Vue from "vue";
 //	import {formatDate} from "../../common/js/date.js";
@@ -70,20 +70,24 @@
 			}
 		},
 		mounted(){
+			Indicator.open({spinnerType: 'fading-circle'});
 			//投融资必读研报实例列表
 			var farams={
+				token:localStorage.getItem("token"),
 	      		page:"",		//	page	是	[string]		
 				size:"",		//	size	是	[string]		
 				type:"3"		//	类型 1:融资必读 2:投资必读 3:研报实例	是	[string]
 	      	}
 			this.$http.post(URL.path+'common/research_report_list',farams,{emulateJSON:true}).then(function(res){
 				this.data=res.body.data;
+				Indicator.close();
 				if(res.body.returnCode=='200'){
 					Toast('研报实例列表成功');
 				}
 				console.log("研报实例列表");
-				console.log(res.body);
+				console.log(res);
 			},function(res){
+				Indicator.close();
 			    console.log(res);
 			})
 		},

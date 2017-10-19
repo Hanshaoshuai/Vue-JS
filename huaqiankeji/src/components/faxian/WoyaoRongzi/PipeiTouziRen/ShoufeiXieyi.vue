@@ -3,34 +3,18 @@
 		<div v-show="showFlag" class="wenzhang">
 			<div class="xiangmu-header" @click.stop="listnone1()">
 				<span class="xiangmu-left"><img src="../img/back.png"/></span>
-				<span>一键投递</span>
+				<span>协议详情</span>
 			</div>
 			<div class="wenzhang-list">
 				<div class="wenzhang-content">
-					<div class="fankiu">
-						<div class="tubiao"></div>
-						<div class="content-food" style="text-align:center;">
-							<span>已为您投递至：</span>
-						</div>
-					</div>
-					<div v-for="item in data" class="sousuo-content border-topbottom">
-						<div class="content-header">
-							<font><img :src="item.photo"/></font>
-							<div class="names">
-								<span class="border-right">{{item.uname}}</span>
-								<span>{{item.com_short}}</span>&nbsp;
-								<span>{{item.position}}</span>
-							</div>
-						</div>
-					</div>
-					<div class="donghua">
-						<div><span class="border">投递BP的奔跑动画开火车速送BP</span></div>
-					</div>
+					<ul ref="content">
+						
+					</ul>
 				</div>
 			</div>
-			<div class="zhaiyao-food">
+			<!--<div class="zhaiyao-food">
 				<span class="last" @click.stop="butten">返回首页</span>
-			</div>
+			</div>-->
 			<!--<router-view></router-view>-->
 		</div>
 	</transition>
@@ -52,13 +36,12 @@
 	
 	export default {
 		props:{
-			childnone:{
+			data:{
 //				type:"boolean"
 			}
 		},
 		data () {
 			return {
-				data:"",
 				token:"",
 				XiangmuID:"",
 				type:"",
@@ -70,66 +53,13 @@
 			}
 		},
 		mounted(){
-			Indicator.open({spinnerType: 'fading-circle'});
-			console.log(this.$route.params.uID);
-			this.token=this.$route.params.token;
-			this.XiangmuID=this.$route.params.XiangmuID;
-			this.type=this.$route.params.type;
-			this.uID=this.$route.params.uID;
-			var x=this.uID.split(";").length;
-			console.log(x.length)
-			//发送项目	
-			var datas = {
-				token:this.token,		//	token	是	[string]		
-				item_id:this.XiangmuID,	//项目id	是	[string]		
-				type:this.type,			//类型 1:项目 2:活动	是	[string]		
-				to_id:this.uID,			//接受者id	是	[string]		
-				status:"",			//状态 1:已发送 2:未发送 3:拒绝		[string]		
-				demand:""		//	是否索要 1:非索要 2:索要		[string]
-			}
-			this.$http.post(URL.path+'finance/send_item',datas,{emulateJSON:true}).then(function(res){
-				Indicator.close();
-				this.data=res.body.data
-				Toast("您已成功投递 "+x+" 位投资人请您注意查收投资人的反馈并及时回复");
-				console.log(res);
-			},function(res){
-			    console.log(res.status);
-			})
+			this.$refs.content.innerHTML=this.data['content']
 		},
 		methods:{
 			listnone1(){
 //				this.showFlag=false;
 				history.go(-1)
-			},
-			pipeiBlock(){
-				this.showFlag=true;
-			},
-			butten(){
-//				MessageBox.confirm('您确定要联系对方并索要完整项目信息吗?').then(action => {
-//					this.ButtenName="申请成功，等待反馈";
-//					var tate=this;
-//					setTimeout(function(){
-//						tate.showFlag=false;
-//						tate.ButtenName="索要完整项目信息";
-//					},2000)
-//				  console.log("ijfj")
-//				});
-//				this.block=true;
-				window.location.href="#/faxian";
 			}
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -213,6 +143,7 @@
 				width:95%;
 				margin:0 auto;
 				padding:0.48rem 0 0.6rem 0;
+				background:#fff;
 				.fankiu{
 					width:100%;
 					display:flex;
@@ -285,32 +216,6 @@
 						}
 					}
 				}
-			}
-		}
-		.zhaiyao-food{
-			position:absolute;
-			bottom:0;
-			left:0;
-			width:100%;
-			height:0.45rem;
-			color:#ffffff;
-			background:#ff7a59;
-			font-size:0.18rem;
-			display:flex;
-			-webkit-box-pack:center;
-			justify-content:center;
-			-webkit-box-align:center;
-			align-items:center;
-			.ferst{
-				flex:1;
-				text-align:center;
-			}
-			.last{
-				line-height:0.45rem;
-				padding:0 0.2rem;
-				display:inline-block;
-				color:#fff;
-				/*background:#00C850;*/
 			}
 		}
 	}

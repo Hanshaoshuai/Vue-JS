@@ -228,15 +228,15 @@
 						var num = img.length;
 						var contentTexte=this.$refs.contentTexte;
 						contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
-						for(var i=0; i<num; i++){
-							if (img[i].clientWidth>img[i].clientHeight) {
-								img[i].style.height="100%"
-								img[i].style.width="auto"
-							}else{
-								img[i].style.width="100%"
-								img[i].style.height="auto"
-							}
-						}
+//						for(var i=0; i<num; i++){
+//							if (img[i].clientWidth>img[i].clientHeight) {
+//								img[i].style.height="100%"
+//								img[i].style.width="auto"
+//							}else{
+//								img[i].style.width="100%"
+//								img[i].style.height="auto"
+//							}
+//						}
 					});
 				},function(res){
 				    console.log(res);
@@ -685,7 +685,7 @@
 						token:this.Token,
 						to_id:this.uid,					//接收方id	是	[string]		
 						content:texts,					//评论内容
-						type:this.type
+						type:'1'
 					}
 					console.log(this.datasA)			//发送评论接口
 					this.$http.post(URL.path+'chatcomment/send_msg',this.datasA,{emulateJSON:true}).then(function(res){

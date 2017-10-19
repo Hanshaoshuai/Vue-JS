@@ -58,7 +58,7 @@
 					<span @click.stop="XiaYibu()">继续手机端操作</span>
 				</div>
 			</div>
-			<router-view :token="token" :BiaoQian="BiaoQian"></router-view>
+			<router-view :token="token" :BiaoQian="BiaoQian" :type="type"></router-view>
 			<!--<youhuiquan ref="youhuiShow"></youhuiquan>-->
 		</div>
 	</transition>
@@ -104,6 +104,7 @@
 				var data=res.body.data
 				this.BiaoQian=res.body.data
 				console.log(this.BiaoQian);
+				console.log(res);
 			},function(res){
 			    console.log(res.status);
 			})

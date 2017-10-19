@@ -44,7 +44,7 @@
 			<div class="denglu-list denglu-bottom">
 				合作热线：400 235648
 			</div>
-			
+			<router-view :XiajiCanshu="XiajiCanshu" :typeID="typeID"></router-view>
 		</div>
 	<!--</transition>-->
 </template>
@@ -71,6 +71,9 @@
 		},
 		data () {
 			return {
+				body:"",
+				XiajiCanshu:'',
+				typeID:"1",
 				phone:'',
 				password:'',
 				times:20177111129,
@@ -81,6 +84,9 @@
 				shoujis:false,
 				mimas:false
 			}
+		},
+		mounted(){
+			
 		},
 		methods:{
 			fanhui(){
@@ -124,6 +130,12 @@
 					this.$http.post(URL.path1+'login',datas,{emulateJSON:true}).then(function(res){
 						Indicator.close();
 						if(res.body.returnCode==200){	//本地储存
+							this.XiajiCanshu={
+						        id:res.body.data.id,
+						        phone:res.body.data.phone,
+						        nickname:res.body.data.nickname,
+						        token:res.body.data.token
+						    }
 							localStorage.setItem("userID",res.body.data.id);		//用户ID
 							localStorage.setItem("token",res.body.data.token);		//用户token
 							localStorage.setItem("phone",res.body.data.phone);		//用户电话
@@ -131,8 +143,19 @@
 							localStorage.setItem("photo",res.body.data.photo.id);	//用户头像id
 							localStorage.setItem("photourl",res.body.data.photo.url);	//用户头像URL地址
 							console.log(res.body);
-							Toast('登录成功');
-							window.location.href="#/fanxian";
+							if(res.body.data.ctype=='2'){
+								this.qingQiu(res.body.data.token,res.body.data.ctype)
+								return;
+							}
+							if(res.body.data.ctype=='6' || res.body.data.ctype=='7'){
+								window.location.href="#/faxian";
+								return;
+							}
+							if(res.body.data.ctype=='1' || res.body.data.ctype=='3' || res.body.data.ctype=='4'){
+								this.qingQiu(res.body.data.token,res.body.data.ctype)
+								return;
+							}
+//							window.location.href="#/faxian";
 						}
 						if(res.body.returnCode=='0011'){
 							Toast(res.body.msg);
@@ -158,6 +181,82 @@
 //						}
 //					})
 				}
+			},
+			qingQiu(token,ctype){
+				var datas={
+					token:token,//	用户id	是	[string]			
+				}
+				this.$http.post(URL.path1+'account/info',datas,{emulateJSON:true}).then(function(res){
+					if(res.body.returnCode=='200'){
+						if(ctype==1){
+							if(!res.body.data.info.industry){
+								Toast('请完善您的资料');
+								window.location.href="#/denglu/ZhuCe1/"+ctype+"/type2";
+								return;
+							}else{
+								Toast('登录成功');
+								window.location.href="#/faxian";
+							}
+						}
+						if(ctype==3){
+							if(!res.body.data.info.investment_way){
+								Toast('请完善您的资料');
+								window.location.href="#/denglu/ZhuCe1/"+ctype+"/type3";
+								return;
+							}else{
+								Toast('登录成功');
+								window.location.href="#/faxian";
+							}
+						}
+						if(ctype==4){
+							if(!res.body.data.info.interested){
+								Toast('请完善您的资料');
+								window.location.href="#/denglu/ZhuCe1/"+ctype+"/type4";
+								return;
+							}else{
+								Toast('登录成功');
+								window.location.href="#/faxian";
+							}
+						}
+						if(ctype==2){
+//							if(res.body.data.investment_type==1){
+								if(!res.body.data.info.interested){
+									Toast('请完善您的资料');
+									window.location.href="#/denglu/ZhuCe1/"+0+"/"+'Guquan';
+									return;
+								}else{
+									Toast('登录成功');
+									window.location.href="#/faxian";
+								}
+//							}
+//							if(res.body.data.investment_type==2){
+//								if(res.body.data.info.industry.interested==''){
+//									Toast('请完善您的资料');
+//									window.location.href="#/zhuce/ZhuCe1/"+localStorage.getItem("token")+"/"+Zaiquan;
+//									return;
+//								}else{
+//									Toast('登录成功');
+//									window.location.href="#/faxian";
+//								}
+//							}
+//							if(res.body.data.investment_type==3){
+//								if(res.body.data.info.industry.interested==''){
+//									Toast('请完善您的资料');
+//									window.location.href="#/zhuce/ZhuCe1/"+localStorage.getItem("token")+"/"+Guzhai;
+//									return;
+//								}else{
+//									Toast('登录成功');
+//									window.location.href="#/faxian";
+//								}
+//							}
+						}
+						console.log(res)
+					}else{
+						Toast(res.body.msg);
+					}
+				},function(res){
+				    console.log(res);
+				})
 			},
 			zhuche(){
 				window.location.href="#/zhuce";

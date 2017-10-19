@@ -72,7 +72,7 @@
 		//			投资人更改反馈进度
 					this.$http.post(URL.path+'finance/update_feedback',params,{emulateJSON:true}).then(function(res){
 						this.data=res.body.data;
-						var thata=this;
+						var thata=this.token;
 						if(res.body.returnCode=='200'){
 							Toast("亲！项目结束成功，请到个人资料编写你本次项目的投资金额。")
 							setTimeout(function(){

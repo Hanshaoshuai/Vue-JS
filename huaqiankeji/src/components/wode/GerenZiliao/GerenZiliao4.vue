@@ -41,6 +41,9 @@
 						<span v-if="!bianList" ref='text5' class="lasst" @click.stap="baocunList()">保存</span>
 					</div>
 					<div class="xiaolv anli">
+						<div v-if="!YitouList" class="anli-list border-top">
+							<span>暂无案例</span>
+						</div>
 						<div v-for="(item,index) in YitouList" class="anli-list border-top">
 							<span>
 								{{item.com_short}}
@@ -60,38 +63,44 @@
 				</div>
 				<div style="height:0.06rem;width:100%;background:#f5f4f9"></div>
 				<div class="guQuan">
-					<div ref="chanYe" class="sousuo-content border-topbottom">
+					<div class="sousuo-content border-topbottom">
 						<div class="content-header border-topbottom">
 							<span>产业资源</span><span ref="bianji3" class="lasst" @click.stap="bianji('3')">编辑</span>
 						</div>
 						<div class="xiaolv anli">
-							<ul class="first">
+							<ul v-if="BianJi2==0" class="first">
 								<li>
 									<textarea readOnly="true" placeholder="请用文字表述您所在机构能给企业带来的产业资源" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+								</li>
+							</ul>
+							<ul v-if="BianJi2==1" class="first">
+								<li>
+									<textarea ref="chanYe" placeholder="请用文字表述您所在机构能给企业带来的产业资源" class="mint-field-core ziyuanChongzu" v-model="textc1"></textarea>
 								</li>
 							</ul>
 						</div>
 					</div>
 					<div style="height:0.06rem;width:100%;background:#f5f4f9"></div>
-					<div ref="chongGou" class="sousuo-content border-topbottom">
+					<div class="sousuo-content border-topbottom">
 						<div class="content-header border-topbottom">
 							<span>并购重组</span><span ref="bianji4" class="lasst" @click.stap="bianji('4')">编辑</span>
 						</div>
 						<div class="xiaolv anli">
-							<ul class="first">
+							<ul v-if="BianJi4==0" class="first">
 								<li>
 									<textarea readOnly="true" placeholder="请用文字表述您有意愿进行收购和出售的资产" class="mint-field-core ziyuanChongzu" v-model="textd"></textarea>
+								</li>
+							</ul>
+							<ul v-if="BianJi4==1" class="first">
+								<li>
+									<textarea ref="chongGou" placeholder="请用文字表述您有意愿进行收购和出售的资产" class="mint-field-core ziyuanChongzu" v-model="textd1"></textarea>
 								</li>
 							</ul>
 						</div>
 					</div>
 				</div>
 				<box></box>
-				<div class="butten">
-					<ul>
-						<li><span @click.stop="liuYan()">留言</span></li>
-					</ul>
-				</div>
+				<box></box>
 			</div>
 			<!--<youhuiquan ref="youhuiShow"></youhuiquan>-->
 		</div>
@@ -102,6 +111,7 @@
 	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 	import box from "../../box.vue";
 //	import youhuiquan from "../../shendu/PeixunZixun/YouhuiQuan.vue";
 //	import fankuixinxi from "./FankuiXinxi.vue";
@@ -141,6 +151,8 @@
 				texta:'',
 				textc:"",
 				textd:"",
+				textc1:"",
+				textd1:"",
 				texte:'',
 				fankui:"45",
 				genjin:"458",
@@ -166,6 +178,7 @@
 			}
 		},
 		mounted(){
+			Indicator.open({spinnerType: 'fading-circle'});
 			console.log(this.userContent)
 //			个人资料
 			var params={
@@ -173,6 +186,7 @@
 	    		terminalNo:3
 	    	}
 			this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
+				Indicator.close();
 				this.data=res.body.data;
 				console.log("个人资料");
 				console.log(res);
@@ -183,6 +197,11 @@
 				this.numberToc='净利润不低于'+this.data.info.revenue_min+'万元';				//要插到页面的地区
 				this.textd=this.data.info.profit_min;//原来的数据
 				this.texte=this.data.info.revenue_min;//原来的数据
+				
+				this.textc=this.data.info.resources;		//原数据
+				this.textd=this.data.info.restructuring;	//原数据
+				this.textc1=this.data.info.resources;		//将要改变的数据
+				this.textd1=this.data.info.restructuring;	//将要改变的数据
 				
 				var SuozaiHangye=this.data.info.interested
 				var x=[];
@@ -197,6 +216,7 @@
 				this.numbera=y.join('、');
 				console.log(this.oDbiaoQianID);
 			},function(res){
+				Indicator.close();
 			    console.log(res);
 			})
 			//已投案例接口   已投项目列表		调用
@@ -219,6 +239,8 @@
 				var nuwID1;
 				var max_nuwID2;
 				var min_nuwID2;
+				var textc1;		//将要改变的数据
+				var textd1;		//将要改变的数据
 				if(this.BianJi=='0'){		//原来数据
 					nuwID=this.oDbiaoQianID;
 				}else{						//改后数据
@@ -231,12 +253,22 @@
 					max_nuwID2=this.numberb;
 					min_nuwID2=this.numberc;
 				}
+				if(this.BianJi2=='0'){		//原来数据
+					textc1=this.data.info.resources;
+				}else{						//改后数据
+					textc1=this.textc1;
+				}
+				if(this.BianJi4=='0'){		//原来数据
+					textd1=this.data.info.restructuring;
+				}else{						//改后数据
+					textd1=this.textd1;
+				}
 				var datas={
-					id:localStorage.getItem("userID"),//	用户id	是	[string]			
-					ctype:'4',					//	类型 1企业 4研究机构	是	[string]		
+					id:localStorage.getItem("userID"),		//	用户id	是	[string]			
+					ctype:localStorage.getItem("type"),			//	类型 1企业 4研究机构	是	[string]		
 					industry:nuwID,				//	所属行业标签，多个用 逗号分割	是	[string]
-//					revenue_min:max_nuwID2,			//最低营收要求	是	[string]		
-//					profit_min:min_nuwID2,			//最低净利润要求	是	[string]
+					resources:textc1,
+					restructuring:textd1
 				}
 				console.log(datas)
 				this.$http.post(URL.path+'regist/com_regist2',datas,{emulateJSON:true}).then(function(res){
@@ -342,30 +374,26 @@
 					if(id==3){
 						if(this.$refs.bianji3.innerText=="编辑"){
 							this.$refs.bianji3.innerText="取消";
-							var textInputs = this.$refs.chanYe.getElementsByClassName("mint-field-core");
-							textInputs[0].removeAttribute("readOnly")		//点击编辑   input去除属性readOnly即可编辑
-							textInputs[0].focus();		//点击编辑   input获取焦点
-							console.log();
+							this.BianJi2=1;
+							this.$nextTick(function() {
+								this.$refs.chanYe.focus();	//点击编辑   input获取焦点
+								console.log();
+							})
 						}else{
 							this.$refs.bianji3.innerText="编辑";
-							var textInputs = this.$refs.chanYe.getElementsByClassName("mint-field-core");
-							textInputs[0].setAttribute("readOnly","readOnly")		//点击编辑   input去除属性readOnly即可编辑
-							textInputs[0].focus();		//点击编辑   input获取焦点
-							console.log();
+							this.BianJi2=0;
 						}
 					}else{
 						if(this.$refs.bianji4.innerText=="编辑"){
 							this.$refs.bianji4.innerText="取消";
-							var textInputs = this.$refs.chongGou.getElementsByClassName("mint-field-core");
-							textInputs[0].removeAttribute("readOnly")		//点击编辑   input去除属性readOnly即可编辑
-							textInputs[0].focus();		//点击编辑   input获取焦点
-							console.log();
+							this.BianJi4=1;
+							this.$nextTick(function() {
+								this.$refs.chongGou.focus();	//点击编辑   input获取焦点
+								console.log();
+							})
 						}else{
 							this.$refs.bianji4.innerText="编辑";
-							var textInputs = this.$refs.chongGou.getElementsByClassName("mint-field-core");
-							textInputs[0].setAttribute("readOnly","readOnly")		//点击编辑   input去除属性readOnly即可编辑
-							textInputs[0].focus();		//点击编辑   input获取焦点
-							console.log();
+							this.BianJi4=0;
 						}
 					}
 					
@@ -1059,25 +1087,6 @@
 							margin:0;
 							padding:0.04rem 0.14rem;
 							margin:0.06rem 0.1rem;
-						}
-					}
-				}
-			}
-			.butten{
-				width:100%;
-				ul{
-					width:100%;
-					li{
-						width:100%;
-						padding:0.21rem 0 0.28rem 0;
-						text-align:center;
-						span{
-							display:inline-block;
-							padding:0.11rem 0.4rem;
-							background:#ff7a59;
-							color:#fff;
-							border-radius:0.04rem;
-							border:0.008rem solid #cccccc;
 						}
 					}
 				}

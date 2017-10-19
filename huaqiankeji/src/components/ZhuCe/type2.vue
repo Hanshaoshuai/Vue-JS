@@ -35,6 +35,7 @@
 	import {URL} from '../../common/js/path';
 	import { Toast } from 'mint-ui';
 	import { Field } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 //	import BScroll from "better-scroll";
 //	import {formatDate} from "../../common/js/date.js";
 //	import cartcontrol from "../cartcontrol/cartcontrol.vue";
@@ -62,6 +63,7 @@
 			}
 		},
 		mounted(){
+			Indicator.open({spinnerType: 'fading-circle'});
 	//		XiajiCanshu{
 	//			id:用户id,
 	//	        phone:用户电话,
@@ -69,10 +71,14 @@
 	//	        token:用户token；
 	//		}
 			console.log(this.XiajiCanshu)
+//			var datas = {
+//				token:this.XiajiCanshu.token//	token	是	[string]	URL获取的参数
+//			}
 			var datas = {
-				token:this.XiajiCanshu.token//	token	是	[string]	URL获取的参数
+				token:localStorage.getItem("token")//	token	是	[string]	URL获取的参数
 			}
 			this.$http.post(URL.path1+'login/three',datas,{emulateJSON:true}).then(function(res){
+				Indicator.close();
 				var data=res.body.data
 				this.BiaoQian=res.body.data
 				this.$nextTick(function() {
@@ -82,6 +88,7 @@
 				});
 				console.log(this.BiaoQian);
 			},function(res){
+				Indicator.close();
 			    console.log(res.status);
 			})
 		},
@@ -97,9 +104,14 @@
 				
 			},
 			ToHoom(){			//企业和研究机构注册第二步
+//				var datas={
+//					id:this.XiajiCanshu.id,//	用户id	是	[string]			
+//					ctype:this.XiajiCanshu.type,//	类型 1企业 4研究机构	是	[string]		
+//					industry:this.biaoQianID1,//	所属行业标签，多个用 逗号分割	是	[string]		
+//				}
 				var datas={
-					id:this.XiajiCanshu.id,//	用户id	是	[string]			
-					ctype:this.XiajiCanshu.type,//	类型 1企业 4研究机构	是	[string]		
+					id:localStorage.getItem("userID"),//	用户id	是	[string]			
+					ctype:localStorage.getItem("type"),//	类型 1企业 4研究机构	是	[string]		
 					industry:this.biaoQianID1,//	所属行业标签，多个用 逗号分割	是	[string]		
 				}
 				if(this.y>=1){

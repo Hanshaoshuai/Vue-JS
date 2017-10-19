@@ -40,6 +40,7 @@
 
 <script type="text/ecmascript">
 //	import Vue from "vue";
+	import { Indicator } from 'mint-ui';
 	import { MessageBox } from 'mint-ui';
 //	import BScroll from "better-scroll";
 //	import Vue from "vue";
@@ -62,6 +63,24 @@
 				showFlag:false,
 				onlyContent:true
 			}
+		},
+		mouted(){
+			Indicator.open({spinnerType: 'fading-circle'});
+			//研报申请接口
+			var farams={
+	      		token:localStorage.getItem("token"),
+				id:"1"			//是	[string]
+	      	}
+			this.$http.post(URL.path+'common/research_report_detail',farams,{emulateJSON:true}).then(function(res){
+				this.data=res.body.data;
+				Indicator.close();
+				if(res.body.returnCode=='200'){
+				}
+				console.log(res);
+			},function(res){
+				Indicator.close();
+			    console.log(res);
+			})
 		},
 		methods:{
 			listnone(){

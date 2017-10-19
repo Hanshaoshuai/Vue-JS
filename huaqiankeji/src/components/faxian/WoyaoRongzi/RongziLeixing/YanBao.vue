@@ -76,7 +76,7 @@
 	import { Field } from 'mint-ui';
 	import { MessageBox } from 'mint-ui';
 	import { Toast } from 'mint-ui';
-	
+	import { Indicator } from 'mint-ui';
 	import box from "../../../box.vue";
 	import pipei from "../PipeiTouziRen/Pipei.vue";
 	import liucheng from "../YanbaoLiucheng/YanbaoLiucheng.vue";
@@ -125,6 +125,7 @@
 					return;
 				}
 				MessageBox.confirm('向平台申请研究报告支持').then(action => {
+					Indicator.open({spinnerType: 'fading-circle'});
 					//研报申请接口
 					var farams={
 			      		token:this.token,
@@ -134,12 +135,14 @@
 			      	}
 					this.$http.post(URL.path+'research/research_apply',farams,{emulateJSON:true}).then(function(res){
 						this.data=res.body.data;
+						Indicator.close();
 						if(res.body.returnCode=='200'){
 							Toast('申请成功，客服将在24小时内联系您');
 						}
 						console.log("申请成功");
 						console.log(res.body);
 					},function(res){
+						Indicator.close();
 					    console.log(res);
 					})
 				});

@@ -150,7 +150,9 @@
 				var data={
 					phone:this.phone
 				}							//获取验证码接口
+				Indicator.open({spinnerType: 'fading-circle'});
 				this.$http.post(URL.path+'regist/smsCode',data,{emulateJSON:true}).then(function(res){
+					Indicator.close();
                     console.log(res.body);
                     if(res.body.returnCode=='0011'){
 						Toast(res.body.msg);
@@ -162,6 +164,7 @@
 						}
 					}
                 },function(res){
+                	Indicator.close();
                     console.log(res);
                 });
 			},

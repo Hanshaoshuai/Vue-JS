@@ -8,7 +8,6 @@ import Faxian from "../components/faxian/faxian.vue"
 		import ziliaoT1 from "../components/SouSuo/ShenfenLeixing/GerenZiliaoA.vue"
 		import ziliaoT2 from "../components/SouSuo/ShenfenLeixing/GerenZiliaoB.vue"
 		import ziliaoT3 from "../components/SouSuo/ShenfenLeixing/GerenZiliaoC.vue"
-		import SousuoLeixing from "../components/SouSuo/ShenfenLeixing/TypeH.vue"
 	import Yijian from "../components/faxian/yijian.vue"
 	import DingzengZhaiyao from "../components/faxian/DingzengZhaiyao.vue"
 	import GuquanZhaiyao from "../components/faxian/GuquanZhaiyao.vue"
@@ -17,6 +16,7 @@ import Faxian from "../components/faxian/faxian.vue"
 	import YifouXiangmu from "../components/faxian/XinxiangMu/YifouXiangmu.vue"
 	import XinxiangMu from "../components/faxian/XinxiangMu/XinxiangMu.vue"
 		import XiangmuXiangqing from "../components/faxian/XinxiangMu/XiangmuXiangqing.vue"
+		import YifouXiangqing from "../components/faxian/XinxiangMu/YifouXiangqing.vue"
 		import BP from "../components/faxian/XinxiangMu/BP.vue"
 	
 	import WoyaoRongzi from "../components/faxian/WoyaoRongzi/WoyaoRongzi.vue"
@@ -84,13 +84,13 @@ import wangjiMima1 from "../components/DengLu/wangjiMima1.vue"
 	import wangjiMima2 from "../components/DengLu/wangjiMima2.vue"
 import Xeiyi from "../components/faxian/WoyaoRongzi/PipeiTouziRen/QuedingXeiyi.vue"
 	import TouDi from "../components/faxian/WoyaoRongzi/PipeiTouziRen/TouDi.vue"
-	
+	import XieyiXiangqing from "../components/faxian/WoyaoRongzi/PipeiTouziRen/ShoufeiXieyi.vue"
 	
 
 
 export default ({
   routes: [
-    {path: '/faxian',component: Faxian,
+    {path:'/faxian',component: Faxian,
     	children:[
     		{path:'sousuo',component: Sousuo,
 		   		children:[
@@ -166,7 +166,7 @@ export default ({
 				path:"YifouXiangmu/:token",component:YifouXiangmu,
 					children:[
 						{
-							path:"XiangmuXiangqing/:XiangmuID",component:XiangmuXiangqing
+							path:"YifouXiangqing/:XiangmuID",component:YifouXiangqing
 						}
 					]
 			},
@@ -332,7 +332,38 @@ export default ({
 			}
 		]
    	},
-   	{path: '/denglu',component: Denglu},
+   	{path: '/denglu',component: Denglu,
+   		children:[
+      		{
+				path:"ZhuCe1/:token",component:ZhuCe1,
+					children:[
+						{
+							path:"type2",component:Type2
+						},
+						{
+							path:"type3",component:Type3
+						},
+						{
+							path:"type4",component:Type4
+						},
+						{
+							path:"Guquan",component:Guquan
+						},
+						{
+							path:"Zaiquan",component:Zaiquan
+						},
+						{
+							path:"Guzhai",component:Guzhai,
+							children:[
+					    		{
+									path:"Guzhaiquan",component:Guzhaiquan
+								}
+					    	]
+						}
+					]
+			}
+		]
+   	},
    	{path: '/wangjiMima1',component: wangjiMima1,
    		children:[
     		{
@@ -345,9 +376,12 @@ export default ({
    		children:[
     		{
 				path:"TouDi",component:TouDi
+			},
+			{
+				path:"XieyiXiangqing",component:XieyiXiangqing
 			}
     	]
    	},
-    {path:"*",redirect:"/faxian"}
+//  {path:"*",redirect:"/denglu"}
   ]
 })

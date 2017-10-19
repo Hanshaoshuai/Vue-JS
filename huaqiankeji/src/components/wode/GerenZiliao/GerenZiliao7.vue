@@ -12,41 +12,17 @@
 			</div>
 			<div class="box" ref="box">
 				<div style="width:100%;height:0.45rem;"></div>
-				<div class="guQuan">
-					<div ref="guanzhuLingyu">
-						<div class="fankiu border-topbottom">
-							<div class="content-food">
-								<span>团队介绍</span>
-								<span ref="bianji" class="lasst" @click.stap="bianji('1')">编辑</span>
-								<ul v-if="BianJi==0" class="first">
-									<li>
-										<input readOnly="true" v-model="numbera" placeholder="食品、食品、食品" type="text" class="mint-field-core">
-									</li>
-									<!--<li>
-										<input readOnly="true" v-model="numberb" placeholder="食品" type="text" class="mint-field-core">
-									</li>
-									<li>
-										<input readOnly="true" v-model="numberc" placeholder="食品" type="text" class="mint-field-core">
-									</li>-->
-								</ul>
-								<div v-if="BianJi==1" class="zhuying_1 liangdian_1">
-									<ul class="last" ref="biaoqian">
-										<span v-for="(item,index) in BiaoQian[0]" :id='item.id' @click.stap="xuanze(index,item.id)">{{item.title}}</span>
-									</ul>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div style="height:0.06rem;width:100%;background:#f5f4f9"></div>
 				<div ref="yitouAnli" class="sousuo-content border-topbottom">
 					<div class="content-header">
-						<span>已投案例</span>
-						<font>（仅自己可见）</font>
-						<span v-if="bianList" ref="text5" class="lasst" @click.stap="bianji5('5')">编辑</span>
-						<span v-if="!bianList" ref='text5' class="lasst" @click.stap="baocunList()">保存</span>
+						<span>成功案例</span>
+						<!--<font>（仅自己可见）</font>-->
+						<span v-if="bianList" ref="text5" class="lasst"></span>
+						<!--<span v-if="!bianList" ref='text5' class="lasst" @click.stap="baocunList()">保存</span>-->
 					</div>
 					<div class="xiaolv anli">
+						<div v-if="!YitouList" class="anli-list border-top">
+							<span>暂无案例</span>
+						</div>
 						<div v-for="(item,index) in YitouList" class="anli-list border-top">
 							<span>
 								{{item.com_short}}
@@ -66,6 +42,19 @@
 				</div>
 				<div style="height:0.06rem;width:100%;background:#f5f4f9"></div>
 				<div class="guQuan">
+					<div ref="first" class="sousuo-content border-topbottom">
+						<div class="content-header border-topbottom">
+							<span>团队介绍</span><span ref="bianji2" class="lasst" @click.stap="bianji('2')">编辑</span>
+						</div>
+						<div class="xiaolv anli">
+							<ul class="first">
+								<li>
+									<textarea readOnly="true" placeholder="请用文字表述您的个人团队" class="mint-field-core ziyuanChongzu" v-model="textb"></textarea>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div style="height:0.06rem;width:100%;background:#f5f4f9"></div>
 					<div ref="chanYe" class="sousuo-content border-topbottom">
 						<div class="content-header border-topbottom">
 							<span>产业资源</span><span ref="bianji3" class="lasst" @click.stap="bianji('3')">编辑</span>
@@ -93,11 +82,7 @@
 					</div>
 				</div>
 				<box></box>
-				<div class="butten">
-					<ul>
-						<li><span @click.stop="liuYan()">留言</span></li>
-					</ul>
-				</div>
+				<box></box>
 			</div>
 			<!--<youhuiquan ref="youhuiShow"></youhuiquan>-->
 		</div>
@@ -108,6 +93,7 @@
 	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 	import box from "../../box.vue";
 //	import youhuiquan from "../../shendu/PeixunZixun/YouhuiQuan.vue";
 //	import fankuixinxi from "./FankuiXinxi.vue";
@@ -142,7 +128,7 @@
 				numberToa:"",
 				numberTob:"",
 				numberToc:"",
-				texta:'',
+				textb:'',
 				textc:"",
 				textd:"",
 				fankui:"45",
@@ -167,6 +153,7 @@
 			}
 		},
 		mounted(){
+			Indicator.open({spinnerType: 'fading-circle'});
 			console.log(this.userContent)
 //			个人资料
 			var params={
@@ -174,11 +161,13 @@
 	    		terminalNo:3
 	    	}
 			this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
+				Indicator.close();
 				this.XiangmuShu=res.body.data.new_item;
 //				this.XiangmuShu=res;
 				console.log("个人资料");
 				console.log(res);
 			},function(res){
+				Indicator.close();
 			    console.log(res);
 			})
 			//已投案例接口   已投项目列表		调用
@@ -197,23 +186,42 @@
 			baocun(){
 				alert('保存成功')
 			},
-			baocunList(){
-				this.Wancent="";
-				this.bianList=true;
-//				var textInputs = this.$refs.yitouAnli.getElementsByClassName("mint-field-core");
-				var length=this.textInputs.length;
-				for(var i=0; i<length; i++){
-					if(this.textInputs[i].getAttribute("placeholder")==""){
-						if(this.textInputs[i].value==""){
-							this.textInputs[i].removeAttribute("readOnly");		//点击编辑   input去除属性readOnly即可编辑
-							this.Wancent="Wancent";
-						}else{
-							this.textInputs[i].setAttribute("readOnly","readOnly")		//点击编辑   input去除属性readOnly即可编辑
-//							Toast("亲，您的数据已提交，不可重复编辑如有问题请联系客服")
+			Blurs(item_id,id,index){
+//				MessageBox.confirm('请您确认好之后在保存 慎重！').then(action => {
+	//				保存修改投资额
+					var anliParam={
+			    		token:this.userContent.token,
+			    		item_id:item_id,		//	项目id	是	[string]		
+						send_id:id,		//	发送记录id	是	[string]		
+						investment:this.textInputs[index].value		//	投资额	是	[string]
+			    	}
+					this.$http.post(URL.path+'finance/edit_investment',anliParam,{emulateJSON:true}).then(function(res){
+						console.log(res);
+						if(res.body.returnCode=='200'){
+							Toast("您已保存成功")
 						}
-					}
-				}
+					},function(res){
+					    console.log(res);
+					})
+//				});
 			},
+//			baocunList(){
+//				this.Wancent="";
+//				this.bianList=true;
+////				var textInputs = this.$refs.yitouAnli.getElementsByClassName("mint-field-core");
+//				var length=this.textInputs.length;
+//				for(var i=0; i<length; i++){
+//					if(this.textInputs[i].getAttribute("placeholder")==""){
+//						if(this.textInputs[i].value==""){
+//							this.textInputs[i].removeAttribute("readOnly");		//点击编辑   input去除属性readOnly即可编辑
+//							this.Wancent="Wancent";
+//						}else{
+//							this.textInputs[i].setAttribute("readOnly","readOnly")		//点击编辑   input去除属性readOnly即可编辑
+////							Toast("亲，您的数据已提交，不可重复编辑如有问题请联系客服")
+//						}
+//					}
+//				}
+//			},
 			zuoshiBlock(){
 				this.tucaoShow=true;
 			},
@@ -239,45 +247,28 @@
 					console.log(res);
 					if(res.body.returnCode=='200'){
 						this.YitouList=res.body.data;
+						console.log(res.body.data.com_short)
 					}
+					console.log(res)
 				},function(res){
 				    console.log(res);
 				})
 			},
 			bianji(id){
-				if(id==1){
-					if(this.BianJi==1){
-						this.BianJi=0;
-						this.$refs.bianji.innerText="编辑";
+				if(id==2){
+					if(this.$refs.bianji2.innerText=="编辑"){
+						this.$refs.bianji2.innerText="取消";
+						var textInputs = this.$refs.first.getElementsByClassName("mint-field-core");
+						textInputs[0].removeAttribute("readOnly")		//点击编辑   input去除属性readOnly即可编辑
+						textInputs[0].focus();		//点击编辑   input获取焦点
+						console.log();
 					}else{
-						this.BianJi=1;
-						this.$refs.bianji.innerText="取消"
-						//获取标签
-						var datas = {
-							token:this.$route.params.token//	token	是	[string]	URL获取的参数
-						}
-						this.$http.post(URL.path1+'login/three',datas,{emulateJSON:true}).then(function(res){
-							this.BiaoQian=res.body.data
-							this.$nextTick(function() {
-								var spans=this.$refs.biaoqian.getElementsByTagName("span")[0];
-								spans.setAttribute("class","bianse")
-								this.biaoQianID.push(spans.id);
-								
-							});
-							console.log(this.BiaoQian);
-						},function(res){
-						    console.log(res.status);
-						})
+						this.$refs.bianji2.innerText="编辑";
+						var textInputs = this.$refs.first.getElementsByClassName("mint-field-core");
+						textInputs[0].setAttribute("readOnly","readOnly")		//点击编辑   input去除属性readOnly即可编辑
+						textInputs[0].focus();		//点击编辑   input获取焦点
+						console.log();
 					}
-				}
-				if(id==0){
-					var textInputs = this.$refs.guquanBian.getElementsByClassName("mint-field-core");
-					var length=textInputs.length;
-					for(var i=0; i<length; i++){
-						textInputs[i].removeAttribute("readOnly")		//点击编辑   input去除属性readOnly即可编辑
-					}
-					textInputs[0].focus();		//点击编辑   input获取焦点
-					console.log();
 				}
 				if(id==3 || id==4){
 					if(id==3){
@@ -312,154 +303,38 @@
 					
 				}
 			},
-			bianji2(id){
-				this.handleScroll();
-				if(this.BianJi2==1){
-					this.BianJi2=0;
-					this.$refs.text2.innerText="编辑";
-				}else{
-					this.BianJi2=1;
-					this.$refs.text2.innerText="取消"
-				}
-				
-			},
-			bianji3(){
-				this.handleScroll();
-				if(this.BianJi3==1){
-					this.BianJi3=0;
-					this.$refs.text3.innerText="编辑";
-				}else{
-					this.BianJi3=1;
-					this.$refs.text3.innerText="取消"
-				}
-			},
-			bianji4(){
-				this.handleScroll();
-				if(this.BianJi4==1){
-					this.BianJi4=0;
-					this.$refs.text4.innerText="编辑";
-				}else{
-					this.BianJi4=1;
-					this.$refs.text4.innerText="取消"
-				}
-			},
-			bianji5(id){
-				this.handleScroll();
-				if(this.bianList==true){
-					this.bianList=false;
-					this.textInputs = this.$refs.yitouAnli.getElementsByClassName("mint-field-core");
-					var length=this.textInputs.length;
-					for(var i=0; i<length; i++){
-						if(this.textInputs[i].getAttribute("placeholder")==""){
-							if(i==0){
-								Toast("亲，提交时确保数据正确再保持，慎重！");
-							}
-							if(this.textInputs[i].value==""){
-								this.textInputs[i].removeAttribute("readOnly");		//点击编辑   input去除属性readOnly即可编辑
-								this.Wancent="Wancent";
-							}else{
-								this.textInputs[i].setAttribute("readOnly","readOnly")		//点击编辑   input去除属性readOnly即可编辑
-							}
-						}else{
+//			bianji5(id){
+//				this.handleScroll();
+//				if(this.bianList==true){
+//					this.bianList=false;
+//					this.textInputs = this.$refs.yitouAnli.getElementsByClassName("mint-field-core");
+//					var length=this.textInputs.length;
+//					for(var i=0; i<length; i++){
+//						if(this.textInputs[i].getAttribute("placeholder")==""){
 //							if(i==0){
-//								Toast("亲，暂无可编辑数据！");
-//								this.bianList=true;
+//								Toast("亲，提交时确保数据正确再保持，慎重！");
 //							}
-						}
-					}
-					if(length==0){
-						Toast("亲，暂无可编辑数据！");
-						this.bianList=true;
-					}
-//						textInputs[0].focus();		//点击编辑   input获取焦点
-					console.log();
-				}
-			},
-			xuanze(index){
-				var spans=this.$refs.biaoqian.getElementsByTagName("span");	
-				var length=spans.length;
-				if(spans[index].getAttribute("class")=="bianse"){			//判断是否选择标签；》=1为选择；
-					spans[index].setAttribute("class","")
-					for(var z=0; z<this.y; z++){
-						if(this.biaoQianID[z]==spans[index].id){
-							this.biaoQianID.splice(z,1);
-							console.log(this.biaoQianID)
-							this.y-=1
-							break;
-						}
-					}
-				}else{
-					if(this.y>2){
-						Toast('最多可选三个');
-					}else{
-						spans[index].setAttribute("class","bianse");
-						this.y+=1;
-						for(var i=0; i<this.y; i++){
-							if(this.biaoQianID[i]!=spans[index].id){
-								this.biaoQianID.push(spans[index].id)
-								break;
-							}
-						}
-						console.log(this.biaoQianID)
-					}
-				}
-			},
-			xuanze1(index){
-				var spans=this.$refs.biaoqian1.getElementsByTagName("span");	
-				var length=spans.length;
-				if(spans[index].getAttribute("class")=="bianse"){			//判断是否选择标签；》=1为选择；
-					spans[index].setAttribute("class","")
-					for(var z=0; z<this.y; z++){
-						if(this.biaoQianID1[z]==spans[index].id){
-							this.biaoQianID1.splice(z,1);
-							console.log(this.biaoQianID1)
-							this.y-=1
-							break;
-						}
-					}
-				}else{
-					if(this.y>2){
-						Toast('最多可选三个');
-					}else{
-						spans[index].setAttribute("class","bianse");
-						this.y+=1;
-						for(var i=0; i<this.y; i++){
-							if(this.biaoQianID1[i]!=spans[index].id){
-								this.biaoQianID1.push(spans[index].id)
-								break;
-							}
-						}
-						console.log(this.biaoQianID1)
-					}
-				}
-			},
-			types(index,id){
-				var typeLi=this.$refs.foods.getElementsByTagName("li");
-				var length=typeLi.length;
-				this.urlName=id;
-				if(typeLi[index].getAttribute("class")=="src1"){			//判断是否选择标签；》=1为选择；
-					typeLi[index].setAttribute("class","src0")
-					for(var z=0; z<this.y; z++){
-						if(this.biaoQianID2[z]==typeLi[index].id){
-							this.biaoQianID2.splice(z,1);
-							console.log(this.biaoQianID2)
-							this.y-=1
-							break;
-						}
-					}
-				}else{
-					typeLi[index].setAttribute("class","src1");
-					this.y+=1;
-					for(var i=0; i<this.y; i++){
-						if(this.biaoQianID2[i]!=typeLi[index].id){
-							this.biaoQianID2.push(typeLi[index].id)
-							break;
-						}
-					}
-					console.log(this.biaoQianID2)
-				}
-			}
-			
+//							if(this.textInputs[i].value==""){
+//								this.textInputs[i].removeAttribute("readOnly");		//点击编辑   input去除属性readOnly即可编辑
+//								this.Wancent="Wancent";
+//								this.textInputs[0].focus();		//点击编辑   input获取焦点
+//							}else{
+//								this.textInputs[i].setAttribute("readOnly","readOnly")		//点击编辑   input去除属性readOnly即可编辑
+//							}
+//						}else{
+////							if(i==0){
+////								Toast("亲，暂无可编辑数据！");
+////								this.bianList=true;
+////							}
+//						}
+//					}
+//					if(length==0){
+//						Toast("亲，暂无可编辑数据！");
+//						this.bianList=true;
+//					}
+//					console.log();
+//				}
+//			},
 //			show(){
 ////				dom更新后在执行使用$refs
 //				this.$nextTick(function() {
@@ -889,7 +764,7 @@
 							  color:#44bfff;
 							}
 							.mint-field-core{
-								width:50%;
+								width:60%;
 								color:#44bfff;
 								padding-left:0.06rem;
 								box-sizing:border-box;
@@ -1000,25 +875,6 @@
 							margin:0;
 							padding:0.04rem 0.14rem;
 							margin:0.06rem 0.1rem;
-						}
-					}
-				}
-			}
-			.butten{
-				width:100%;
-				ul{
-					width:100%;
-					li{
-						width:100%;
-						padding:0.21rem 0 0.28rem 0;
-						text-align:center;
-						span{
-							display:inline-block;
-							padding:0.11rem 0.4rem;
-							background:#ff7a59;
-							color:#fff;
-							border-radius:0.04rem;
-							border:0.008rem solid #cccccc;
 						}
 					}
 				}

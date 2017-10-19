@@ -3,10 +3,23 @@
 		<div v-show="tucaoShow" class="xiangmu">
 			<div class="xiangmu-header">
 				<span class="xiangmu-left"  @click.stap="yijianHind()"><img src="../img/back.png"/></span>
-				<span>个人资料</span>
+				<span></span>
 			</div>
 			<div class="box" ref="box">
-				<div style="width:100%;height:0.45rem;"></div>
+				<div style="width:100%;height:0.2rem;"></div>
+				<div class="searchBox">
+					<div class="home-search">
+						<img ref="images" :src="imgs"/>
+					</div>
+					<div class="header-name">
+						<font>{{data.uname}}</font>
+						<div class="header-content">
+							<span>{{data.com_short}}</span>
+							<span>{{data.position}}</span>
+						</div>
+					</div>
+					<!--<div class="jifen"><font></font><span>积分 666</span></div>-->
+				</div>
 				<div class="guQuan">
 					<div ref="guanzhuLingyu">
 						<div class="fankiu border-topbottom">
@@ -15,7 +28,7 @@
 								<span ref="bianji" class="lasst"></span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
-										<input readOnly="true" v-model="numbera" :placeholder="numbera" type="text" class="mint-field-core">
+										<input readOnly="true" v-model="numbera" placeholder="暂无填写" type="text" class="mint-field-core">
 									</li>
 									<!--<li>
 										<input readOnly="true" v-model="numberb" placeholder="食品" type="text" class="mint-field-core">
@@ -50,11 +63,11 @@
 						<div class="shouru">
 							<div v-if="BianJi3==0">
 								<div class="anli-list">
-									<textarea readOnly="true" placeholder="营收收入不低于2亿元" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+									<textarea readOnly="true" :placeholder="numberTod" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
 										
 								</div>
 								<div class="anli-list border-bottom">
-									<textarea readOnly="true" placeholder="净利润不低于2000万元" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+									<textarea readOnly="true" :placeholder="numberToc" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
 								</div>
 							</div>
 							<ul v-if="BianJi3==1">
@@ -86,6 +99,7 @@
 	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 	import box from "../../box.vue";
 //	import youhuiquan from "../../shendu/PeixunZixun/YouhuiQuan.vue";
 //	import fankuixinxi from "./FankuiXinxi.vue";
@@ -95,11 +109,13 @@
 		props:{
 			userContent:{
 //				type:Object
-			}
+			},
+			uid:{}
 		},
 		data () {
 			return {
 				data:"",
+				imgs:"",
 				y:1,			//判断是否选择标签；》=1为选择；
 				BianJi:'0',
 				BianJi3:"0",
@@ -110,8 +126,8 @@
 				textc:"",
 				fankui:"45",
 				genjin:"458",
-				introductionA:"",
-				introductionB:"",
+				numberTod:"",
+				numberToc:"",
 				times:20177111129,
 				showFlag:true,
 				tucaoShow:true,
@@ -124,13 +140,21 @@
 			}
 		},
 		mounted(){
+			Indicator.open({spinnerType: 'fading-circle'});
 			console.log(this.userContent)
 //			个人资料
 			var params={
-	    		token:this.userContent.token,
+//	    		token:this.userContent.token,
+	    		uid:this.uid
 	    	}
 			this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
+				Indicator.close();
 				this.data=res.body.data;
+				this.imgs=res.body.data.photo.url;
+				
+				this.numberTod='营收收入不低于'+this.data.info.profit_min+'亿元';  //要插到页面的
+				this.numberToc='净利润不低于'+this.data.info.revenue_min+'万元';				//要插到页面的地区
+				
 				var SuozaiHangye=this.data.info.industry
 				var x=[];
 				var y=[];
@@ -144,7 +168,18 @@
 				this.numbera=y.join('、');
 				console.log(this.oDbiaoQianID2);
 				console.log(res);
+				this.$nextTick(function(){
+					var images = this.$refs.images;
+					if (images.clientWidth>images.clientHeight) {
+						images.style.height="100%"
+						images.style.width="auto"
+					}else{
+						images.style.width="100%"
+						images.style.height="auto"
+					}
+				});
 			},function(res){
+				Indicator.close();
 			    console.log(res);
 			})
 //			this.$refs.box.addEventListener('scroll', this.handleScroll)	//做一个scroll监听
@@ -171,7 +206,7 @@
 				this.$refs.xinxiShow.xinxiBlock();
 			},
 			liuYan(){
-				window.location.href="#/fankuixinxi/"+"dfgdfhd/12";
+				window.location.href="#/fankuixinxi/"+this.userContent.token+"/"+this.data.id+'/1';
 			},
 			baoMing(){
 				this.$refs.youhuiShow.YouhuiBlock();
@@ -266,10 +301,73 @@
 		}
 		.box::-webkit-scrollbar{width:0px;}
 		.box{
+			position:relative;
 			overflow-y:auto;
 			width:100%;
 			height:100%;
 			-webkit-overflow-scrolling:touch;/*解决苹果滑动流畅*/
+			.searchBox {
+				/*position:absolute;
+				top:0;
+				left:0;*/
+				width:100%;
+			    padding:0.26rem 0 0.18rem 0;
+			    background-image:url("../img/bgbg.png");
+			    background-size:100%;
+			    background-position:0 -0.2rem;
+			    display:flex;
+			    z-index:100;
+			    .home-search {
+			    	width:0.62rem;
+			    	height:0.62rem;
+				    background: #ffffff;
+				    margin-left:4.9%;
+				    border-radius:0.06rem;
+				    overflow:hidden;
+				    img{
+				    	/*width:100%;
+				    	height:100%;*/
+				    }
+				}
+				.header-name{
+					padding-left:0.11rem;
+					height:100%;
+					color:#fff;
+					font{
+						font-size:0.2rem;
+						line-height:0.34rem;
+					}
+					.header-content{
+						margin-top:0.06rem;
+						font-size:0.16rem;
+						span{
+							&:first-child{
+								display:inline-block;
+								padding-right:0.13rem;
+							}
+						}
+					}
+				}
+				.jifen{
+					width:0.75rem;
+					height:0.15rem;
+					position:absolute;
+					top:0.58rem;
+					right:0.16rem;
+					font-size:0.12rem;
+					display:flex;
+					align-items:center;
+					color:#fff;
+					font{
+						display:inline-block;
+						width:0.15rem;
+						height:0.15rem;
+						background-image:url("../img/jifen.png");
+						background-size:100% 100%;
+						margin:-0.02rem 0.06rem 0 0;
+					}
+				}
+			}
 			.guQuan{
 				width:100%;
 				margin:0 auto;

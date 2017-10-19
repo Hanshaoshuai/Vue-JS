@@ -16,7 +16,7 @@
 								<li class="src1" id='1' @click.stap="types('0','1')">
 									<span>定增</span><font class="img1"></font>
 								</li>
-								<li class="src0" id="3" @click.stap="types('1','3')">
+								<li class="src0" id="2" @click.stap="types('1','2')">
 									<span>接老股</span><font class="img1"></font>
 								</li>
 								
@@ -153,11 +153,13 @@
 					numberf:this.numberf,
 				}
 				var datas={
-					id:this.XiajiCanshu.id,			//	uid	是	[string]		
-					ctype:this.XiajiCanshu.type,	//	用户类型	是	[string]		
+//					id:this.XiajiCanshu.id,			//	uid	是	[string]
+//					ctype:this.XiajiCanshu.type,	//	用户类型	是	[string]
+					id:localStorage.getItem("userID"),			//	uid	是	[string]
+					ctype:localStorage.getItem("type"),	//	用户类型	是	[string]		
 					investment_way:this.biaoQianID1,//	投资方式	是	[string]		
-					single_project_max:this.numbere,//	单笔投资最大值	是	[string]		
-					single_project_min:this.numberf,//	单笔投资最小值	是	[string]		
+					single_project_max:this.numberf,//	单笔投资最大值	是	[string]		
+					single_project_min:this.numbere,//	单笔投资最小值	是	[string]		
 					board:this.board,				//	是否有新三板账户 1有 2 没有	是	[string]		
 					know_risk:this.know_risk,		//	是否了解新三板风险 1 了解， 2 不了解	是	[string]
 				}

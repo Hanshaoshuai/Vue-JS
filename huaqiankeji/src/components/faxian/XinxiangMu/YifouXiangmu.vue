@@ -14,40 +14,48 @@
 			</div>
 			<div class="box">
 				<div style="width:100%;height:0.55rem;"></div>
-				<div class="tishi-bottom" @click.stop="xiangqing('1')">
+				<div v-for="(item,index) in data" class="tishi-bottom" @click.stop="xiangqing(item.id)">
+					<div v-if="item.is_read=='0'" class="tubiao"></div>
 					<div class="borders">
 						<ul>
 							<li class="tishi-center">
 								<div class="content-heder">
-									<span>天天</span>
-									<span class="text-center">54587561</span>
-									<span>&nbsp;定增</span>
+									<span>{{item.com_name}}</span>
+									<span class="text-center">{{item.com_code}}</span>
+									<span v-if="item.type==1" class="texts">&nbsp;定增</span>
+									<span v-if="item.type==2" class="texts">&nbsp;做市</span>
+									<span v-if="item.type==3" class="texts">&nbsp;转老股</span>
+									<span v-if="item.type==4" class="texts">&nbsp;股权质押</span>
+									<span v-if="item.type==5" class="texts">&nbsp;融资租赁</span>
+									<span v-if="item.type==6" class="texts">&nbsp;研报支持</span>
+									<span v-if="item.type==7" class="texts">&nbsp;公司调研</span>
+									<!--<span>&nbsp;{{item.type}}</span>-->
 								</div>
 							</li>
 						</ul>
 						<div class="fankiu">
 							<div class="content-food border-bottom">
 								<span class="laizi">来自：</span>
-								<img class="border" src="" alt="" />
-								<span>&nbsp;王美丽&nbsp;</span>
+								<!--<img class="border" src="" alt="" />-->
+								<span>&nbsp;{{item.uname}}&nbsp;</span>
 								<font class="bbb border-left"></font>
-								<span>投资经理</span>
-								<span>&nbsp;&nbsp;董秘</span>
+								<span>{{item.short}}</span>
+								<span>&nbsp;&nbsp;{{item.position}}</span>
 							</div>
 						</div>
 						<div class="zhuying_1">
-							<div class="ferst">今年预计收入3.5亿，净利润3500万</div>
+							<div class="ferst">今年预计收入{{item.predict_revenue}}亿，净利润{{item.predict_profit}}万</div>
 							<div class="last">
-								<p>资经理资经理资主营业经理主营业资经理资主营业经理资经理资经理</p>
+								<p>{{item.lightspot}}</p>
 							</div>
 						</div>
-						<div class="jieshu"><font>保密信息，禁止传播</font><!--<span @click.stop="jieshu()">移除该项目</span>--></div>
+						<div class="jieshu"><font>保密信息，禁止传播</font><span v-if="item.follow=='1' && item.end_follow!=1 && item.end_follow!=2" @click.stop="jieshu(item.id)">结束项目</span></div>
 						<div class="times border">
-							<span class="text-center">1小时前</span>
+							<span class="text-center">{{item.create_time}}小时前</span>
 							<span>发布</span>
 							<div class="times-name">
-								<font></font>
-								<span class="text-center">剩余有效期{{genjin}}</span>
+								<!--<font></font>
+								<span class="text-center">剩余有效期{{genjin}}</span>-->
 							</div>
 						</div>
 					</div>
@@ -60,8 +68,11 @@
 </template>
 
 <script type="text/ecmascript">
+	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
 	import box from "../../box.vue";
+	import { Indicator } from 'mint-ui';
+	import { Toast } from 'mint-ui';
 //	import xiangmuxiangqing from "./XiangmuXiangqing.vue";
 	
 	
@@ -75,6 +86,7 @@
 		},
 		data () {
 			return {
+				data:"",
 				XiangmuID:"",
 				userContent:"",
 				fankui:"45",
@@ -86,20 +98,26 @@
 			}
 		},
 		mounted(){
+			Indicator.open({spinnerType: 'fading-circle'});
 			this.userContent={
-				token:this.$route.params.token
+				token:this.$route.params.token,
+				page:"",			//page	是	[string]		
+				size:'',			//size	是	[string]		
+				follow:"2"			//2 已结束 其他表示所有收到的项目	是	[string]	
 			}
 			console.log(this.userContent)
 //			已否项目列表（）
 			if(this.data==""){
 				this.$http.post(URL.path+'finance/received_item_list',this.userContent,{emulateJSON:true}).then(function(res){
 					this.data=res.body.data;
+					Indicator.close();
 					if(res.body.returnCode=='201'){
 						Toast("亲！您暂无收到新项目哦...")
 					}
-					console.log("投资人收到的项目列表");
+					console.log("已否项目列表");
 					console.log(res.body);
 				},function(res){
+					Indicator.close();
 				    console.log(res);
 				})
 			}
@@ -114,7 +132,7 @@
 			},
 			xiangqing(XiangmuID){
 				this.XiangmuID=XiangmuID;
-				window.location.href="#/faxian/YifouXiangmu/"+this.userContent['token']+"/XiangmuXiangqing/"+this.XiangmuID;
+				window.location.href="#/faxian/YifouXiangmu/"+this.userContent['token']+"/YifouXiangqing/"+this.XiangmuID;
 //				this.$refs.xiangqingShow.xiangqingBlock();
 			}
 			
@@ -178,7 +196,7 @@
 		top:0;
 		left:0;
 		right:0;
-		z-index:300;
+		z-index:220;
 		.searchBox {
 			position:fixed;
 			top:0;
@@ -186,7 +204,7 @@
 		    width: 100%;
 		    height:0.45rem;
 		    background-color:#ff7a59;
-		    z-index:310;
+		    z-index:240;
 		    .home-search {
 			    height: 100%;
 			    line-height:0.45rem;

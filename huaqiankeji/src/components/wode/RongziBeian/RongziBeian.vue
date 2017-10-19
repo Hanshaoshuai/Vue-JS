@@ -11,7 +11,7 @@
 					<li class="beian-first">
 						2017年 10月 8日
 					</li>				<!--1:未审核 2:已审核 3:进行中 4:已结束 5未通过-->
-					<ul v-if="item.status=='2'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id)">
+					<ul v-if="item.status=='2'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>
@@ -23,7 +23,7 @@
 							</div>-->
 						</li>
 					</ul>
-					<ul v-if="item.status=='1'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id)">
+					<ul v-if="item.status=='1'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>
@@ -35,7 +35,19 @@
 							</div>-->
 						</li>
 					</ul>
-					<ul v-if="item.status=='4'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id)">
+					<ul v-if="item.status=='3'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
+						<li class="beian-last">
+							<div class="content-top">
+								<span>{{item.com_short}}</span>
+								<span></span>
+								<font>进行中</font>
+							</div>
+							<!--<div class="content-bottom">
+								<span>1小时前</span>
+							</div>-->
+						</li>
+					</ul>
+					<ul v-if="item.status=='4'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>
@@ -47,7 +59,7 @@
 							</div>-->
 						</li>
 					</ul>
-					<ul v-if="item.status=='5'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id)">
+					<ul v-if="item.status=='5'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>
@@ -65,7 +77,7 @@
 					<li class="beian-first">
 						2017年 10月 8日
 					</li>
-					<ul v-if="item.status=='2'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id)">
+					<ul v-if="item.status=='2'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>
@@ -77,7 +89,7 @@
 							</div>-->
 						</li>
 					</ul>
-					<ul v-if="item.status=='1'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName1(item.id)">
+					<ul v-if="item.status=='1'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName1(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>
@@ -89,7 +101,19 @@
 							</div>-->
 						</li>
 					</ul>
-					<ul v-if="item.status=='4'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName1(item.id)">
+					<ul v-if="item.status=='3'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName1(item.id,item.status)">
+						<li class="beian-last">
+							<div class="content-top">
+								<span>{{item.com_short}}</span>
+								<span></span>
+								<font>进行中</font>
+							</div>
+							<!--<div class="content-bottom">
+								<span>1小时前</span>
+							</div>-->
+						</li>
+					</ul>
+					<ul v-if="item.status=='4'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName1(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>
@@ -101,7 +125,7 @@
 							</div>-->
 						</li>
 					</ul>
-					<ul v-if="item.status=='5'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName1(item.id)">
+					<ul v-if="item.status=='5'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName1(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>

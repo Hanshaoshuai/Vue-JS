@@ -8,11 +8,18 @@
 			<div class="box" ref="box">
 				<div style="width:100%;height:0.55rem;"></div>
 				<div v-for="(item,index) in data" class="sousuo-content border-topbottom">
-					<ul ref="index1" class="content-header border-bottom" index="type1"  @click.stap="typeName(item.id,item.type)">
+					<ul ref="index1" class="content-header border-bottom" index="type1"  @click.stap="typeName(item.id,item.type,item.is_send)">
 						<li>
 							<div class="content-top">
 								<span>{{item.com_name}}&nbsp;({{item.com_code}})</span>
-								<span>{{item.type}}</span>
+								<!--<span>{{item.type}}</span>-->
+								<span v-if="item.type==1" class="texts">定增</span>
+								<span v-if="item.type==2" class="texts">做市</span>
+								<span v-if="item.type==3" class="texts">转老股</span>
+								<span v-if="item.type==4" class="texts">股权质押</span>
+								<span v-if="item.type==5" class="texts">融资租赁</span>
+								<span v-if="item.type==6" class="texts">研报支持</span>
+								<span v-if="item.type==7" class="texts">公司调研</span>
 								<font>已投递</font>
 							</div>
 							<div class="content-bottom">
@@ -21,94 +28,10 @@
 						</li>
 					</ul>
 				</div>
-				<!--<div class="sousuo-content border-topbottom">
-					<ul ref="index2" class="content-header border-bottom" index="type2"  @click.stap="typeName('1')">
-						<li>
-							<div class="content-top">
-								<span>定增&nbsp;(34565645)</span>
-								<span>定增</span>
-								<font>已投递</font>
-							</div>
-							<div class="content-bottom">
-								<span>1小时前</span>
-							</div>
-						</li>
-					</ul>
-				</div>
-				<div class="sousuo-content border-topbottom">
-					<ul ref="index3" class="content-header border-bottom" index="type3"  @click.stap="typeName('2')">
-						<li>
-							<div class="content-top">
-								<span>股权质押&nbsp;(34565645)</span>
-								<span>股权质押</span>
-								<font>已投递</font>
-							</div>
-							<div class="content-bottom">
-								<span>1小时前</span>
-							</div>
-						</li>
-					</ul>
-				</div>
-				<div class="sousuo-content border-topbottom">
-					<ul ref="index4" class="content-header border-bottom" index="type4"  @click.stap="typeName('3')">
-						<li>
-							<div class="content-top">
-								<span>转老股&nbsp;(34565645)</span>
-								<span>转老股</span>
-								<font>已投递</font>
-							</div>
-							<div class="content-bottom">
-								<span>1小时前</span>
-							</div>
-						</li>
-					</ul>
-				</div>
-				<div class="sousuo-content border-topbottom">
-					<ul ref="index5" class="content-header border-bottom" index="type5"  @click.stap="typeName('4')">
-						<li>
-							<div class="content-top">
-								<span>融资租赁&nbsp;(34565645)</span>
-								<span>融资租赁</span>
-								<font>已投递</font>
-							</div>
-							<div class="content-bottom">
-								<span>1小时前</span>
-							</div>
-						</li>
-					</ul>
-				</div>-->
-				<!--<div class="sousuo-content border-topbottom">
-					<ul ref="index6" class="content-header border-bottom" index="type6"  @click.stap="typeName('5')">
-						<li>
-							<div class="content-top">
-								<span>公司调研&nbsp;(34565645)</span>
-								<span>公司调研</span>
-								<font>已投递</font>
-							</div>
-							<div class="content-bottom">
-								<span>1小时前</span>
-							</div>
-						</li>
-					</ul>
-				</div>-->
-				<!--<div class="sousuo-content border-topbottom">
-					<ul class="content-header border-bottom"  @click.stap="shuangchuangGo()">
-						<li>
-							<div class="content-top">
-								<span>双创债&nbsp;(34565645)</span>
-								<span>双创债</span>
-								<font>已投递</font>
-							</div>
-							<div class="content-bottom">
-								<span>1小时前</span>
-							</div>
-						</li>
-					</ul>
-				</div>-->
 				<box></box>
 				<div style="width:100%;height:0.5rem;"></div>
 			</div>
-			<router-view :token="token" :XiangmuID="XiangmuID"></router-view>
+			<router-view :token="token" :XiangmuID="XiangmuID" :is_send="is_send"></router-view>
 			<!--<dingzengzuoshi ref="dingzengzuoshiShow"></dingzengzuoshi>-->
 			<!--<zhuanlaogu ref="zhuanlaoguShow"></zhuanlaogu>-->
 			<!--<diaoyan ref="diaoyanShow"></diaoyan>-->
@@ -123,6 +46,7 @@
 	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 	import box from "../../box.vue";
 //	import dingzengzuoshi from "./DingzengZuoshi.vue";
 //	import zhuanlaogu from "./ZhuanlaoGu.vue";
@@ -157,10 +81,12 @@
 					type5:"ZuLin1",
 					type7:"Diaoyan1"
 				},
-				XiangmuID:""
+				XiangmuID:"",
+				is_send:""
 			}
 		},
 		mounted() {
+			Indicator.open({spinnerType: 'fading-circle'});
 			console.log(this.token)
 			//项目列表（自己创建的历史融资记录）	
 			var datas = {
@@ -170,11 +96,13 @@
 			}
 			this.$http.post(URL.path+'finance/creae_list',datas,{emulateJSON:true}).then(function(res){
 				this.data=res.body.data;
+				Indicator.close();
 				if(this.data.length==0){
 					Toast("暂无融资记录")
 				}
 				console.log(res.body.data);
 			},function(res){
+				Indicator.close();
 			    console.log(res.status);
 			})
 			this.$nextTick(function() {
@@ -187,9 +115,10 @@
 				history.go(-1)
 //				this.tucaoShow=false;
 			},
-			typeName(id,type){
+			typeName(id,type,is_send){
 				var Uls=this.boxUl[type]
 				this.XiangmuID=id;
+				this.is_send=is_send;		//是否投递过
 				this.types['type'+type]
 				console.log(this.types['type'+type])
 				window.location.href="#/wode/jilu/0/"+this.types['type'+type];

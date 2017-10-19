@@ -78,7 +78,7 @@
 					photourl:localStorage.getItem("photourl")	//用户头像URL地址
 	  		}
 	  		console.log(this.userContent)
-//	  		window.location.href="#/denglu";
+	  		window.location.href="#/faxian";
 	  	}else{
 	  		window.location.href="#/denglu";
 	  		return;

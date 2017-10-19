@@ -98,11 +98,11 @@
 					</div>-->
 					<div class="zhuying_1">
 						<div class="ferst"><span>*</span>所在省份</div>
-						<div class="last number">
+						<div class="last number zuihou">
 							<input v-model="numberh" placeholder="请填写省份" type="text" class="mint-field-core">
 						</div>
 					</div>
-					<div class="times">
+					<!--<div class="times">
 						<span class="times_1">领天</span>
 						<span class="text-center">1小时前</span>
 						<span>发布</span>
@@ -110,7 +110,7 @@
 							<span>{{fankui}}反馈</span>
 							<span class="text-center">{{genjin}}跟进</span>
 						</div>
-					</div>
+					</div>-->
 				</div>
 				<div class="butten">
 					<ul @click.stop="xiayibuGo()">
@@ -128,6 +128,7 @@
 	import {URL} from '../../../../common/js/path';
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 	import box from "../../../box.vue";
 	import pipei from "../PipeiTouziRen/Pipei.vue";
 	import tishi from "../../../Tishi.vue";
@@ -272,7 +273,8 @@
 					numberf:this.numberf,
 					numberg:this.numberg,
 					numberh:this.numberh,
-					XiangmuID:this.XiangmuID
+					XiangmuID:this.XiangmuID,
+					type:this.type,
 				}
 				var ok=0;
 				for(var item in CanShu){		//判断填写信息是否完整Ok=1；标签必选
@@ -283,12 +285,20 @@
 					}
 				}
 				if(ok==0){
+					Indicator.open({spinnerType: 'fading-circle'});
 					this.$http.post(URL.path+'finance/create',datas,{emulateJSON:true}).then(function(res){
 						CanShu.XiangmuID=res.body.data
 						this.content=this.$refs.pipeiShow;
-						this.$refs.tishiShow.tishiBlock(CanShu,'pipei');//CanShu是下级要传的参数
+						Indicator.close();
+						if(res.body.returnCode==202){
+							Toast(res.body.msg)
+							window.location.href="#/wode"
+						}else{
+							this.$refs.tishiShow.tishiBlock(CanShu,'pipei');//CanShu是下级要传的参数
+						}
 						console.log(res);
 					},function(res){
+						Indicator.close();
 					    console.log(res.status);
 					})
 				}else{
@@ -475,6 +485,9 @@
 								color:#afafaf;
 							}
 						}
+					}
+					.zuihou{
+						margin-bottom:0.2rem;
 					}
 					.neirong{
 						min-height:1.22rem;

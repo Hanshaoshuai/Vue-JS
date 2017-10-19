@@ -33,14 +33,19 @@
 					</div>
 				</div>
 				<div style="height:0.06rem;width:100%;background:#f5f4f9"></div>
-				<div ref="chanYe" class="sousuo-content border-topbottom">
+				<div class="sousuo-content border-topbottom">
 					<div class="content-header border-topbottom">
 						<span>直营业务</span><span ref="bianji3" class="lasst" @click.stap="bianji('3')">编辑</span>
 					</div>
 					<div class="xiaolv anli">
-						<ul class="first">
+						<ul v-if="BianJi2==0" class="first">
 							<li>
 								<textarea readOnly="true" placeholder="请填写直营业务、投资亮点等" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+							</li>
+						</ul>
+						<ul v-if="BianJi2==1" class="first">
+							<li>
+								<textarea ref="chanYe" placeholder="请填写直营业务、投资亮点等" class="mint-field-core ziyuanChongzu" v-model="textc1"></textarea>
 							</li>
 						</ul>
 					</div>
@@ -75,11 +80,7 @@
 					</div>
 				</div>
 				<box></box>
-				<div class="butten">
-					<ul>
-						<li><span @click.stop="liuYan()">留言</span></li>
-					</ul>
-				</div>
+				<box></box>
 			</div>
 			<!--<youhuiquan ref="youhuiShow"></youhuiquan>-->
 		</div>
@@ -90,6 +91,7 @@
 	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 	import box from "../../box.vue";
 //	import youhuiquan from "../../shendu/PeixunZixun/YouhuiQuan.vue";
 //	import fankuixinxi from "./FankuiXinxi.vue";
@@ -107,11 +109,13 @@
 				y:1,			//判断是否选择标签；》=1为选择；
 				BianJi:'0',
 				BianJi3:"0",
+				BianJi2:"0",
 				BiaoQian:"",
 				numbera:"",
 				numberb:"",
 				numberc:"",
 				textc:"",
+				textc1:'',
 				textd:"",
 				texte:"",
 				numberTod:"",
@@ -130,20 +134,25 @@
 			}
 		},
 		mounted(){
+			Indicator.open({spinnerType: 'fading-circle'});
 			console.log(this.userContent)
 //			个人资料
 			var params={
 	    		token:this.userContent.token,
 	    	}
 			this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
+				Indicator.close();
 				this.data=res.body.data;
 				
-				this.numberb=this.data.info.profit_min;//营业收入不低于    将要改变的数据
-				this.numberc=this.data.info.revenue_min;//净利润不低于	将要改变的数据
-				this.numberTod='营收收入不低于'+this.data.info.profit_min+'亿元';  //要插到页面的
-				this.numberToc='净利润不低于'+this.data.info.revenue_min+'万元';				//要插到页面的地区
-				this.textd=this.data.info.profit_min;//原来的数据
-				this.texte=this.data.info.revenue_min;//原来的数据
+				this.numberb=this.data.info.revenue;//营业收入不低于    将要改变的数据
+				this.numberc=this.data.info.profit;//净利润不低于	将要改变的数据
+				this.numberTod='营收收入不低于'+this.data.info.revenue+'万元';  //要插到页面的
+				this.numberToc='净利润不低于'+this.data.info.profit+'万元';				//要插到页面的地区
+				this.textd=this.data.info.revenue;//原来的数据
+				this.texte=this.data.info.profit;//原来的数据
+				
+				this.textc=this.data.info.business;		//原数据
+				this.textc1=this.data.info.business;		//将要改变的数据
 				
 				var SuozaiHangye=this.data.info.industry
 				var x=[];
@@ -159,6 +168,7 @@
 				console.log(this.oDbiaoQianID2);
 				console.log(res);
 			},function(res){
+				Indicator.close();
 			    console.log(res);
 			})
 //			this.$refs.box.addEventListener('scroll', this.handleScroll)	//做一个scroll监听
@@ -179,6 +189,7 @@
 				var nuwID1;
 				var max_nuwID2;
 				var min_nuwID2;
+				var textc1;		//将要改变的数据
 				if(this.BianJi=='0'){		//原来数据
 					nuwID=this.oDbiaoQianID;
 				}else{						//改后数据
@@ -191,12 +202,18 @@
 					max_nuwID2=this.numberb;
 					min_nuwID2=this.numberc;
 				}
+				if(this.BianJi2=='0'){		//原来数据
+					textc1=this.textc;
+				}else{						//改后数据
+					textc1=this.textc1;
+				}
 				var datas={
 					id:localStorage.getItem("userID"),//	用户id	是	[string]			
 					ctype:'1',					//	类型 1企业 4研究机构	是	[string]		
 					industry:nuwID,				//	所属行业标签，多个用 逗号分割	是	[string]
-//					revenue_min:max_nuwID2,			//最低营收要求	是	[string]		
-//					profit_min:min_nuwID2,			//最低净利润要求	是	[string]
+					business:textc1,
+					revenue:min_nuwID2,					//营收收入不低于
+					profit:max_nuwID2						//净利润不低于
 				}
 				console.log(datas)
 				this.$http.post(URL.path+'regist/com_regist2',datas,{emulateJSON:true}).then(function(res){
@@ -271,33 +288,16 @@
 					if(id==3){
 						if(this.$refs.bianji3.innerText=="编辑"){
 							this.$refs.bianji3.innerText="取消";
-							var textInputs = this.$refs.chanYe.getElementsByClassName("mint-field-core");
-							textInputs[0].removeAttribute("readOnly")		//点击编辑   input去除属性readOnly即可编辑
-							textInputs[0].focus();		//点击编辑   input获取焦点
-							console.log();
+							this.BianJi2=1;
+							this.$nextTick(function() {
+								this.$refs.chanYe.focus();	//点击编辑   input获取焦点
+								console.log();
+							})
 						}else{
 							this.$refs.bianji3.innerText="编辑";
-							var textInputs = this.$refs.chanYe.getElementsByClassName("mint-field-core");
-							textInputs[0].setAttribute("readOnly","readOnly")		//点击编辑   input去除属性readOnly即可编辑
-							textInputs[0].focus();		//点击编辑   input获取焦点
-							console.log();
-						}
-					}else{
-						if(this.$refs.bianji4.innerText=="编辑"){
-							this.$refs.bianji4.innerText="取消";
-							var textInputs = this.$refs.chongGou.getElementsByClassName("mint-field-core");
-							textInputs[0].removeAttribute("readOnly")		//点击编辑   input去除属性readOnly即可编辑
-							textInputs[0].focus();		//点击编辑   input获取焦点
-							console.log();
-						}else{
-							this.$refs.bianji4.innerText="编辑";
-							var textInputs = this.$refs.chongGou.getElementsByClassName("mint-field-core");
-							textInputs[0].setAttribute("readOnly","readOnly")		//点击编辑   input去除属性readOnly即可编辑
-							textInputs[0].focus();		//点击编辑   input获取焦点
-							console.log();
+							this.BianJi2=0;
 						}
 					}
-					
 				}
 				if(id==4){
 					var textInputs = this.$refs.yitouAnli.getElementsByClassName("mint-field-core");
@@ -968,25 +968,6 @@
 							margin:0;
 							padding:0.04rem 0.14rem;
 							margin:0.06rem 0.1rem;
-						}
-					}
-				}
-			}
-			.butten{
-				width:100%;
-				ul{
-					width:100%;
-					li{
-						width:100%;
-						padding:0.21rem 0 0.28rem 0;
-						text-align:center;
-						span{
-							display:inline-block;
-							padding:0.11rem 0.4rem;
-							background:#ff7a59;
-							color:#fff;
-							border-radius:0.04rem;
-							border:0.008rem solid #cccccc;
 						}
 					}
 				}

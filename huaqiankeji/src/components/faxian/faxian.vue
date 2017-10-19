@@ -121,26 +121,28 @@
 						<div  class="ContentText" :id="index" @click.stop="contblock(item.id,item.type)">
 							<div class="TextMame">
 								<div class="margin">		<!--类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报 6：公司调研-->
-									<span v-if="item.type==1" class="texts">定增{{item.type}}</span>
-									<span v-if="item.type==2" class="texts">做市{{item.type}}</span>
-									<span v-if="item.type==3" class="texts">转老股{{item.type}}</span>
-									<span v-if="item.type==4" class="texts">股权质押{{item.type}}</span>
-									<span v-if="item.type==5" class="texts">融资租赁{{item.type}}</span>
-									<span v-if="item.type==6" class="texts">研报支持{{item.type}}</span>
-									<span v-if="item.type==7" class="texts">公司调研{{item.type}}</span>
-									<span class="texts">{{item.com_name}}</span>
+									<span v-if="item.type==1" class="texts">定增</span>
+									<span v-if="item.type==2" class="texts">做市</span>
+									<span v-if="item.type==3" class="texts">转老股</span>
+									<span v-if="item.type==4" class="texts">股权质押</span>
+									<span v-if="item.type==5" class="texts">融资租赁</span>
+									<span v-if="item.type==6" class="texts">研报支持</span>
+									<span v-if="item.type==7" class="texts">公司调研</span>
+									<span class="texts"><font class="lefts">{{item.com_name}}</font>**</span>
+									<span class="texts">( <font class="rights">{{item.com_code}}</font> **** )</span>
 								</div>
 								<div class="TypeList">
 									<span v-for="(name,index) in item.industry" class="texts">{{name.title}}</span>
 								</div>
 							</div>
 							<div class="BottomText">
-								<span class="texts">{{item.lightspot}}他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以他正在你可以联系的</span>
+								<span class="texts">{{item.lightspot}}</span>
 							</div>
 							<div class="ContentTime border-top" @click.stop="Guquanzhaiyao()">
 								<div class="tishi-left">
-									<span>企业</span>
-									<span>{{item.research_time}}小时前</span>&nbsp;发布
+									<span>{{item.position}}</span>
+									<span>{{numToTime(item.create_time)}}</span>&nbsp发布
+									<!--<span>{{item.create_time}}小时前</span>&nbsp;发布-->
 								</div>
 								<div class="tishi-right">
 									<span>{{}}反馈</span>
@@ -156,7 +158,7 @@
 					<div class="tishi-bottom" v-show="promps">
 						<ul>
 							<li class="border-bottom"></li>
-							<li class="tishi-center">亲已经到底了</li>
+							<li class="tishi-center">{{botent}}</li>
 							<li class="border-bottom"></li>
 						</ul>
 					</div>
@@ -184,13 +186,13 @@
 		      	<div style="width:100%;height:0.6rem;"></div>
 		    </div>
 			<!--</div>-->
-			<router-view :setscrollTop="scrollTop" :datas="datas" :userContent='userContent' :type="type"></router-view>
+			<router-view :setscrollTop="scrollTop" :datas="datas" :userContent='userContent' :type="type" :FankuiShu="FankuiShu"></router-view>
 		</div>
 	<!--</transition>-->
 </template>
 
 <script type="text/ecmascript">
-//	import {formatDate} from "../../common/js/date.js";
+	import {numToTime} from "../../common/js/date.js";
 	import { Indicator } from 'mint-ui';
 	import {URL} from '../../common/js/path';
 	import { Toast } from 'mint-ui';
@@ -237,10 +239,13 @@
 		        scrollTop:"",
 		        XiangmuShu:"",
 		        FankuiShu:"",
-		        ZongHe:""
+		        ZongHe:"",
+		        botent:"亲已经到底了",
+		        numToTime:""
 			}
 		},
 		mounted() {	//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商
+			this.numToTime=numToTime;
 			this.userContent={
 	  			userID:localStorage.getItem("userID"),			//用户ID
 				token:localStorage.getItem("token"),		//用户token
@@ -260,17 +265,15 @@
 	    	var token={
 	    		token:this.userContent.token
 	    	}
+	    	var that=this;
 	    	this.token=token;
 //	    	this.TouziToken=token;
-//	    	this.qinQiu(token);
+	    	this.qinQiu(token);
 //			投资机构收到的新项目数
-			this.$http.post(URL.path+'finance/new_item',token,{emulateJSON:true}).then(function(res){
-				this.XiangmuShu=res.body.data.new_item;
-//				this.XiangmuShu=res;
-				console.log("投资机构收到的新项目个数");
-				console.log(this.XiangmuShu);
-			},function(res){
-			    console.log(res);
+			this.huoqugeshu();
+			this.$on("to-parent",function(msg){
+				console.log(msg)
+				that.FankuiShu = msg
 			})
 //			企业获取反馈数	和	投资机构收获取反馈数
 			this.$http.post(URL.path+'chatcomment/get_feedback_num',token,{emulateJSON:true}).then(function(res){
@@ -297,7 +300,6 @@
 	      	this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
 	      	this.$nextTick(function() {
 	      		this.ZongHe=this.XiangmuShu*1+this.FankuiShu*1
-	      		this.Zongshu();
 //           	this.mySwiper = new Swiper(".swiper-container",{
 //					direction:"vertical",
 //					autoplay :2000,
@@ -309,10 +311,23 @@
 			});
 	    },
 		methods:{	//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商 7:财务顾问
-			Zongshu(){
-				//广播
-//				this.$emit("ZongHe",this.ZongHe);
+			huoqugeshu(){
+//			投资机构收到的新项目数
+				var token={
+		    		token:this.userContent.token
+		    	}
+				this.$http.post(URL.path+'finance/new_item',token,{emulateJSON:true}).then(function(res){
+					this.XiangmuShu=res.body.data.new_item;
+					console.log("投资机构收到的新项目个数");
+					console.log(this.XiangmuShu);
+				},function(res){
+				    console.log(res);
+				})
 			},
+//			child(FankuiShus){
+//				this.XiangmuShu=FankuiShus
+//				console.log(FankuiShus)
+//			},
 			userType(type){
 //				t:false,
 //				t1:false,
@@ -351,10 +366,10 @@
 	      	},
 	      	loadBottom() {
 	      		console.log("bot")
-		        setTimeout(() => {
+//		        setTimeout(() => {
 		          	let lastValue = this.list.length;   
-		          	if (lastValue < 3) {
-		          		this.qinQiu(this.token);
+		          	if (lastValue < 1) {
+//		          		this.qinQiu(this.token);
 //			            for (let i = 1; i <= 10; i++) {
 //			              	this.list.push(lastValue + i);
 //			            }
@@ -367,7 +382,7 @@
 //		            	},1500);
 		          	}
 		          	this.$refs.loadmore.onBottomLoaded();
-		        }, 1500);
+//		        }, 1000);
 	      	},
 			sousuo(){
 				window.location.href="#/faxian/sousuo/";
@@ -414,13 +429,17 @@
 					Indicator.close();
 					this.data=res.body.data;
 					console.log("首页项目列表成功");
-					console.log(this.data)
-					this.$nextTick(function(){
-						if(this.yici=='0'){
-							this.tuCao();
-							this.yici=1;
-						}
-					});
+					console.log(res)
+					if(this.data.length!=0){
+						this.$nextTick(function(){
+							if(this.yici=='0'){
+								this.tuCao();
+								this.yici=1;
+							}
+						});
+					}else{
+						this.botent="暂无数据"
+					}
 				},function(res){
 				    console.log(res);
 				    Indicator.close();
@@ -471,10 +490,10 @@
 			
 		},
 		filters:{
-//			formatDate(time){
-//				let date = new Date(time);
-//				return formatDate(date,'yyyy-MM-dd hh:mm');
-//			}
+			formatDate(time){
+				let date = new Date(time);
+				return formatDate(date,'yyyy-MM-dd hh:mm');
+			}
 		},
 		updated(){
 //			if(!this.mySwiper){
@@ -894,6 +913,22 @@
 									min-width:31%;
 									margin-right:0.1rem;
 								}
+								.lefts{
+									display:inline-block;
+									width:0.17rem;
+									height:0.155rem;
+									line-height:0.16rem;
+									margin-bottom:-0.02rem;
+									overflow:hidden;
+								}
+								.rights{
+									display:inline-block;
+									width:0.17rem;
+									height:0.155rem;
+									line-height:0.16rem;
+									margin-bottom:-0.02rem;
+									overflow:hidden;
+								}
 							}
 						}
 						.TypeList{
@@ -951,7 +986,7 @@
 					    align-items: center;
 					    border-radius:0rem 0 0.12rem 0.12rem;
 					    .tishi-left{
-					    	flex:1;
+					    	flex:3;
 					    	padding-left:5.5%;
 					    	span{
 					    		&:first-child{
@@ -961,7 +996,7 @@
 					    	}
 					    }
 					    .tishi-right{
-					    	flex:1;
+					    	flex:2;
 					    	padding-right:5.5%;
 					    	text-align:right;
 					    	span{

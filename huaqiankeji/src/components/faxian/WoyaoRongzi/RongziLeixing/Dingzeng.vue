@@ -98,17 +98,8 @@
 					</div>-->
 					<div class="zhuying_1">
 						<div class="ferst"><span>*</span>所在省份</div>
-						<div class="last number">
+						<div class="last number zuihou">
 							<input v-model="numberh" placeholder="请填写省份" type="text" class="mint-field-core">
-						</div>
-					</div>
-					<div class="times">
-						<span class="times_1">领天</span>
-						<span class="text-center">1小时前</span>
-						<span>发布</span>
-						<div class="times-name">
-							<span>{{fankui}}反馈</span>
-							<span class="text-center">{{genjin}}跟进</span>
 						</div>
 					</div>
 				</div>
@@ -270,7 +261,8 @@
 					numberf:this.numberf,
 					numberg:this.numberg,
 					numberh:this.numberh,
-					XiangmuID:this.XiangmuID
+					XiangmuID:this.XiangmuID,
+					type:this.type,
 				}
 				var ok=0;
 				for(var item in CanShu){		//判断填写信息是否完整Ok=1；标签必选
@@ -287,7 +279,12 @@
 						CanShu.XiangmuID=res.body.data;
 						this.XiangmuID=res.body.data;
 						this.content=this.$refs.pipeiShow;
-						this.$refs.tishiShow.tishiBlock(CanShu,'pipei');//CanShu是下级要传的参数
+						if(res.body.returnCode==202){
+							Toast(res.body.msg)
+							window.location.href="#/wode"
+						}else{
+							this.$refs.tishiShow.tishiBlock(CanShu,'pipei');//CanShu是下级要传的参数
+						}
 						console.log(res);
 					},function(res){
 					    console.log(res.status);
@@ -477,6 +474,9 @@
 							}
 						}
 					}
+					.zuihou{
+						margin-bottom:0.2rem;
+					}
 					.neirong{
 						min-height:1.22rem;
 						.mint-field-core{
@@ -547,43 +547,6 @@
 							background:#fddcd0;
 							color:#ff7a59;
 						}
-					}
-				}
-				.times{
-					width:100%;
-					height:0.3rem;
-					background:#fff;
-					line-height:0.3rem;
-					.times_1{
-						display:inline-block;
-						padding-left:0.2rem;
-					}
-					.text-center{
-						display:inline-block;
-						padding:0 0.08rem;
-					}
-					.times-name{
-						float:right;
-						margin-right:0.1rem;
-					}
-				}
-				.times{
-					width:100%;
-					height:0.3rem;
-					background:#fff;
-					line-height:0.3rem;
-					font-size:0.12rem;
-					.times_1{
-						display:inline-block;
-						padding-left:0.2rem;
-					}
-					.text-center{
-						display:inline-block;
-						padding:0 0.08rem;
-					}
-					.times-name{
-						float:right;
-						margin-right:0.1rem;
 					}
 				}
 			}

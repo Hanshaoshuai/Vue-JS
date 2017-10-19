@@ -101,9 +101,6 @@
 		mounted(){		//<!--1:未审核 2:已审核 3:进行中 4:已结束 5未通过-->
 			console.log(this.$route.params.type)
 			console.log(this.token)
-			if(this.$route.params.type=='2'){
-				this.showFlag=false;
-			}
 			this.type=this.$route.params.type
 			this.$nextTick(function() {
 				
@@ -114,13 +111,19 @@
 	    		id:this.beiAnidC		//	备案id
 	    	}
 			this.$http.post(URL.path+'finance/record_detail',params,{emulateJSON:true}).then(function(res){
+				console.log(res);
 				this.data=res.body.data.id;
 				this.texta=this.data.com_name;
 				this.textb=this.data.com_short;
 				this.textc=this.data.total_finance;
 				this.textd=this.data.commission;
 				this.texte=this.data.remark;
-				console.log(res);
+				if(res.body.data.id.status!=1){
+					this.showFlag=false;
+				}
+				if(res.body.data.id.status==5){
+					this.showFlag=true;
+				}
 			},function(res){
 			    console.log(res);
 			})

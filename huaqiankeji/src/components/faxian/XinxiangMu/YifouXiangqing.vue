@@ -11,11 +11,11 @@
 				<div class="fankiu border">
 					<div class="content-food">
 						<span class="laizi">来自：</span>
-						<img class="border" src="" alt="" />
+						<!--<img class="border" src="" alt="" />-->
 						<span>&nbsp;{{data.uname}}&nbsp;</span>
 						<font class="bbb border-left"></font>
-						<span>投资经理</span>
-						<span>&nbsp;&nbsp;董秘</span>
+						<span>{{data.com_short}}</span>
+						<span>&nbsp;&nbsp;{{data.position}}</span>
 						<div class="tousu"><span>投诉</span></div>
 					</div>
 				</div>
@@ -27,7 +27,14 @@
 								<div class="content-heder">
 									<span>{{data.com_name}}</span>
 									<span class="text-center">{{data.com_code}}</span>
-									<span>&nbsp;{{data.type}}</span>
+									<span v-if="data.type==1" class="texts">&nbsp;定增</span>
+									<span v-if="data.type==2" class="texts">&nbsp;做市</span>
+									<span v-if="data.type==3" class="texts">&nbsp;转老股</span>
+									<span v-if="data.type==4" class="texts">&nbsp;股权质押</span>
+									<span v-if="data.type==5" class="texts">&nbsp;融资租赁</span>
+									<span v-if="data.type==6" class="texts">&nbsp;研报支持</span>
+									<span v-if="data.type==7" class="texts">&nbsp;公司调研</span>
+									<!--<span>&nbsp;{{data.type}}</span>-->
 								</div>
 							</li>
 							<li class="border-bottom"></li>
@@ -35,7 +42,7 @@
 						<div class="zhuying_1">
 							<div class="ferst"><span></span>项目推荐</div>
 							<div class="last">
-								<p>{{data.lightspot}}资经理资经理资主营业经理主营业资经理资主营业经理资经理资经理</p>
+								<p>{{data.lightspot}}</p>
 							</div>
 						</div>
 					</div>
@@ -54,7 +61,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="border aaa">
+				<!--<div class="border aaa">
 					<div class="content-header" @click.stap="xiangguan()">
 						<span>查看项目分析与尽调报告</span>
 						<font></font>
@@ -63,37 +70,16 @@
 						<span>查看商业计划书（BP）</span>
 						<font></font>
 					</div>
-				</div>
+				</div>-->
 				<div class="times border">
 					<span class="text-center">1小时前</span>
 					<span>发布</span>
 					<div class="times-name">
-						<font></font>
-						<span class="text-center">剩余有效期{{genjin}}</span>
+						<!--<font></font>-->
+						<!--<span class="text-center">剩余有效期{{genjin}}</span>-->
 					</div>
 				</div>
 				<box></box>
-				<div class="butten">
-					<div class="tousu"><span>保密信息，禁止传播</span></div>
-					<ul>
-						<li @click.stap="liuYanTo()"><span :class="liuYans"></span><p>留言询问</p></li>
-						<li @click.stap="jiaoHuanTo()"><span :class="jiaoHuans"></span><p>换名片</p></li>
-					</ul>
-					<!--<ul>-->
-						<!--<li><span @click.stop="touSu()">投诉</span></li>-->
-						<!--<li><span @click.stop="genJin()">跟进</span></li>-->
-						<!--<li><span @click.stop="jiaoHuan()">换名片</span></li>
-						<li><span @click.stop="baoMing()">我报名</span></li>-->
-						<!--<li><span @click.stop="buGen()">暂不跟进</span></li>-->
-						<!--<li><span @click.stop="liuYan()">留言询问</span></li>-->
-					<!--</ul>-->
-				</div>
-			</div>
-			<div class="baoming border-top">
-				<span class="border-right" :class="butenLeft" @click.stap="genJin()">跟进</span>
-				<span :class="butenRight" @click.stap="buGen()">暂不跟进</span>
-				<!--<span class="border-right" :class="butenLeft" @click.stap="genJin()">我要报名</span>
-				<span :class="butenRight" @click.stap="buGen()">不参加</span>-->
 			</div>
 			<!--<youhuiquan ref="youhuiShow"></youhuiquan>-->
 			<tishi ref="tishiShow" :xingXi="xingXi" :content="content"></tishi>
@@ -287,7 +273,7 @@
 		top:0;
 		left:0;
 		right:0;
-		z-index:120;
+		z-index:320;
 		.xiangmu-header{
 			position:absolute;
 			top:0;
@@ -295,7 +281,7 @@
 			width:100%;
 			height:1.53rem;
 			background:#ff7a59;
-			z-index:300;
+			z-index:200;
 		}
 		.header-content{
 			position:fixed;
@@ -362,7 +348,7 @@
 					}
 					.tousu{
 						position:absolute;
-						top:0.19rem;
+						top:0.15rem;
 						right:0.16rem;
 						width:0.48rem;
 						height:0.15rem;
@@ -490,110 +476,6 @@
 					float:right;
 					/*margin-right:0.1rem;*/
 				}
-			}
-			.butten{
-				width:100%;
-				height:1.5rem;
-				position:relative;
-				.tousu{
-					float:right;
-					width:1.28rem;
-					height:0.15rem;
-					font-size:0.12rem;
-					color:#b8b8b8;
-					padding-top:0.01rem;
-					text-align:right;
-					margin:0rem 0.06rem 0.06rem 0;
-					background-image:url("./img/tousu.png");
-					background-size:0.14rem 0.14rem;
-					background-position:0 0;
-					background-repeat:no-repeat;
-				}
-				ul{
-					display:flex;
-					width:100%;
-					height:0.40rem;
-					margin-top:0.22rem;
-					li{
-						flex:1;
-						color:#7d7d7d;
-						display:flex;
-						justify-content:center;
-						align-content:center;
-						align-items:center;
-						flex-direction:column;
-						&:first-child{
-							span{
-								display:inline-block;
-								width:0.22rem;
-								height:0.24rem;
-								background-image:url("./img/liuyan.png");
-								background-size:100% 100%;
-							}
-							.liuYan{
-								background-image:url("./img/liuyan1.png");
-								background-size:100% 100%;
-							}
-						}
-						&:last-child{
-							span{
-								display:inline-block;
-								width:0.22rem;
-								height:0.24rem;
-								background-image:url("./img/huan.png");
-								background-size:100% 100%;
-							}
-							.jiaoHuan{
-								background-image:url("./img/huan1.png");
-								background-size:100% 100%;
-							}
-						}
-						
-					}
-					p{
-						text-align:center;
-						margin-top:0.07rem;
-					}
-				}
-			}
-		}
-		.baoming{
-			position:fixed;
-			bottom:0;
-			left:0;
-			width:100%;
-			height:0.5rem;
-			display:flex;
-			justify-content:center;
-			align-content:center;
-			align-items:center;
-			background:#fff;
-			box-shadow:0 0.02rem 0.04rem #dedde1;
-			z-index: 320;
-			span{
-				flex:1;
-				height:0.5rem;
-				line-height:0.5rem;
-				display:inline-block;
-				text-align:center;
-				background:#ececec;
-				font-size:0.18rem;
-				font{
-					display:inline-block;
-					width:0.18rem;
-					height:0.18rem;
-					background-image:url("./img/jian.png");
-					background-size:100% 100%;
-					margin:0 0 -0.04rem 0.06rem;
-				}
-			}
-			.butenLeft{
-				color:#fff;
-				background:#ff7a59;
-			}
-			.butenRight{
-				color:#fff;
-				background:#ff7a59;
 			}
 		}
 	}

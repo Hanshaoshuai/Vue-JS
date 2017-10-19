@@ -38,8 +38,8 @@
 					<div v-if="industry" class="zhuying_1 liangdian_1">
 						<div class="ferst"><span>*</span>企业所在行业标签<font>（选标签）</font></div>
 						<ul ref="biaoqian">
-							<span v-if="BianJi==0" v-for="(item,index) in industry" class="bianse">{{item}}</span>
-							<span v-if="BianJi==1" v-for="(item,index) in BiaoQian" @click.stap="xuanze(index)">{{item.title}}</span>
+							<span v-if="BianJi==0" v-for="(item,index) in industry1" class="bianse">{{item}}</span>
+							<span v-if="BianJi==1" v-for="(item,index) in BiaoQian" @click.stap="xuanze(index)" :id="item.id">{{item.title}}</span>
 							<!--<span @click.stap="xuanze('1')">行业标签</span>
 							<span @click.stap="xuanze('2')">行业标签</span>
 							<span @click.stap="xuanze('3')">行业标签</span>
@@ -109,13 +109,13 @@
 						</div>
 					</div>
 					<div class="times">
-						<span class="times_1">领天</span>
+						<!--<span class="times_1">领天</span>
 						<span class="text-center">1小时前</span>
 						<span>发布</span>
 						<div class="times-name">
 							<span>{{fankui}}反馈</span>
 							<span class="text-center">{{genjin}}跟进</span>
-						</div>
+						</div>-->
 					</div>
 				</div>
 				<div class="baoming border-top">
@@ -155,12 +155,15 @@
 			token:{
 //				type:Object
 			},
-			XiangmuID:{}
+			XiangmuID:{},
+			is_send:{}
 		},
 		data () {
 			return {
 				data:"",
+				z:'',
 				industry:"",
+				industry1:[],
 				butenLeft:"butenLeft",
 				butenRight:"",
 				BianJi:0,
@@ -195,34 +198,64 @@
 				},
 				content:"",			//给下级要传的参数
 				none:true,
-				toudi:'继续投递'
+				toudi:'投递',
+				biaoQianID:[],		//储存标签id
+				biaoQianid:'',		//储存标签id字符串
 			}
 		},
 		mounted(){
+			if(this.is_send=='1'){
+				this.none=false;
+				this.toudi='继续投递';
+			}
+			Indicator.open({spinnerType: 'fading-circle'});
 			var datas = {
 				token:this.token,
 				item_id:this.XiangmuID,			//	项目id
 			}
 			this.datas=datas;
 			console.log(this.token)
-			//历史项目详情
-			this.$http.post(URL.path+'finance/item_detail',datas,{emulateJSON:true}).then(function(res){
-				this.data=res.body.data[0]
-				this.texta=this.data.com_name
-				this.textb=this.data.com_code
-				this.textc=this.data.lightspot
-				this.numbera=this.data.last_year_revenue
-				this.numberb=this.data.last_year_profit
-				this.numberc=this.data.predict_revenue
-				this.numberd=this.data.predict_profit
-				this.numbere=this.data.appraisement
-				this.numberf=this.data.total_finance
-				this.numberg=this.data.share_price
-				this.numberh=this.data.city
-				this.industry=this.data.industry
-				this.type=this.data.type
-				console.log(this.data);
+			//获取标签
+			this.$http.post(URL.path1+'login/three',this.datas,{emulateJSON:true}).then(function(res){
+				this.BiaoQian=res.body.data[0]
+				this.z=res.body.data[0].length;
+				console.log(this.BiaoQian);
+				//历史项目详情
+				this.$http.post(URL.path+'finance/item_detail',datas,{emulateJSON:true}).then(function(res){
+					Indicator.close();
+					this.data=res.body.data[0]
+					this.texta=this.data.com_name
+					this.textb=this.data.com_code
+					this.textc=this.data.lightspot
+					this.numbera=this.data.last_year_revenue
+					this.numberb=this.data.last_year_profit
+					this.numberc=this.data.predict_revenue
+					this.numberd=this.data.predict_profit
+					this.numbere=this.data.appraisement
+					this.numberf=this.data.total_finance
+					this.numberg=this.data.share_price
+					this.numberh=this.data.city
+					this.industry=this.data.industry
+					this.type=this.data.type
+					
+					this.industry=this.industry.split(",")
+					for(var i=0; i<this.z; i++){
+						for(var item in this.BiaoQian){
+//							console.log(this.BiaoQian)
+							if(this.BiaoQian[item]['id']==this.industry[i]){
+								this.industry1.push(this.BiaoQian[item]['title'])
+							}
+						}
+						
+					}
+					
+					console.log(this.data);
+				},function(res){
+					Indicator.close();
+				    console.log(res.status);
+				})
 			},function(res){
+				Indicator.close();
 			    console.log(res.status);
 			})
 		},
@@ -297,17 +330,12 @@
 //				this.textc=""
 				//获取标签
 				if(this.industry){
-					this.$http.post(URL.path1+'login/three',this.datas,{emulateJSON:true}).then(function(res){
-						this.BianJi=1;
-						this.$nextTick(function() {
-							var spans=this.$refs.biaoqian.getElementsByTagName("span")[0];
-							spans.setAttribute("class","bianse")
-						});
-						this.BiaoQian=res.body.data[0]
-						console.log(this.BiaoQian);
-					},function(res){
-					    console.log(res.status);
-					})
+					this.BianJi=1;
+					this.$nextTick(function() {
+						var spans=this.$refs.biaoqian.getElementsByTagName("span")[0];
+						spans.setAttribute("class","bianse");
+						this.biaoQianID.push(spans.id);
+					});
 				}
 				for(var i=0; i<length; i++){
 					textInputs[i].value="";
@@ -474,6 +502,7 @@
 						border:1px solid #ebebeb;
 						/*background:#f5f4f9;*/
 						.mint-field-core{
+							color: #787777;
 							resize: none;
 							font-size:0.14rem;
 							/*background:#f5f4f9;*/
@@ -488,6 +517,7 @@
 					.neirong{
 						min-height:1.22rem;
 						.mint-field-core{
+							color: #787777;
 							resize: none;
 							/*background:#f5f4f9;*/
 							min-height:1.22rem;
@@ -517,7 +547,7 @@
 							top:0;
 						}
 						.mint-field-core::-webkit-input-placeholder{
-							color:#afafaf;
+							color: #787777;
 						}
 					}
 					.last-bottom{
@@ -562,37 +592,6 @@
 					height:0.3rem;
 					background:#fff;
 					line-height:0.3rem;
-					.times_1{
-						display:inline-block;
-						padding-left:0.2rem;
-					}
-					.text-center{
-						display:inline-block;
-						padding:0 0.08rem;
-					}
-					.times-name{
-						float:right;
-						margin-right:0.1rem;
-					}
-				}
-				.times{
-					width:100%;
-					height:0.3rem;
-					background:#fff;
-					line-height:0.3rem;
-					font-size:0.12rem;
-					.times_1{
-						display:inline-block;
-						padding-left:0.2rem;
-					}
-					.text-center{
-						display:inline-block;
-						padding:0 0.08rem;
-					}
-					.times-name{
-						float:right;
-						margin-right:0.1rem;
-					}
 				}
 			}
 			.baoming{
