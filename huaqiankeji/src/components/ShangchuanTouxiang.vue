@@ -55,10 +55,10 @@
 		            }
 	              	var reader = new FileReader();
 	              	reader.onload = function(evt){
-	              		if(!(file.files[0].type.indexOf('image')==0 && file.files[0].type && /\.(?:jpg|png|gif)$/.test(file.files[0].name)) ){  
-					        Toast('图片只能是jpg,gif,png');  
-					        return ;
-					    } 
+//	              		if(!(file.files[0].type.indexOf('image')==0 && file.files[0].type && /\.(?:jpg|png|gif)$/.test(file.files[0].name)) ){  
+//					        Toast('图片只能是jpg,gif,png');  
+//					        return ;
+//					    } 
 //	              		img.src = evt.target.result;
 	              		var zipFormData = new FormData();		//把要传的内容和参数放到   formdata中
 						zipFormData.append('upload_file', file.files[0]);

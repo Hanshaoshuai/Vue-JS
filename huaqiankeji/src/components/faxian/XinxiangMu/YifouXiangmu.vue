@@ -14,7 +14,7 @@
 			</div>
 			<div class="box">
 				<div style="width:100%;height:0.55rem;"></div>
-				<div v-for="(item,index) in data" class="tishi-bottom" @click.stop="xiangqing(item.id)">
+				<div v-for="(item,index) in data" class="tishi-bottom" @click.stop="xiangqing(item.id,item.follow)">
 					<div v-if="item.is_read=='0'" class="tubiao"></div>
 					<div class="borders">
 						<ul>
@@ -51,7 +51,7 @@
 						</div>
 						<div class="jieshu"><font>保密信息，禁止传播</font><span v-if="item.follow=='1' && item.end_follow!=1 && item.end_follow!=2" @click.stop="jieshu(item.id)">结束项目</span></div>
 						<div class="times border">
-							<span class="text-center">{{item.create_time}}小时前</span>
+							<span class="text-center">{{numToTime(item.create_time)}}</span>
 							<span>发布</span>
 							<div class="times-name">
 								<!--<font></font>
@@ -69,6 +69,7 @@
 
 <script type="text/ecmascript">
 	import {URL} from '../../../common/js/path';
+	import {numToTime} from "../../../common/js/date.js";
 	import { Field } from 'mint-ui';
 	import box from "../../box.vue";
 	import { Indicator } from 'mint-ui';
@@ -95,9 +96,11 @@
 				times:20177111129,
 				showFlag:false,
 				tucaoShow:true,
+				numToTime:""
 			}
 		},
 		mounted(){
+			this.numToTime=numToTime;
 			Indicator.open({spinnerType: 'fading-circle'});
 			this.userContent={
 				token:this.$route.params.token,
@@ -130,7 +133,10 @@
 			yifouBlock(){
 				this.tucaoShow=true;
 			},
-			xiangqing(XiangmuID){
+			xiangqing(XiangmuID,follow){
+				if(follow==3){
+					return;
+				}
 				this.XiangmuID=XiangmuID;
 				window.location.href="#/faxian/YifouXiangmu/"+this.userContent['token']+"/YifouXiangqing/"+this.XiangmuID;
 //				this.$refs.xiangqingShow.xiangqingBlock();

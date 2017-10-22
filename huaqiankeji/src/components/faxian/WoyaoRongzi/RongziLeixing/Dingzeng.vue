@@ -17,7 +17,7 @@
 				<box></box>
 				<div class="fankiu-content">
 					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>企业名称</div>
+						<div class="ferst"><span>*</span>企业简称</div>
 						<div class="last">
 							<textarea placeholder="" class="mint-field-core" v-model="texta"></textarea>
 						</div>
@@ -72,7 +72,7 @@
 					<div class="zhuying_1 jihua">
 						<div class="ferst"><span>*</span>融资计划</div>
 						<div class="last number last-bottom">
-							<input v-model="numbere" placeholder="请填写融资估值" number="true" type="number" class="mint-field-core">
+							<input v-model="numbere" placeholder="请填写投前估值" number="true" type="number" class="mint-field-core">
 							<span>亿元</span>
 						</div>
 						<div class="last number last-bottom">

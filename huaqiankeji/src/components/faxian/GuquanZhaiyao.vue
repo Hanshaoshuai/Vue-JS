@@ -8,7 +8,7 @@
 					<span>项目摘要</span>
 					<div class="fanhui-right">
 						<div @click.stop="yifouXiangmu()">
-							<font>分享</font>
+							<font>分享gdg</font>
 						</div>
 					</div>
 				</div>
@@ -60,19 +60,24 @@
 					
 					
 					<div class="times border-topbottom">
-						<span class="text-center">领天</span>
-						<span class="text-center">1小时前</span>
+						<span class="text-center">{{data.position}}</span>
+						<span class="text-center">{{numToTime(data.create_time)}}</span>
 						<span>发布</span>
 					</div>
 				</div>
 			</div>
 			<div class="zhaiyao-food" @click.stop="butten"><span>{{ButtenName}}</span></div>
+			
+			
+			<div id="nativeShare"></div>
 		</div>
 	</transition>
 </template>
 
 <script type="text/ecmascript">
 //	import Vue from "vue";
+	import {numToTime} from "../../common/js/date.js";
+	import {nativeShare} from "../../common/js/nativeShare.js";
 	import { Toast } from 'mint-ui';
 	import { MessageBox } from 'mint-ui';
 	import {URL} from '../../common/js/path';
@@ -97,11 +102,13 @@
 				ButtenName:"索要完整项目信息",
 				showFlag:true,
 				fankui:13,
-				genjin:50
+				genjin:50,
+				numToTime:''
 //				onlyContent:true
 			}
 		},
 		mounted(){
+			this.numToTime=numToTime;
 			//项目详情
 			var data = {
 				token:this.$route.params.token,
@@ -120,6 +127,31 @@
 				history.go(-1)
 //				this.showFlag=false;
 			},
+			yifouXiangmu(){
+			    var config = {
+			     	url: '', //分享url
+			      title: '', //内容标题
+			      desc: '', //描述
+			      img: '', //分享的图片
+			      img_title: '', //图片名称
+			      from: '' //来源
+			    };
+			    var share_obj = new nativeShare('nativeShare', config);
+			    $(".am-share").addClass("am-modal-active");
+			    if ($(".sharebg").length > 0) {
+			      $(".sharebg").addClass("sharebg-active");
+			    } else {
+			      $("body").append('<div class="sharebg"></div>');
+			      $(".sharebg").addClass("sharebg-active");
+			    }
+			    $(".sharebg-active,.share_btn").click(function() {
+			      $(".am-share").removeClass("am-modal-active");
+			      setTimeout(function() {
+			        $(".sharebg-active").removeClass("sharebg-active");
+			        $(".sharebg").remove();
+			      }, 300);
+			    })
+			},
 			butten(){
 				MessageBox.confirm('您确定要联系对方并索要完整项目信息吗?').then(action => {
 					//投资人索要项目
@@ -133,11 +165,11 @@
 					this.$http.post(URL.path+'finance/demand_item',data,{emulateJSON:true}).then(function(res){
 						if(res.body.msg=="操作成功"){
 							Toast("申请成功，请您等待反馈")
-							this.ButtenName="申请成功，请您等待反馈"
-							setTimeout(function(){
-//								history.go(-1)
-								tate.ButtenName="索要完整项目信息";
-							},2000)
+							this.ButtenName="已索要完整项目信息"
+//							setTimeout(function(){
+////								history.go(-1)
+//								tate.ButtenName="索要完整项目信息";
+//							},2000)
 							console.log(res);
 						}
 					},function(res){
@@ -199,6 +231,160 @@
 	  	/*transform:rotate(360deg);*/
 	  	/*opacity: 0;*/
 	}
+	
+	
+	.shareBtn {
+      border: dotted 1px #ddd;
+      display: block;
+      width: 100px;
+      text-align: center;
+      margin: 20px auto 0 auto;
+      cursor: pointer;
+      height: 40px;
+      line-height: 40px;
+    }
+
+    .am-share {
+      font-size: 14px;
+      border-radius: 0;
+      bottom: 0;
+      left: 0;
+      position: fixed;
+      -webkit-transform: translateY(100%);
+      -ms-transform: translateY(100%);
+      transform: translateY(100%);
+      -webkit-transition: -webkit-transform 300ms;
+      transition: transform 300ms;
+      width: 100%;
+      z-index: 1110;
+    }
+
+    .am-modal-active {
+      transform: translateY(0px);
+      -webkit-transform: translateY(0);
+      -ms-transform: translateY(0);
+      transform: translateY(0);
+    }
+
+    .am-modal-out {
+      z-index: 1109;
+      -webkit-transform: translateY(100%);
+      -ms-transform: translateY(100%);
+      transform: translateY(100%)
+    }
+
+    .am-share-footer .share_btn {
+      color: #555;
+      display: block;
+      width: 100%;
+      background-color: #fff;
+      border: 1px solid #fff;
+      border-radius: 0;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: 400;
+      line-height: 1.2;
+      padding: 0.625em 0;
+      text-align: center;
+      transition: background-color 300ms ease-out 0s, border-color 300ms ease-out 0s;
+      vertical-align: middle;
+      white-space: nowrap;
+      font-family: "微软雅黑";
+    }
+
+    .am-share-sns {
+      background-color: #fff;
+      padding-top: 20px;
+      height: auto;
+      zoom: 1;
+      overflow: auto;
+    }
+
+    .am-share-sns a {
+      color: #555;
+      display: block;
+      text-decoration: none;
+    }
+
+    .am-share-sns span {
+      display: block;
+    }
+
+    .sharebg {
+      background-color: rgba(0, 0, 0, 0.6);
+      bottom: 0;
+      height: 100%;
+      left: 0;
+      opacity: 0;
+      position: fixed;
+      right: 0;
+      top: 0;
+      width: 100%;
+      z-index: 1100;
+      display: none;
+    }
+
+    .sharebg-active {
+      opacity: 1;
+      display: block;
+    }
+
+
+    /*插件*/
+
+    #nativeShare .list {
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    #nativeShare .list span {
+      width: 25%;
+      display: inline-block;
+      text-align: center;
+      margin: 10px 0;
+    }
+
+    #nativeShare .list span i {
+      width: 40px;
+      height: 40px;
+      display: block;
+      margin: 0 auto;
+      margin-bottom: 5px;
+    }
+
+    #nativeShare .weibo i {
+      background-image: url(./weixin.jpg);
+      background-size: cover;
+    }
+
+    #nativeShare .weixin i {
+      background-image: url(./weixin.jpg);
+      background-size: cover;
+    }
+
+    #nativeShare .weixin_timeline i {
+      background-image: url(./weixin.jpg);
+      background-size: cover;
+    }
+
+    #nativeShare .qq i {
+      background-image: url(./weixin.jpg);
+      background-size: cover;
+    }
+
+    #nativeShare .qzone i {
+      background-image: url(./weixin.jpg);
+      background-size: cover;
+    }
+
+    #nativeShare .more i {
+      background-image: url(./weixin.jpg);
+      background-size: cover;
+    }
+	
+	
+	
+	
 	.zhaiyao{
 		position:fixed;
 		background:#f5f4f9;

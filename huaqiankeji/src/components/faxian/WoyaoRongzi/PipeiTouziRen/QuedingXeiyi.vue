@@ -11,20 +11,11 @@
 					<div class="fankiu">
 						<div class="beijing"></div>
 						<div class="content-food" style="text-align:center;">
-							<font class="border-bottom"></font><span>{{data.title}}</span><font class="border-bottom"></font>
+							<font class="border-bottom"></font><span>平台服务费</span><font class="border-bottom"></font>
 						</div>
 						<div class="content-bottom">
 							<ul>
 								<li ref="profile" class="profile"></li>
-								<!--<li><span>若您本次投递的投资人及其所属投资机构:</span></li>
-								<li><span>1、通过企融直通车APP与您取得联系</span></li>
-								<li><span>2、在一年之内投资了您的公司</span></li>
-								<li><span>3、在一年之内投资了您的公司</span></li>
-								<li><span>4、若您本次投递的投资人及其所属投资机构</span></li>
-								<li><span>5、若您本次投递的投资人及其所属投资机构</span></li>
-								<li><span>6、若您本次投递的投资人及其所属投资机构</span></li>
-								<li><span>7、若您本次投递的投资人及其所属投资机构</span></li>-->
-								<li class="fuwu"><span>我们将按照总投资额的1%收取平台服务费</span></li>
 								<li class="imgs" @click.stop="ChakanGo()"><img src="../img/3.png"/><span>查看完整协议</span></li>
 							</ul>
 							<div class="butten">
@@ -116,6 +107,7 @@
 //				}
 			},
 			ShaohouGo(){
+				window.location.href='#/wode/jilu/0'
 //				MessageBox.confirm('您确定要联系对方并索要完整项目信息吗?').then(action => {
 //					this.ButtenName="申请成功，等待反馈";
 //					var tate=this;
@@ -129,7 +121,7 @@
 				
 			},
 			FangqiGo(){
-				
+				window.location.href='#/wode/jilu/0'
 			}
 //			show(){
 ////				dom更新后在执行使用$refs

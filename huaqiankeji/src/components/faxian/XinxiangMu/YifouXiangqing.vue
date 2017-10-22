@@ -72,7 +72,7 @@
 					</div>
 				</div>-->
 				<div class="times border">
-					<span class="text-center">1小时前</span>
+					<span class="text-center">{{numToTime(data.create_time)}}</span>
 					<span>发布</span>
 					<div class="times-name">
 						<!--<font></font>-->
@@ -90,6 +90,7 @@
 
 <script type="text/ecmascript">
 	import {URL} from '../../../common/js/path';
+	import {numToTime} from "../../../common/js/date.js";
 	import { Field } from 'mint-ui';
 	import box from "../../box.vue";
 	import tishi from "../../Tishi.vue";
@@ -130,11 +131,12 @@
 				},
 				content:"xiangmuXiangqing",			//给下级要传的参数
 				mingPian:"huanQu",
-				types:"0"
+				types:"0",
+				numToTime:""
 			}
 		},
 		mounted(){
-			console.log("jjjjjjjjjjjj")
+			this.numToTime=numToTime;
 			//项目详情
 			var data = {
 				token:this.userContent.token,

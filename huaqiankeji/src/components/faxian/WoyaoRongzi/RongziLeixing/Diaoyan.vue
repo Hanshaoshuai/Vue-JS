@@ -10,15 +10,17 @@
 				<box></box>
 				<div class="fankiu-content">
 					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>企业名称</div>
+						<div class="ferst"><span>*</span>企业简称</div>
 						<div class="last">
-							<textarea placeholder="" class="mint-field-core" v-model="texta"></textarea>
+							<input v-model="texta" placeholder="" type="text" class="mint-field-core">
+							<!--<textarea placeholder="" class="mint-field-core" v-model="texta"></textarea>-->
 						</div>
 					</div>
 					<div class="zhuying_1">
 						<div class="ferst"><span>*</span>企业代码</div>
 						<div class="last">
-							<textarea placeholder="" class="mint-field-core" v-model="textb"></textarea>
+							<input v-model="textb" placeholder="" number="true" type="number" class="mint-field-core">
+							<!--<textarea placeholder="" number="true" type="number" class="mint-field-core" v-model="textb"></textarea>-->
 						</div>
 					</div>
 					<div class="zhuying_1">
@@ -129,6 +131,7 @@
 		},
 		data () {
 			return {
+				yes:0,
 				type:"",		//创建类型
 				x:"0",			//字的个数
 				y:1,			//判断是否选择标签；》=1为选择；
@@ -225,7 +228,7 @@
 					numbere:this.numbere,
 					numberf:this.numberf,
 					numberg:this.numberg,
-					numberg:this.numberh
+					numberh:this.numberh
 				}
 				var datas = {
 					token:this.token,//	token	是	[string]		
@@ -265,22 +268,26 @@
 					}
 				}
 				if(ok==0){
-					Indicator.open({spinnerType: 'fading-circle'});
-					this.$http.post(URL.path+'finance/create',datas,{emulateJSON:true}).then(function(res){
-						Indicator.close();
-						CanShu.XiangmuID=res.body.data
-						this.content=this.$refs.pipeiShow;
-						if(res.body.returnCode==202){
-							Toast(res.body.msg)
-							window.location.href="#/wode"
-						}else{
-							this.$refs.tishiShow.tishiBlock(CanShu,'pipei');//CanShu是下级要传的参数
-						}
-						console.log(res);
-					},function(res){
-						Indicator.close();
-					    console.log(res.status);
-					})
+					if(this.yes==0){
+						Indicator.open({spinnerType: 'fading-circle'});
+						this.$http.post(URL.path+'finance/create',datas,{emulateJSON:true}).then(function(res){
+							Indicator.close();
+							CanShu.XiangmuID=res.body.data
+							this.content=this.$refs.pipeiShow;
+							if(res.body.returnCode==202){
+								Toast(res.body.msg)
+								window.location.href="#/wode"
+							}else{
+								this.$refs.tishiShow.tishiBlock(CanShu,'pipei');//CanShu是下级要传的参数
+							}
+							console.log(res);
+						},function(res){
+							Indicator.close();
+						    console.log(res.status);
+						})
+					}else{
+						this.$refs.tishiShow.tishiBlock(CanShu,'pipei');//CanShu是下级要传的参数
+					}
 				}else{
 					Toast("请填写完整您的信息！是否已选标签...");
 				}

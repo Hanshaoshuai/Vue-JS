@@ -22,13 +22,24 @@
 						</div>
 					</div>
 					<div class="zhuying_1">
+						<div class="ferst"><span>*</span>今年预计营收、净利润</div>
+						<div class="last number last-bottom">
+							<input readOnly="true" v-model="textf" placeholder="请填写预计营收" number="true" type="number" class="mint-field-core">
+							<span>亿元</span>
+						</div>
+						<div class="last number">
+							<input readOnly="true" v-model="textg" placeholder="请填写净利润" number="true" type="number" class="mint-field-core">
+							<span>万元</span>
+						</div>
+					</div>
+					<div class="zhuying_1">
 						<div class="ferst"><span>*</span>融资总额</div>
 						<div class="last number">
 							<input readOnly="true" v-model="textc" placeholder="输入数字" number="true" type="number" class="mint-field-core">
 							<span>万元</span>
 						</div>
 					</div>
-					<div class="zhuying_1">
+					<div style="display:none;" class="zhuying_1">
 						<div class="ferst"><span>*</span>财顾费用协定</div>
 						<div class="last neirong">
 							<textarea readOnly="true" placeholder="填写与企业约定的财顾费用条款，例如：实现融资额的3%" class="mint-field-core" v-model="textd"></textarea>
@@ -36,8 +47,8 @@
 					</div>
 					<div class="zhuying_1">
 						<div class="ferst"><span>*</span>有效投递认定期</div>
-						<div class="last neirong">
-							<textarea readOnly="true" placeholder="例如：投资人开始跟进项目后一年内做出的投资为有效投资" class="mint-field-core" v-model="texte"></textarea>
+						<div class="last neirong nonecoler">
+							<textarea ref="laster" readOnly="true" placeholder="" class="mint-field-core" v-model="texte"></textarea>
 						</div>
 					</div>
 				</div>
@@ -79,7 +90,9 @@
 				textb:"",
 				textc:"",
 				textd:"",
-				texte:"",
+				texte:"投资人开始跟进项目后一年内做出的投资总额认定为“平台贡献融资额”",
+				textf:"",
+				textg:"",
 				fankui:"45",
 				genjin:"458",
 				introduction:"",
@@ -118,6 +131,8 @@
 				this.textc=this.data.total_finance;
 				this.textd=this.data.commission;
 				this.texte=this.data.remark;
+				this.textf=this.data.predict_revenue;
+				this.textg=this.data.predict_profit;
 				if(res.body.data.id.status!=1){
 					this.showFlag=false;
 				}
@@ -144,6 +159,7 @@
 					textInputs[i].removeAttribute("readOnly")		//点击编辑   input去除属性readOnly即可编辑
 				}
 				textInputs[0].focus();
+				this.$refs.laster.setAttribute("readOnly",true)
 			},
 			BeiAn(){
 				var CanShu={				//给下级要传的参数
@@ -152,6 +168,8 @@
 					textc:this.textc,
 //					textd:this.textd,
 					texte:this.texte,
+					textf:this.textf,
+					textg:this.textg
 				}
 				for(var item in CanShu){		//判断填写信息是否完整Ok=1；标签必选
 					if(CanShu[item]==""){
@@ -164,12 +182,12 @@
 		    		token:this.token,
 					com_name:this.texta,			//	公司全称	是	[string]		
 					com_short:this.textb,			//	公司简称	是	[string]		
-					commission:this.textd,			//	佣金协定	是	[string]		
+					commission:"",			//	佣金协定	是	[string]		
 					total_finance:this.textc,		//	投资总额 单位：万	是	[string]		
 					remark:this.texte,				//	有效投资认定	是	[string]		
 					license:'',						//	营业执照	是	[string]		
-					predict_revenue:'',				//	今年预计营收	是	[string]		
-					predict_profit:'',				//	今年预计净利润	是	[string]		
+					predict_revenue:this.textf,				//	今年预计营收	是	[string]		
+					predict_profit:this.textg,				//	今年预计净利润	是	[string]		
 					id:this.beiAnidC				//	备案id id为空时创建，不为空时修改	是	[string]
 		    	}
 				this.$http.post(URL.path+'finance/record',params,{emulateJSON:true}).then(function(res){
@@ -382,6 +400,15 @@
 							min-height:1.22rem;
 							line-height:0.2rem;
 							&::-webkit-scrollbar{width:0;height:0}
+						}
+					}
+					.nonecoler{
+						background:#fff;
+						border:none;
+						.mint-field-core{
+							background:#fff;
+							color:#FE7F65;
+							font-size:0.16rem;
 						}
 					}
 				}

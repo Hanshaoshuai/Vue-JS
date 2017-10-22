@@ -86,9 +86,10 @@
 			},
 			tijiao(){
 				var length=this.formData1.length;
-				for(var i=0; i<length; i++){
+				for(var i=1; i<=length; i++){
 					if(this.formData1[i]!=""){
-						this.formData.append('upload_file'+i,this.formData1[i]);
+						this.formData.append('upload_file'+i,this.formData1[i-1]);
+						console.log('upload_file'+i)
 					}
 				}
 //				this.formData.append('terminalNo', 3);

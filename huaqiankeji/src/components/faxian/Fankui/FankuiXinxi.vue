@@ -1,9 +1,21 @@
 <template>
 	<!--<transition name="fade">-->
 		<div v-show="tucaoShow" class="yijian">
-			<div class="xiangmu-header" @click.stop="yijianHind()">
+			<!--<div class="xiangmu-header" @click.stop="yijianHind()">
 				<span class="xiangmu-left"><img src="./img/back.png"/></span>
-				<span>徐小姐</span>
+				<span>{{type}}</span>
+				<div class="tousu" @click.stop="tousuoGo()"><span>投诉</span></div>
+			</div>-->
+			<div class="searchBox">
+				<div class="home-search">
+					<span class="fanhui-butten" @click.stop="yijianHind()"><img src="./img/back.png"/></span>
+					<span>{{type}}</span>
+					<div class="fanhui-right">
+						<div class="tousu" @click.stop="tousuBlock()">
+							<span>投诉</span>
+						</div>
+					</div>
+				</div>
 			</div>
 			<!--<div class="yijian-header">
 				<span class="fanhui-butten" @click="yijianHind"><</span>
@@ -16,7 +28,7 @@
 				</div>
 			</div>
 			<div class="shuru" ref="shuru">
-				<div class="tousu" @click.stop="tousuoGo()"><span>投诉</span></div>
+				<!--<div class="tousu" @click.stop="tousuoGo()"><span>投诉</span></div>-->
 				<ul>
 					<li>
 						<!--<div ref="texts" class="test_box" contenteditable="true"></div>--> 
@@ -29,13 +41,36 @@
 					</li>-->
 				</ul>
 			</div>
+			<div ref="xianShi" v-show="onlyContent" class="loding" style="position: absolute;z-index: 1600; top: 0;right: 0;bottom: 0;left: 0;background-color: rgba(0,0,0,0.3);display: none;">
+				<div class="loadEffect" ref="padding" v-show="idBlock">
+					<span class="firsts" ref="selecteds">
+						<li>请选择投诉原因</li>
+						<font class="src1" @click.stop="xuanZe(index,item.id)" v-for="(item,index) in selected">{{item.title}}</font>
+					</span>
+			        <div class='load-butten'>
+				        <font @click.stop="idQueding()" class="first">确定</font>
+				        <font @click.stop="idQuxiao()" class="last">取消</font>
+			        </div>
+				</div>	
+			    <div class="loadEffect" ref="padding" v-show="contBlock">
+					<span>
+						<textarea ref="texts" placeholder="请输入您的投诉说明..." class="mint-field-core tousuContent" v-model="tousuContent"></textarea>
+					</span>
+			        <div class='load-butten'>
+				        <font @click.stop="guoHui()" class="first">确定</font>
+				        <font @click.stop="fangQi()" class="last">取消</font>
+			        </div>
+				</div>	
+			</div>
 			<tishi ref="tishiShow" :xingXi="xingXi" :content="content"></tishi>
 		</div>
 	<!--</transition>-->
 </template>
 
 <script type="text/ecmascript">
+	import {numToTime1} from "../../../common/js/date.js";
 	import {URL} from '../../../common/js/path';
+	import { Indicator } from 'mint-ui';
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
 	import tishi from "../../Tishi.vue";
@@ -79,17 +114,29 @@
 				tousuoContent:"",
 				xingXi:{			//给下级提示组件要传的参数  提示信息
 					huJiao:"呼叫",
-					tianJia:"添加到手机通讯录",
+					tianJia:"添加到手机通讯录fkdjf;djgdfjg;dfkjgfhjfjfdgjdfgk;dlskgdfjgdflgkdfjgfdk",
 				},
 				content:"",
-				tongxun:"ok"
+				tongxun:"ok",
+				numToTime1:"",
+				toName:"",
+				to_photo:"",
+				onlyContent:false,
+				tousuContent:"",
+				selected:'',		//投诉ids
+				selectedID:'3',		//投诉id
+				tousuId:"",
+				idBlock:true,
+				contBlock:false
 			}
 		},
 		mounted(){
+			Indicator.open({spinnerType: 'fading-circle'});
+			this.numToTime1=numToTime1
 			this.fasong(this.typeName,this.typeCont)		//索要项目或索要名片   进来就执行；
 			this.Token=this.$route.params.token;
 			this.uid=this.$route.params.to_id;		//对方id
-			this.type=this.$route.params.type;		//发送信息类型
+			this.type=this.$route.params.type;		//对方人名
 			var thate=this;
 			this.prent=this.$refs.boxTexte;
 			this.datas={
@@ -99,6 +146,9 @@
 			console.log(this.datas)						//评论详情接口   随时更新信息
 //			setInterval(function(){
 				thate.$http.post(URL.path+'chatcomment/comment_detail',thate.datas,{emulateJSON:true}).then(function(res){
+					Indicator.close();
+					this.toName=[0]['item_id']
+					console.log(res);
 					var cont="xxx 总经理 申请换取名片"
 					var res=res.body.data;
 					var length=res.length;
@@ -119,12 +169,18 @@
 						if(res[item].type==1){		//type=1:评论
 							if(res[item].from_id==this.uid){
 								this.You('0',res[item].content)
-								this.tousuoContent=res[item].create_time;
-								this.TishiNeirong(res[item].create_time);
+//								this.tousuoContent=res[item].create_time;
+//								this.TishiNeirong(res[item].create_time);
+								
+								this.tousuoContent=this.numToTime1(res[item].create_time);
+								this.tousuoGo(this.numToTime1(res[item].create_time));
 							}else{
 								this.My('0',res[item].content);
-								this.tousuoContent=res[item].create_time;
-								this.TishiNeirong(res[item].create_time);
+//								this.tousuoContent=res[item].create_time;
+//								this.TishiNeirong(res[item].create_time);
+								
+								this.tousuoContent=this.numToTime1(res[item].create_time);
+								this.tousuoGo(this.numToTime1(res[item].create_time));
 							}
 						}
 						if(res[item].type==2){		//type=2:项目请求
@@ -134,13 +190,18 @@
 								var cont=JSON.parse(res[item].content);
 								var name=cont.user[1]
 								this.You('1',name,cont.to_id,cont.item_id,MingPian,DianJi,res[item].id)
-								this.tousuoContent=res[item].create_time;
-								this.TishiNeirong(res[item].create_time);
+//								this.tousuoContent=res[item].create_time;
+//								this.TishiNeirong(res[item].create_time);
+								
+								this.tousuoContent=this.numToTime1(res[item].create_time);
+								this.tousuoGo(this.numToTime1(res[item].create_time));
 								console.log(res[item].id)
 								console.log(DianJi)
 							}else{
 								this.TishiNeirong('您已成功向对方索要完整项目')
-								this.TishiNeirong(res[item].create_time);
+//								this.TishiNeirong(res[item].create_time);
+								
+								this.tousuoGo(this.numToTime1(res[item].create_time));
 							}
 						}
 						if(res[item].type==4){		//type=4:发送项目
@@ -148,21 +209,29 @@
 								var cont=JSON.parse(res[item].content);
 								if(cont.operate==1){
 									this.TishiNeirong('对方已将完整项目发送给你')		//提示信息函数
-									this.TishiNeirong(res[item].create_time);
+//									this.TishiNeirong(res[item].create_time);
+									
+									this.tousuoGo(this.numToTime1(res[item].create_time));
 								}
 								if(cont.operate==2){
 									this.TishiNeirong('对方拒绝了您索要申请完整项目')
-									this.TishiNeirong(res[item].create_time);
+//									this.TishiNeirong(res[item].create_time);
+									
+									this.tousuoGo(this.numToTime1(res[item].create_time));
 								}
 							}else{
 								var cont=JSON.parse(res[item].content);
 								if(cont.operate==1){
 									this.TishiNeirong('您同意了向对方发送完整项目')		//提示信息函数
-									this.TishiNeirong(res[item].create_time);
+//									this.TishiNeirong(res[item].create_time);
+									
+									this.tousuoGo(this.numToTime1(res[item].create_time));
 								}
 								if(cont.operate==2){
 									this.TishiNeirong('您拒绝了向对方发送完整项目')
-									this.TishiNeirong(res[item].create_time);
+//									this.TishiNeirong(res[item].create_time);
+									
+									this.tousuoGo(this.numToTime1(res[item].create_time));
 								}
 							}
 						}
@@ -174,14 +243,19 @@
 								var cont=JSON.parse(res[item].content);
 								var name=cont.card[1]
 								this.You('1',name,cont.id,cont.item_id,MingPian,DianJi,res[item].id)
-								this.tousuoContent=res[item].create_time;
-								this.TishiNeirong(res[item].create_time);
+//								this.tousuoContent=res[item].create_time;
+//								this.TishiNeirong(res[item].create_time);
+								
+								this.tousuoContent=this.numToTime1(res[item].create_time);
+								this.tousuoGo(this.numToTime1(res[item].create_time));
+								
 								console.log(JSON.parse(res[item].content))
 								console.log(DianJi)
 								i++;
 							}else{
 								this.TishiNeirong('您已成功向对方申请交换名片')
-								this.TishiNeirong(res[item].create_time);
+//								this.TishiNeirong(res[item].create_time);
+								this.tousuoGo(this.numToTime1(res[item].create_time));
 							}
 						}
 						if(res[item].type==5){		//type=5:发送名片
@@ -192,28 +266,38 @@
 								if(cont.operate==1){
 									cont.card[0];
 									this.You('1',cont.card[0],'0','1',MingPian);
-									this.tousuoContent=res[item].create_time;
-									this.TishiNeirong(res[item].create_time);
+//									this.tousuoContent=res[item].create_time;
+//									this.TishiNeirong(res[item].create_time);
+									
+									this.tousuoContent=this.numToTime1(res[item].create_time);
+									this.tousuoGo(this.numToTime1(res[item].create_time));
+									
 									console.log(JSON.parse(res[item].content).card[0])
 								}
 								if(cont.operate==2){
 //									cont.card[i];
 									this.TishiNeirong('对方拒绝了您的名片的申请')
-									this.TishiNeirong(res[item].create_time);
+//									this.TishiNeirong(res[item].create_time);
+									this.tousuoGo(this.numToTime1(res[item].create_time));
 								}
 								
 								i++;
 							}else{
+								var MingPian="5";
 								var cont=JSON.parse(res[item].content)
 								if(cont.operate==2){
 									this.TishiNeirong('您拒绝了对方名片的申请')		//提示信息函数
-									this.TishiNeirong(res[item].create_time);
+//									this.TishiNeirong(res[item].create_time);
+									this.tousuoGo(this.numToTime1(res[item].create_time));
 								}else{
 									this.TishiNeirong('您同意了对方名片的申请')		//提示信息函数
-									this.TishiNeirong(res[item].create_time);
+//									this.TishiNeirong(res[item].create_time);
+									this.tousuoGo(this.numToTime1(res[item].create_time));
+									
+									this.You('1',cont.card[1],'0','1',MingPian);
+									this.tousuoGo(this.numToTime1(res[item].create_time));
 								}
 							}
-							
 //							this.tousuoContent=res[item].create_time;
 //							this.TishiNeirong(res[item].create_time);
 						}
@@ -225,20 +309,23 @@
 //					this.FasongShijian();
 					this.$nextTick(function(){
 						var img = this.$refs.contentTexte.getElementsByTagName("img");
-						var num = img.length;
+						var length=img.length;
 						var contentTexte=this.$refs.contentTexte;
 						contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
-//						for(var i=0; i<num; i++){
-//							if (img[i].clientWidth>img[i].clientHeight) {
-//								img[i].style.height="100%"
-//								img[i].style.width="auto"
-//							}else{
-//								img[i].style.width="100%"
-//								img[i].style.height="auto"
-//							}
-//						}
-					});
+						for (var i = 0; i < length; i++) {
+							img[i].onload =function(){
+								if (this.clientWidth>this.clientHeight) {
+									this.style.height="100%"
+									this.style.width="auto"
+								}else{
+									this.style.width="100%"
+									this.style.height="auto"
+								}
+							}
+						}
+					})
 				},function(res){
+					Indicator.close();
 				    console.log(res);
 				})
 //			},2000)
@@ -247,24 +334,100 @@
 			yijianHind(){
 				history.go(-1);
 			},
-			tousuoGo(){			//提示投诉信息内容按钮
+			xuanZe(index,id){
+				this.selectedID=id;
+				var font=this.$refs.selecteds.getElementsByTagName("font")
+				var length=font.length;
+				for(var i=0; i<length; i++){
+					font[i].setAttribute("class","src1");
+				}
+				font[index].setAttribute("class","src2");
+			},
+			idQueding(){
+				this.contBlock=true;
+				this.idBlock=false;
+			},
+			idQuxiao(){
+				this.onlyContent=false;
+			},
+			tousuBlock(){
+				Indicator.open({spinnerType: 'fading-circle'});
+				var data={
+					token:this.Token,
+					terminalNo: '3'
+				}
+				this.$http.post(URL.path1+'account/reportCtype',data,{emulateJSON:true}).then(function(res){
+					Indicator.close();
+					console.log(res);
+					if(res.body.returnCode == 200) {
+						this.selected=res.body.data;
+						this.onlyContent=true;
+						this.$nextTick(function(){
+							this.$refs.selecteds.getElementsByTagName("font")[3].setAttribute("class","src2");
+						})
+					}else{
+						if(data.body.returnCode == 401) {
+							Toast(data.msg);
+						}else{
+							Toast(data.msg)
+						}
+					}
+				},function(res){
+					Indicator.close();
+				    console.log(res);
+				})
+			},
+			guoHui(){
+				if(this.tousuContent==''){
+					Toast("请输入您的投诉说明");
+					return;
+				}
+				Indicator.open({spinnerType: 'fading-circle'});
+				var farams={			//发送评论接口
+					token:this.Token,
+//					to_id:this.uid,					//对方id	是	[string]
+					terminalNo: '3',
+					rid: this.uid,
+					content: this.tousuContent,
+					ctype: this.selectedID		//举报原因id
+				}
+				console.log(farams)
+				this.$http.post(URL.path1+'account/report',farams,{emulateJSON:true}).then(function(res){
+					Indicator.close();
+					Toast("提交后我们将在24小时内处理")
+					this.onlyContent=false;
+					console.log(res);
+				},function(res){
+					Indicator.close();
+					Toast(data.msg)
+				    console.log(res);
+				})
+			},
+			fangQi(){
+				this.onlyContent=false;
+			},
+			tousuoGo(times){			//提示投诉信息内容按钮
 				var contentTexte=this.$refs.contentTexte;
 				this.tousuoContent="投诉成功！"
 				var tiShi=document.createElement("div");		//提示信息内容
 				var textCont=document.createElement("font");
-				textCont.innerText=this.tousuoContent;						//后台获取信息插入
+				textCont.innerText=times;						//后台获取信息插入
 				tiShi.appendChild(textCont);
 				this.prent.appendChild(tiShi);
-				textCont.style.color="#b4b4b4";
-				textCont.style.lineHeight="0.2rem";
+				textCont.style.color="#fff";
+				textCont.style.lineHeight="0.22rem";
 				textCont.style.fontSize="0.16rem";
+				textCont.style.background="#cfced2";
+				textCont.style.display="inline-block";
+				textCont.style.padding="0 0.06rem";
+				textCont.style.borderRadius="0.04rem";
 				textCont.style.wordWrap="break-word";
 				tiShi.style.width="82%";
 				tiShi.style.margin="0 auto";
 				tiShi.style.padding="0.1rem 0";
 				tiShi.style.textAlign="center";
 				contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
-				this.FasongShijian();
+//				this.FasongShijian();
 			},
 			shangyi(){
 				var contentTexte=this.$refs.contentTexte;
@@ -274,9 +437,13 @@
 				var times=new Date();           //实例化日期对象；
 				var myMonth=times.getMonth();   //当前的月份；
 				myMonth=myMonth+1;				//当前的月份；
-				var myDate=times.getDay();      //当前的日期；
+				var myDate=times.getDate();      //当前的日期；
 				var myHours=times.getHours();   //当前的小时；
-				var myMinutes=times.getMinutes();   //当前的分钟；
+				if(times.getMinutes()<10){
+					var myMinutes='0'+times.getMinutes().toString()   //当前的分钟；
+				}else{
+					var myMinutes=times.getMinutes();   //当前的分钟；
+				}
 				return myHours+":"+myMinutes;
 				console.log(myMinutes)
 			},
@@ -304,17 +471,19 @@
 				var	neiRong=document.createElement("div");		//内容信息
 				var touXiang=document.createElement("div");		//头像
 				var span=document.createElement("span");
+				var imaF=document.createElement("div")
 				var img=document.createElement("img");
 				var imgs=document.createElement("div");
 				you.setAttribute("class","fankiu-you");			//添加属性
 				neiRong.setAttribute("class","fankiu-text clearbox");
 				touXiang.setAttribute("class","fankiu-img");
 //					imgs.style.backgroundImage="url('./dist/you.png')";
-				img.setAttribute("class","border");
+//				img.setAttribute("class","border");
 //					span.appendChild(imgs);
 				neiRong.appendChild(span);
 				neiRong.appendChild(imgs);
-				touXiang.appendChild(img);
+				imaF.appendChild(img);
+				touXiang.appendChild(imaF);
 				you.appendChild(neiRong);
 				you.appendChild(touXiang);
 				this.prent.appendChild(you);
@@ -341,8 +510,14 @@
 				touXiang.style.width="14%";
 				touXiang.style.float="left";
 				touXiang.style.overflow="hidden";
-				img.style.width="0.38rem";
-				img.style.height="0.38rem";
+				imaF.style.width="0.38rem";
+				imaF.style.height="0.38rem";
+				imaF.style.border="1px solid #d4d2d2";
+				imaF.style.boxSizing="border-box";
+				imaF.style.float="right";
+				imaF.style.overflow="hidden";
+//				img.style.width="0.38rem";
+//				img.style.height="0.38rem";
 				img.style.background="#EAEAEA";
 				img.style.float="right";
 				img.style.borderRadius="0.02rem";
@@ -356,7 +531,7 @@
 				imgs.style.transform="rotate(45deg)";
 				imgs.style.width="0.08rem";
 				imgs.style.height="0.08rem";
-				imgs.style.top="0.09rem";
+				imgs.style.top="0.13rem";
 				imgs.style.right="-0.04rem";
 				imgs.style.Zindex=100;
 				if(type==1){			//发送的是名片
@@ -376,16 +551,18 @@
 				var	neiRong=document.createElement("div");
 				var touXiang=document.createElement("div");
 				var span=document.createElement("span");
+				var imaF=document.createElement("div");
 				var img=document.createElement("img");
 				var imgs=document.createElement("div");
 				my.setAttribute("class","fankiu-my");			//添加属性
 				neiRong.setAttribute("class","fankiu-text");
 				touXiang.setAttribute("class","fankiu-img");
-				img.setAttribute("class","border");
+//				img.setAttribute("class","border");
 //						span.innerText=texts;							//对应插入
 				neiRong.appendChild(span);
 				neiRong.appendChild(imgs);
-				touXiang.appendChild(img);
+				imaF.appendChild(img);
+				touXiang.appendChild(imaF);
 				my.appendChild(touXiang);
 				my.appendChild(neiRong);
 				this.prent.appendChild(my);
@@ -408,10 +585,16 @@
 				span.style.wordWrap="break-word";
 				touXiang.style.width="14%";
 //					touXiang.style.float="left";
-				img.style.width="0.38rem";
-				img.style.height="0.38rem";
+				imaF.style.width="0.38rem";
+				imaF.style.height="0.38rem";
+				imaF.style.border="1px solid #d4d2d2";
+				imaF.style.boxSizing="border-box";
+				imaF.style.overflow="hidden";
+//				img.style.width="0.38rem";
+//				img.style.height="0.38rem";
 				img.style.background="#EAEAEA";
 				img.style.borderRadius="0.02rem";
+				img.style.float="left";
 				img.src=this.from_photo;
 				imgs.style.position="absolute";
 				imgs.style.background="#fff";
@@ -420,7 +603,7 @@
 				imgs.style.borderLeft="0.008rem solid #d4d2d2";
 				imgs.style.borderTop="0.008rem solid #d4d2d2";
 				imgs.style.transform="rotate(-45deg)";
-				imgs.style.top="0.09rem";
+				imgs.style.top="0.13rem";
 				imgs.style.left="-0.04rem";
 				imgs.style.Zindex=100;
 				if(type==1){			
@@ -657,6 +840,97 @@
 				var shuru=this.$refs.shuru;				
 //				var texts=this.$refs.texts.innerText;
 				var texts=this.introduction;		//发送内容
+				
+				//验证手机
+		        if(/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/.test(texts)){
+		        	Toast("请不要输入敏感字符")
+		        	this.introduction="";
+		        	return;
+		        }
+		        //验证电话
+		        if(/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/.test(texts)){
+					Toast('请不要输入敏感字符');
+					this.introduction="";
+					return;
+				}
+		        if(/^1[0-9]{4}$/.test(texts)){
+					Toast('请不要输入敏感字符');
+					this.introduction="";
+					return;
+				}
+//				//验证qq
+				if(/^[1-9][0-9]{4,9}$/.test(texts)){
+					Toast('请不要输入敏感字符');
+					this.introduction="";
+					return;
+				}
+//				//验证微信号
+				if(/^[a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}$/.test(texts)){
+					Toast('请不要输入敏感字符');
+					this.introduction="";
+					return;
+				}
+//				//邮箱
+				if(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/.test(texts)){
+					Toast('请不要输入敏感字符');
+					this.introduction="";
+					return;
+				}
+				if(/@/.test(texts)){
+					Toast('请不要输入敏感字符');
+					this.introduction="";
+					return;
+				}
+				//邮编
+				if(/^[1-9][0-9]{5}$/.test(texts)){
+					Toast('请不要输入敏感字符');
+					this.introduction="";
+					return;
+				}
+				if(/\w@\w*\.\w/.test(texts)){
+					Toast('请不要输入敏感字符');
+					this.introduction="";
+					return;
+				}
+				//定义敏感字符
+			    var forbiddenArray =['我微信','微信','我的微信','我微信号是','我的微信号是','我邮箱是','我的邮箱是','我的邮箱是号','邮箱',
+			    '我邮箱是号','我邮箱','我的邮箱','我的qq','我的qq号','我的qq号是','我qq','我的电话','我的手机','我电话是','我的电话号是','我的手机号是',
+			    '邮编','加我','weixin','weinxinhao','@163.com','@qq.com','@','qq','QQ',];
+			    //定义敏感字符函数
+			    function forbiddenStr(str){
+				//  var destString = trim(str);
+			        var re = '';
+			        
+			        for(var i=0;i<forbiddenArray.length;i++){
+			            if(i==forbiddenArray.length-1)
+			                re+=forbiddenArray[i];
+			            else
+			                re+=forbiddenArray[i]+"|";
+			        }
+			        //定义正则表示式对象
+			        //利用RegExp可以动态生成正则表示式
+			        var pattern = new RegExp(re,"g");
+			        if(pattern.test(str)){
+//			            alert('false');
+			            return false;
+			        }
+			    }
+//				if(/^[\u4E00-\u9FA5]|[\uFE30-\uFFA0][-_a-zA-Z0-9]{5,19}$/.test(texts)){
+//					Toast('请不要输入敏感字符');
+//					this.introduction="";
+//					return false;
+//				}
+				var go=forbiddenStr(texts);
+				if(go==false){
+					Toast('请不要输入敏感字符');
+					this.introduction="";
+					return;
+				}
+				
+				
+				
+				
+				
 				var Height=shuru.clientHeight		//底部高度
 				console.log(shuru.clientHeight)							//显示框高度
 //				contentTexte.style.height=(DEHeight-93)/100+"rem";
@@ -675,7 +949,6 @@
 						this.My('1',typeCont)
 					}
 				}
-				
 				if(texts!=""){
 //					var cont="xxx 总经理 申请换取名片"
 //					var type=1					//如果tyoe=1发送的是名片
@@ -696,6 +969,21 @@
 //						this.You(type,cont)
 						this.$nextTick(function(){
 							this.FasongShijian();
+							var img = this.$refs.contentTexte.getElementsByTagName("img");
+							var length=img.length;
+							var contentTexte=this.$refs.contentTexte;
+							contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
+							for (var i = 0; i < length; i++) {
+								img[i].onload =function(){
+									if (this.clientWidth>this.clientHeight) {
+										this.style.height="100%"
+										this.style.width="auto"
+									}else{
+										this.style.width="100%"
+										this.style.height="auto"
+									}
+								}
+							}
 						})
 					},function(res){
 					    console.log(res);
@@ -708,12 +996,10 @@
 				}
 			},
 			watch:{
-				
 //				msg:function(newVal,oldVal){
 //					console.log(newVal +"*********"+ oldVal)
 //				}
 			}
-			
 //			show(){
 ////				dom更新后在执行使用$refs
 //				this.$nextTick(function() {
@@ -778,29 +1064,61 @@
 		left:0;
 		right:0;
 		z-index:1000;
-		.xiangmu-header{
-			position:absolute;
-			/*position:fixed;*/
+		.searchBox {
+			position:fixed;
 			top:0;
 			left:0;
-			width:100%;
-			height:0.46rem;
-			font-weight:600;
-			background:#ff7a59;
-			font-size:0.2rem;
-			text-align:center;
-			line-height:0.45rem;
-			color:#fff;
-			z-index:1200;
-			.xiangmu-left{
-				position:absolute;
-				height:100%;
-				padding-left:0.16rem;
-				display:inline-block;
-				top:0.04rem;
-				left:0;
-				img{
-					height:0.2rem;
+		    width: 100%;
+		    height:0.45rem;
+		    background-color:#ff7a59;
+		    z-index:1320;
+		    .home-search {
+			    height: 100%;
+			    line-height:0.45rem;
+			    font-size: 0.2rem;
+			    text-align: center;
+			    color:#fff;
+				.fanhui-butten{
+					position:absolute;
+					height:100%;
+					padding-left:0.16rem;
+					display:inline-block;
+					top:0.04rem;
+					left:0;
+					z-index:1330;
+					img{
+						height:0.2rem;
+					}
+				}
+			    .fanhui-right{
+			    	position:absolute;
+			    	right:0.2rem;
+			    	top:0;
+			    	font-size: 0.16rem;
+			    	font{
+			    		display:inline-block;
+			    		/*width:0.2rem;*/
+			    		height:0.22rem;
+			    		/*background-image:url("./img/lajitong.png");*/
+			    		background-size:100% 100%;
+			    		margin-bottom:-0.05rem;
+			    	}
+			    }
+			    .tousu{
+					/*position:absolute;
+					top:0.05rem;
+					right:0.16rem;*/
+					width:0.48rem;
+					height:0.15rem;
+					color:#fff;
+					font-size:0.16rem;
+					padding-top:0.01rem;
+					text-align:right;
+					background-image:url("./img/hong.png");
+					background-size:0.14rem 0.14rem;
+					background-position:0 0;
+					background-repeat:no-repeat;
+					z-index:1310;
 				}
 			}
 		}
@@ -835,22 +1153,6 @@
 			justify-content:center;
 			color:#fff;
 			font-size: 0.16rem;
-			.tousu{
-				position:absolute;
-				top:-0.3rem;
-				right:0.16rem;
-				width:0.48rem;
-				height:0.15rem;
-				color:#ff7a59;
-				font-size:0.14rem;
-				padding-top:0.01rem;
-				text-align:right;
-				background-image:url("./img/hong.png");
-				background-size:0.14rem 0.14rem;
-				background-position:0 0;
-				background-repeat:no-repeat;
-				z-index:1310;
-			}
 			ul{
 				width:95%;
 				height:0.36rem;
@@ -903,6 +1205,97 @@
 				}
 			}
 		}
+		.loding{
+			display:flex;
+			align-content:center;
+			align-items:center;
+			justify-content:center;
+			.loadEffect{
+	            width: 70%;
+	            min-height: 0.40rem;
+	            position: relative;
+	            padding:0.2rem 0 0.3rem 0;
+	            background: #fff;
+	            border-radius:0.06rem;
+	            .load-butten{
+	            	width:100%;
+	            	height:0.3rem;
+	            	font{
+		            	position:absolute;
+		            	display:inline-block;
+		            	background:#ff7a59;
+		            	padding:0.06rem 0.1rem;
+		            	color:#fff;
+		            	border-radius:0.04rem;
+		            	&.first{
+		            		bottom:0.2rem;
+		            		left:16%;
+		            	}
+		            	&.last{
+		            		bottom:0.2rem;
+		            		right:16%;
+		            	}
+		            }
+	            }
+	            .firsts{
+	            	overflow:hidden;
+	            	width: 83%;
+	            	li{
+	            		display:block;
+	            		width:100%;
+	            		font-size:0.16rem;
+	            		text-align: center;
+	            		padding-bottom:0.16rem;
+	            	}
+	            	.src1{
+	            		display:inline-block;
+	            		float:left;
+	            		padding:0.06rem 0.1rem;
+	            		font-size: 0.14rem; 
+	            		line-height: 0.15rem;
+	            		border:1px solid #cfcfcf;
+	            		box-sizing:border-box;
+	            		border-radius:0.04rem;
+	            		color:#b4b4b4;
+	            		margin:0 0.06rem 0.06rem 0;
+	            		&:nth-child(5n){
+	            			margin-right:0;
+	            		}
+	            	}
+	            	.src2{
+	            		display:inline-block;
+	            		float:left;
+	            		padding:0.06rem 0.1rem;
+	            		line-height: 0.15rem;
+	            		font-size: 0.14rem; 
+	            		background:#ff7a59;
+	            		border:1px solid #cfcfcf;
+	            		box-sizing:border-box;
+	            		border-radius:0.04rem;
+	            		color:#fff;
+	            		margin:0 0.06rem 0.06rem 0;
+	            		&:nth-child(5n){
+	            			margin-right:0;
+	            		}
+	            	}
+	            }
+	        }
+	        .loadEffect span{
+	        	margin:0 auto;
+	            display: block;
+	            text-align:justify;
+	            line-height: 0.22rem;
+	            font-size: 0.16rem;
+	            width: 80%;
+	            .mint-field-core{
+					resize: none;
+					width:100%;
+					min-height:0.77rem;
+					line-height:0.16rem;
+					&::-webkit-scrollbar{width:0;height:0}
+				}
+	        }
+	    }
 	}
 </style>
 

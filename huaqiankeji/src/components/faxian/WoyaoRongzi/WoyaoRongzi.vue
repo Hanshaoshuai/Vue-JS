@@ -8,18 +8,20 @@
 			<div class="box">
 				<div style="width:100%;height:0.5rem;"></div>
 				<div class="zhuying">
-					<div class="zhuying-heder"><font></font>您还可以在电脑端发起融资<span>（推荐）</span></div>
+					<div class="zhuying-heder"><!--<font></font>-->新项目发起融资<span>（电脑端）</span></div>
 					<div class="zhuying_1">
 						<div class="ferst">
-							<span>1.登录网站www.qironghome.com,输入用户名和密码，登录您的账号</span>
-							<span>2.点击登录“发起融资”，按照页面提示步骤操作即可完成</span>
-							<span>3.您的项目融资信息将会一对一的发送给您后续步骤中选择的机构投资人，也会以私密模式出现在“其他正在融资的项目”列表里（参见“发现”页面示例），不会大范围公开。</span>
+							<span>1、打开并登录网站 <font>www.qironghome.com；</font></span>
+							<span>2、点击“我要融资”，填写公司融资要素，上传商业计划书；</span>
+							<span>3、根据系统智能推荐的投资人清单，选择希望投递的投资机构；</span>
+							<span>4、阅读平台服务费收费协议并完成投递；</span>
+							<span>5、所有投资人将在10天内完成初步反馈，请您注意查收和回复。</span>
 						</div>
 					</div>
 				</div>
 				<div class="fankiu">
 					<div class="content-food" ref="foods">
-						<span>请选择您的融资方式</span>
+						<span>已有项目继续投递<a>（移动端）</a></span>
 						<ul>
 							<li class="src1" ref="img1" index="img1" @click.stap="dingzengGo('Dingzeng','1')">
 								<span>定增</span><font class="img1"></font>
@@ -275,6 +277,9 @@
 						display:inline-block;
 						font-weight:500;
 						/*color:#000000;*/
+						a{
+							color:#fc9981;
+						}
 					}
 					ul{
 						width:100%;
@@ -360,9 +365,12 @@
 					.ferst{
 						span{
 							display:block;
-							font-size:0.13rem;
-							line-height:0.24rem;
+							font-size:0.16rem;
+							line-height:0.3rem;
 							color:#b6b6b6;
+							font{
+								color:#fc9981;
+							}
 						}
 					}
 					.last{
@@ -372,6 +380,9 @@
 				
 			}
 			.butten{
+				position:absolute;
+				bottom:0;
+				left:0;
 				width:100%;
 				height:0.58rem;
 				background:#ff7a59;

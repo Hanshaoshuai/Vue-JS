@@ -6,26 +6,28 @@
 				<span>一键投递</span>
 			</div>
 			<div class="wenzhang-list">
-				<div class="wenzhang-content">
+				<div ref="tianjia" class="wenzhang-content">
 					<div class="fankiu">
 						<div class="tubiao"></div>
 						<div class="content-food" style="text-align:center;">
 							<span>已为您投递至：</span>
 						</div>
 					</div>
-					<div v-for="item in data" class="sousuo-content border-topbottom">
-						<div class="content-header">
-							<font><img :src="item.photo"/></font>
-							<div class="names">
-								<span class="border-right">{{item.uname}}</span>
-								<span>{{item.com_short}}</span>&nbsp;
-								<span>{{item.position}}</span>
+					<!--<transition v-for="(item,index) in data" name="fades">-->
+						<div v-show="showblock" class="sousuo-content border-topbottom">
+							<div class="content-header">
+								<font><img :src="item.photo"/></font>
+								<div class="names">
+									<span class="border-right">{{item.uname}}</span>
+									<span>{{item.com_short}}</span>&nbsp;
+									<span>{{item.position}}</span>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="donghua">
+					<!--</transition>-->
+					<!--<div class="donghua">
 						<div><span class="border">投递BP的奔跑动画开火车速送BP</span></div>
-					</div>
+					</div>-->
 				</div>
 			</div>
 			<div class="zhaiyao-food">
@@ -66,7 +68,8 @@
 				block:false,
 				ButtenName:"88",
 				showFlag:true,
-				onlyContent:true
+				onlyContent:true,
+				showblock:true
 			}
 		},
 		mounted(){
@@ -88,11 +91,43 @@
 				demand:""		//	是否索要 1:非索要 2:索要		[string]
 			}
 			this.$http.post(URL.path+'finance/send_item',datas,{emulateJSON:true}).then(function(res){
+				var tata=this;
 				Indicator.close();
 				this.data=res.body.data
 				Toast("您已成功投递 "+x+" 位投资人请您注意查收投资人的反馈并及时回复");
+				this.$nextTick(function(){
+					var img = this.$refs.tianjia.getElementsByTagName("img");
+					var length=img.length;
+					for (var i = 0; i < length; i++) {
+						img[i].onload =function(){
+							if (this.clientWidth>this.clientHeight) {
+								this.style.height="100%"
+								this.style.width="auto"
+							}else{
+								this.style.width="100%"
+								this.style.height="auto"
+							}
+						}
+					}
+					var blocks = this.$refs.tianjia.getElementsByClassName("sousuo-content");
+					var leng=blocks.length;
+					var i=0;
+//					var stape=setInterval(function(){
+//						blocks[i].v-show=true;
+//						i++;
+//						if(i==leng){
+//							clearInterval(stape);
+//						}
+//					},200)
+					
+					
+					
+					
+				})
 				console.log(res);
 			},function(res){
+				Indicator.close();
+				Toast("系统错误")
 			    console.log(res.status);
 			})
 		},
@@ -167,6 +202,17 @@
 	}
 	.fade-enter, .fade-leave-active {
 	  	transform: translateX(4.17rem);
+	  	/*transform:rotate(360deg);*/
+	  	/*opacity: 0;*/
+	}
+	.fades-enter-active {
+	  	transition: all .5s ease;
+	}
+	.fades-leave-active {
+	  	transition: all .5s ease;
+	}
+	.fades-enter, .fades-leave-active {
+	  	transform: translateX(-4.17rem);
 	  	/*transform:rotate(360deg);*/
 	  	/*opacity: 0;*/
 	}
@@ -257,9 +303,10 @@
 							/*border-radius:0.3rem;*/
 							border:none;
 							border:2px solid #e5e4e4;
+							overflow:hidden;
 							img{
-								width:100%;
-								height:100%;
+								/*width:100%;
+								height:100%;*/
 							}
 						}
 						.names{

@@ -7,43 +7,44 @@
 			</div>
 			<div class="box" ref="box">
 				<div style="width:100%;height:0.55rem;"></div>
-				<div v-if="beianType=='7'" class="sousuo-content">
-					<li class="beian-first">
-						2017年 10月 8日
-					</li>				<!--1:未审核 2:已审核 3:进行中 4:已结束 5未通过-->
-					<ul v-if="item.status=='2'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
+				<div v-for="(item,index) in data" v-if="beianType=='7'" class="sousuo-content">
+					<!--<li v-if="timestamp" class="beian-first">
+						{{numToTime(item.create_time)}}
+					</li>-->
+					<!--1:未审核 2:已审核 3:进行中 4:已结束 5未通过-->
+					<ul v-if="item.status=='2'" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>
-								<span></span>
 								<font>已审核</font>
+								<font>{{numToTime(item.create_time)}}</font>
 							</div>
 							<!--<div class="content-bottom">
-								<span>1小时前</span>
+								<span>备案时间：{{numToTime(item.create_time)}}</span>
 							</div>-->
 						</li>
 					</ul>
-					<ul v-if="item.status=='1'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
+					<ul v-if="item.status=='1'" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>
-								<span></span>
 								<font>未审核</font>
+								<font>{{numToTime(item.create_time)}}</font>
 							</div>
 							<!--<div class="content-bottom">
-								<span>1小时前</span>
+								<span>备案时间：{{numToTime(item.create_time)}}</span>
 							</div>-->
 						</li>
 					</ul>
-					<ul v-if="item.status=='3'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
+					<ul v-if="item.status=='3'" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>
-								<span></span>
 								<font>进行中</font>
+								<font>{{numToTime(item.create_time)}}</font>
 							</div>
 							<!--<div class="content-bottom">
-								<span>1小时前</span>
+								<span>备案时间：{{numToTime(item.create_time)}}</span>
 							</div>-->
 						</li>
 					</ul>
@@ -51,11 +52,11 @@
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>
-								<span></span>
 								<font>已结束</font>
+								<font>{{numToTime(item.create_time)}}</font>
 							</div>
 							<!--<div class="content-bottom">
-								<span>1小时前</span>
+								<span>备案时间：{{numToTime(item.create_time)}}</span>
 							</div>-->
 						</li>
 					</ul>
@@ -63,29 +64,29 @@
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>
-								<span></span>
 								<font>未通过</font>
+								<font>{{numToTime(item.create_time)}}</font>
 							</div>
 							<!--<div class="content-bottom">
-								<span>1小时前</span>
+								<span>备案时间：{{numToTime(item.create_time)}}</span>
 							</div>-->
 						</li>
 					</ul>
 					<box></box>
 				</div>
 				<div  v-if="beianType=='1'" class="sousuo-content">
-					<li class="beian-first">
-						2017年 10月 8日
-					</li>
+					<!--<li class="beian-first">
+						{{numToTime(item.create_time)}}
+					</li>-->
 					<ul v-if="item.status=='2'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>
-								<span></span>
 								<font>已审核</font>
+								<font>{{numToTime(item.create_time)}}</font>
 							</div>
 							<!--<div class="content-bottom">
-								<span>1小时前</span>
+								<span>{{numToTime(item.create_time)}}</span>
 							</div>-->
 						</li>
 					</ul>
@@ -93,11 +94,11 @@
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>
-								<span></span>
 								<font>未审核</font>
+								<font>{{numToTime(item.create_time)}}</font>
 							</div>
 							<!--<div class="content-bottom">
-								<span>1小时前</span>
+								<span>备案时间：{{numToTime(item.create_time)}}</span>
 							</div>-->
 						</li>
 					</ul>
@@ -105,11 +106,11 @@
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>
-								<span></span>
 								<font>进行中</font>
+								<font>{{numToTime(item.create_time)}}</font>
 							</div>
 							<!--<div class="content-bottom">
-								<span>1小时前</span>
+								<span>备案时间：{{numToTime(item.create_time)}}</span>
 							</div>-->
 						</li>
 					</ul>
@@ -117,11 +118,11 @@
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>
-								<span></span>
 								<font>已结束</font>
+								<font>{{numToTime(item.create_time)}}</font>
 							</div>
 							<!--<div class="content-bottom">
-								<span>1小时前</span>
+								<span>备案时间：{{numToTime(item.create_time)}}</span>
 							</div>-->
 						</li>
 					</ul>
@@ -129,11 +130,11 @@
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>
-								<span></span>
 								<font>未通过</font>
+								<font>{{numToTime(item.create_time)}}</font>
 							</div>
 							<!--<div class="content-bottom">
-								<span>1小时前</span>
+								<span>备案时间：{{numToTime(item.create_time)}}</span>
 							</div>-->
 						</li>
 					</ul>
@@ -151,6 +152,7 @@
 
 <script type="text/ecmascript">
 	import {URL} from '../../../common/js/path';
+	import {formatDate,numToTime,numToTime1} from "../../../common/js/date.js";
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
 	import box from "../../box.vue";
@@ -183,10 +185,16 @@
 					type5:"Diaoyan"
 				},
 				beiAnidQ:"",
-				beiAnidC:""
+				beiAnidC:"",
+				numToTime:"",
+				timestamp:''
 			}
 		},
 		mounted() {
+			this.numToTime=numToTime;
+			this.timestamp= (new Date()).valueOf()
+//			this.formatDate(this.timestamp)
+			console.log(this.formatDate(this.timestamp))
 			console.log(this.beianType);
 			if(this.beianType=='1'){
 //				企业项目备案列表
@@ -231,6 +239,10 @@
 			})
 		},
 		methods:{
+			formatDate(time){
+				let date = new Date(time);
+				return formatDate(date,'yyyy-MM-dd hh:mm');
+			},
 			yijianHind(){
 				history.go(-1)
 //				this.tucaoShow=false;
@@ -371,7 +383,7 @@
 						margin:0 auto;
 						color:#8c8c8c;
 						padding-bottom:0.16rem;
-						border-bottom:1px solid #cfcfcf;
+						/*border-bottom:1px solid #cfcfcf;*/
 						.content-top{
 							width:100%;
 							height:0.22rem;
@@ -386,8 +398,10 @@
 								}
 							}
 							font{
+								flex:1;
+								text-align:center;
 								display:inline-block;
-								width:0.58rem;
+								/*width:0.58rem;*/
 								font-size:0.12rem;
 								color:#717070;
 								line-height:0.18rem;

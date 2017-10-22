@@ -5,34 +5,36 @@
 				<span class="xiangmu-left"><img src="./img/back.png"/></span>
 				<span>找回密码</span>
 			</div>
-			<div class="logo">
-				<ul>
-					<li></li>
-				</ul>
+			<div class="contents">
+				<div class="logo">
+					<ul>
+						<li></li>
+					</ul>
+				</div>
+				<div class="denglu-text">
+					<ul>
+						<li class="firstboder">
+							<span></span>
+							<input ref="shouji" v-model="phone" placeholder="请输入注册时的手机号" type="number" class="ferst mint-field-core"/>
+							<transition name="fade"><font v-show="shoujis" @click.stop="quxiao()"></font></transition>
+						</li>
+						<li>
+							<span></span>
+							<input ref="mima" v-model="texts" placeholder="请输入短信验证码" type="text" class="last mint-field-core"/>
+							<font ref="yanzhengMa" @click.stop="huoquMima()">获取验证码</font>
+						</li>
+					</ul>
+					
+					
+				</div>
+				<div class="denglu-food" @click.stop="denglus()">
+					<span>下一步</span>
+				</div>
+				<div class="denglu-list denglu-bottom">
+					联系客服：0571-57185965
+				</div>
 			</div>
-			<div class="denglu-text">
-				<ul>
-					<li>
-						<span></span>
-						<input ref="shouji" v-model="phone" placeholder="请输入注册时的手机号" type="number" class="ferst mint-field-core"/>
-						<transition name="fade"><font v-show="shoujis" @click.stop="quxiao()"></font></transition>
-					</li>
-					<li>
-						<span></span>
-						<input ref="mima" v-model="texts" placeholder="请输入短信验证码" type="text" class="last mint-field-core"/>
-						<font ref="yanzhengMa" @click.stop="huoquMima()">获取验证码</font>
-					</li>
-				</ul>
-				
-				
-			</div>
-			<div class="denglu-food" @click.stop="denglus()">
-				<span>下一步</span>
-			</div>
-			<div class="denglu-list denglu-bottom">
-				联系客服：0571-57185965
-			</div>
-			<router-view></router-view>
+			<router-view :phone="phone" :texts="texts"></router-view>
 		</div>
 	<!--</transition>-->
 </template>
@@ -249,7 +251,7 @@
 		height:100%;
 		top:0;
 		left:0;
-		z-index:10;
+		z-index:20;
 		.xiangmu-header{
 			position:fixed;
 			top:0;
@@ -262,7 +264,7 @@
 			text-align:center;
 			line-height:0.45rem;
 			color:#fff;
-			z-index:30;
+			z-index:40;
 			.xiangmu-left{
 				position:absolute;
 				height:100%;
@@ -275,119 +277,128 @@
 				}
 			}
 		}
-		.logo{
+		.contents{
+			position:fixed;
 			width:100%;
-			height:2.16rem;
-			display:flex;
-			justify-content:center;
-			align-content:center;
-			align-items:center;
-			margin-top:0.45rem;
-			ul>li{
-				width:1.25rem;
-				height:1.5rem;
-				background-image:url("../DengLu/img/app.png");
-				background-size:100% 100%;
-			}
-		}
-		.denglu-text{
-			width:90.8%;
-			margin:0 auto;
-			position:relative;
-			border:0.008px solid #d0d0d0;
-			ul{
+			top:39.1%;
+			left:0;
+			z-index:26;
+			.logo{
 				width:100%;
-				li{
+				height:1.5rem;
+				display:flex;
+				justify-content:center;
+				align-content:center;
+				align-items:center;
+				/*margin-top:0.45rem;*/
+				margin-top:-1.8rem;
+				z-index:28;
+				ul>li{
+					width:1.25rem;
+					height:1.5rem;
+					background-image:url("../DengLu/img/app.png");
+					background-size:100% 100%;
+				}
+			}
+			.denglu-text{
+				width:90.8%;
+				margin:0 auto;
+				position:relative;
+				margin-top:0.3rem;
+				border:0.008px solid #d0d0d0;
+				ul{
 					width:100%;
-					padding:0.07rem 0;
-					display:flex;
-					position:relative;
-					input{
-						height:0.26rem;
-						flex:1;
-						padding-left:0.1rem;
-						border-left:0.008px solid #d0d0d0;
-					}
-					input::-webkit-input-placeholder{ 
-						color: #d0d0d0; 
-					} 
-					&:first-child{
-						border-bottom:0.008px solid #d0d0d0;
-					}
-					span{
-						display:inline-block;
-						width:0.14rem;
-						height:0.16rem;
-						margin:0.05rem 0.16rem 0 0.13rem;
-						background-image:url("../DengLu/img/gerens.png");
-						background-size:100% 100%;
-						
-					}
-					font{
-						display:inline-block;
-						width:0.17rem;
-						height:0.17rem;
-						margin:0.04rem 0.16rem 0 0;
-						background-image:url("../DengLu/img/quxiao.png");
-						background-size:100% 100%;
-						
-					}
-					&:nth-child(2n){
-						border-bottom:0.008px solid #d0d0d0;
+					li{
+						width:100%;
+						padding:0.07rem 0;
+						display:flex;
+						position:relative;
+						input{
+							height:0.26rem;
+							flex:1;
+							padding-left:0.1rem;
+							border-left:0.008px solid #d0d0d0;
+						}
+						input::-webkit-input-placeholder{ 
+							color: #d0d0d0; 
+						} 
+						&:first-child{
+							border-bottom:0.008px solid #d0d0d0;
+						}
 						span{
-							background-image:url("../DengLu/img/yanzheng.png");
+							display:inline-block;
+							width:0.14rem;
+							height:0.16rem;
+							margin:0.05rem 0.16rem 0 0.13rem;
+							background-image:url("../DengLu/img/gerens.png");
+							background-size:100% 100%;
+							
 						}
 						font{
 							display:inline-block;
-							padding:0.08rem 0.17rem;
-							border-radius:0.04rem;
-							background:#ff7a59;
-							width:auto;
-							height:auto;
-							margin:0;
-							position:absolute;
-							top:0.05rem;
-							right:0.04rem;
-							color:#fff;
+							width:0.17rem;
+							height:0.17rem;
+							margin:0.04rem 0.16rem 0 0;
+							background-image:url("../DengLu/img/quxiao.png");
+							background-size:100% 100%;
+							
+						}
+						&:nth-child(2n){
+							span{
+								background-image:url("../DengLu/img/yanzheng.png");
+							}
+							font{
+								display:inline-block;
+								padding:0.08rem 0.17rem;
+								border-radius:0.04rem;
+								background:#ff7a59;
+								width:auto;
+								height:auto;
+								margin:0;
+								position:absolute;
+								top:0.05rem;
+								right:0.04rem;
+								color:#fff;
+							}
 						}
 					}
 				}
+				.ferst{
+					
+				}
 			}
-			.ferst{
-				
+			.denglu-food{
+				width:90.80%;
+				height:0.4rem;
+				margin:0 auto;
+				margin-top:0.3rem;
+				span{
+					width:100%;
+					height:100%;
+					color:#ffffff;
+					font-size:0.2rem;
+					text-align:center;
+					line-height:0.4rem;
+					border-radius:8px;
+					display:inline-block;
+					background:#ff7a59;
+				}
 			}
-		}
-		.denglu-food{
-			width:90.80%;
-			height:0.4rem;
-			margin:0 auto;
-			margin-top:0.3rem;
-			span{
+			.denglu-list{
 				width:100%;
-				height:100%;
-				color:#ffffff;
-				font-size:0.2rem;
-				text-align:center;
-				line-height:0.4rem;
-				border-radius:8px;
-				display:inline-block;
-				background:#ff7a59;
+				height:0.4rem;
+				display:flex;
+			    -webkit-box-pack: center;
+			    justify-content: center;
+			    -webkit-box-align: center;
+			    align-items: center;
 			}
-		}
-		.denglu-list{
-			width:100%;
-			height:0.4rem;
-			display:flex;
-		    -webkit-box-pack: center;
-		    justify-content: center;
-		    -webkit-box-align: center;
-		    align-items: center;
-		}
-		.denglu-bottom{
-			color:#d0d0d0;
-			margin-top:1rem;
-			bottom:0.1rem;
-			left:0;
+			.denglu-bottom{
+				color:#d0d0d0;
+				margin-top:1rem;
+				bottom:0.1rem;
+				left:0;
+			}
 		}
 	}
 </style>

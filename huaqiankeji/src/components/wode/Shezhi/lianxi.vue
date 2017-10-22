@@ -1,57 +1,65 @@
 <template>
 	<transition name="fade">
-		<div v-show="showFlag" class="wenzhang">
-			<div class="xiangmu-header" @click.stop="listnone1()">
+		<div v-show="tucaoShow" class="xiangmu">
+			<div class="xiangmu-header" @click.stap="yijianHind()">
 				<span class="xiangmu-left"><img src="../img/back.png"/></span>
-				<span>协议详情</span>
+				<span>联系我们</span>
 			</div>
 			<div class="wenzhang-list">
 				<div class="wenzhang-content">
-					<ul ref="content">
+					<ul class="content" ref="content">
 						
 					</ul>
 				</div>
 			</div>
-			<!--<div class="zhaiyao-food">
-				<span class="last" @click.stop="butten">返回首页</span>
-			</div>-->
-			<!--<router-view></router-view>-->
 		</div>
 	</transition>
 </template>
 
 <script type="text/ecmascript">
-	import {URL} from '../../../../common/js/path';
+	import {URL} from '../../../common/js/path';
+	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
+	import box from "../../box.vue";
 	import { Indicator } from 'mint-ui';
-	import { MessageBox } from 'mint-ui';
-	
 	
 	export default {
 		props:{
-			data:{
-//				type:"boolean"
-			}
+//			token:{
+//				type:Object
+//			}
 		},
 		data () {
 			return {
-				token:"",
-				XiangmuID:"",
-				type:"",
-				uID:"",
-				block:false,
-				ButtenName:"88",
-				showFlag:true,
-				onlyContent:true
+				fankui:"45",
+				genjin:"458",
+				introduction:"",
+				times:20177111129,
+				showFlag:false,
+				tucaoShow:true,
 			}
 		},
 		mounted(){
-			this.$refs.content.innerHTML=this.data['content']
+			Indicator.open({spinnerType: 'fading-circle'});
+			//联系我们
+			var params={
+	    		token:this.$route.params.token,
+				ctype:2	//1关于我们2联系我们
+	    	}
+			console.log(params)
+			this.$http.post(URL.path1+'common/page_detail',params,{emulateJSON:true}).then(function(res){
+				Indicator.close();
+				this.$refs.content.innerHTML=res.body.data.content
+				console.log(res);
+			},function(res){
+				Indicator.close("系统错误");
+			    console.log(res);
+			})
 		},
 		methods:{
-			listnone1(){
-				history.go(-1)
-			}
+			yijianHind(){
+				history.go(-1);
+			},
 		},
 		events:{
 			
@@ -66,7 +74,7 @@
 //			
 		},
 		components:{
-
+			box,
 		}
 	}
 </script>
@@ -83,13 +91,13 @@
 	  	/*transform:rotate(360deg);*/
 	  	/*opacity: 0;*/
 	}
-	.wenzhang{
-		position:absolute;
-		background:#f5f4f9;
+	.xiangmu{
+		position:fixed;
+		background:#f5f5f9;
+		bottom:0;
 		top:0;
 		left:0;
 		right:0;
-		bottom:0;
 		z-index:300;
 		.xiangmu-header{
 			position:fixed;
@@ -103,7 +111,10 @@
 			text-align:center;
 			line-height:0.45rem;
 			color:#fff;
-			z-index:310;
+			z-index:320;
+			span{
+				font-weight:bold;
+			}
 			.xiangmu-left{
 				position:absolute;
 				height:100%;
@@ -120,13 +131,18 @@
 		.wenzhang-list{
 			width:100%;
 			height:100%;
+			background:#fff;
 			overflow-y:auto;
 			-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
 			.wenzhang-content{
 				width:91%;
 				margin:0 auto;
-				padding:0.48rem 4% 0.6rem 5%;
-				background:#fff;
+				padding:0.6rem 4% 0.6rem 5%;
+				.content{
+					line-height:0.32rem;
+					color:#717171;
+					font-size:0.16rem;
+				}
 			}
 		}
 	}

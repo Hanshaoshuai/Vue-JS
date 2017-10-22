@@ -22,39 +22,48 @@
 					</div>
 					<div v-for="(item,index) in body" class="sousuo-content border-topbottom">
 						<div class="content-header">
-							<font><img src="" :rul="item.thumb"/></font>
+							<font><img src="" :rul="item.photo"/></font>
 							<div class="names">
 								<span class="border-right">{{item.uname}}</span>
 								<span>{{item.com_short}}</span>&nbsp;
 								<span>{{item.position}}</span>
 							</div>
-							<div class="borders typeA" :id="item.uid"  @click.stop="xuanZe(index,item.uid)"></div>
+							<div class="borders typeA" :id="item.id"  @click.stop="xuanZe(index,item.id)"></div>
 						</div>
-						<div class="xiaolv border-topbottom">
+						<div v-if="item.ctype=='2'" class="xiaolv border-topbottom">
 							<div class="border-right">
-								<li><font>235</font></li>
+								<li>
+									<font style="font-size:0.14rem;" v-if="item.itemnums==0">暂无</font>
+									<font v-if="item.itemnums!=0">{{item.itemnums}}</font>
+								</li>
 								<span>收获项目数</span>
 							</div>
 							<div class="border-right">
 								<li>
-									<font v-if="item.follow==''" class="center">0&nbsp;%</font>
-									<font v-else class="center">{{item.follow}}</font>
+									<font v-if="item.feedback==''" class="center">0&nbsp;%</font>
+									<font v-if="item.feedback!=''" v-else class="center">{{item.feedback}}</font>
 								</li>
 								<span class="center">反馈率</span>
 							</div>
 							<div class="border-right">
-								<li><font>200&nbsp;%</font></li>
+								<li>
+									<font v-if="item.changenums==0" class="center">0&nbsp;%</font>
+									<font v-if="item.changenums!=0">{{Math.round((item.changenums/item.itemnums)*100)}}&nbsp;%</font>
+								</li>
 								<span>约谈率</span>
 							</div>
 						</div>
 						<div class="leimu">
 							<div class="zhonglei">
-								<span class="jieduan">阶段：PE</span>
-								<span  class="dangbi">单笔投资：2000万-5000万</span>
+								<span v-if="item.ctype==1" class="jieduan">所在行业：{{item.fund_stage.exts[1].value}}</span>
+								<span v-if="item.ctype==2" class="jieduan">阶段：{{item.fund_stage.exts[1].value}}</span>
+								<span v-if="item.ctype==2" class="dangbi">单笔投资：{{item.single_project_min}}万-{{item.single_project_max}}万</span>
 								<span v-if="item.total_finance" class="dangbi">单笔投资：{{item.total_finance}}万</span>
-								<span  class="zijin">资金成本：年化20%-30%</span>
-								<span  class="fangkuan">放款速度：不超过90天</span>
-								<span  class="lingyu">领域：医疗、军事</span>
+								<span v-if="item.ctype==2" class="zijin">资金成本：年化{{item.fund_min}}%-{{item.fund_max}}%</span>
+								<span v-if="item.ctype==2" class="fangkuan">放款速度：不超过{{item.loan_time}}天</span>
+								<span v-if="item.ctype==2" class="lingyu">领域：{{item.fund_stage.exts[0].value}}</span>
+								<span v-if="item.ctype==3" class="lingyu">领域：{{item.fund_stage.exts[0].value}}</span>
+								<span v-if="item.ctype==4" class="lingyu">领域：{{item.fund_stage.exts[0].value}}</span>
 							</div>
 						</div>
 					</div>
@@ -113,7 +122,7 @@
 		},
 		methods:{
 			listnone(){
-				this.showFlag=false;
+//				this.showFlag=false;
 				history.go(-1)
 			},
 			faxianScroll(){
@@ -153,8 +162,8 @@
 				var datas = {
 					token:this.token,		//	token	是	[string]		
 					item_id:this.CanShu.XiangmuID,		//	项目id	是	[string]		
-					page:"",			//	page	是	[string]		
-					size:""			//	size	是	[string]	
+					page:1,			//	page	是	[string]		
+					size:20			//	size	是	[string]	
 				}
 				this.$http.post(URL.path+'finance/investor_list',datas,{emulateJSON:true}).then(function(res){
 					Indicator.close();
@@ -166,6 +175,18 @@
 						this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
   						this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
   						this.imgs()
+						var length=this.img.length;
+						for (var i = 0; i < length; i++) {
+							this.img[i].onload =function(){
+								if (this.clientWidth>this.clientHeight) {
+									this.style.height="100%"
+									this.style.width="auto"
+								}else{
+									this.style.width="100%"
+									this.style.height="auto"
+								}
+							}
+						}
 					});
 					console.log(this.body);
 				},function(res){
@@ -304,11 +325,11 @@
 						Indicator.close();
 						if(res.body.returnCode==200){
 							yes=res.body.data;
-							window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.CanShu['type']+'/'+this.CanShu['XiangmuID']+'/'+this.length+"/TouDi";
+							window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.CanShu['type']+'/'+this.CanShu.XiangmuID+'/'+this.length+"/TouDi";
 						}else{
 							yes=res.body.data;
 							if(this.XiaYibu==true){				//判断必须选择匹配人才可以跳转
-								window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.CanShu['type']+'/'+this.CanShu['XiangmuID']+'/'+this.length;
+								window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.CanShu['type']+'/'+this.CanShu.XiangmuID+'/'+this.length;
 							}else{
 								Toast("请选择匹配人");
 							}

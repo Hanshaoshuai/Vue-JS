@@ -10,6 +10,7 @@
 				<ul v-if="xingXi.huJiao">
 					<li class="border-bottom" @click.stop="huJiao()"><span>{{xingXi.huJiao}}</span></li>
 					<li  @click.stop="tianJia()"><span>{{xingXi.tianJia}}</span></li>
+					<a class="tel" style="text-decoration:none;color:#666;display:block" :href="tel"></a>
 				</ul>
 			</div>	
 		</div>
@@ -33,6 +34,7 @@
 				tishi:"",
 				onlyContent:false,
 				XiangmuID:"",
+				tel:""
 			}
 		},
 		mounted(){
@@ -44,6 +46,7 @@
 				console.log(CanShu)
 				console.log(XiangmuID)
 				this.datas=datas;
+				this.tel="tel:"+datas;
 				this.CanShu=CanShu;
 				this.XiangmuID=XiangmuID;
 				this.onlyContent=true;
@@ -119,7 +122,7 @@
 //				this.$refs.pipeiShow.pipeiBlock();
 			},
 			huJiao(){
-				
+				Toast(this.datas)
 			},
 			tianJia(){
 				Toast(this.datas)
@@ -188,11 +191,19 @@
             width: 80%;
         }
         .loadEffect{
+        	position:relative;
         	ul{
             	li{
             		span{
             			line-height: 0.46rem;
             		}
+            	}
+            	.tel{
+            		position:absolute;
+            		top:0;
+            		left:0;
+            		width:100%;
+            		height:100%;
             	}
             }
         }

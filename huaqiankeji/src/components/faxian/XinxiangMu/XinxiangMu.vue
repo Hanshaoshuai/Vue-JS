@@ -61,7 +61,7 @@
 						</div>
 						<div class="jieshu"><font>保密信息，禁止传播</font><span v-if="item.follow=='1' && item.end_follow!=1 && item.end_follow!=2" @click.stop="jieshu(item.id)">结束项目</span></div>
 						<div class="times border">
-							<span class="text-center">{{item.create_time}}小时前</span>
+							<span class="text-center">{{numToTime(item.create_time)}}</span>
 							<span>发布</span>
 							<div class="times-name">
 								<font></font>
@@ -70,12 +70,18 @@
 						</div>
 					</div>
 				</div>
-				
+				<!--<div class="tishi-bottoms">
+					<ul>
+						<li class="border-bottom"></li>
+						<li class="tishi-center">亲已经到底了</li>
+						<li class="border-bottom"></li>
+					</ul>
+				</div>-->
 				
 			</div>
 			
 			
-			<li v-for="item in list" class="page-loadmore-listitem">{{ item }}</li>	
+			<!--<li v-for="item in list" class="page-loadmore-listitem">{{ item }}</li>-->	
 			</ul>
 	       	<div slot="top" class="mint-loadmore-top">
 	          	<span v-show="topStatus !== 'loading'" :class="{ 'is-rotate': topStatus === 'drop' }"> ↓ </span>
@@ -93,7 +99,7 @@
 	        </div>
 			</mt-loadmore>
 	      	<transition name="promps">
-	      		<p class="page-loadmore-desc" v-show="promps">暂无数据</p>
+	      		<!--<p class="page-loadmore-desc" v-show="promps">暂无数据</p>-->
 	      	</transition>
 	    </div>
 	    	<tishi ref="tishiShow" :xingXi="texts" :token="token" :XiangmuID="XiangmuID"></tishi>
@@ -105,6 +111,7 @@
 
 <script type="text/ecmascript">
 	import {URL} from '../../../common/js/path';
+	import {numToTime} from "../../../common/js/date.js";
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
 	import { Indicator } from 'mint-ui';
@@ -146,10 +153,12 @@
 		        wrapperHeight: 0,
 		        topStatus: '',
 		        promps:false,
-		        scrollTop:""
+		        scrollTop:"",
+		        numToTime:""
 			}
 		},
 		mounted() {
+			this.numToTime=numToTime;
 			Indicator.open({spinnerType: 'fading-circle'});
 	    	console.log("计算高度")
 	      	this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
@@ -221,19 +230,19 @@
 	      		console.log("bot")
 		        setTimeout(() => {
 		          	let lastValue = this.list[this.list.length - 1];
-		          	if (lastValue < 20) {
-			            for (let i = 1; i <= 10; i++) {
-			              	this.list.push(lastValue + i);
-			            }
-		          	} else {
+//		          	if (lastValue < 20) {
+//			            for (let i = 1; i <= 10; i++) {
+//			              	this.list.push(lastValue + i);
+//			            }
+//		          	} else {
 		            	this.allLoaded = false; //若为真，则 bottomMethod 不会被再次触发 就不能再向上拉了
 		            	this.promps = true;
-		            	let clear = setTimeout(()=>{
-		            		this.promps = false;
-		            		clearTimeout(clear);
-		            	},1500);
-		          	}
-		          	this.$refs.loadmore.onBottomLoaded();
+//		            	let clear = setTimeout(()=>{
+//		            		this.promps = false;
+//		            		clearTimeout(clear);
+//		            	},1500);
+//		          	}
+//		          	this.$refs.loadmore.onBottomLoaded();
 		        }, 1500);
 	      	},
 	      	
@@ -573,6 +582,27 @@
 						}
 						float:right;
 						/*margin-right:0.1rem;*/
+					}
+				}
+			}
+			.tishi-bottoms{
+				width:92.5%;
+				height:0.36rem;
+				margin:0 auto;
+				ul{
+					width:100%;
+					height:100%;
+					display:flex;
+					li{
+						flex:1;
+						height:0.2rem;
+						&.tishi-center{
+							width:0.57rem;
+							line-height:0.36rem;
+							text-align:center;
+							font-size:0.12rem;
+							color:#bcbcbc;
+						}
 					}
 				}
 			}

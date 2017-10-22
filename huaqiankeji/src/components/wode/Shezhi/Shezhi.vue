@@ -44,7 +44,7 @@
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
 	import box from "../../box.vue";
-	
+	import { MessageBox } from 'mint-ui';
 	
 	export default {
 		props:{
@@ -71,14 +71,14 @@
 //				this.tucaoShow=true;
 			},
 			lianXi(){
-//				this.$refs.yifouShou.yifouBlock();
+				window.location.href="#/wode/shezhi/"+this.token+"/LianxiWomen";
 			},
 			qingChu(){
 				Toast("清楚成功")
 //				this.$refs.xiangqingShow.xiangqingBlock();
 			},
 			tuiChu(){
-				if(localStorage.getItem("userID")&&localStorage.getItem("userID")!==""){
+				MessageBox.confirm('您确定要退出登录吗?').then(action => {
 					localStorage.removeItem("userID");		//用户ID
 					localStorage.removeItem("token");		//用户token
 					localStorage.removeItem("phone");		//用户电话
@@ -86,9 +86,13 @@
 					localStorage.removeItem("photo");	//用户头像id
 					localStorage.removeItem("photourl");	//用户头像URL地址
 					Toast('退出成功');
-			  	}else{
-			  		Toast('您已处于未登录状态');
-			  	}
+					setTimeout(function(){
+//						window.location.href="#/denglu"
+//						history.go(0)
+//						location.reload()
+						location.replace(document.referrer); 
+					},1000)
+				});
 			}
 			
 //			show(){
@@ -115,14 +119,7 @@
 //			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
+			
 		},
 		components:{
 			box,

@@ -8,11 +8,13 @@
 			<div class="box">
 				<div style="width:100%;height:0.45rem;"></div>
 				<div class="fankiu" ref="tianjia">
-					<div v-for="(item,index) in res" class="content-food border-bottom" @click.stap="xinxiTo(item.id)">
-						<p>
-							<img class="border" :src="item.photo" alt="" />
+					<div v-for="(item,index) in res" class="content-food border-bottom" @click.stap="xinxiTo(item.id,item.uname)">
+						<div class="imgas">
+							<p>
+								<img class="border" :src="item.photo" alt="" />
+							</p>
 							<font>6</font>
-						</p>
+						</div>
 						<span>&nbsp;&nbsp;{{item.uname}}</span>
 						<span>&nbsp;&nbsp;{{item.com_short}}</span>
 						<span>&nbsp;&nbsp;{{item.position}}</span>
@@ -57,6 +59,7 @@
 				times:20177111129,
 				showFlag:false,
 				tucaoShow:true,
+//				uname:''
 			}
 		},
 		mounted(){
@@ -103,7 +106,7 @@
 			fankuiBlock(){
 			
 			},
-			xinxiTo(to_id){///Xeiyi/:token/:uID/:type/:XiangmuID
+			xinxiTo(to_id,uname){///Xeiyi/:token/:uID/:type/:XiangmuID
 				console.log(to_id)
 				console.log(this.datas);
 				//标记已读反馈
@@ -129,7 +132,7 @@
 				},function(res){
 				    console.log(res);
 				})
-				window.location.href="#/fankuixinxi/"+this.$route.params.token+'/'+to_id+'/'+this.type;
+				window.location.href="#/fankuixinxi/"+this.$route.params.token+'/'+to_id+'/'+uname;
 			}
 			
 //			show(){
@@ -229,13 +232,25 @@
 					width:95%;
 					margin:0 auto;
 					padding:0.14rem 0 0.08rem 0;
-					line-height:0.46rem;
+					/*line-height:0.46rem;*/
 					font-size:0.16rem;
-					p{
+					.imgas{
 						display:inline-block;
 						position:relative;
 						width:0.46rem;
 						height:0.46rem;
+						vertical-align:top;
+						/*overflow:hidden;*/
+						p{
+							width:0.46rem;
+							height:0.46rem;
+							overflow:hidden;
+							img{
+								/*vertical-align:top;
+								width:0.46rem;
+								height:0.46rem;*/
+							}
+						}
 						font{
 							display:inline-block;
 							width:0.18rem;
@@ -251,10 +266,8 @@
 							color:#fff;
 						}
 					}
-					img{
-						vertical-align:top;
-						width:0.46rem;
-						height:0.46rem;
+					span{
+						line-height:0.46rem;
 					}
 					/*span{
 						&:last-child{

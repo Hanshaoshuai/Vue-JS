@@ -31,7 +31,7 @@
 						</li>
 						<li>
 							<span v-if="data.exchange_card=='0'" class="zanwu">暂无</span>
-							<span v-if="data.exchange_card!='0'">{{data.exchange_card}}%</span>
+							<span v-if="data.exchange_card!='0'">{{yuetan}}%</span>
 							<span>约谈率</span>
 						</li>
 					</ul>
@@ -77,6 +77,7 @@
 <script type="text/ecmascript">
 	import box from "../box.vue"
 	import {URL} from '../../common/js/path';
+	import { Indicator } from 'mint-ui';
 //	import BScroll from "better-scroll";
 //	import bidu from "./RongziBidu/biDu.vue";
 //	import jilu from "./RongziJilu/jiLu.vue";
@@ -109,7 +110,8 @@
 				type:"",
 				investment_type:'',		//用户的投资类型；   是投资机构时才会出现
 				beianShow:false,
-				completeness:""
+				completeness:"",
+				yuetan:""
 			}
 		},
 		mounted(){
@@ -129,9 +131,9 @@
 				this.blockCont=false;
 			}
 			console.log(this.userContent)
-			if(this.userContent["type"]=='2'){
-				this.investment_type=localStorage.getItem("typeID");		//用户的投资类型；   是投资机构时才会出现的参数
-			}
+//			if(this.userContent["type"]=='2'){
+//				this.investment_type=localStorage.getItem("typeID");		//用户的投资类型；   是投资机构时才会出现的参数
+//			}
 			if(this.userContent["type"]=='1' || this.userContent["type"]=='7'){
 				this.beianShow=true;
 				this.block=true;
@@ -153,10 +155,17 @@
 	    		token:this.userContent.token,
 	    		terminalNo:3
 	    	}
+			Indicator.open({spinnerType: 'fading-circle'});
 			this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
+				Indicator.close();
 				this.data=res.body.data;
+				this.yuetan=res.body.data.exchange_card.toFixed(2);
 				this.inof=res.body.data.info.feedback;
 				this.completeness=res.body.data.info.completeness;
+				if(this.userContent["type"]=='2'){
+					localStorage.setItem("typeID",res.body.data.info.investment_type);
+					this.investment_type=res.body.data.info.investment_type;		//用户的投资类型；   是投资机构时才会出现的参数
+				}
 				console.log("个人资料");
 				console.log(res);
 //				if(this.data.exchange_card==0){
@@ -172,6 +181,7 @@
 //				this.texte=this.data.info.revenue_min;//原来的数据
 				
 			},function(res){
+				Indicator.close();
 			    console.log(res);
 			})
 		},
@@ -182,7 +192,7 @@
 			},
 			ziliaoShow(id,Tid){			//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构/研究咨询 5:券商研究员/财务顾问 6:新三板做市商
 				if(id=='2'){
-					window.location.href="#/wode/ZiliaoT"+Tid+"/"+this.userContent["token"];//1:股权投资   2:债权投资   3:股债兼投
+					window.location.href="#/wode/ZiliaoT"+localStorage.getItem("typeID")+"/"+this.userContent["token"];//1:股权投资   2:债权投资   3:股债兼投
 				}else{
 					window.location.href="#/wode/Ziliao"+id+"/"+this.userContent["token"];
 				}

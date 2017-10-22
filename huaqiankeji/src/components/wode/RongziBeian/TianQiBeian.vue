@@ -11,7 +11,7 @@
 					<ul>
 						<li @click.stap="shangChuan()">
 							<mingpian @to-parent="child" class="mingpians" ref="mingpianID"></mingpian>
-							<img :src="imgUrl" alt="" />
+							<img v-show="images" :src="imgUrl" alt="" />
 						</li>
 						<span>上传营业执照</span>
 					</ul>
@@ -81,7 +81,8 @@
 				},
 				content:"",			//给下级要传的参数
 				XiangmuID:"1",
-				imgUrl:""
+				imgUrl:"",
+				images:false
 			}
 		},
 		mounted(){
@@ -100,6 +101,9 @@
 			},
 			child(MingpianImg){
 				this.imgUrl=MingpianImg
+				if(MingpianImg){
+					this.images=true;
+				}
 				console.log(MingpianImg)
 			},
 			BeiAn(){
@@ -121,15 +125,15 @@
 				//添加企业备案
 				var params={
 		    		token:this.token,
-					com_name:this.texta,			//	公司全称	是	[string]		
-					com_short:this.textb,			//	公司简称	是	[string]		
+					com_name:'',			//	公司全称	是	[string]		
+					com_short:'',			//	公司简称	是	[string]		
 					commission:'',				//	佣金协定	是	[string]		
 					total_finance:this.textc,		//	投资总额 单位：万	是	[string]		
-					remark:this.texte,				//	有效投资认定	是	[string]		
-					license:'',						//	营业执照	是	[string]		
-					predict_revenue:'',				//	今年预计营收	是	[string]		
-					predict_profit:'',				//	今年预计净利润	是	[string]		
-					id:this.beiAnidQ				//	备案id id为空时创建，不为空时修改	是	[string]
+					remark:'',				//	有效投资认定	是	[string]		
+					license:this.$refs.mingpianID.mingpianID,						//	营业执照	是	[string]		
+					predict_revenue:this.texta,				//	今年预计营收	是	[string]		
+					predict_profit:this.textb,				//	今年预计净利润	是	[string]		
+					id:''				//	备案id id为空时创建，不为空时修改	是	[string]
 		    	}
 				console.log(params)
 				this.$http.post(URL.path+'finance/record',params,{emulateJSON:true}).then(function(res){

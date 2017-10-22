@@ -91,8 +91,8 @@
 			if(sharehrefDes&&sharehrefDes.value!=''){
 				msg.content=sharehrefDes.value;
 			}
-			msg.thumbs=['_www/logo.png'];
-			msg.pictures=['_www/logo.png'];
+			msg.thumbs=['./logo.png'];
+			msg.pictures=['./logo.png'];
 		}else{
 			if(pic&&pic.realUrl){
 				msg.pictures=[pic.realUrl];
@@ -209,8 +209,8 @@
 		var ss=shares['weixin'];
 		ss&&ss.nativeClient&&(shareBts.push({title:'微信朋友圈',s:ss,x:'WXSceneTimeline'}),
 		shareBts.push({title:'微信好友',s:ss,x:'WXSceneSession'}));
-		ss=shares['qq'];
-		ss&&ss.nativeClient&&shareBts.push({title:'QQ',s:ss});
+//		ss=shares['qq'];
+//		ss&&ss.nativeClient&&shareBts.push({title:'QQ',s:ss});
 		// 弹出分享列表
 		shareBts.length>0?plus.nativeUI.actionSheet({title:'分享链接',cancel:'取消',buttons:shareBts},function(e){
 			(e.index>0)&&shareAction(shareBts[e.index-1],true);

@@ -10,7 +10,7 @@
 				<box></box>
 				<div class="fankiu-content">
 					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>企业名称</div>
+						<div class="ferst"><span>*</span>企业简称</div>
 						<div class="last">
 							<textarea placeholder="" class="mint-field-core" v-model="texta"></textarea>
 						</div>
@@ -64,8 +64,7 @@
 					</div>
 				</div>
 			</div>
-			
-			<pipei ref="pipeiShow"></pipei>
+			<!--<router-view></router-view>-->
 			<liucheng ref="liuchengShow"></liucheng>
 		</div>
 	</transition>
@@ -78,10 +77,7 @@
 	import { Toast } from 'mint-ui';
 	import { Indicator } from 'mint-ui';
 	import box from "../../../box.vue";
-	import pipei from "../PipeiTouziRen/Pipei.vue";
 	import liucheng from "../YanbaoLiucheng/YanbaoLiucheng.vue";
-//	import youhuiquan from "../../shendu/PeixunZixun/YouhuiQuan.vue";
-//	import fankuixinxi from "./FankuiXinxi.vue";
 	
 	
 	export default {
@@ -151,7 +147,7 @@
 				this.$refs.liuchengShow.liuchengBlock();
 			},
 			ShiliGo(){
-				window.location.href="#/shendu/WenzhangGengduo/0";
+				window.location.href="#/faxian/DiaoyanShili";
 			},
 			baoMing(){
 				this.$refs.youhuiShow.YouhuiBlock();
@@ -234,10 +230,7 @@
 		},
 		components:{
 			box,
-			pipei,
 			liucheng
-//			youhuiquan
-//			fankuixinxi
 		}
 	}
 </script>

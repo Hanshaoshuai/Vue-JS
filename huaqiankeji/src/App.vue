@@ -1,6 +1,10 @@
 <template>
   <div id="app" >
-  	<div class="content"><keep-alive><router-view :userContent="userContent"></router-view></keep-alive></div>
+  	<div class="content">
+  		<keep-alive>
+  			<router-view :userContent="userContent"></router-view>
+  		</keep-alive>
+  	</div>
     <div class="food border-top">
     	<div class="tab-item border-right">
     		<router-link to="/faxian" ref="fx">

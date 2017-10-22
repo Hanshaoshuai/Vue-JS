@@ -143,6 +143,7 @@
 	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 	import box from "../../box.vue";
 	import pipei from "../../faxian/WoyaoRongzi/PipeiTouziRen/Pipei.vue";
 	import tishi from "../../Tishi.vue";

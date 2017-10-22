@@ -23,18 +23,18 @@
 								<span>企融直通车最新动态数据</span>
 							</div>
 							<div class="gaikuang-content">
-								<div class="gaikuang-list border-right">
-									<span>{{dongTai[0] && dongTai[0].content}}家</span>
-									<span>{{dongTai[0] && dongTai[0].title}}</span>
+								<div v-for="(item,index) in dongTai" class="gaikuang-list border-right">
+									<span>{{item.content}}家</span>
+									<span>{{item.title}}</span>
 								</div>
-								<div class="gaikuang-list border-right">
-									<span>{{dongTai[0] && dongTai[1].content}}个</span>
-									<span>{{dongTai[0] && dongTai[1].title}}</span>
+								<!--<div class="gaikuang-list border-right">
+									<span>{{dongTai[1].content}}个</span>
+									<span>{{dongTai[1].title}}</span>
 								</div>
 								<div class="gaikuang-list">
-									<span>{{dongTai[0] && dongTai[2].content}}次</span>
-									<span>{{dongTai[0] && dongTai[2].title}}</span>
-								</div>
+									<span>{{dongTai[2].content}}次</span>
+									<span>{{dongTai[2].title}}</span>
+								</div>-->
 							</div>
 						</div>
 					</div>
@@ -128,7 +128,7 @@
 									<span v-if="item.type==5" class="texts">融资租赁</span>
 									<span v-if="item.type==6" class="texts">研报支持</span>
 									<span v-if="item.type==7" class="texts">公司调研</span>
-									<span class="texts"><font class="lefts">{{item.com_name}}</font>**</span>
+									<span class="texts"><font class="lefts">{{item.com_name}}我们</font>**</span>
 									<span class="texts">( <font class="rights">{{item.com_code}}</font> **** )</span>
 								</div>
 								<div class="TypeList">
@@ -145,8 +145,8 @@
 									<!--<span>{{item.create_time}}小时前</span>&nbsp;发布-->
 								</div>
 								<div class="tishi-right">
-									<span>{{}}反馈</span>
-									<span>{{}}跟进</span>
+									<span>{{item.feedback}} 反馈</span>
+									<span>{{item.follow}} 跟进</span>
 								</div>
 							</div>
 							<li class="li"></li>
@@ -271,18 +271,15 @@
 	    	this.qinQiu(token);
 //			投资机构收到的新项目数
 			this.huoqugeshu();
-			this.$on("to-parent",function(msg){
-				console.log(msg)
-				that.FankuiShu = msg
-			})
 //			企业获取反馈数	和	投资机构收获取反馈数
-			this.$http.post(URL.path+'chatcomment/get_feedback_num',token,{emulateJSON:true}).then(function(res){
-				this.FankuiShu=res.body.data[0].feedback_num;
-//				this.FanuiShu=res;
-				console.log("企业获取反馈个数");
-				console.log(res);
-			},function(res){
-			    console.log(res);
+			this.qiyeFankui();
+			setInterval(function(){
+				that.huoqugeshu();
+				that.qiyeFankui();
+			},10000)
+			this.$on("to-parent",function(msg){
+				console.log(msg);
+				that.FankuiShu = msg
 			})
 //			获取企融直通车动态数据
 			this.$http.post(URL.path+'common/dynamic',token,{emulateJSON:true}).then(function(res){
@@ -318,8 +315,22 @@
 		    	}
 				this.$http.post(URL.path+'finance/new_item',token,{emulateJSON:true}).then(function(res){
 					this.XiangmuShu=res.body.data.new_item;
-					console.log("投资机构收到的新项目个数");
-					console.log(this.XiangmuShu);
+//					console.log("投资机构收到的新项目个数");
+//					console.log(res);
+				},function(res){
+				    console.log(res);
+				})
+			},
+			qiyeFankui(){
+//				企业获取反馈数	和	投资机构收获取反馈数
+				var token={
+		    		token:this.userContent.token
+		    	}
+				this.$http.post(URL.path+'chatcomment/get_feedback_num',token,{emulateJSON:true}).then(function(res){
+					this.FankuiShu=res.body.data[0].feedback_num;
+	//				this.FanuiShu=res;
+//					console.log("企业获取反馈个数");
+//					console.log(res);
 				},function(res){
 				    console.log(res);
 				})
@@ -430,7 +441,7 @@
 					this.data=res.body.data;
 					console.log("首页项目列表成功");
 					console.log(res)
-					if(this.data.length!=0){
+					if(this.data.length>2){
 						this.$nextTick(function(){
 							if(this.yici=='0'){
 								this.tuCao();
@@ -459,11 +470,12 @@
 				var div=document.createElement("div");
 				var img=document.createElement("img");
 				div.style.width="100%";
-				div.style.minHeight="1rem";
+				div.style.height="1rem";
 				div.style.background="#00A0DC";
 				div.style.margin='0.13rem 0 0.13rem 0';
 				div.style.overflow="hidden";
 				img.style.width='100%';
+				img.style.height='100%';
     			img.style.float='left';
 				div.appendChild(img);
 				child.appendChild(div);
@@ -897,17 +909,18 @@
 					padding-top:0.12rem;
 					.TextMame{
 						width:89%;
-						/*height:0.8rem;*/
+						height:0.8rem;
 						margin:0 auto;
 						padding-bottom:0.06rem;
 						.margin{
 							float:left;
 							width:100%;
-							height:0.25rem;
+							height:0.2rem;
+							padding-top:0.05rem;
 							color:#323232;
 							span{
 								display:inline-block;
-								line-height:0.2rem;
+								/*line-height:0.2rem;*/
 								/*font-weight:600;*/
 								&:first-child{
 									min-width:31%;
@@ -916,15 +929,15 @@
 								.lefts{
 									display:inline-block;
 									width:0.17rem;
-									height:0.155rem;
-									line-height:0.16rem;
+									height:0.16rem;
+									/*line-height:0;*/
 									margin-bottom:-0.02rem;
 									overflow:hidden;
 								}
 								.rights{
 									display:inline-block;
 									width:0.17rem;
-									height:0.155rem;
+									height:0.16rem;
 									line-height:0.16rem;
 									margin-bottom:-0.02rem;
 									overflow:hidden;
@@ -1048,9 +1061,9 @@
 							}
 						}
 					}
-				/*}*/
+				}
 			/*}*/
-		}
+		/*}*/
 	}
 </style>
 

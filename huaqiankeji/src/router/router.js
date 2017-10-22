@@ -28,6 +28,8 @@ import Faxian from "../components/faxian/faxian.vue"
 		import ZhuanlaoGu from "../components/faxian/WoyaoRongzi/RongziLeixing/ZhuanlaoGu.vue"
 		import ZuLin from "../components/faxian/WoyaoRongzi/RongziLeixing/ZuLin.vue"
 		import YanBao from "../components/faxian/WoyaoRongzi/RongziLeixing/YanBao.vue"
+		import DiaoyanShili from "../components/Faxian/YanbaoShili/gengduo.vue"
+			import YanbaoXiangqing from "../components/Faxian/YanbaoShili/wenzhang.vue"
 
 
 import Shendu from "../components/shendu/shendu.vue"
@@ -61,6 +63,7 @@ import Wode from "../components/wode/wode.vue"
 	import Gangwei from "../components/wode/GangweiBiangeng/Gangwei.vue"
 	import Shezhi from "../components/wode/Shezhi/Shezhi.vue"
 		import ShezhiMima from "../components/wode/Shezhi/shezhiMima.vue"
+		import LianxiWomen from "../components/wode/Shezhi/lianxi.vue"
 	import RongziBeian from "../components/wode/RongziBeian/RongziBeian.vue"
 		import BeianXiangqing from "../components/wode/RongziBeian/BeianXiangqing.vue"
 		import XinzengQiye from "../components/wode/RongziBeian/XinzengQiye.vue"
@@ -181,6 +184,14 @@ export default ({
 			},
 			{
 				path:"Yijian/:token",component: Yijian
+			},
+			{
+				path:"DiaoyanShili",component:DiaoyanShili,
+				children:[
+					{
+						path:"YanbaoXiangqing",component:YanbaoXiangqing
+					}
+				]
 			}
 		]
     },
@@ -278,6 +289,9 @@ export default ({
 					children:[
 			    		{
 							path:"ShezhiMima",component:ShezhiMima
+						},
+						{
+							path:"LianxiWomen",component:LianxiWomen
 						}
 			    	]
 			},

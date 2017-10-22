@@ -17,7 +17,7 @@
 						<ul>
 							<li>
 								<mingpian @to-parent="child" class="mingpians" ref="mingpianID"></mingpian>
-								<img :src="imgurl" alt="" />
+								<img ref="tianjia" v-show="images" :src="imgurl" alt="" />
 							</li>
 							<span>您的新名片</span>
 						</ul>
@@ -60,8 +60,6 @@
 	import { Field } from 'mint-ui';
 	import mingpian from "../../ShangchuanMingpian.vue";
 	import touxiang from "../../ShangchuanTouxiang.vue";
-
-	
 	
 	export default {
 		props:{
@@ -94,7 +92,8 @@
 				JigouType:"Guquan",
 				typeID:"1",
 				TouziType:"",
-				imgurl:""
+				imgurl:"",
+				images:false
 			}
 		},
 		mounted(){
@@ -120,6 +119,20 @@
 			},
 			child(MingpianImg){
 				this.imgurl=MingpianImg
+				if(MingpianImg){
+					this.images=true;
+				}
+				this.$nextTick(function() {
+					var img = this.$refs.tianjia;
+					var num = img.length;
+					if (img.clientWidth>img.clientHeight) {
+						img.style.height="100%"
+						img.style.width="auto"
+					}else{
+						img.style.width="100%"
+						img.style.height="auto"
+					}
+				})
 				console.log(MingpianImg)
 			},
 			XiaYibu(){
@@ -135,14 +148,14 @@
 				}
 				var data={			//财务顾问  做市商直接注册
 					token:localStorage.getItem("token"),						//	手机号	是	[string]	
-					terminalNo:'',					//	名片	名片id	是	[string]	
-					ctype:"33",							//33公司名称变更34工作单位变动	
-					com_name:"更公司全称",						//公司全称
-					com_short:"更公司全称",					//公司简称
-					photo:this.$refs.mingpianID.mingpianID,						//名片
-					uctype:this.type,		//身份变更 id
-					uname:"",										//姓名
-					position:""									//职称
+					terminalNo:'3',						
+					ctype:"34",							//33公司名称变更34工作单位变动	
+//					com_name:"公司全称",						//公司全称
+//					com_short:"公司全称",					//公司简称
+					photo:this.$refs.mingpianID.mingpianID,						//名片id
+					actype:this.type,		//身份变更 id
+//					uname:"",										//姓名
+//					position:""									//职称
 				}
 				if(this.index==0){		//投资机构下一步
 					localStorage.setItem("typeID",this.typeID);
@@ -407,8 +420,9 @@
 						align-content:center;
 						align-items:center;
 						text-align:center;
+						overflow:hidden;
 						img{
-							width:100%;
+							/*width:100%;*/
 						}
 						.mingpians{
 							position:absolute;

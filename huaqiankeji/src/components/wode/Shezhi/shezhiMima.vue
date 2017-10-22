@@ -5,34 +5,36 @@
 				<span class="xiangmu-left"><img src="../img/back.png"/></span>
 				<span>设置密码</span>
 			</div>
-			<div class="logo">
-				<ul>
-					<li></li>
-				</ul>
-			</div>
-			<div class="denglu-text">
-				<ul>
-					<li>
-						<span></span>
-						<input ref="shouji" v-model="xinmima1" placeholder="请输入原密码" type="password" class="ferst mint-field-core"/>
-						<transition name="fade"><font v-show="shoujis" @click.stop="quxiao()"></font></transition>
-					</li>
-					<li class="center">
-						<span></span>
-						<input ref="mimas" v-model="xinmima2" placeholder="请输入新密码" type="password" class="last mint-field-core"/>
-						<transition name="fade"><font v-show="mimas" @click.stop="mima()"></font></transition>
-					</li>
-					<li>
-						<span></span>
-						<input ref="mimas" v-model="xinmima3" placeholder="确认新密码" type="password" class="last mint-field-core"/>
-						<transition name="fade"><font v-show="mimas1" @click.stop="mima1()"></font></transition>
-					</li>
-				</ul>
-				
-				
-			</div>
-			<div class="denglu-food" @click.stop="denglus()">
-				<span>立即设置</span>
+			<div class="contents">
+				<div class="logo">
+					<ul>
+						<li></li>
+					</ul>
+				</div>
+				<div class="denglu-text">
+					<ul>
+						<li>
+							<span></span>
+							<input ref="shouji" v-model="xinmima1" placeholder="请输入原密码" type="password" class="ferst mint-field-core"/>
+							<transition name="fade"><font v-show="shoujis" @click.stop="quxiao()"></font></transition>
+						</li>
+						<li class="center">
+							<span></span>
+							<input ref="mimas" v-model="xinmima2" placeholder="请输入新密码" type="password" class="last mint-field-core"/>
+							<transition name="fade"><font v-show="mimas" @click.stop="mima()"></font></transition>
+						</li>
+						<li>
+							<span></span>
+							<input ref="mimas" v-model="xinmima3" placeholder="确认新密码" type="password" class="last mint-field-core"/>
+							<transition name="fade"><font v-show="mimas1" @click.stop="mima1()"></font></transition>
+						</li>
+					</ul>
+					
+					
+				</div>
+				<div class="denglu-food" @click.stop="denglus()">
+					<span>立即设置</span>
+				</div>
 			</div>
 			<!--<router-view></router-view>-->
 		</div>
@@ -273,100 +275,108 @@
 				}
 			}
 		}
-		.logo{
+		.contents{
+			position:fixed;
 			width:100%;
-			height:2.16rem;
-			display:flex;
-			justify-content:center;
-			align-content:center;
-			align-items:center;
-			margin-top:0.45rem;
-			ul>li{
-				width:1.25rem;
-				height:1.5rem;
-				background-image:url("../../DengLu/img/app.png");
-				background-size:100% 100%;
-			}
-		}
-		.denglu-text{
-			width:90.8%;
-			margin:0 auto;
-			position:relative;
-			border:0.008px solid #d0d0d0;
-			ul{
+			top:39.1%;
+			left:0;
+			z-index:220;
+			.logo{
 				width:100%;
-				li{
+				height:1.5rem;
+				display:flex;
+				justify-content:center;
+				align-content:center;
+				align-items:center;
+				margin-top:-1.8rem;
+				ul>li{
+					width:1.25rem;
+					height:1.5rem;
+					background-image:url("../../DengLu/img/app.png");
+					background-size:100% 100%;
+				}
+			}
+			.denglu-text{
+				width:90.8%;
+				margin:0 auto;
+				position:relative;
+				margin-top:0.3rem;
+				border:0.008px solid #d0d0d0;
+				ul{
 					width:100%;
-					padding:0.07rem 0;
-					display:flex;
-					position:relative;
-					input{
-						height:0.26rem;
-						flex:1;
-						padding-left:0.1rem;
-						border-left:0.008px solid #d0d0d0;
-					}
-					input::-webkit-input-placeholder{ 
-						color: #d0d0d0; 
-					} 
-					span{
-						display:inline-block;
-						width:0.14rem;
-						height:0.16rem;
-						margin:0.05rem 0.16rem 0 0.13rem;
-						background-image:url("../../DengLu/img/mimas.png");
-						background-size:100% 100%;
-						
-					}
-					font{
-						display:inline-block;
-						width:0.18rem;
-						height:0.17rem;
-						margin:0.04rem 0.16rem 0 0;
-						background-image:url("../../DengLu/img/quxiao.png");
-						background-size:100% 100%;
-						
-					}
-					&:last-child{
-						span{
-							background-image:url("../../DengLu/img/mimas.png");
+					li{
+						width:100%;
+						padding:0.07rem 0;
+						display:flex;
+						position:relative;
+						input{
+							height:0.26rem;
+							flex:1;
+							padding-left:0.1rem;
+							border-left:0.008px solid #d0d0d0;
 						}
-						font{
+						input::-webkit-input-placeholder{ 
+							color: #d0d0d0; 
+						} 
+						span{
 							display:inline-block;
-							/*width:0.19rem;
-							height:0.13rem;*/
-							width:0.17rem;
-							height:0.17rem;
-							margin:0.04rem 0.16rem 0 0;
-							/*margin:0.06rem 0.15rem 0 0;*/
-							background-image:url("../../DengLu/img/quxiao.png");
-							/*background-image:url("../DengLu/img/xianshimima.png");*/
+							width:0.14rem;
+							height:0.16rem;
+							margin:0.05rem 0.16rem 0 0.13rem;
+							background-image:url("../../DengLu/img/mimas.png");
 							background-size:100% 100%;
 							
 						}
+						font{
+							display:inline-block;
+							width:0.18rem;
+							height:0.17rem;
+							margin:0.04rem 0.16rem 0 0;
+							background-image:url("../../DengLu/img/quxiao.png");
+							background-size:100% 100%;
+							
+						}
+						&:last-child{
+							span{
+								background-image:url("../../DengLu/img/mimas.png");
+							}
+							font{
+								display:inline-block;
+								/*width:0.19rem;
+								height:0.13rem;*/
+								width:0.17rem;
+								height:0.17rem;
+								margin:0.04rem 0.16rem 0 0;
+								/*margin:0.06rem 0.15rem 0 0;*/
+								background-image:url("../../DengLu/img/quxiao.png");
+								/*background-image:url("../DengLu/img/xianshimima.png");*/
+								background-size:100% 100%;
+								
+							}
+						}
+					}
+					.center{
+						border-bottom:0.008px solid #d0d0d0;
+						border-top:0.008px solid #d0d0d0;
 					}
 				}
-				.center{
-					border-bottom:0.008px solid #d0d0d0;
-					border-top:0.008px solid #d0d0d0;
-				}
 			}
-		}
-		.denglu-food{
-			width:90.80%;
-			height:0.4rem;
-			margin:0 auto;
-			margin-top:0.3rem;
-			span{
-				width:100%;
-				height:100%;
-				color:#ffffff;
-				font-size:0.2rem;
-				text-align:center;
-				line-height:0.4rem;
-				border-radius:8px;
-				display:inline-block;
-				background:#ff7a59;
+			.denglu-food{
+				width:90.80%;
+				height:0.4rem;
+				margin:0 auto;
+				margin-top:0.3rem;
+				span{
+					width:100%;
+					height:100%;
+					color:#ffffff;
+					font-size:0.2rem;
+					text-align:center;
+					line-height:0.4rem;
+					border-radius:8px;
+					display:inline-block;
+					background:#ff7a59;
+				}
 			}
 		}
 	}

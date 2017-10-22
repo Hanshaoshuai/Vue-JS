@@ -11,7 +11,7 @@
 					<ul>
 						<li @click.stap="shangChuan()">
 							<mingpian @to-parent="child" class="mingpians" ref="mingpianID"></mingpian>
-							<img :src="imgUrl" alt="" />
+							<img v-show="images" :src="imgUrl" alt="" />
 						</li>
 						<span>上传营业执照</span>
 					</ul>
@@ -89,7 +89,8 @@
 				},
 				content:"",			//给下级要传的参数
 				XiangmuID:"1",
-				imgUrl:''
+				imgUrl:'',
+				images:false
 			}
 		},
 		mounted(){				//<!--1:未审核 2:已审核 3:进行中 4:已结束 5未通过-->
@@ -132,6 +133,9 @@
 			},
 			child(MingpianImg){
 				this.imgUrl=MingpianImg
+				if(MingpianImg){
+					this.images=true;
+				}
 				console.log(MingpianImg)
 			},
 			XiuGai(){

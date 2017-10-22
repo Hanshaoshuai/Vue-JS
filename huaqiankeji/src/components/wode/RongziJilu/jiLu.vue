@@ -20,10 +20,11 @@
 								<span v-if="item.type==5" class="texts">融资租赁</span>
 								<span v-if="item.type==6" class="texts">研报支持</span>
 								<span v-if="item.type==7" class="texts">公司调研</span>
-								<font>已投递</font>
+								<font v-if="item.is_send=='1'">已投递</font>
+								<font v-if="item.is_send=='2'">未投递</font>
 							</div>
 							<div class="content-bottom">
-								<span>1小时前</span>
+								<span>{{numToTime(item.create_time)}}</span>
 							</div>
 						</li>
 					</ul>
@@ -44,6 +45,7 @@
 
 <script type="text/ecmascript">
 	import {URL} from '../../../common/js/path';
+	import {numToTime} from "../../../common/js/date.js";
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
 	import { Indicator } from 'mint-ui';
@@ -82,10 +84,12 @@
 					type7:"Diaoyan1"
 				},
 				XiangmuID:"",
-				is_send:""
+				is_send:"",
+				numToTime:""
 			}
 		},
 		mounted() {
+			this.numToTime=numToTime;
 			Indicator.open({spinnerType: 'fading-circle'});
 			console.log(this.token)
 			//项目列表（自己创建的历史融资记录）	

@@ -229,8 +229,6 @@
 		                });
 					}
 				}
-				
-				
 			},
 			xuanze(index,type){
 				this.type=type;

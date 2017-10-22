@@ -72,7 +72,7 @@
 					</div>
 				</div>
 				<div class="times border">
-					<span class="text-center">1小时前</span>
+					<span class="text-center">{{numToTime(data.create_time)}}</span>
 					<span>发布</span>
 					<div class="times-name">
 						<font></font>
@@ -98,7 +98,7 @@
 			</div>
 			<div v-if="data.end_follow!='2'" class="baoming border-top">
 				<span class="border-right" :class="butenLeft" @click.stap="genJin()">{{genjins}}</span>
-				<span :class="butenRight" @click.stap="buGen()">{{bugen}}</span>
+				<span :class="butenRight" @click.stap="buGen()">暂不跟进</span>
 				<!--<span class="border-right" :class="butenLeft" @click.stap="genJin()">我要报名</span>
 				<span :class="butenRight" @click.stap="buGen()">不参加</span>-->
 			</div>
@@ -111,6 +111,7 @@
 
 <script type="text/ecmascript">
 	import {URL} from '../../../common/js/path';
+	import {numToTime} from "../../../common/js/date.js";
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
 	import { Indicator } from 'mint-ui';
@@ -155,10 +156,12 @@
 				mingPian:"huanQu",
 				types:"0",
 				genjins:"跟进",
-				bugen:"暂不跟进"
+				bugen:"暂不跟进",
+				numToTime:""
 			}
 		},
 		mounted(){
+			this.numToTime=numToTime;
 			Indicator.open({spinnerType: 'fading-circle'});
 			console.log("jjjjjjjjjjjj")
 			//项目详情
@@ -244,7 +247,7 @@
 				this.$refs.youhuiShow.YouhuiBlock();
 			},
 			genJin(){
-				if(this.data.end_follow!=1){
+				if(this.data.end_follow==0){
 					this.types=1;
 					if(this.wanchengDu=="0"){
 						this.$refs.tishiShow.tishiBlock(this.content);//CanShu是下级要传的参数
@@ -265,7 +268,7 @@
 								
 							}
 							this.genjins="跟进中"
-							this.bugen="停止跟进"
+//							this.bugen="停止跟进"
 							Toast("亲，您已跟进可以给对方留言或换名片啦");
 							console.log("跟进");
 							console.log(res.body);
@@ -274,30 +277,34 @@
 						})
 					}
 				}else{
-					var params={
-			      		token:this.$route.params.token,
-			      		item_id:this.XiangmuID,		//	项目id	是	[string]		
-						follow:"3"			//	跟进状态 1:停止跟进 2:已过会 3:继续跟进	是	[string]
-			      	}
-		//			投资人更改反馈进度
-					this.$http.post(URL.path+'finance/update_feedback',params,{emulateJSON:true}).then(function(res){
-	//					this.data=res.body.data;
-						if(res.body.returnCode=='201'){
-							
-						}
-						this.genjins="跟进中"
-						this.bugen="停止跟进"
-						this.types=1;
-						this.butenLeft="butenLeft";
-						this.liuYans="liuYan";
-						this.jiaoHuans="jiaoHuan";
-						this.butenRight="";
-						Toast("您跟进了该项目");
-						console.log("继续跟进");
-						console.log(res.body);
-					},function(res){
-					    console.log(res);
-					})
+					Toast("亲，您已在跟进中");
+					return;
+					if(this.data.end_follow==4){
+						var params={
+				      		token:this.$route.params.token,
+				      		item_id:this.XiangmuID,		//	项目id	是	[string]		
+							follow:"3"			//	跟进状态 1:停止跟进 2:已过会 3:继续跟进	是	[string]
+				      	}
+			//			投资人更改反馈进度
+						this.$http.post(URL.path+'finance/update_feedback',params,{emulateJSON:true}).then(function(res){
+		//					this.data=res.body.data;
+							if(res.body.returnCode=='201'){
+								
+							}
+							this.genjins="跟进中"
+							this.bugen="停止跟进"
+							this.types=1;
+							this.butenLeft="butenLeft";
+							this.liuYans="liuYan";
+							this.jiaoHuans="jiaoHuan";
+							this.butenRight="";
+							Toast("您跟进了该项目");
+							console.log("继续跟进");
+							console.log(res.body);
+						},function(res){
+						    console.log(res);
+						})
+					}
 				}
 			},
 			buGen(){
@@ -325,7 +332,7 @@
 					    console.log(res);
 					})
 				}
-				if(this.data.follow!=0){
+				if(this.data.follow==6){
 					var params={
 			      		token:this.$route.params.token,
 			      		item_id:this.XiangmuID,		//	项目id	是	[string]		
