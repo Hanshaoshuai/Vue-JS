@@ -234,7 +234,7 @@
 					this.numberd=this.data.predict_profit
 					this.numbere=this.data.appraisement
 					this.numberf=this.data.total_finance
-					this.numberg=this.data.share_price
+					this.numberg=this.data.research_address
 					this.numberh=this.data.city
 					this.industry=this.data.industry
 					this.type=this.data.type
@@ -250,7 +250,7 @@
 						
 					}
 					
-					console.log(this.data);
+					console.log(res);
 				},function(res){
 					Indicator.close();
 				    console.log(res.status);

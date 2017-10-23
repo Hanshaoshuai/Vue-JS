@@ -268,6 +268,7 @@
 			-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
 			.fankiu{
 				width:100%;
+				padding-bottom:0.5rem;
 				.content-food{
 					flex:1;
 					padding:0.18rem 5.6% 0.27rem 5.6%;

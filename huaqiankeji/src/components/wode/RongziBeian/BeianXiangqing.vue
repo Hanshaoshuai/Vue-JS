@@ -406,6 +406,7 @@
 						background:#fff;
 						border:none;
 						.mint-field-core{
+							text-indent:0.32rem;
 							background:#fff;
 							color:#FE7F65;
 							font-size:0.16rem;

@@ -273,10 +273,10 @@
 			this.huoqugeshu();
 //			企业获取反馈数	和	投资机构收获取反馈数
 			this.qiyeFankui();
-			setInterval(function(){
-				that.huoqugeshu();
-				that.qiyeFankui();
-			},10000)
+//			setInterval(function(){
+//				that.huoqugeshu();
+//				that.qiyeFankui();
+//			},10000)
 			this.$on("to-parent",function(msg){
 				console.log(msg);
 				that.FankuiShu = msg

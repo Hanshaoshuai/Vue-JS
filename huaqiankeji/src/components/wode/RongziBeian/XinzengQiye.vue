@@ -47,7 +47,7 @@
 					</div>
 					<div class="zhuying_1">
 						<div class="ferst"><span>*</span>有效投递认定期</div>
-						<div class="last neirong">
+						<div class="last neirong nonecoler">
 							<textarea readOnly="true" placeholder="" class="mint-field-core" v-model="texte"></textarea>
 						</div>
 					</div>
@@ -359,6 +359,16 @@
 							min-height:1.22rem;
 							line-height:0.2rem;
 							&::-webkit-scrollbar{width:0;height:0}
+						}
+					}
+					.nonecoler{
+						background:#fff;
+						border:none;
+						.mint-field-core{
+							text-indent:0.32rem;
+							background:#fff;
+							color:#FE7F65;
+							font-size:0.16rem;
 						}
 					}
 				}

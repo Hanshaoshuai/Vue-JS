@@ -1,5 +1,5 @@
 <template>
-	<transition name="fade">
+	<!--<transition name="fade">-->
 		<div v-show="showFlag" class="wenzhang">
 			<div class="xiangmu-header" @click.stop="listnone1()">
 				<span class="xiangmu-left"><img src="../img/back.png"/></span>
@@ -13,29 +13,34 @@
 							<span>已为您投递至：</span>
 						</div>
 					</div>
-					<!--<transition v-for="(item,index) in data" name="fades">-->
-						<div v-show="showblock" class="sousuo-content border-topbottom">
-							<div class="content-header">
-								<font><img :src="item.photo"/></font>
-								<div class="names">
-									<span class="border-right">{{item.uname}}</span>
-									<span>{{item.com_short}}</span>&nbsp;
-									<span>{{item.position}}</span>
+					<div class="donghuaGo" ref="donghuaGo">
+						<transition-group name="list" tag="p" >
+							<div v-for="(item,index) in items" v-bind:key="index" class="list-item">
+								<!--{{item}}-->
+								<div class="sousuo-content border-topbottom">
+									<div class="content-header">
+										<font><img :src="items[index].photo"/></font>
+										<div class="names">
+											<span class="border-right">{{items[index].uname}}</span>
+											<span>{{items[index].com_short}}</span>&nbsp;
+											<span>{{items[index].position}}</span>
+										</div>
+									</div>
 								</div>
 							</div>
-						</div>
-					<!--</transition>-->
-					<!--<div class="donghua">
-						<div><span class="border">投递BP的奔跑动画开火车速送BP</span></div>
-					</div>-->
+						</transition-group>
+					</div>
 				</div>
+			</div>
+			<div class="donghua">
+				<span ref="donghua"></span>
 			</div>
 			<div class="zhaiyao-food">
 				<span class="last" @click.stop="butten">返回首页</span>
 			</div>
 			<!--<router-view></router-view>-->
 		</div>
-	</transition>
+	<!--</transition>-->
 </template>
 
 <script type="text/ecmascript">
@@ -69,7 +74,10 @@
 				ButtenName:"88",
 				showFlag:true,
 				onlyContent:true,
-				showblock:true
+				showblock:true,
+				items: [],
+    			nextNum:[],
+    			
 			}
 		},
 		mounted(){
@@ -95,35 +103,42 @@
 				Indicator.close();
 				this.data=res.body.data
 				Toast("您已成功投递 "+x+" 位投资人请您注意查收投资人的反馈并及时回复");
-				this.$nextTick(function(){
-					var img = this.$refs.tianjia.getElementsByTagName("img");
-					var length=img.length;
-					for (var i = 0; i < length; i++) {
-						img[i].onload =function(){
-							if (this.clientWidth>this.clientHeight) {
-								this.style.height="100%"
-								this.style.width="auto"
-							}else{
-								this.style.width="100%"
-								this.style.height="auto"
-							}
-						}
-					}
-					var blocks = this.$refs.tianjia.getElementsByClassName("sousuo-content");
-					var leng=blocks.length;
-					var i=0;
-//					var stape=setInterval(function(){
-//						blocks[i].v-show=true;
-//						i++;
-//						if(i==leng){
-//							clearInterval(stape);
+				var y=0;
+				for(var item in this.data){
+//						console.log(this.nextNum)
+					this.nextNum[y]=this.data[item]
+					y+=1;
+				}
+				var tata=this;
+				var x=0;
+		    	var times=setInterval(function(){
+		    		var contentTexte=tata.$refs.donghuaGo;
+					contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
+		    		if(x==tata.nextNum.length){
+		    			tata.$refs.donghua.style.background="#f5f4f9";
+		    			clearInterval(times)
+		    			return;
+		    		}
+//			    		console.log(tata.nextNum[x])
+					tata.items.splice(tata.items.length, 0, tata.nextNum[x])
+					x+=1;
+					contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
+				},200)
+//		    	tata.$nextTick(function(){
+//					var img = tata.$refs.tianjia.getElementsByTagName("img");
+//					var length=img.length;
+//					for (var i = 0; i < length; i++) {
+//						img[i].onload =function(){
+//							if (tata.clientWidth>tata.clientHeight) {
+//								tata.style.height="100%"
+//								tata.style.width="auto"
+//							}else{
+//								tata.style.width="100%"
+//								tata.style.height="auto"
+//							}
 //						}
-//					},200)
-					
-					
-					
-					
-				})
+//					}
+//				})
 				console.log(res);
 			},function(res){
 				Indicator.close();
@@ -139,6 +154,19 @@
 			pipeiBlock(){
 				this.showFlag=true;
 			},
+			randomIndex: function () {
+		      	return Math.floor(Math.random() * this.items.length)
+		    },
+		    add: function () {
+		    	var tata=this;
+		    	setInterval(function(){
+					tata.items.splice(tata.items.length, 0, tata.nextNum++)
+				},1000)
+//		      	this.items.splice(this.items.length, 0, this.nextNum++)
+		    },
+		    remove: function () {
+		      	this.items.splice(this.randomIndex(), 1)
+		    },
 			butten(){
 //				MessageBox.confirm('您确定要联系对方并索要完整项目信息吗?').then(action => {
 //					this.ButtenName="申请成功，等待反馈";
@@ -205,16 +233,18 @@
 	  	/*transform:rotate(360deg);*/
 	  	/*opacity: 0;*/
 	}
-	.fades-enter-active {
-	  	transition: all .5s ease;
+	.list-item {
+	  	/*display: inline-block;*/
+	  	/*margin-right: 10px;*/
 	}
-	.fades-leave-active {
-	  	transition: all .5s ease;
+	.list-enter-active, .list-leave-active {
+	  	transition: all .3s;
 	}
-	.fades-enter, .fades-leave-active {
-	  	transform: translateX(-4.17rem);
-	  	/*transform:rotate(360deg);*/
-	  	/*opacity: 0;*/
+	.list-enter, .list-leave-to
+	/* .list-leave-active for below version 2.1.8 */ {
+	  	opacity: 0;
+	  	/*transform: translateX(-4.17rem);*/
+	  	transform: translateY(0.5rem);
 	}
 	.wenzhang{
 		position:absolute;
@@ -249,16 +279,17 @@
 				}
 			}
 		}
-		.wenzhang-list::-webkit-scrollbar{width:0px}
+		/*.wenzhang-list::-webkit-scrollbar{width:0px}*/
 		.wenzhang-list{
 			width:100%;
 			height:100%;
-			overflow-y:auto;
+			/*overflow-y:auto;
 			-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
 			.wenzhang-content{
 				width:95%;
+				height:60%;
 				margin:0 auto;
-				padding:0.48rem 0 0.6rem 0;
+				padding:0.48rem 0 0 0;
 				.fankiu{
 					width:100%;
 					display:flex;
@@ -279,59 +310,81 @@
 						}
 					}
 				}
-				.sousuo-content{
+				.donghuaGo::-webkit-scrollbar{width:0px}
+				.donghuaGo{
 					width:100%;
-					height:auto;
-					background:#fff;
-					margin-bottom:0.1rem;
-					border-radius:0.02rem;
-					/*border:1px solid #ff7a59;*/
-					box-sizing:border-box;
-					box-shadow: 0.02rem 0.02rem 0.02rem #e4e3e8;
-					/*display:flex;*/
-					/*flex-direction:column;*/
-					.content-header{
-						padding:0.1rem 0.16rem 0.08rem 0.16rem;
-						font-size:0.16rem;
-						display:flex;
-						align-items:center;
-						font{
-							display:inline-block;
-							width:0.43rem;
-							height:0.43rem;
-							margin-right:0.1rem;
-							/*border-radius:0.3rem;*/
-							border:none;
-							border:2px solid #e5e4e4;
-							overflow:hidden;
-							img{
-								/*width:100%;
-								height:100%;*/
-							}
-						}
-						.names{
-							flex:1;
-							.border-right{
-								min-width:0.55rem;
+					height:92%;
+					overflow-y:auto;
+					-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
+					.sousuo-content{
+						width:100%;
+						height:auto;
+						background:#fff;
+						margin-bottom:0.1rem;
+						border-radius:0.02rem;
+						/*border:1px solid #ff7a59;*/
+						box-sizing:border-box;
+						box-shadow: 0.02rem 0.02rem 0.02rem #e4e3e8;
+						/*display:flex;*/
+						/*flex-direction:column;*/
+						.content-header{
+							padding:0.1rem 0.16rem 0.08rem 0.16rem;
+							font-size:0.16rem;
+							display:flex;
+							align-items:center;
+							font{
 								display:inline-block;
-								margin-right:0.02rem;
+								width:0.43rem;
+								height:0.43rem;
+								margin-right:0.1rem;
+								/*border-radius:0.3rem;*/
+								border:none;
+								border:2px solid #e5e4e4;
+								overflow:hidden;
+								img{
+									/*width:100%;
+									height:100%;*/
+								}
+							}
+							.names{
+								flex:1;
+								.border-right{
+									min-width:0.55rem;
+									display:inline-block;
+									margin-right:0.02rem;
+								}
 							}
 						}
 					}
 				}
-				.donghua{
-					width:100%;
-					display:flex;
-					&>div{
-						flex:1;
-						padding:0.4rem 0.8rem 0.2rem 0.8rem;
-						span{
-							display:inline-block;
-							padding:0.4rem 0.2rem;
-							background:#fff;
-						}
-					}
-				}
+			}
+		}
+		.donghua{
+			position:absolute;
+			bottom:0.45rem;
+			left:0;
+			width:100%;
+			height:20%;
+			display:flex;
+			align-content: center;
+			align-items: center;
+			justify-content: center;
+			/*&>div{
+				display:flex;
+				align-content: center;
+				align-items: center;
+				justify-content: center;
+				flex:1;
+				
+			}*/
+			span{
+				display:inline-block;
+				width:100%;
+				height:100%;
+				background-image:url("../img/6.gif");
+				background-size:100%;
+				background-position:0 -0.32rem;
+				background-repeat:no-repeat;
 			}
 		}
 		.zhaiyao-food{
