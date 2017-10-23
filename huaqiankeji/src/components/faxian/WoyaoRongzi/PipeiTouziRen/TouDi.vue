@@ -122,23 +122,23 @@
 //			    		console.log(tata.nextNum[x])
 					tata.items.splice(tata.items.length, 0, tata.nextNum[x])
 					x+=1;
+					tata.$nextTick(function(){
+						var img = tata.$refs.tianjia.getElementsByTagName("img");
+						var length=img.length;
+						for (var i = 0; i < length; i++) {
+							img[i].onload =function(){
+								if (this.clientWidth>this.clientHeight) {
+									this.style.height="100%"
+									this.style.width="auto"
+								}else{
+									this.style.width="100%"
+									this.style.height="auto"
+								}
+							}
+						}
+					})
 					contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
 				},200)
-//		    	tata.$nextTick(function(){
-//					var img = tata.$refs.tianjia.getElementsByTagName("img");
-//					var length=img.length;
-//					for (var i = 0; i < length; i++) {
-//						img[i].onload =function(){
-//							if (tata.clientWidth>tata.clientHeight) {
-//								tata.style.height="100%"
-//								tata.style.width="auto"
-//							}else{
-//								tata.style.width="100%"
-//								tata.style.height="auto"
-//							}
-//						}
-//					}
-//				})
 				console.log(res);
 			},function(res){
 				Indicator.close();
