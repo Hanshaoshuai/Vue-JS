@@ -188,14 +188,19 @@
 		}
 	}
 	.mint-toast .mint-toast-text{
-		line-height:0.2rem;
+		line-height:0.24rem;
 		font-size:0.16rem;
 		z-index:3000;
+		padding:0.1rem 0.10rem !important;
 	}
 	.mint-indicator-wrapper{
 		z-index:3000;
 	}
-	.mint-toast .is-placemiddle{
+	.mint-toast{
+		padding:0.2rem 0.20rem !important;
+	}
+	.is-placemiddle{
 		z-index:3000;
+		padding:0.2rem 0.20rem !important;
 	}
 </style>

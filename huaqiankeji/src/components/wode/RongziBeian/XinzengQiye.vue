@@ -58,6 +58,14 @@
 					</ul>
 				</div>
 			</div>
+			<div ref="xianShi" v-show="onlyContent" class="loding" style="position: absolute;z-index: 1600; top: 0;right: 0;bottom: 0;left: 0;background-color: rgba(0,0,0,0.3);display: none;">
+			    <div class="loadEffect" ref="padding">
+					<ul>
+						<li class="border-bottom" @click.stop="queding()"><span>确认申请备案</span></li>
+						<li @click.stop="bianJi()"><span>继续编辑</span></li>
+					</ul>
+				</div>	
+			</div>
 		</div>
 	</transition>
 </template>
@@ -67,7 +75,6 @@
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
 	import box from "../../box.vue";
-	
 	
 	export default {
 		props:{
@@ -101,6 +108,7 @@
 				},
 				content:"",			//给下级要传的参数
 				XiangmuID:"1",
+				onlyContent:false
 			}
 		},
 		mounted(){
@@ -133,6 +141,9 @@
 						return;
 					}
 				}
+				this.onlyContent=true;
+			},
+			queding(){
 				//添加备案
 				var params={
 		    		token:this.token,
@@ -151,17 +162,26 @@
 					this.type=res.body.data.id
 					if(this.beiAnidC==""){
 						Toast("您已创建成功");
-						history.go(-2)
+						history.go(-1)
+//						setTimeout(function(){
+//							location.replace(document.referrer); 
+//						},200)
 //						window.location.href="#/wode/RongziBeian/7";
 					}
 					if(res.body.data.id==true){
 						Toast("您已添加成功");
-						history.go(-2)
+						history.go(-1)
+//						setTimeout(function(){
+//							location.replace(document.referrer); 
+//						},200)
 					}
 					console.log(res);
 				},function(res){
 				    console.log(res.status);
 				})
+			},
+			bianJi(){
+				this.onlyContent=false;
 			},
 			xinxiTo(){
 				this.$refs.xinxiShow.xinxiBlock();
@@ -395,6 +415,59 @@
 				}
 			}
 		}
+		.loding{
+			display:flex;
+			align-content:center;
+			align-items:center;
+			justify-content:center;
+			.loadEffect{
+	            width: 70%;
+	            min-height: 0.40rem;
+	            position: relative;
+	            padding:0.3rem 0;
+	            background: #fff;
+	            border-radius:0.06rem;
+	            .load-butten{
+	            	width:100%;
+	            	height:0.4rem;
+	            	font{
+		            	position:absolute;
+		            	display:inline-block;
+		            	background:#ff7a59;
+		            	padding:0.06rem 0.1rem;
+		            	color:#fff;
+		            	border-radius:0.04rem;
+		            	&.first{
+		            		bottom:0.2rem;
+		            		left:16%;
+		            	}
+		            	&.last{
+		            		bottom:0.2rem;
+		            		right:16%;
+		            	}
+		            }
+	            }
+	        }
+	        .loadEffect span{
+	        	margin:0 auto;
+	            display: block;
+	            text-align:justify;
+	            line-height: 0.22rem;
+	            font-size: 0.16rem;
+	            width: 80%;
+	        }
+	        .loadEffect{
+	        	position:relative;
+	        	ul{
+	            	li{
+	            		span{
+	            			/*text-align:center;*/
+	            			line-height: 0.46rem;
+	            		}
+	            	}
+	            }
+	        }
+	    }
 	}
 </style>
 

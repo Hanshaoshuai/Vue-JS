@@ -307,7 +307,11 @@
 				}
 				if(ok==0){
 					this.content=this.$refs.pipeiShow;
-					this.$refs.tishiShow.tishiBlock(CanShu,'pipei');//CanShu是下级要传的参数
+					if(this.is_send=='1'){
+						this.$refs.pipeiShow.pipeiBlock(CanShu);
+					}else{
+						this.$refs.tishiShow.tishiBlock(CanShu,'pipei');//CanShu是下级要传的参数
+					}
 				}else{
 					Toast("请填写完整您的信息！是否已选标签...");
 				}

@@ -12,7 +12,7 @@
 			<div class="box" ref="wrapper">
 				<div class="wenzhang-content" ref="tianjia">
 					<!--<div v-for="(item,index) in data" class="sousuo-content border-topbottom" @click.stop="xiangQing('7','3',item.id)">-->
-					<div v-for="(item,index) in data" class="add" :id="index">
+					<div v-for="(item,index) in data" class="add" :id="index" ref="lisitTop">
 	<!--循环遍历-->		<div v-for="(item,index) in item" class="sousuo-content border-topbottom" @click.stop="xiangQing(item.ctype,item.investment_type,item.uid)">
 							<div class="content-header">
 								<!--<font><img src="" :rul="item.photo"/></font>-->
@@ -111,7 +111,8 @@
 				parend:'',
 				topStatus:false,
 				tems:'',
-				tishis:false
+				tishis:false,
+				blockLength:0
 			}
 		},
 		mounted(){
@@ -134,6 +135,41 @@
 			},
 			faxianScroll(){
 				var parend = this.$refs.tianjia.getElementsByClassName("add")[this.data.length-1]
+//				var parend = this.$refs.tianjia.getElementsByClassName("add")
+//				var scrollTop = this.$refs.wrapper.scrollTop; //滚动条距离顶部高度
+//				var y=Math.abs(Math.round(scrollTop))
+//				var length=parend.length;
+//				for(var i=0; i<length; i++){
+//					var lisitTop = parend[i].clientHeight
+//					console.log(lisitTop)
+//				}
+//				if(parend[this.blockLength].clientHeight<y){
+//					this.blockLength+=1;
+//					for(var i=0; i<length-1; i++){
+//						parend[i].style.display="none";
+//					}
+//				}else{
+//					if(parend[0].style.display=="block"){
+//						return;
+//						for(var i=0; i<length; i++){
+//							parend[i].style.display="block";
+//						}
+//					}
+//				}
+//				if(y==0){
+//					console.log(parend[this.blockLength-1].getAttribute("style"))
+//					if(parend[this.blockLength-1].getAttribute("style")=='display: none;'){
+//						console.log(this.blockLength)
+//						parend[this.blockLength-1].style.display="block";
+//						this.blockLength-=1;
+////						return;
+//					}else{
+//						
+//					}
+//				}
+//				console.log(this.blockLength)
+//				console.log(y)
+//				var lisitTop = parend.height
 //				console.log(parend.id)
 //				console.log(this.parend)
 				this.imgs()

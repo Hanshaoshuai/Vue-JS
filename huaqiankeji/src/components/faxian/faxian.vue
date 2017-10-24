@@ -24,7 +24,7 @@
 							</div>
 							<div class="gaikuang-content">
 								<div v-for="(item,index) in dongTai" class="gaikuang-list border-right">
-									<span>{{item.content}}家</span>
+									<span>{{item.content}}</span>
 									<span>{{item.title}}</span>
 								</div>
 								<!--<div class="gaikuang-list border-right">
@@ -128,8 +128,8 @@
 									<span v-if="item.type==5" class="texts">融资租赁</span>
 									<span v-if="item.type==6" class="texts">研报支持</span>
 									<span v-if="item.type==7" class="texts">公司调研</span>
-									<span class="texts"><font class="lefts">{{item.com_name}}我们</font>**</span>
-									<span class="texts">( <font class="rights">{{item.com_code}}</font> **** )</span>
+									<span class="texts">{{item.com_short.substr(0, 1)}} **</span>
+									<span class="texts">（{{item.com_code.substr(0, 2)}} **** ）</span>
 								</div>
 								<div class="TypeList">
 									<span v-for="(name,index) in item.industry" class="texts">{{name.title}}</span>
@@ -909,45 +909,31 @@
 					padding-top:0.12rem;
 					.TextMame{
 						width:89%;
-						height:0.8rem;
+						/*height:0.8rem;*/
 						margin:0 auto;
 						padding-bottom:0.06rem;
 						.margin{
 							float:left;
 							width:100%;
-							height:0.2rem;
+							height:0.22rem;
 							padding-top:0.05rem;
 							color:#323232;
 							span{
 								display:inline-block;
+								height:0.16rem;
+								font-size:0.16rem;
 								/*line-height:0.2rem;*/
 								/*font-weight:600;*/
 								&:first-child{
 									min-width:31%;
 									margin-right:0.1rem;
 								}
-								.lefts{
-									display:inline-block;
-									width:0.17rem;
-									height:0.16rem;
-									/*line-height:0;*/
-									margin-bottom:-0.02rem;
-									overflow:hidden;
-								}
-								.rights{
-									display:inline-block;
-									width:0.17rem;
-									height:0.16rem;
-									line-height:0.16rem;
-									margin-bottom:-0.02rem;
-									overflow:hidden;
-								}
 							}
 						}
 						.TypeList{
 							float:left;
 							width:100%;
-							/*height:0.25rem;*/
+							height:0.3rem;
 							color:#ff7a59;
 							overflow:hidden;
 							span{
@@ -974,11 +960,19 @@
 						width:89%;
 						margin:0 auto;
 						color:#717171;
-						padding-bottom:0.36rem;
+						padding-bottom:0.38rem;
 						text-align:justify;
 						word-wrap:break-word;
 						font-size:0.15rem;
 						line-height:0.22rem;
+						.texts{
+							display:inline-block;
+							padding-bottom:0.02rem;
+							max-height:1.04rem;
+							/*white-space:nowrap;*/
+							overflow:hidden;
+							text-overflow:ellipsis;
+						}
 					}
 					.ContentTime{
 						position:absolute;

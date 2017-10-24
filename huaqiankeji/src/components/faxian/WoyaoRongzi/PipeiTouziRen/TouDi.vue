@@ -9,14 +9,27 @@
 				<div ref="tianjia" class="wenzhang-content">
 					<div class="fankiu">
 						<div class="tubiao"></div>
-						<div class="content-food" style="text-align:center;">
-							<span>已为您投递至：</span>
+						<div class="content-food">
+							<span>已为您投递至如下投资人，请注意查收投资人反馈并及时回复</span>
 						</div>
 					</div>
 					<div class="donghuaGo" ref="donghuaGo">
-						<transition-group name="list" tag="p" >
-							<div v-for="(item,index) in items" v-bind:key="index" class="list-item">
+						<!--<transition-group name="list" tag="p" >-->
+							<div v-for="(item,index) in data" v-bind:key="index" class="list-item">
 								<!--{{item}}-->
+								<div class="sousuo-content border-topbottom">
+									<div class="content-header">
+										<font><img :src="item.photo"/></font>
+										<div class="names">
+											<span class="border-right">{{item.uname}}</span>
+											<span>{{item.com_short}}</span>&nbsp;
+											<span>{{item.position}}</span>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--<div v-for="(item,index) in items" v-bind:key="index" class="list-item">
+								{{item}}
 								<div class="sousuo-content border-topbottom">
 									<div class="content-header">
 										<font><img :src="items[index].photo"/></font>
@@ -27,16 +40,23 @@
 										</div>
 									</div>
 								</div>
-							</div>
-						</transition-group>
+							</div>-->
+						<!--</transition-group>-->
 					</div>
 				</div>
 			</div>
-			<div class="donghua">
-				<span ref="donghua"></span>
-			</div>
+			<!--<div class="donghua">
+				<span ref="donghua">
+					
+				</span>
+			</div>-->
 			<div class="zhaiyao-food">
 				<span class="last" @click.stop="butten">返回首页</span>
+			</div>
+			<div class="endtop" v-show="disnone">
+				<li>
+					<p><img src="../img/loader.gif"/><span>正在为您投递，请稍候…</span></p>
+				</li>
 			</div>
 			<!--<router-view></router-view>-->
 		</div>
@@ -77,10 +97,18 @@
 				showblock:true,
 				items: [],
     			nextNum:[],
+    			disnone:true
     			
 			}
 		},
 		mounted(){
+			var tata=this;
+			var times=setTimeout(function(){
+				tata.disnone=false;
+				if(tata.disnone==false){
+					clearTimeout(times)
+				}
+			},3000)
 			Indicator.open({spinnerType: 'fading-circle'});
 			console.log(this.$route.params.uID);
 			this.token=this.$route.params.token;
@@ -102,43 +130,45 @@
 				var tata=this;
 				Indicator.close();
 				this.data=res.body.data
-				Toast("您已成功投递 "+x+" 位投资人请您注意查收投资人的反馈并及时回复");
-				var y=0;
-				for(var item in this.data){
-//						console.log(this.nextNum)
-					this.nextNum[y]=this.data[item]
-					y+=1;
-				}
-				var tata=this;
-				var x=0;
-		    	var times=setInterval(function(){
-		    		var contentTexte=tata.$refs.donghuaGo;
-					contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
-		    		if(x==tata.nextNum.length){
-		    			tata.$refs.donghua.style.background="#f5f4f9";
-		    			clearInterval(times)
-		    			return;
-		    		}
-//			    		console.log(tata.nextNum[x])
-					tata.items.splice(tata.items.length, 0, tata.nextNum[x])
-					x+=1;
-					tata.$nextTick(function(){
-						var img = tata.$refs.tianjia.getElementsByTagName("img");
-						var length=img.length;
-						for (var i = 0; i < length; i++) {
-							img[i].onload =function(){
-								if (this.clientWidth>this.clientHeight) {
-									this.style.height="100%"
-									this.style.width="auto"
-								}else{
-									this.style.width="100%"
-									this.style.height="auto"
-								}
+//				Toast("您已成功投递 "+x+" 位投资人请您注意查收投资人的反馈并及时回复");
+//				var y=0;
+//				for(var item in this.data){
+////						console.log(this.nextNum)
+//					this.nextNum[y]=this.data[item]
+//					y+=1;
+//				}
+//				var tata=this;
+//				var x=0;
+//		    	var times=setInterval(function(){
+//		    		var contentTexte=tata.$refs.donghuaGo;
+//					contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
+//		    		if(x==tata.nextNum.length){
+//		    			tata.$refs.donghua.style.background="#f5f4f9";
+//		    			clearInterval(times)
+//		    			return;
+//		    		}
+////			    		console.log(tata.nextNum[x])
+//					tata.items.splice(tata.items.length, 0, tata.nextNum[x])
+//					x+=1;
+//					contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
+//				},200)
+		    	
+		    	
+		    	tata.$nextTick(function(){
+					var img = tata.$refs.tianjia.getElementsByTagName("img");
+					var length=img.length;
+					for (var i = 0; i < length; i++) {
+						img[i].onload =function(){
+							if (this.clientWidth>this.clientHeight) {
+								this.style.height="100%"
+								this.style.width="auto"
+							}else{
+								this.style.width="100%"
+								this.style.height="auto"
 							}
 						}
-					})
-					contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
-				},200)
+					}
+				})
 				console.log(res);
 			},function(res){
 				Indicator.close();
@@ -283,26 +313,29 @@
 		.wenzhang-list{
 			width:100%;
 			height:100%;
+			overflow: hidden;
 			/*overflow-y:auto;
 			-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
 			.wenzhang-content{
 				width:95%;
-				height:60%;
+				height:100%;
 				margin:0 auto;
+				overflow: hidden;
 				padding:0.48rem 0 0 0;
 				.fankiu{
 					width:100%;
 					display:flex;
-					align-items:center;
+					padding:0.1rem 0 0.2rem 0;
+					/*align-items:center;*/
 					.tubiao{
 						width:0.19rem;
 						height:0.17rem;
 						background-image:url("../img/fei.png");
 						background-size:100% 100%;
-						margin:0 0.04rem 0 0.02rem;
+						margin:0.04rem 0.04rem 0 0.02rem;
 					}
 					.content-food{
-						line-height:0.47rem;
+						line-height:0.22rem;
 						color:#6e6e6e;
 						/*background:#fff;*/
 						span{
@@ -313,7 +346,7 @@
 				.donghuaGo::-webkit-scrollbar{width:0px}
 				.donghuaGo{
 					width:100%;
-					height:92%;
+					height:74%;
 					overflow-y:auto;
 					-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
 					.sousuo-content{
@@ -388,7 +421,7 @@
 			}
 		}
 		.zhaiyao-food{
-			position:absolute;
+			position:fixed;
 			bottom:0;
 			left:0;
 			width:100%;
@@ -401,6 +434,7 @@
 			justify-content:center;
 			-webkit-box-align:center;
 			align-items:center;
+			z-index:280;
 			.ferst{
 				flex:1;
 				text-align:center;
@@ -410,7 +444,34 @@
 				padding:0 0.2rem;
 				display:inline-block;
 				color:#fff;
-				/*background:#00C850;*/
+			}
+		}
+		.endtop{
+			position:fixed;
+			top:0.46rem;
+			left:0;
+			width:100%;
+			height:100%;
+			background:#f5f4f9;
+			display:flex;
+			-webkit-box-pack:center;
+			justify-content:center;
+			-webkit-box-align:center;
+			align-items:center;
+			z-index:300;
+			li{
+				/*width:100%;*/
+				p{
+					line-height:0.6rem;
+					font-size:0.20rem;
+					img{
+						width:0.6rem;
+						height:0.6rem;
+						float:left;
+						margin-right:0.1rem;
+						/*vertical-align:top;*/
+					}
+				}
 			}
 		}
 	}

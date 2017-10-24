@@ -7,7 +7,7 @@
 			</div>
 			<div class="box" ref="box">
 				<div style="width:100%;height:0.55rem;"></div>
-				<div v-for="(item,index) in data" v-if="beianType=='7'" class="sousuo-content">
+				<div v-for="(item,index) in data" v-if="item.uctype=='7'" class="sousuo-content">
 					<!--<li v-if="timestamp" class="beian-first">
 						{{numToTime(item.create_time)}}
 					</li>-->
@@ -48,7 +48,7 @@
 							</div>-->
 						</li>
 					</ul>
-					<ul v-if="item.status=='4'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
+					<ul v-if="item.status=='4'" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>
@@ -60,7 +60,7 @@
 							</div>-->
 						</li>
 					</ul>
-					<ul v-if="item.status=='5'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
+					<ul v-if="item.status=='5'" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>
@@ -72,13 +72,13 @@
 							</div>-->
 						</li>
 					</ul>
-					<box></box>
+					<box style="height:0.06rem;"></box>
 				</div>
-				<div  v-if="beianType=='1'" class="sousuo-content">
+				<div v-for="(item,index) in data" v-if="item.uctype=='1'" class="sousuo-content">
 					<!--<li class="beian-first">
 						{{numToTime(item.create_time)}}
 					</li>-->
-					<ul v-if="item.status=='2'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
+					<ul v-if="item.status=='2'" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>
@@ -90,7 +90,7 @@
 							</div>-->
 						</li>
 					</ul>
-					<ul v-if="item.status=='1'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName1(item.id,item.status)">
+					<ul v-if="item.status=='1'" ref="index1" class="content-header" index="type1"  @click.stap="typeName1(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>
@@ -102,7 +102,7 @@
 							</div>-->
 						</li>
 					</ul>
-					<ul v-if="item.status=='3'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName1(item.id,item.status)">
+					<ul v-if="item.status=='3'" ref="index1" class="content-header" index="type1"  @click.stap="typeName1(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>
@@ -114,7 +114,7 @@
 							</div>-->
 						</li>
 					</ul>
-					<ul v-if="item.status=='4'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName1(item.id,item.status)">
+					<ul v-if="item.status=='4'" ref="index1" class="content-header" index="type1"  @click.stap="typeName1(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>
@@ -126,7 +126,7 @@
 							</div>-->
 						</li>
 					</ul>
-					<ul v-if="item.status=='5'" v-for="(item,index) in data" ref="index1" class="content-header" index="type1"  @click.stap="typeName1(item.id,item.status)">
+					<ul v-if="item.status=='5'" ref="index1" class="content-header" index="type1"  @click.stap="typeName1(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>
@@ -138,14 +138,14 @@
 							</div>-->
 						</li>
 					</ul>
-					<box></box>
+					<box style="height:0.06rem;"></box>
 				</div>
 				<div style="width:100%;height:0.6rem;"></div>
 			</div>
 			<div class="butten">
 				<span @click.stop="Xinzeng()">新&nbsp;&nbsp;增</span>
 			</div>
-			<router-view :token="token" :beiAnidQ="beiAnidQ" :beiAnidC="beiAnidC"></router-view>
+			<router-view :token="token" :beiAnidQ="beiAnidQ" :beiAnidC="beiAnidC" :href="href"></router-view>
 		</div>
 	</transition>
 </template>
@@ -166,6 +166,7 @@
 		},
 		data () {
 			return {
+				href:"",
 				data:"",
 				x:'1',
 				urlName:"Dingzeng",
@@ -191,6 +192,8 @@
 			}
 		},
 		mounted() {
+			console.log(window.location.href)
+			this.href=window.location.href
 			this.numToTime=numToTime;
 			this.timestamp= (new Date()).valueOf()
 //			this.formatDate(this.timestamp)
