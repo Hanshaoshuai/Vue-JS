@@ -20,7 +20,7 @@
 						<ul>
 							<li class="tishi-center">
 								<div class="content-heder">
-									<span>{{item.com_name}}</span>
+									<span>{{item.com_short}}</span>
 									<span class="text-center">{{item.com_code}}</span>
 									<span v-if="item.type==1" class="texts">&nbsp;定增</span>
 									<span v-if="item.type==2" class="texts">&nbsp;做市</span>

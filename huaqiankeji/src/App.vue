@@ -187,17 +187,31 @@
 			}
 		}
 	}
-	.mint-toast .mint-toast-text{
-		line-height:0.24rem;
-		font-size:0.16rem;
+	.mint-toast {
+		width:70% !important;
+		/*background:#fff;*/
 		z-index:3000;
-		padding:0.1rem 0.10rem !important;
+		.mint-toast-text{
+			width:100%;
+			display:inline-block;
+			/*background:#fff;*/
+			line-height:0.24rem;
+			font-size:0.18rem;
+			font-weight:normal;
+			/*padding:0.1rem 0rem !important;*/
+			/*color:#000000 !important;*/
+			span{
+				display:inline-block;
+				width:100%;
+				color:#fff !important;
+			}
+		}
 	}
 	.mint-indicator-wrapper{
 		z-index:3000;
 	}
 	.mint-toast{
-		padding:0.2rem 0.20rem !important;
+		/*padding:0.1rem 0.16rem !important;*/
 	}
 	.is-placemiddle{
 		z-index:3000;

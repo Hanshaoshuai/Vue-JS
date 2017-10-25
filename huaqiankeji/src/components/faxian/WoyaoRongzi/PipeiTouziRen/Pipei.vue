@@ -107,7 +107,7 @@
 				CanShu:"",
 				block:false,
 				ButtenName:0,
-				showFlag:false,
+				showFlag:true,
 				wuxuan:true,
 				xuanze:false,
 				XiaYibu:false,
@@ -119,6 +119,9 @@
 				n:"",		//存储图片加载到的位置，避免每次都从第一张图片开始遍历
 				height:0
 			}
+		},
+		mounted(){
+			this.pipeiBlock(this.CanShu);
 		},
 		methods:{
 			listnone(){
@@ -157,11 +160,11 @@
 				console.log(CanShu)
 				console.log(this.token)
 				this.CanShu=CanShu
-				this.showFlag=true;
+//				this.showFlag=true;
 				//匹配投资人列表		
 				var datas = {
 					token:this.token,		//	token	是	[string]		
-					item_id:this.CanShu.XiangmuID,		//	项目id	是	[string]		
+					item_id:this.XiangmuID,		//	项目id	是	[string]		
 					page:1,			//	page	是	[string]		
 					size:20			//	size	是	[string]	
 				}
@@ -305,17 +308,8 @@
 			},
 			butten(){
 				if(this.XiaYibu==true){				//判断必须选择匹配人才可以跳转
+//					this.showFlag=false;
 					Indicator.open({spinnerType: 'fading-circle'});
-	//				MessageBox.confirm('您确定要联系对方并索要完整项目信息吗?').then(action => {
-	//					this.ButtenName="申请成功，等待反馈";
-	//					var tate=this;
-	//					setTimeout(function(){
-	//						tate.showFlag=false;
-	//						tate.ButtenName="索要完整项目信息";
-	//					},2000)
-	//				  console.log("ijfj")
-	//				});
-	//				this.block=true;
 					//判断是否是白名单	是白名单直接投递	
 					var yes;
 					var datas = {
@@ -325,11 +319,13 @@
 						Indicator.close();
 						if(res.body.returnCode==200){
 							yes=res.body.data;
-							window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.CanShu['type']+'/'+this.CanShu.XiangmuID+'/'+this.length+"/TouDi";
+//							window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.CanShu['type']+'/'+this.CanShu.XiangmuID+'/'+this.length+"/TouDi";
+							window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.type+'/'+this.CanShu.XiangmuID+'/'+this.length+"/TouDi";
 						}else{
 							yes=res.body.data;
 							if(this.XiaYibu==true){				//判断必须选择匹配人才可以跳转
-								window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.CanShu['type']+'/'+this.CanShu.XiangmuID+'/'+this.length;
+//								window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.CanShu['type']+'/'+this.CanShu.XiangmuID+'/'+this.length;
+								window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.type+'/'+this.CanShu.XiangmuID+'/'+this.length;
 							}else{
 								Toast("请选择匹配人");
 							}

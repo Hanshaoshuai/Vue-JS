@@ -83,7 +83,8 @@
 					localStorage.removeItem("token");		//用户token
 					localStorage.removeItem("phone");		//用户电话
 					localStorage.removeItem("type");		//用户类型
-					localStorage.removeItem("photo");	//用户头像id
+					localStorage.removeItem("name");
+					localStorage.removeItem("photo");		//用户头像id
 					localStorage.removeItem("photourl");	//用户头像URL地址
 					Toast('退出成功');
 					setTimeout(function(){

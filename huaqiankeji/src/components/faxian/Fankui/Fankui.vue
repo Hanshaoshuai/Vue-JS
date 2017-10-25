@@ -13,7 +13,7 @@
 							<p>
 								<img class="border" :src="item.photo" alt="" />
 							</p>
-							<font>6</font>
+							<font v-if="item.nums!=0">{{item.nums}}</font>
 						</div>
 						<span>&nbsp;&nbsp;{{item.uname}}</span>
 						<span>&nbsp;&nbsp;{{item.com_short}}</span>
@@ -68,35 +68,10 @@
 			this.token={
 				token:this.$route.params.token
 			}
-			if(this.res==""){
-				Indicator.open({spinnerType: 'fading-circle'});
-				this.$http.post(URL.path+'chatcomment/comment_list',this.token,{emulateJSON:true}).then(function(res){
-					Indicator.close();
-					this.res=res.body.data;
-					if(this.res.length=='0'){
-						Toast("亲，暂无反馈记录...")
-						return;
-					}
-					this.$nextTick(function() {
-						var img = this.$refs.tianjia.getElementsByTagName("img");
-						var num = img.length;
-						for(var i=0; i<num; i++){
-							if (img[i].clientWidth>img[i].clientHeight) {
-								img[i].style.height="100%"
-								img[i].style.width="auto"
-							}else{
-								img[i].style.width="100%"
-								img[i].style.height="auto"
-							}
-						}
-					})
-					console.log("取到评论反馈列表");
-					console.log(res);
-				},function(res){
-					Indicator.close();
-				    console.log(res);
-				})
-			}
+			this.fankuiBlock();
+		},
+		activated(){	//解决返回刷新问题；
+			this.fankuiBlock();
 		},
 		methods:{
 			yijianHind(){
@@ -104,7 +79,37 @@
 //				this.tucaoShow=false;
 			},
 			fankuiBlock(){
-			
+//				if(this.res==""){
+					Indicator.open({spinnerType: 'fading-circle'});
+					this.$http.post(URL.path+'chatcomment/comment_list',this.token,{emulateJSON:true}).then(function(res){
+						Indicator.close();
+						this.res=res.body.data;
+						if(this.res.length=='0'){
+							Toast("亲，暂无反馈记录...")
+							return;
+						}
+						this.$nextTick(function() {
+							var img = this.$refs.tianjia.getElementsByTagName("img");
+							var num = img.length;
+							for(var i=0; i<num; i++){
+								img[i].onload =function(){
+									if (this.clientWidth>this.clientHeight) {
+										this.style.height="100%"
+										this.style.width="auto"
+									}else{
+										this.style.width="100%"
+										this.style.height="auto"
+									}
+								}
+							}
+						})
+						console.log("取到评论反馈列表");
+						console.log(res);
+					},function(res){
+						Indicator.close();
+					    console.log(res);
+					})
+//				}
 			},
 			xinxiTo(to_id,uname){///Xeiyi/:token/:uID/:type/:XiangmuID
 				console.log(to_id)

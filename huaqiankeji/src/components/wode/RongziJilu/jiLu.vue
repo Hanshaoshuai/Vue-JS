@@ -125,7 +125,8 @@
 				this.is_send=is_send;		//是否投递过
 				this.types['type'+type]
 				console.log(this.types['type'+type])
-				window.location.href="#/wode/jilu/0/"+this.types['type'+type];
+//				window.location.href="#/wode/jilu/0/"+this.types['type'+type];
+				window.location.href="#/"+this.types['type'+type]+'/'+id+'/'+is_send;
 //				this.$refs.dingzengzuoshiShow.zuoshiBlock();
 			},
 //			dingzengGo(){

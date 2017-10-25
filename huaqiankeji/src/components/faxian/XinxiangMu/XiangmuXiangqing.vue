@@ -14,7 +14,7 @@
 						<!--<img class="border" src="" alt="" />-->
 						<span>&nbsp;{{data.uname}}&nbsp;</span>
 						<font class="bbb border-left"></font>
-						<span>{{data.com_short}}</span>
+						<span>{{data.short}}</span>
 						<span>&nbsp;&nbsp;{{data.position}}</span>
 						<div class="tousu"><span>投诉</span></div>
 					</div>
@@ -25,7 +25,7 @@
 							<li class="border-bottom"></li>
 							<li class="tishi-center">
 								<div class="content-heder">
-									<span>{{data.com_name}}</span>
+									<span>{{data.com_short}}</span>
 									<span class="text-center">{{data.com_code}}</span>
 									<span v-if="data.type==1" class="texts">&nbsp;定增</span>
 									<span v-if="data.type==2" class="texts">&nbsp;做市</span>
@@ -104,6 +104,18 @@
 			</div>
 			<!--<youhuiquan ref="youhuiShow"></youhuiquan>-->
 			<tishi ref="tishiShow" :xingXi="xingXi" :content="content"></tishi>
+			<transition name="fades">
+				<div ref="xianShi" v-show="onlyContent" class="loding" style="position: absolute;z-index: 1600; top: 0;right: 0;bottom: 0;left: 0;background-color: rgba(0,0,0,0.3);display: none;">
+				    <div class="loadEffect" ref="padding">
+						<ul v-show="firstTop">
+							<li class="border-bottom" @click.stop="BugenYuanyin('营收和净利润规模偏小')"><span>营收和净利润规模偏小</span></li>
+							<li class="border-bottom" @click.stop="BugenYuanyin('融资估值有点贵')"><span>融资估值有点贵</span></li>
+							<li class="border-bottom" @click.stop="BugenYuanyin('主营业务比较传统')"><span>主营业务比较传统</span></li>
+							<li @click.stop="BugenYuanyin('有同事已经接触过')"><span>有同事已经接触过</span></li>
+						</ul>
+					</div>	
+				</div>
+			</transition>
 			<router-view></router-view>
 		</div>
 	</transition>
@@ -157,7 +169,12 @@
 				types:"0",
 				genjins:"跟进",
 				bugen:"暂不跟进",
-				numToTime:""
+				numToTime:"",
+				yigenJin:0,
+				onlyContent:false,
+				firstTop:true,
+				lastBottom:false,
+				textcont:"备案申请成功，请等待审核"
 			}
 		},
 		mounted(){
@@ -175,23 +192,25 @@
 				this.data=res.body.data[0]
 				if(this.data.follow==1){
 					this.types=1;
-					this.butenLeft="butenLeft";
+					this.yigenJin=1;
+					this.butenLeft="";
 					this.liuYans="liuYan";
 					this.jiaoHuans="jiaoHuan";
 					this.butenRight="";
-					this.bugen="停止跟进"
+					this.genjins="跟进中";
+//					this.bugen="停止跟进";
 				}else{
-//					this.types=0;
-					this.butenLeft="butenLeft";
+					this.yigenJin=2;
+					this.butenLeft="";
 					this.liuYans="";
 					this.jiaoHuans="";
 				}
-				if(this.data.end_follow==1){
-					this.butenLeft="butenLeft";
-					this.liuYans="";
-					this.jiaoHuans="";
-					this.genjins="继续跟进"
-				}
+//				if(this.data.follow==2){
+//					this.butenLeft="";
+//					this.liuYans="";
+//					this.jiaoHuans="";
+////					this.genjins="继续跟进"
+//				}
 				console.log(res);
 			},function(res){
 				Indicator.close();
@@ -220,6 +239,25 @@
 				}
 //				this.liuYans="liuYan";
 			},
+			BugenYuanyin(texts){
+				//向对方发送不跟进消息记录
+				var data = {
+					token:this.$route.params.token,
+					content:'您好，由于贵公司'+texts+'，我暂不跟进“'+this.data.com_short+'”本次融资安排',					//评论内容
+					type:'1',
+					uid:this.data.uid
+				}
+				console.log(data)
+				this.$http.post(URL.path+'finance/demand_item',data,{emulateJSON:true}).then(function(res){
+					if(res.body.msg=="操作成功"){
+						
+					}
+					this.onlyContent=false;
+					console.log(res);
+				},function(res){
+				    console.log(res);
+				})
+			},
 			jiaoHuanTo(){
 				if(this.types==1){
 					var datas={								//换取名片申请提示
@@ -247,7 +285,7 @@
 				this.$refs.youhuiShow.YouhuiBlock();
 			},
 			genJin(){
-				if(this.data.end_follow==0){
+				if(this.data.follow==0){
 					this.types=1;
 					if(this.wanchengDu=="0"){
 						this.$refs.tishiShow.tishiBlock(this.content);//CanShu是下级要传的参数
@@ -268,6 +306,7 @@
 								
 							}
 							this.genjins="跟进中"
+							this.yigenJin=1;
 //							this.bugen="停止跟进"
 							Toast("亲，您已跟进可以给对方留言或换名片啦");
 							console.log("跟进");
@@ -275,45 +314,61 @@
 						},function(res){
 						    console.log(res);
 						})
-					}
-				}else{
-					Toast("亲，您已在跟进中");
-					return;
-					if(this.data.end_follow==4){
-						var params={
-				      		token:this.$route.params.token,
-				      		item_id:this.XiangmuID,		//	项目id	是	[string]		
-							follow:"3"			//	跟进状态 1:停止跟进 2:已过会 3:继续跟进	是	[string]
-				      	}
-			//			投资人更改反馈进度
-						this.$http.post(URL.path+'finance/update_feedback',params,{emulateJSON:true}).then(function(res){
-		//					this.data=res.body.data;
-							if(res.body.returnCode=='201'){
+						//向对方发送跟进消息记录
+						var data = {
+							token:this.$route.params.token,
+							content:localStorage.getItem("name")+'“'+this.data.com_short+'”'+'有投资兴趣，将进一步跟进本次融资安排',					//评论内容
+							type:'6',
+							uid:this.data.uid
+						}
+						console.log(data)
+						this.$http.post(URL.path+'finance/demand_item',data,{emulateJSON:true}).then(function(res){
+							if(res.body.msg=="操作成功"){
 								
 							}
-							this.genjins="跟进中"
-							this.bugen="停止跟进"
-							this.types=1;
-							this.butenLeft="butenLeft";
-							this.liuYans="liuYan";
-							this.jiaoHuans="jiaoHuan";
-							this.butenRight="";
-							Toast("您跟进了该项目");
-							console.log("继续跟进");
-							console.log(res.body);
+							console.log(res);
 						},function(res){
-						    console.log(res);
+						    console.log(res.status);
 						})
 					}
+				}else{
+//					Toast("亲，您已在跟进中");
+					return;
+//					if(this.data.end_follow==4){
+//						var params={
+//				      		token:this.$route.params.token,
+//				      		item_id:this.XiangmuID,		//	项目id	是	[string]		
+//							follow:"3"			//	跟进状态 1:停止跟进 2:已过会 3:继续跟进	是	[string]
+//				      	}
+//			//			投资人更改反馈进度
+//						this.$http.post(URL.path+'finance/update_feedback',params,{emulateJSON:true}).then(function(res){
+//		//					this.data=res.body.data;
+//							if(res.body.returnCode=='201'){
+//								
+//							}
+//							this.genjins="跟进中"
+//							this.bugen="停止跟进"
+//							this.types=1;
+//							this.butenLeft="butenLeft";
+//							this.liuYans="liuYan";
+//							this.jiaoHuans="jiaoHuan";
+//							this.butenRight="";
+//							Toast("您跟进了该项目");
+//							console.log("继续跟进");
+//							console.log(res.body);
+//						},function(res){
+//						    console.log(res);
+//						})
+//					}
 				}
 			},
 			buGen(){
 				this.types=0;
 //				this.butenRight="butenRight";
-				this.butenLeft="butenLeft";
+				this.butenLeft="";
 				this.liuYans="";
 				this.jiaoHuans="";
-				if(this.data.follow==0){
+				if(this.yigenJin==0){
 					var params={
 			      		token:this.$route.params.token,
 			      		item_id:this.XiangmuID,		//	项目id	是	[string]		
@@ -326,52 +381,43 @@
 							
 						}
 						Toast("亲，不跟进是不可以给对方留言或换名片");
+						this.onlyContent=true;
+						this.yigenJin=1;
 						console.log("跟进");
 						console.log(res.body);
 					},function(res){
 					    console.log(res);
 					})
+				}else{
+					
 				}
-				if(this.data.follow==6){
-					var params={
-			      		token:this.$route.params.token,
-			      		item_id:this.XiangmuID,		//	项目id	是	[string]		
-						follow:"1"			//	跟进状态 1:停止跟进 2:已过会 3:继续跟进	是	[string]
-			      	}
-		//			投资人更改反馈进度
-					this.$http.post(URL.path+'finance/update_feedback',params,{emulateJSON:true}).then(function(res){
-	//					this.data=res.body.data;
-						if(res.body.returnCode=='201'){
-							
-						}
-						this.types=0;
-						this.genjins="继续跟进"
-						this.bugen="停止跟进"
-						this.butenLeft="butenLeft";
-						this.liuYans="";
-						this.jiaoHuans="";
-						Toast("您已停止跟进该项目");
-						console.log("停止");
-						console.log(res.body);
-					},function(res){
-					    console.log(res);
-					})
-				}
+//				if(this.data.follow==6){
+//					var params={
+//			      		token:this.$route.params.token,
+//			      		item_id:this.XiangmuID,		//	项目id	是	[string]		
+//						follow:"1"			//	跟进状态 1:停止跟进 2:已过会 3:继续跟进	是	[string]
+//			      	}
+//		//			投资人更改反馈进度
+//					this.$http.post(URL.path+'finance/update_feedback',params,{emulateJSON:true}).then(function(res){
+//	//					this.data=res.body.data;
+//						if(res.body.returnCode=='201'){
+//							
+//						}
+//						this.types=0;
+//						this.genjins="继续跟进"
+//						this.bugen="停止跟进"
+//						this.butenLeft="butenLeft";
+//						this.liuYans="";
+//						this.jiaoHuans="";
+//						Toast("您已停止跟进该项目");
+//						console.log("停止");
+//						console.log(res.body);
+//					},function(res){
+//					    console.log(res);
+//					})
+//				}
 			}
 			
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -413,6 +459,19 @@
 	  	/*transform:rotate(360deg);*/
 	  	/*opacity: 0;*/
 	}
+	
+	.fades-enter-active {
+	  	transition: all .5s ease;
+	}
+	.fades-leave-active {
+	  	transition: all .5s ease;
+	}
+	.fades-enter, .fades-leave-active {
+	  	/*transform: translateX(4.17rem);*/
+	  	/*transform:rotate(360deg);*/
+	  	opacity: 0;
+	}
+	
 	.xiangmu{
 		position:fixed;
 		background:#f5f4f9;
@@ -729,6 +788,62 @@
 				background:#ff7a59;
 			}
 		}
+		.loding{
+			display:flex;
+			align-content:center;
+			align-items:center;
+			justify-content:center;
+			.loadEffect{
+	            width: 70%;
+	            min-height: 0.40rem;
+	            position: relative;
+	            padding:0.3rem 0;
+	            background: #fff;
+	            border-radius:0.06rem;
+	            .load-butten{
+	            	width:100%;
+	            	height:0.4rem;
+	            	font{
+		            	position:absolute;
+		            	display:inline-block;
+		            	background:#ff7a59;
+		            	padding:0.06rem 0.1rem;
+		            	color:#fff;
+		            	border-radius:0.04rem;
+		            	&.first{
+		            		bottom:0.2rem;
+		            		left:16%;
+		            	}
+		            	&.last{
+		            		bottom:0.2rem;
+		            		right:16%;
+		            	}
+		            }
+	            }
+	        }
+	        .loadEffect span{
+	        	margin:0 auto;
+	            display: block;
+	            text-align:justify;
+	            line-height: 0.22rem;
+	            font-size: 0.16rem;
+	            width: 80%;
+	        }
+	        .loadEffect{
+	        	position:relative;
+	        	ul{
+	            	li{
+	            		span{
+	            			/*text-align:center;*/
+	            			line-height: 0.46rem;
+	            		}
+	            		.last-bottom{
+	            			line-height: 0.36rem;
+	            		}
+	            	}
+	            }
+	        }
+	    }
 	}
 </style>
 

@@ -12,9 +12,6 @@
 					</div>
 				</div>
 			</div>
-			
-			
-			
 			<div class="page-loadmore-wrapper" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
 				<div style="width:100%;height:0.55rem;"></div>
 	    	<!--mt-loadmore中添加:auto-fill="autoFill"属性  不够高是会自动撑开屏幕-->
@@ -30,7 +27,7 @@
 						<ul>
 							<li class="tishi-center">
 								<div class="content-heder">
-									<span>{{item.com_name}}</span>
+									<span>{{item.com_short}}</span>
 									<span class="text-center">{{item.com_code}}</span>
 									<span v-if="item.type==1" class="texts">&nbsp;定增</span>
 									<span v-if="item.type==2" class="texts">&nbsp;做市</span>
@@ -159,46 +156,12 @@
 		},
 		mounted() {
 			this.numToTime=numToTime;
-			Indicator.open({spinnerType: 'fading-circle'});
+			this.LieBiao()
 	    	console.log("计算高度")
 	      	this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
 	      	this.$refs.wrapper.addEventListener('scroll', this.handleScroll)	//做一个scroll监听
 	      	console.log(this.userContent)
-	      	var token={
-	      		token:this.userContent['token']
-	      	}
-	      	this.token=this.userContent['token'];
-//			项目列表（投资人收到的项目）
-			if(this.data==""){
-				this.$http.post(URL.path+'finance/received_item_list',token,{emulateJSON:true}).then(function(res){
-					this.data=res.body.data;
-					Indicator.close();
-					if(res.body.returnCode=='201'){
-						Toast("亲！您暂无收到新项目哦...")
-					}
-					console.log("投资人收到的项目列表");
-					console.log(res.body);
-				},function(res){
-					Indicator.close();
-				    console.log(res);
-				})
-			}	
-			
-			this.tucaoShow=true;
-//				console.log(this.setscrollTop)
-			this.$nextTick(function() {
-				this.$refs.wrapper.scrollTop=this.setscrollTop;
-			})
 	    },
-		events:{
-			
-		},
-		filters:{
-//			formatDate(time){
-//				let date = new Date(time);
-//				return formatDate(date,'yyyy-MM-dd hh:mm');
-//			}
-		},
 		methods:{
 			handleTopChange(status) {    //头部函数
 //	      		console.log("top")
@@ -209,6 +172,37 @@
 //	      	console.log(document.documentElement.clientHeight)
 //	      	console.log(this.$refs.wrapper.getBoundingClientRect().top)
 	      	},
+	      	activated(){
+				this.LieBiao();
+			},
+			LieBiao(){
+				Indicator.open({spinnerType: 'fading-circle'});
+				var token={
+		      		token:this.userContent['token']
+		      	}
+		      	this.token=this.userContent['token'];
+	//			项目列表（投资人收到的项目）
+				if(this.data==""){
+					this.$http.post(URL.path+'finance/received_item_list',token,{emulateJSON:true}).then(function(res){
+						this.data=res.body.data;
+						Indicator.close();
+						if(res.body.returnCode=='201'){
+							Toast("亲！您暂无收到新项目哦...")
+						}
+						console.log("投资人收到的项目列表");
+						console.log(res.body);
+					},function(res){
+						Indicator.close();
+					    console.log(res);
+					})
+				}	
+				
+				this.tucaoShow=true;
+	//				console.log(this.setscrollTop)
+				this.$nextTick(function() {
+					this.$refs.wrapper.scrollTop=this.setscrollTop;
+				})
+			},
 	      	translateChange(translate) {
 		        const translateNum = +translate;
 	      	},
@@ -299,6 +293,15 @@
 //			}else{
 //				//重新计算高度  
 //				this.betterscroll.refresh();
+//			}
+		},
+		events:{
+			
+		},
+		filters:{
+//			formatDate(time){
+//				let date = new Date(time);
+//				return formatDate(date,'yyyy-MM-dd hh:mm');
 //			}
 		},
 		components:{

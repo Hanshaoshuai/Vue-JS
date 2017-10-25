@@ -1,5 +1,5 @@
 <template>
-	<transition name="fade">
+	<!--<transition name="fade">-->
 		<div v-show="tucaoShow" class="xiangmu">
 			<div class="xiangmu-header" @click.stap="yijianHind()">
 				<span class="xiangmu-left"><img src="../img/back.png"/></span>
@@ -93,10 +93,11 @@
 					</ul>
 				</div>-->
 			</div>
-			<pipei ref="pipeiShow" :token="token" :type="type" :XiangmuID="XiangmuID"></pipei>
+			<!--<pipei ref="pipeiShow" :token="token" :type="type" :XiangmuID="XiangmuID"></pipei>-->
+			<router-view :token="token" :type="type" :XiangmuID="XiangmuID"></router-view>
 			<tishi ref="tishiShow" :xingXi="xingXi" :content="content"></tishi>
 		</div>
-	</transition>
+	<!--</transition>-->
 </template>
 
 <script type="text/ecmascript">
@@ -105,7 +106,7 @@
 	import { Toast } from 'mint-ui';
 	import { Indicator } from 'mint-ui';
 	import box from "../../box.vue";
-	import pipei from "../../faxian/WoyaoRongzi/PipeiTouziRen/Pipei.vue";
+//	import pipei from "../../faxian/WoyaoRongzi/PipeiTouziRen/Pipei.vue";
 	import tishi from "../../Tishi.vue";
 //	import youhuiquan from "../../shendu/PeixunZixun/YouhuiQuan.vue";
 //	import fankuixinxi from "./FankuiXinxi.vue";
@@ -113,14 +114,18 @@
 	
 	export default {
 		props:{
-			token:{
-//				type:Object
-			},
-			XiangmuID:{},
-			is_send:{}
+//			token:{
+////				type:Object
+//			},
+//			XiangmuID:{},
+//			is_send:{}
 		},
 		data () {
 			return {
+				token:"",
+				XiangmuID:"",
+				is_send:'',
+				CanShu:"",
 				data:"",
 				industry:"",
 				butenLeft:"butenLeft",
@@ -159,6 +164,9 @@
 			}
 		},
 		mounted(){
+			this.token=localStorage.getItem("token");
+			this.XiangmuID=this.$route.params.XiangmuID;
+			this.is_send=this.$route.params.is_send;
 			if(this.is_send=='1'){
 				this.none=false;
 				this.toudi='继续投递';
@@ -174,7 +182,7 @@
 			this.$http.post(URL.path+'finance/item_detail',datas,{emulateJSON:true}).then(function(res){
 				Indicator.close();
 				this.data=res.body.data[0]
-				this.texta=this.data.com_name
+				this.texta=this.data.com_short
 				this.textb=this.data.com_code
 				this.numbera=this.data.last_year_revenue
 				this.numberb=this.data.last_year_profit
@@ -223,7 +231,8 @@
 				if(ok==0){
 					this.content=this.$refs.pipeiShow;
 					if(this.is_send=='1'){
-						this.$refs.pipeiShow.pipeiBlock(CanShu);
+//						this.$refs.pipeiShow.pipeiBlock(CanShu);
+						window.location.href='#/DingzengZuoshi/1/1/Pipei';
 					}else{
 						this.$refs.tishiShow.tishiBlock(CanShu,'pipei');//CanShu是下级要传的参数
 					}
@@ -307,7 +316,7 @@
 		},
 		components:{
 			box,
-			pipei,
+//			pipei,
 			tishi
 //			youhuiquan
 //			fankuixinxi

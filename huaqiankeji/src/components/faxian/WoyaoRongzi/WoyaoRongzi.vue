@@ -8,19 +8,22 @@
 			<div class="box">
 				<div style="width:100%;height:0.5rem;"></div>
 				<div class="zhuying">
-					<div class="zhuying-heder"><!--<font></font>-->新项目发起融资<span>（电脑端）</span></div>
+					<div class="zhuying-heder"><font></font>新项目发起融资<span>（电脑端）</span></div>
 					<div class="zhuying_1">
 						<div class="ferst">
-							<span>1、打开并登录网站 <font>www.qironghome.com；</font></span>
-							<span>2、点击“我要融资”，填写公司融资要素，上传商业计划书；</span>
-							<span>3、根据系统智能推荐的投资人清单，选择希望投递的投资机构；</span>
-							<span>4、阅读平台服务费收费协议并完成投递；</span>
-							<span>5、所有投资人将在10天内完成初步反馈，请您注意查收和回复。</span>
+							<span>1、填写并完成融资项目备案<a @click.stap="BeianGo()">（点击前往）</a></font></span>
+							<span>2、登录<a>www.qironghome.com</a>，进入项目融资发布后台；</font></span>
+							<span>3、点击“我要融资”，填写公司融资要素，上传商业计划书；</span>
+							<span>4、根据系统智能推荐的投资人清单，选择希望投递的投资机构；</span>
+							<span>5、阅读平台服务费收费协议并完成投递；</span>
+							<span>6、所有投资人将在10天内完成初步反馈，请您注意查收和回复。</span>
 						</div>
 					</div>
 				</div>
+				<div style="width:100%;height:0.08rem;background: #f5f4f9;"></div>
 				<div class="fankiu">
-					<div class="content-food" ref="foods">
+					<div class="zhuying-heder"><font></font>已有项目继续投递<span>（移动端）</span></div>
+					<!--<div class="content-food" ref="foods">
 						<span>已有项目继续投递<a>（移动端）</a></span>
 						<ul>
 							<li class="src1" ref="img1" index="img1" @click.stap="dingzengGo('Dingzeng','1')">
@@ -54,14 +57,14 @@
 								<span>公司调研</span><font></font>
 							</li>
 						</ul>
-					</div>
+					</div>-->
+					<jiLuqingdan ref="youhuiShow"></jiLuqingdan>
 				</div>
 				<div class="butten">
 					<span @click.stop="XiaYibu()">继续手机端操作</span>
 				</div>
 			</div>
 			<router-view :token="token" :BiaoQian="BiaoQian" :type="type"></router-view>
-			<!--<youhuiquan ref="youhuiShow"></youhuiquan>-->
 		</div>
 	</transition>
 </template>
@@ -70,7 +73,7 @@
 	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
 	import box from "../../box.vue";
-//	import youhuiquan from "../../shendu/PeixunZixun/YouhuiQuan.vue";
+	import jiLuqingdan from "./jiLuQingdan.vue";
 //	import fankuixinxi from "./FankuiXinxi.vue";
 	
 	
@@ -114,6 +117,10 @@
 		methods:{
 			yijianHind(){
 				history.go(-1)
+			},
+			BeianGo(){
+				localStorage.setItem("Beian",'1')
+				window.location.href="#/wode/RongziBeian/"+localStorage.getItem("token");
 			},
 			dingzengGo(name,type){
 				console.log(name)
@@ -208,8 +215,8 @@
 //			}
 		},
 		components:{
-			box
-//			youhuiquan
+			box,
+			jiLuqingdan
 //			fankuixinxi
 		}
 	}
@@ -229,7 +236,7 @@
 	}
 	.xiangmu{
 		position:fixed;
-		background:#f5f4f9;
+		background:#fff;
 		bottom:0;
 		top:0;
 		left:0;
@@ -286,7 +293,7 @@
 						width:100%;
 						overflow:hidden;
 						&:first-child{
-							border:0.01rem solid #ff7a59;
+							/*border:0.01rem solid #ff7a59;*/
 						}
 						li{
 							width:48%;
@@ -334,33 +341,13 @@
 			}
 			.zhuying{
 				width:100%;
-				.zhuying-heder{
-					padding:0.16rem 0.2rem 0.08rem 0.2rem;
-					line-height:0.2rem;
-					font-size:0.18rem;
-					/*font-weight:600;*/
-					font{
-						display:inline-block;
-						width:0.2rem;
-						height:0.2rem;
-						background-image:url("./img/zhongdian.png");
-						background-size:100% 100%;
-						vertical-align:top;
-						margin:-0.01rem 0.04rem 0 0;
-					}
-					span{
-						display:inline-block;
-						color:#fc9981;
-						/*font-weight:600;*/
-					}
-				}
 				.zhuying_1{
 					width:89.5%;
 					margin:0 auto;
-					padding:0.2rem 0.09rem;
+					padding:0.1rem 0.09rem;
 					font-size:0.1rem;
 					background:#fff;
-					border:0.005rem solid #ddddde;
+					/*border:0.005rem solid #ddddde;*/
 					box-sizing:border-box;
 					border-radius:0.1rem;
 					.ferst{
@@ -369,7 +356,10 @@
 							font-size:0.16rem;
 							line-height:0.3rem;
 							color:#b6b6b6;
-							font{
+							/*font{
+								color:#fc9981;
+							}*/
+							a{
 								color:#fc9981;
 							}
 						}
@@ -396,6 +386,26 @@
 					font-size:0.17rem;
 					color:#fff;
 				}
+			}
+		}
+		.zhuying-heder{
+			padding:0.16rem 0.2rem 0.08rem 0.2rem;
+			line-height:0.2rem;
+			font-size:0.18rem;
+			/*font-weight:600;*/
+			font{
+				display:inline-block;
+				width:0.2rem;
+				height:0.2rem;
+				background-image:url("./img/zhongdian.png");
+				background-size:100% 100%;
+				vertical-align:top;
+				margin:-0.01rem 0.04rem 0 0;
+			}
+			span{
+				display:inline-block;
+				color:#fc9981;
+				/*font-weight:600;*/
 			}
 		}
 	}

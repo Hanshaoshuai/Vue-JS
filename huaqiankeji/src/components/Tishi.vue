@@ -62,7 +62,8 @@
 			guoHui(){
 				this.onlyContent=false;
 				if(this.datas=="pipei"){
-					this.content.pipeiBlock(this.CanShu);
+					window.location.href='#/wode/DingzengZuoshi/1/Pipei2/3/4';
+//					this.content.pipeiBlock(this.CanShu);
 					return;
 				}
 				if(this.XiangmuID){ 	//项目已过会接口

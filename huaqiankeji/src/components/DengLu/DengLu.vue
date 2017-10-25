@@ -143,6 +143,7 @@
 							localStorage.setItem("token",res.body.data.token);		//用户token
 							localStorage.setItem("phone",res.body.data.phone);		//用户电话
 							localStorage.setItem("type",res.body.data.ctype);		//用户类型
+							localStorage.setItem("name",res.body.data.nickname);		//用户名字
 							localStorage.setItem("photo",res.body.data.photo.id);	//用户头像id
 							localStorage.setItem("photourl",res.body.data.photo.url);	//用户头像URL地址
 							console.log(res.body);
@@ -197,7 +198,7 @@
 								window.location.href="#/denglu/ZhuCe1/"+ctype+"/type2";
 								return;
 							}else{
-								Toast('登录成功');
+//								Toast('登录成功');
 								window.location.href="#/faxian";
 							}
 						}
@@ -207,7 +208,7 @@
 								window.location.href="#/denglu/ZhuCe1/"+ctype+"/type3";
 								return;
 							}else{
-								Toast('登录成功');
+//								Toast('登录成功');
 								window.location.href="#/faxian";
 							}
 						}
@@ -217,7 +218,7 @@
 								window.location.href="#/denglu/ZhuCe1/"+ctype+"/type4";
 								return;
 							}else{
-								Toast('登录成功');
+//								Toast('登录成功');
 								window.location.href="#/faxian";
 							}
 						}
@@ -228,7 +229,7 @@
 									window.location.href="#/denglu/ZhuCe1/"+0+"/"+'Guquan';
 									return;
 								}else{
-									Toast('登录成功');
+//									Toast('登录成功');
 									window.location.href="#/faxian";
 								}
 //							}

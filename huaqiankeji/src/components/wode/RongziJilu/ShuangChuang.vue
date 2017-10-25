@@ -1,5 +1,5 @@
 <template>
-	<transition name="fade">
+	<!--<transition name="fade">-->
 		<div v-show="tucaoShow" class="xiangmu">
 			<div class="xiangmu-header" @click.stap="yijianHind()">
 				<span class="xiangmu-left"><</span>
@@ -79,7 +79,7 @@
 			</div>
 			<!--<youhuiquan ref="youhuiShow"></youhuiquan>-->
 		</div>
-	</transition>
+	<!--</transition>-->
 </template>
 
 <script type="text/ecmascript">

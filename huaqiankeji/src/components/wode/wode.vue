@@ -8,7 +8,7 @@
 				<div class="header-name">
 					<font>{{data.uname}}</font>
 					<div class="header-content">
-						<span>{{data.com_name}}</span>
+						<span>{{data.com_short}}</span>
 						<span>{{data.position}}</span>
 					</div>
 				</div>
@@ -198,7 +198,7 @@
 				}
 			},
 			RongziBeian(){
-				window.location.href="#/wode/RongziBeian/"+this.beianType;
+				window.location.href="#/wode/RongziBeian/"+this.token;
 			},
 			jiluGo(){
 				window.location.href="#/wode/jilu/0";
@@ -233,14 +233,7 @@
 //			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
+			
 		},
 		components:{
 			box,

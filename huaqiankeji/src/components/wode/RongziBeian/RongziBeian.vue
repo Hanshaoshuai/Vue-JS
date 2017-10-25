@@ -1,5 +1,5 @@
 <template>
-	<transition name="fade">
+	<!--<transition name="fade">-->
 		<div v-show="tucaoShow" class="xiangmu">
 			<div class="xiangmu-header" @click.stop="yijianHind()">
 				<span class="xiangmu-left"><img src="../img/back.png"/></span>
@@ -147,7 +147,7 @@
 			</div>
 			<router-view :token="token" :beiAnidQ="beiAnidQ" :beiAnidC="beiAnidC" :href="href"></router-view>
 		</div>
-	</transition>
+	<!--</transition>-->
 </template>
 
 <script type="text/ecmascript">
@@ -162,7 +162,7 @@
 			token:{
 //				type:Object
 			},
-			beianType:{}
+//			beianType:{}
 		},
 		data () {
 			return {
@@ -188,66 +188,77 @@
 				beiAnidQ:"",
 				beiAnidC:"",
 				numToTime:"",
-				timestamp:''
+				timestamp:'',
+				beianType:""
 			}
 		},
 		mounted() {
-			console.log(window.location.href)
-			this.href=window.location.href
-			this.numToTime=numToTime;
-			this.timestamp= (new Date()).valueOf()
-//			this.formatDate(this.timestamp)
-			console.log(this.formatDate(this.timestamp))
-			console.log(this.beianType);
-			if(this.beianType=='1'){
-//				企业项目备案列表
-				var params={
-		    		token:this.token,
-		    	}
-				this.$http.post(URL.path+'finance/record_list',params,{emulateJSON:true}).then(function(res){
-					this.data=res.body.data.id;
-					if(res.body.data.length=='0'){
-						Toast("您暂无备注，请添加备案...")
-						window.location.href="#/wode/RongziBeian/"+this.token+"/TianQiBeian";
-						return;
-					}
-					console.log(res);
-				},function(res){
-				    console.log(res);
-				})
-				return;
-			}
-			if(this.beianType=='7'){
-//				财务顾问项目备案列表
-				var params={
-		    		token:this.token,
-		    	}
-				console.log(params)
-				this.$http.post(URL.path+'finance/record_list',params,{emulateJSON:true}).then(function(res){
-					console.log(res);
-					this.data=res.body.data.id;
-					if(res.body.data.length=='0'){
-						Toast("您暂无备案，请添加备案...")
-						window.location.href="#/wode/RongziBeian/"+this.token+"/XinzengQiye";
-						return;
-					}
-				},function(res){
-				    console.log(res);
-				})
-				return;
-			}
-			this.$nextTick(function() {
-				this.boxUl=this.$refs.box.getElementsByTagName("ul");
-				console.log(this.boxUl)
-			})
+			this.shuaXin();
+		},
+		activated(){
+			this.shuaXin();
 		},
 		methods:{
+			shuaXin(){
+				this.numToTime=numToTime;
+				this.timestamp= (new Date()).valueOf()
+	//			this.formatDate(this.timestamp)
+				console.log(this.formatDate(this.timestamp))
+				this.beianType=localStorage.getItem("type")
+				console.log(this.beianType=localStorage.getItem("type"));
+				if(this.beianType=='1'){
+	//				企业项目备案列表
+					var params={
+			    		token:localStorage.getItem("token"),
+			    	}
+					this.$http.post(URL.path+'finance/record_list',params,{emulateJSON:true}).then(function(res){
+						this.data=res.body.data.id;
+						if(res.body.data.length=='0'){
+							Toast("您暂无备注，请添加备案...")
+							window.location.href="#/wode/RongziBeian/"+this.token+"/TianQiBeian";
+							return;
+						}
+						console.log(res);
+					},function(res){
+					    console.log(res);
+					})
+					return;
+				}
+				if(this.beianType=='7'){
+	//				财务顾问项目备案列表
+					var params={
+			    		token:localStorage.getItem("token"),
+			    	}
+					console.log(params)
+					this.$http.post(URL.path+'finance/record_list',params,{emulateJSON:true}).then(function(res){
+						console.log(res);
+						this.data=res.body.data.id;
+						if(res.body.data.length=='0'){
+							Toast("您暂无备案，请添加备案...")
+							window.location.href="#/wode/RongziBeian/"+this.token+"/XinzengQiye";
+							return;
+						}
+					},function(res){
+					    console.log(res);
+					})
+					return;
+				}
+				this.$nextTick(function() {
+					this.boxUl=this.$refs.box.getElementsByTagName("ul");
+					console.log(this.boxUl)
+				})
+			},
 			formatDate(time){
 				let date = new Date(time);
 				return formatDate(date,'yyyy-MM-dd hh:mm');
 			},
 			yijianHind(){
-				history.go(-1)
+				if(localStorage.getItem("Beian")=='1'){
+					history.go(-1)
+				}else{
+					history.go(-1)
+				}
+				localStorage.setItem("Beian",'');
 //				this.tucaoShow=false;
 			},
 			typeName(id){
@@ -296,14 +307,7 @@
 //			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
+			
 		},
 		components:{
 			box,

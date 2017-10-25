@@ -14,7 +14,7 @@
 						<!--<img class="border" src="" alt="" />-->
 						<span>&nbsp;{{data.uname}}&nbsp;</span>
 						<font class="bbb border-left"></font>
-						<span>{{data.com_short}}</span>
+						<span>{{data.short}}</span>
 						<span>&nbsp;&nbsp;{{data.position}}</span>
 						<div class="tousu"><span>投诉</span></div>
 					</div>
@@ -25,7 +25,7 @@
 							<li class="border-bottom"></li>
 							<li class="tishi-center">
 								<div class="content-heder">
-									<span>{{data.com_name}}</span>
+									<span>{{data.com_short}}</span>
 									<span class="text-center">{{data.com_code}}</span>
 									<span v-if="data.type==1" class="texts">&nbsp;定增</span>
 									<span v-if="data.type==2" class="texts">&nbsp;做市</span>

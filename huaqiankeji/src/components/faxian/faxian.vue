@@ -50,7 +50,7 @@
 						</div>
 						<div v-if="t" class="TypeList" @click.stop="qiyefankuiGo()">
 							<div class="TypeList-img">
-								<li class="fankui"><span v-if="FankuiShu!=='0'">{{FankuiShu}}</span></li>
+								<li class="fankui"><span v-show="Fankuiblock">{{FankuiShu}}</span></li>
 							</div>
 							<div class="TypeList-text">
 								<span>企业反馈</span>
@@ -68,7 +68,7 @@
 						</div>
 						<div v-if="q" class="TypeList" @click.stop="touzifankuiGo()">
 							<div class="TypeList-img">
-								<li class="fankui"><span v-if="FankuiShu!=='0'">{{FankuiShu}}</span></li>
+								<li class="fankui"><span v-show="Fankuiblock">{{FankuiShu}}</span></li>
 							</div>
 							<div class="TypeList-text">
 								<span>投资人反馈</span>
@@ -128,7 +128,7 @@
 									<span v-if="item.type==5" class="texts">融资租赁</span>
 									<span v-if="item.type==6" class="texts">研报支持</span>
 									<span v-if="item.type==7" class="texts">公司调研</span>
-									<span class="texts">{{item.com_short.substr(0, 1)}} **</span>
+									<span class="texts">* {{item.com_short.substr(1, 1)}} *</span>
 									<span class="texts">（{{item.com_code.substr(0, 2)}} **** ）</span>
 								</div>
 								<div class="TypeList">
@@ -239,6 +239,7 @@
 		        scrollTop:"",
 		        XiangmuShu:"",
 		        FankuiShu:"",
+		        Fankuiblock:false,
 		        ZongHe:"",
 		        botent:"亲已经到底了",
 		        numToTime:""
@@ -307,6 +308,10 @@
 //				})
 			});
 	    },
+	    activated(){
+			this.huoqugeshu();
+			this.qiyeFankui();
+		},
 		methods:{	//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商 7:财务顾问
 			huoqugeshu(){
 //			投资机构收到的新项目数
@@ -328,6 +333,9 @@
 		    	}
 				this.$http.post(URL.path+'chatcomment/get_feedback_num',token,{emulateJSON:true}).then(function(res){
 					this.FankuiShu=res.body.data[0].feedback_num;
+					if(this.FankuiShu!='0'){
+						this.Fankuiblock=true;
+					}
 	//				this.FanuiShu=res;
 //					console.log("企业获取反馈个数");
 //					console.log(res);

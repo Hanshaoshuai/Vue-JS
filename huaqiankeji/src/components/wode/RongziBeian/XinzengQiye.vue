@@ -1,5 +1,5 @@
 <template>
-	<transition name="fade">
+	<!--<transition name="fade">-->
 		<div v-show="tucaoShow" class="xiangmu">
 			<div class="xiangmu-header" @click.stap="yijianHind()">
 				<span class="xiangmu-left"><img src="../img/back.png"/></span>
@@ -58,16 +58,21 @@
 					</ul>
 				</div>
 			</div>
-			<div ref="xianShi" v-show="onlyContent" class="loding" style="position: absolute;z-index: 1600; top: 0;right: 0;bottom: 0;left: 0;background-color: rgba(0,0,0,0.3);display: none;">
-			    <div class="loadEffect" ref="padding">
-					<ul>
-						<li class="border-bottom" @click.stop="queding()"><span>确认申请备案</span></li>
-						<li @click.stop="bianJi()"><span>继续编辑</span></li>
-					</ul>
-				</div>	
-			</div>
+			<transition name="fades">
+				<div ref="xianShi" v-show="onlyContent" class="loding" style="position: absolute;z-index: 1600; top: 0;right: 0;bottom: 0;left: 0;background-color: rgba(0,0,0,0.3);display: none;">
+				    <div class="loadEffect" ref="padding">
+						<ul v-show="firstTop">
+							<li class="border-bottom" @click.stop="queding()"><span>确认申请备案</span></li>
+							<li @click.stop="bianJi()"><span>继续编辑</span></li>
+						</ul>
+						<ul v-show="lastBottom">
+							<li class="last-bottom" style="text-align: center;"><span>{{textcont}}</span></li>
+						</ul>
+					</div>	
+				</div>
+			</transition>
 		</div>
-	</transition>
+	<!--</transition>-->
 </template>
 
 <script type="text/ecmascript">
@@ -108,7 +113,10 @@
 				},
 				content:"",			//给下级要传的参数
 				XiangmuID:"1",
-				onlyContent:false
+				onlyContent:false,
+				firstTop:true,
+				lastBottom:false,
+				textcont:"重新申请成功，请等待审核"
 			}
 		},
 		mounted(){
@@ -144,7 +152,7 @@
 				this.onlyContent=true;
 			},
 			queding(){
-				//添加备案
+				var tata=this;
 				var params={
 		    		token:this.token,
 					com_name:this.texta,			//	公司全称	是	[string]		
@@ -161,19 +169,26 @@
 				this.$http.post(URL.path+'finance/record',params,{emulateJSON:true}).then(function(res){
 					this.type=res.body.data.id
 					if(this.beiAnidC==""){
-						Toast("您已创建成功");
-						history.go(-1)
-//						setTimeout(function(){
+						this.firstTop=false
+						this.lastBottom=true
+//						Toast("备案申请成功，请等待审核");
+						setTimeout(function(){
+							tata.onlyContent=false;
+							history.go(-1)
 //							location.replace(document.referrer); 
-//						},200)
+						},2000)
 //						window.location.href="#/wode/RongziBeian/7";
 					}
 					if(res.body.data.id==true){
-						Toast("您已添加成功");
-						history.go(-1)
-//						setTimeout(function(){
+						this.firstTop=false
+						this.lastBottom=true
+						this.textcont="您已添加成功"
+//						Toast("您已添加成功");
+						setTimeout(function(){
+							this.onlyContent=false;
+							history.go(-1)
 //							location.replace(document.referrer); 
-//						},200)
+						},2000)
 					}
 					console.log(res);
 				},function(res){
@@ -244,6 +259,19 @@
 	  	/*transform:rotate(360deg);*/
 	  	/*opacity: 0;*/
 	}
+	
+	.fades-enter-active {
+	  	transition: all .5s ease;
+	}
+	.fades-leave-active {
+	  	transition: all .5s ease;
+	}
+	.fades-enter, .fades-leave-active {
+	  	/*transform: translateX(4.17rem);*/
+	  	/*transform:rotate(360deg);*/
+	  	opacity: 0;
+	}
+	
 	.xiangmu{
 		position:fixed;
 		background:#f5f4f9;
@@ -463,6 +491,9 @@
 	            		span{
 	            			/*text-align:center;*/
 	            			line-height: 0.46rem;
+	            		}
+	            		.last-bottom{
+	            			line-height: 0.36rem;
 	            		}
 	            	}
 	            }
