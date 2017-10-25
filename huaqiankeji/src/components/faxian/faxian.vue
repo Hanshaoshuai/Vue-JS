@@ -335,6 +335,8 @@
 					this.FankuiShu=res.body.data[0].feedback_num;
 					if(this.FankuiShu!='0'){
 						this.Fankuiblock=true;
+					}else{
+						this.Fankuiblock=false;
 					}
 	//				this.FanuiShu=res;
 //					console.log("企业获取反馈个数");

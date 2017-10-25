@@ -60,6 +60,7 @@
 						<div class="ferst"><span>*</span>质押时间周期</div>
 						<div class="last number">
 							<input readOnly="true" v-model="numberf" placeholder="输入数字" number="true" type="number" class="mint-field-core">
+							<span>个月</span>
 						</div>
 					</div>
 					<div class="zhuying_1">
@@ -94,7 +95,7 @@
 				</div>-->
 			</div>
 			<!--<pipei ref="pipeiShow" :token="token" :type="type" :XiangmuID="XiangmuID"></pipei>-->
-			<router-view :token="token" :type="type" :XiangmuID="XiangmuID"></router-view>
+			<router-view :token="token" :Xiangmutype="Xiangmutype" :XiangmuID="XiangmuID"></router-view>
 			<tishi ref="tishiShow" :xingXi="xingXi" :content="content"></tishi>
 		</div>
 	<!--</transition>-->
@@ -125,6 +126,7 @@
 				token:"",
 				XiangmuID:"",
 				is_send:'',
+				Xiangmutype:'',
 				CanShu:"",
 				data:"",
 				industry:"",
@@ -166,6 +168,7 @@
 		mounted(){
 			this.token=localStorage.getItem("token");
 			this.XiangmuID=this.$route.params.XiangmuID;
+			this.Xiangmutype=this.$route.params.type;
 			this.is_send=this.$route.params.is_send;
 			if(this.is_send=='1'){
 				this.none=false;
@@ -188,13 +191,13 @@
 				this.numberb=this.data.last_year_profit
 				this.numberc=this.data.predict_revenue
 				this.numberd=this.data.predict_profit
-				this.numbere=this.data.appraisement
-				this.numberf=this.data.total_finance
+				this.numbere=this.data.total_finance
+				this.numberf=this.data.pledge_time
 				this.numberg=this.data.share_price
 				this.numberh=this.data.city
 				this.industry=this.data.industry
 				this.type=this.data.type
-				console.log(this.data);
+				console.log(res);
 			},function(res){
 				Indicator.close();
 			    console.log(res.status);
@@ -232,7 +235,7 @@
 					this.content=this.$refs.pipeiShow;
 					if(this.is_send=='1'){
 //						this.$refs.pipeiShow.pipeiBlock(CanShu);
-						window.location.href='#/DingzengZuoshi/1/1/Pipei';
+						window.location.href='#/ZhiYa1/1/4/1/Pipei';
 					}else{
 						this.$refs.tishiShow.tishiBlock(CanShu,'pipei');//CanShu是下级要传的参数
 					}

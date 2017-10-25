@@ -193,9 +193,9 @@
 				this.$http.post(URL.path1+'account/info',datas,{emulateJSON:true}).then(function(res){
 					if(res.body.returnCode=='200'){
 						if(ctype==1){
-							if(!res.body.data.info.industry){
+							if(res.body.data.info.team=='0'){
 								Toast('请完善您的资料');
-								window.location.href="#/denglu/ZhuCe1/"+ctype+"/type2";
+								window.location.href="#/denglu/ZhuCe1/"+0+"/type2";
 								return;
 							}else{
 //								Toast('登录成功');
@@ -203,9 +203,9 @@
 							}
 						}
 						if(ctype==3){
-							if(!res.body.data.info.investment_way){
+							if(res.body.data.info.investment_way=="0"){
 								Toast('请完善您的资料');
-								window.location.href="#/denglu/ZhuCe1/"+ctype+"/type3";
+								window.location.href="#/denglu/ZhuCe1/"+0+"/type3";
 								return;
 							}else{
 //								Toast('登录成功');
@@ -213,9 +213,9 @@
 							}
 						}
 						if(ctype==4){
-							if(!res.body.data.info.interested){
+							if(res.body.data.info.team=='0'){
 								Toast('请完善您的资料');
-								window.location.href="#/denglu/ZhuCe1/"+ctype+"/type4";
+								window.location.href="#/denglu/ZhuCe1/"+0+"/type4";
 								return;
 							}else{
 //								Toast('登录成功');
@@ -224,7 +224,7 @@
 						}
 						if(ctype==2){
 //							if(res.body.data.investment_type==1){
-								if(!res.body.data.info.interested){
+								if(res.body.data.info.investment_type=='0'){
 									Toast('请完善您的资料');
 									window.location.href="#/denglu/ZhuCe1/"+0+"/"+'Guquan';
 									return;

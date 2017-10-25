@@ -53,17 +53,114 @@
 								<span>约谈率</span>
 							</div>
 						</div>
+						<div v-if="item.ctype=='3'" class="xiaolv border-topbottom">
+							<div class="border-right">
+								<li>
+									<font style="font-size:0.14rem;" v-if="item.itemnums==0">暂无</font>
+									<font v-if="item.itemnums!=0">{{item.itemnums}}</font>
+								</li>
+								<span>收获项目数</span>
+							</div>
+							<div class="border-right">
+								<li>
+									<font v-if="item.feedback==''" class="center">0&nbsp;%</font>
+									<font v-if="item.feedback!=''" v-else class="center">{{item.feedback}}</font>
+								</li>
+								<span class="center">反馈率</span>
+							</div>
+							<div class="border-right">
+								<li>
+									<font v-if="item.changenums==0" class="center">0&nbsp;%</font>
+									<font v-if="item.changenums!=0">{{Math.round((item.changenums/item.itemnums)*100)}}&nbsp;%</font>
+								</li>
+								<span>约谈率</span>
+							</div>
+						</div>
+						<div v-if="item.ctype=='6'" class="xiaolv border-topbottom">
+							<div class="border-right">
+								<li>
+									<font style="font-size:0.14rem;" v-if="item.itemnums==0">暂无</font>
+									<font v-if="item.itemnums!=0">{{item.itemnums}}</font>
+								</li>
+								<span>收获项目数</span>
+							</div>
+							<div class="border-right">
+								<li>
+									<font v-if="item.feedback==''" class="center">0&nbsp;%</font>
+									<font v-if="item.feedback!=''" v-else class="center">{{item.feedback}}</font>
+								</li>
+								<span class="center">反馈率</span>
+							</div>
+							<div class="border-right">
+								<li>
+									<font v-if="item.changenums==0" class="center">0&nbsp;%</font>
+									<font v-if="item.changenums!=0">{{Math.round((item.changenums/item.itemnums)*100)}}&nbsp;%</font>
+								</li>
+								<span>约谈率</span>
+							</div>
+						</div>
 						<div class="leimu">
 							<div class="zhonglei">
-								<span v-if="item.ctype==1" class="jieduan">所在行业：{{item.fund_stage.exts[1].value}}</span>
-								<span v-if="item.ctype==2" class="jieduan">阶段：{{item.fund_stage.exts[1].value}}</span>
-								<span v-if="item.ctype==2" class="dangbi">单笔投资：{{item.single_project_min}}万-{{item.single_project_max}}万</span>
-								<span v-if="item.total_finance" class="dangbi">单笔投资：{{item.total_finance}}万</span>
-								<span v-if="item.ctype==2" class="zijin">资金成本：年化{{item.fund_min}}%-{{item.fund_max}}%</span>
-								<span v-if="item.ctype==2" class="fangkuan">放款速度：不超过{{item.loan_time}}天</span>
-								<span v-if="item.ctype==2" class="lingyu">领域：{{item.fund_stage.exts[0].value}}</span>
-								<span v-if="item.ctype==3" class="lingyu">领域：{{item.fund_stage.exts[0].value}}</span>
-								<span v-if="item.ctype==4" class="lingyu">领域：{{item.fund_stage.exts[0].value}}</span>
+								
+								<span v-if="Xiangmutype==1" class="jieduan"><a style="color:#2abdfc">阶段：</a>{{item.fund_stage.exts[1].value}}</span>
+								<span v-if="Xiangmutype==1" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
+								<span v-if="Xiangmutype==1" class="jieduan Yibai"><a style="color:#2abdfc">行业：</a>{{item.fund_stage.exts[0].value}}</span>
+								
+								<span v-if="Xiangmutype==2" class="jieduan"><a style="color:#2abdfc">阶段：</a>{{item.fund_stage.exts[1].value}}</span>
+								<span v-if="Xiangmutype==2" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
+								<span v-if="Xiangmutype==2" class="jieduan Yibai"><a style="color:#2abdfc">行业：</a>{{item.fund_stage.exts[0].value}}</span>
+								
+								<span v-if="Xiangmutype==3" class="jieduan"><a style="color:#2abdfc">阶段：</a>{{item.fund_stage.exts[1].value}}</span>
+								<span v-if="Xiangmutype==3" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
+								<span v-if="Xiangmutype==3" class="jieduan Yibai"><a style="color:#2abdfc">行业：</a>{{item.fund_stage.exts[0].value}}</span>
+								
+								<span v-if="Xiangmutype==7" class="jieduan"><a style="color:#2abdfc">阶段：</a>{{item.fund_stage.exts[1].value}}</span>
+								<span v-if="Xiangmutype==7" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
+								<span v-if="Xiangmutype==7" class="jieduan Yibai"><a style="color:#2abdfc">行业：</a>{{item.fund_stage.exts[0].value}}</span>
+								
+								<!--<span v-if="item.total_finance" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.total_finance}}万</span>-->
+								
+								<span v-if="Xiangmutype==4" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
+								<span v-if="Xiangmutype==4" class="zijin"><a style="color:#2abdfc">资金成本：</a>年化{{item.fund_min}}%-{{item.fund_max}}%</span>
+								<span v-if="Xiangmutype==4" class="fangkuan"><a style="color:#2abdfc">放款速度：</a>不超过{{item.loan_time}}天</span>
+								
+								<span v-if="Xiangmutype==5" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
+								<span v-if="Xiangmutype==5" class="zijin"><a style="color:#2abdfc">资金成本：</a>年化{{item.fund_min}}%-{{item.fund_max}}%</span>
+								<span v-if="Xiangmutype==5" class="fangkuan"><a style="color:#2abdfc">放款速度：</a>不超过{{item.loan_time}}天</span>
+								
+								<!--<span v-if="XiangmuID==1" class="lingyu"><a style="color:#2abdfc">行业：</a>{{item.fund_stage.exts[0].value}}</span>
+								<span v-if="XiangmuID==1" class="lingyu"><a style="color:#2abdfc">行业：</a>{{item.fund_stage.exts[0].value}}</span>
+								<span v-if="XiangmuID==1" class="lingyu"><a style="color:#2abdfc">行业：</a>{{item.fund_stage.exts[0].value}}</span>-->
+								
+								
+								<!--<span v-if="item.ctype==2" class="jieduan"><font v-if="XiangmuID==1"><a style="color:#2abdfc">行业：</a>{{item.fund_stage.exts[0].value}}</font></span>
+								<span v-if="item.ctype==2" class="jieduan"><font v-if="XiangmuID==1"><a style="color:#2abdfc">阶段：</a>{{item.fund_stage.exts[1].value}}</font></span>
+								<span v-if="item.ctype==2" class="jieduan"><font v-if="XiangmuID==1"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</font></span>
+								
+								<span v-if="item.ctype==2" class="jieduan"><font v-if="XiangmuID==2"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</font></span>
+								<span v-if="item.ctype==2" class="jieduan"><font v-if="XiangmuID==2"><a style="color:#2abdfc">资金成本：</a>年化{{item.fund_min}}%-{{item.fund_max}}%</font></span>
+								<span v-if="item.ctype==2" class="jieduan"><font v-if="XiangmuID==2"><a style="color:#2abdfc">放款速度：</a>不超过{{item.loan_time}}天</font></span>
+								
+								<span v-if="item.ctype==2" class="jieduan"><font v-if="XiangmuID==3"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</font></span>
+								<span v-if="item.ctype==2" class="jieduan"><font v-if="XiangmuID==3"><a style="color:#2abdfc">资金成本：</a>年化{{item.fund_min}}%-{{item.fund_max}}%</font></span>
+								<span v-if="item.ctype==2" class="jieduan"><font v-if="XiangmuID==3"><a style="color:#2abdfc">放款速度：</a>不超过{{item.loan_time}}天</font></span>-->
+								
+								<!--<span v-if="item.ctype==1" class="jieduan"><a style="color:#2abdfc">行业：</a><a v-for="(item,index) in item.industry">{{item.title}}、</a></span>
+								<span v-if="item.investment_type==1" class="jieduan"><a style="color:#2abdfc">阶段：</a><a v-for="(item,index) in item.fund_stage">{{item.title}}、</a></span>
+								<span v-if="item.investment_type==1" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
+								<span v-if="item.investment_type==1" class="lingyu"><a style="color:#2abdfc">行业：</a><a v-for="(item,index) in item.interested">{{item.title}}、</a></span>
+								<span v-if="item.investment_type==2" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
+								<span v-if="item.investment_type==2" class="zijin"><a style="color:#2abdfc">资金成本：</a>年化 {{item.fund_min}}%-{{item.fund_max}}%</span>
+								<span v-if="item.investment_type==2" class="fangkuan"><a style="color:#2abdfc">放款速度：</a>不超过{{item.loan_time}}天</span>
+								<span v-if="item.investment_type==3" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
+								<span v-if="item.investment_type==3" class="zijin"><a style="color:#2abdfc">资金成本：</a>年化 {{item.fund_min}}%-{{item.fund_max}}%</span>
+								<span v-if="item.investment_type==3" class="fangkuan"><a style="color:#2abdfc">放款速度：</a>不超过{{item.loan_time}}天</span>-->
+								
+								
+								<!--<span v-if="item.ctype==2" class="jieduan"><font v-if="item.investment_type==0"><a style="color:#2abdfc">阶段：</a>{{item.fund_stage.exts[1].value}}</font></span>
+								<span v-if="item.ctype==2" class="dangbi"><font v-if="item.investment_type==0"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</font></span>
+								<span v-if="item.ctype==2" class="lingyu"><font v-if="item.investment_type==0"><a style="color:#2abdfc">行业：</a>{{item.fund_stage.exts[0].value}}</font></span>-->
+								
 							</div>
 						</div>
 					</div>
@@ -93,12 +190,13 @@
 	
 	export default {
 		props:{
-			childnone:{
-//				type:"boolean"
-			},
+//			childnone:{
+////				type:"boolean"
+//			},
 			token:{},
 			type:{},
-			XiangmuID:{}
+			XiangmuID:{},
+			Xiangmutype:{}
 		},
 		data () {
 			return {
@@ -320,12 +418,12 @@
 						if(res.body.returnCode==200){
 							yes=res.body.data;
 //							window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.CanShu['type']+'/'+this.CanShu.XiangmuID+'/'+this.length+"/TouDi";
-							window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.type+'/'+this.CanShu.XiangmuID+'/'+this.length+"/TouDi";
+							window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.type+'/'+this.XiangmuID+'/'+this.length+"/TouDi";
 						}else{
 							yes=res.body.data;
 							if(this.XiaYibu==true){				//判断必须选择匹配人才可以跳转
 //								window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.CanShu['type']+'/'+this.CanShu.XiangmuID+'/'+this.length;
-								window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.type+'/'+this.CanShu.XiangmuID+'/'+this.length;
+								window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.type+'/'+this.XiangmuID+'/'+this.length;
 							}else{
 								Toast("请选择匹配人");
 							}
@@ -558,6 +656,7 @@
 						padding:0.02rem 0;
 						.zhonglei{
 							width:100%;
+							min-height:0.06rem;
 							overflow:hidden;
 							span{
 								float:left;
@@ -570,6 +669,9 @@
 							.jieduan{
 								width:48.3%;
 								padding-right:1.2%;
+							}
+							.Yibai{
+								width:98%;
 							}
 							.dangbi{
 								width:49.3%;

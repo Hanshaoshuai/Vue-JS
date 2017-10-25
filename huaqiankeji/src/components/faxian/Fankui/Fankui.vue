@@ -84,6 +84,28 @@
 					this.$http.post(URL.path+'chatcomment/comment_list',this.token,{emulateJSON:true}).then(function(res){
 						Indicator.close();
 						this.res=res.body.data;
+						var data=[];
+						var datas=[];
+						var x=0;
+						var y=0;
+						var length=res.body.data.length;
+						for(var item in this.res){
+							if(this.res[item].nums!=0){
+								datas[y]=this.res[item];
+								this.res.splice(item,1);
+								y+=1
+							}else{
+								data[x]=this.res[item];
+								x+=1;
+							}
+						}
+						for(var i=0; i<data.length;i++){
+							datas.push(data[i])
+						}
+						this.res=datas;
+						console.log(datas)
+						
+						
 						if(this.res.length=='0'){
 							Toast("亲，暂无反馈记录...")
 							return;

@@ -128,7 +128,7 @@
 				</div>-->
 			</div>
 			<!--<pipei ref="pipeiShow" :token="token" :type="type" :XiangmuID="XiangmuID"></pipei>-->
-			<router-view :token="token" :type="type" :XiangmuID="XiangmuID"></router-view>
+			<router-view :token="token" :type="type" :XiangmuID="XiangmuID" :Xiangmutype="Xiangmutype"></router-view>
 			<tishi ref="tishiShow" :xingXi="xingXi" :content="content"></tishi>
 		</div>
 	<!--</transition>-->
@@ -159,6 +159,7 @@
 				token:"",
 				XiangmuID:"",
 				is_send:'',
+				Xiangmutype:'',
 				CanShu:"",
 				data:"",
 				z:"",
@@ -206,6 +207,7 @@
 		mounted(){
 			this.token=localStorage.getItem("token");
 			this.XiangmuID=this.$route.params.XiangmuID;
+			this.Xiangmutype=this.$route.params.type;
 			this.is_send=this.$route.params.is_send;
 			if(this.is_send=='1'){
 				this.none=false;
@@ -311,7 +313,7 @@
 				if(ok==0){
 					this.content=this.$refs.pipeiShow;
 					if(this.is_send=='1'){
-						window.location.href='#/DingzengZuoshi/1/1/Pipei';
+						window.location.href='#/DingzengZuoshi/1/1/1/Pipei';
 //						this.$refs.pipeiShow.pipeiBlock(CanShu);
 					}else{
 						this.$refs.tishiShow.tishiBlock(CanShu,'pipei');//CanShu是下级要传的参数

@@ -26,7 +26,7 @@
 			<!--<div v-show="none" style="width:100%;height:0.08rem;background: #f5f4f9;"></div>-->
 			<!--<div v-show="zanWu" style="width:100%;padding:0 12%;font-size:0.16rem;line-height:0.24rem;">暂无融资记录</div>-->
 		</div>
-		<router-view :token="token" :XiangmuID="XiangmuID" :is_send="is_send"></router-view>
+		<router-view :token="token" :XiangmuID="XiangmuID" :is_send="is_send" :type="type"></router-view>
 	</div>
 </template>
 
@@ -66,6 +66,7 @@
 				},
 				XiangmuID:"",
 				is_send:"",
+				type:"",
 				numToTime:"",
 				none:false,
 				zanWu:false
@@ -108,10 +109,11 @@
 				var Uls=this.boxUl[type]
 				this.XiangmuID=id;
 				this.is_send=is_send;		//是否投递过
+				this.type=type;
 				this.types['type'+type]
 				console.log(this.types['type'+type])
 //				window.location.href="#/wode/jilu/0/"+this.types['type'+type];
-				window.location.href="#/"+this.types['type'+type]+'/'+id+'/'+is_send;
+				window.location.href="#/"+this.types['type'+type]+'/'+type+'/'+id+'/'+is_send;
 //				this.$refs.dingzengzuoshiShow.zuoshiBlock();
 			},
 //			dingzengGo(){

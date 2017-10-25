@@ -202,27 +202,27 @@ export default ({
 			}
     	]
     },
-    {path:"/DingzengZuoshi/:XiangmuID/:is_send",component:DingzengZuoshi,
+    {path:"/DingzengZuoshi/:type/:XiangmuID/:is_send",component:DingzengZuoshi,
 		children:[
 		    {path: 'Pipei',component: Pipei}		
 		]
 	},
-	{path:"/ZhiYa1/:XiangmuID/:is_send",component:ZhiYa1,
+	{path:"/ZhiYa1/:type/:XiangmuID/:is_send",component:ZhiYa1,
 		children:[
 		    {path: 'Pipei',component: Pipei}		
 		]
 	},
-	{path:"/ZhuanlaoGu1/:XiangmuID/:is_send",component:ZhuanlaoGu1,
+	{path:"/ZhuanlaoGu1/:type/:XiangmuID/:is_send",component:ZhuanlaoGu1,
 		children:[
 		    {path: 'Pipei',component: Pipei}		
 		]
 	},
-	{path:"/ZuLin1/:XiangmuID/:is_send",component:ZuLin1,
+	{path:"/ZuLin1/:type/:XiangmuID/:is_send",component:ZuLin1,
 		children:[
 		    {path: 'Pipei',component: Pipei}		
 		]
 	},
-	{path:"/Diaoyan1/:XiangmuID/:is_send",component:Diaoyan1,
+	{path:"/Diaoyan1/:type/:XiangmuID/:is_send",component:Diaoyan1,
 		children:[
 		    {path: 'Pipei',component: Pipei}		
 		]

@@ -32,7 +32,7 @@
 				<box></box>
 				<div style="width:100%;height:0.5rem;"></div>
 			</div>
-			<router-view :token="token" :XiangmuID="XiangmuID" :is_send="is_send"></router-view>
+			<router-view :token="token" :XiangmuID="XiangmuID" :is_send="is_send" :type="type"></router-view>
 			<!--<dingzengzuoshi ref="dingzengzuoshiShow"></dingzengzuoshi>-->
 			<!--<zhuanlaogu ref="zhuanlaoguShow"></zhuanlaogu>-->
 			<!--<diaoyan ref="diaoyanShow"></diaoyan>-->
@@ -126,7 +126,7 @@
 				this.types['type'+type]
 				console.log(this.types['type'+type])
 //				window.location.href="#/wode/jilu/0/"+this.types['type'+type];
-				window.location.href="#/"+this.types['type'+type]+'/'+id+'/'+is_send;
+				window.location.href="#/"+this.types['type'+type]+'/'+type+'/'+id+'/'+is_send;
 //				this.$refs.dingzengzuoshiShow.zuoshiBlock();
 			},
 //			dingzengGo(){
