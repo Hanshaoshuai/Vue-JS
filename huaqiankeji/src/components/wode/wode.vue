@@ -2,7 +2,7 @@
 	<!--<transition name="fade">-->
 		<div class="wode">
 			<div class="searchBox">
-				<div class="home-search">
+				<div class="home-search" @click.stop="gaiBian()">
 					<img ref="images" :src="photourl"/>
 				</div>
 				<div class="header-name">
@@ -114,6 +114,21 @@
 				yuetan:""
 			}
 		},
+		activated(){
+			this.photourl=localStorage.getItem("photourl");
+			this.$nextTick(function(){
+				var images = this.$refs.images;
+				images.onload =function(){
+					if (this.clientWidth>this.clientHeight) {
+						this.style.height="100%"
+						this.style.width="auto"
+					}else{
+						this.style.width="100%"
+						this.style.height="auto"
+					}
+				}
+			});
+		},
 		mounted(){
 			this.userContent={
 	  			userID:localStorage.getItem("userID"),			//用户ID
@@ -121,7 +136,7 @@
 				phone:localStorage.getItem("phone"),		//用户电话
 				type:localStorage.getItem("type"),			//用户类型
 				photo:localStorage.getItem("photo"),		//用户头像id
-				photourl:localStorage.getItem("TouxiangImg")	//用户头像URL地址
+				photourl:localStorage.getItem("photourl")	//用户头像URL地址
 	  		}
 			this.token=this.userContent["token"];
 			this.beianType=this.userContent["type"];
@@ -141,16 +156,6 @@
 				this.block=false;
 			}
 			console.log(this.investment_type)
-			this.$nextTick(function(){
-				var images = this.$refs.images;
-				if (images.clientWidth>images.clientHeight) {
-					images.style.height="100%"
-					images.style.width="auto"
-				}else{
-					images.style.width="100%"
-					images.style.height="auto"
-				}
-			});
 			var params={
 	    		token:this.userContent.token,
 	    		terminalNo:3
@@ -166,6 +171,18 @@
 					localStorage.setItem("typeID",res.body.data.info.investment_type);
 					this.investment_type=res.body.data.info.investment_type;		//用户的投资类型；   是投资机构时才会出现的参数
 				}
+				this.$nextTick(function(){
+					var images = this.$refs.images;
+					images.onload =function(){
+						if (this.clientWidth>this.clientHeight) {
+							this.style.height="100%"
+							this.style.width="auto"
+						}else{
+							this.style.width="100%"
+							this.style.height="auto"
+						}
+					}
+				});
 				console.log("个人资料");
 				console.log(res);
 //				if(this.data.exchange_card==0){
@@ -186,6 +203,9 @@
 			})
 		},
 		methods:{
+			gaiBian(){
+				window.location.href="#/touXiang/"+this.userContent["token"];
+			},
 			biduGo(){
 //				this.$refs.biduShow.biduBlock();
 				window.location.href="#/wode/shezhi/"+this.userContent["token"];
@@ -268,8 +288,8 @@
 			    border-radius:0.06rem;
 			    overflow:hidden;
 			    img{
-			    	width:100%;
-			    	height:100%;
+			    	/*width:100%;
+			    	height:100%;*/
 			    }
 			}
 			.header-name{

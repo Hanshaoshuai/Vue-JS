@@ -84,26 +84,26 @@
 					this.$http.post(URL.path+'chatcomment/comment_list',this.token,{emulateJSON:true}).then(function(res){
 						Indicator.close();
 						this.res=res.body.data;
-						var data=[];
-						var datas=[];
-						var x=0;
-						var y=0;
-						var length=res.body.data.length;
-						for(var item in this.res){
-							if(this.res[item].nums!=0){
-								datas[y]=this.res[item];
-								this.res.splice(item,1);
-								y+=1
-							}else{
-								data[x]=this.res[item];
-								x+=1;
-							}
-						}
-						for(var i=0; i<data.length;i++){
-							datas.push(data[i])
-						}
-						this.res=datas;
-						console.log(datas)
+//						var data=[];
+//						var datas=[];
+//						var x=0;
+//						var y=0;
+//						var length=res.body.data.length;
+//						for(var item in this.res){
+//							if(this.res[item].nums!=0){
+//								datas[y]=this.res[item];
+//								this.res.splice(item,1);
+//								y+=1
+//							}else{
+//								data[x]=this.res[item];
+//								x+=1;
+//							}
+//						}
+//						for(var i=0; i<data.length;i++){
+//							datas.push(data[i])
+//						}
+//						this.res=datas;
+//						console.log(datas)
 						
 						
 						if(this.res.length=='0'){
@@ -147,15 +147,15 @@
 				this.$http.post(URL.path+'chatcomment/read_chat',farams,{emulateJSON:true}).then(function(res){
 					console.log("反馈已读");
 					console.log(res.body);
-					this.$http.post(URL.path+'chatcomment/get_feedback_num',farams1,{emulateJSON:true}).then(function(res){
-						var FankuiShu=res.body.data[0].feedback_num;
-						this.FankuiShu=FankuiShu
-						this.$emit("to-parent",FankuiShu);
-						console.log("企业获取反馈个数");
-						console.log(res);
-					},function(res){
-					    console.log(res);
-					})
+//					this.$http.post(URL.path+'chatcomment/get_feedback_num',farams1,{emulateJSON:true}).then(function(res){
+//						var FankuiShu=res.body.data[0].feedback_num;
+//						this.FankuiShu=FankuiShu
+//						this.$emit("to-parent",FankuiShu);
+//						console.log("企业获取反馈个数");
+//						console.log(res);
+//					},function(res){
+//					    console.log(res);
+//					})
 				},function(res){
 				    console.log(res);
 				})

@@ -21,7 +21,10 @@
 		},
 		data () {
 			return {
-				touxiangID: ""
+				touxiangID: "",
+				mingpianID:"",
+				imgSrc:"",
+				imgurl:''
 			}
 		},
 		mounted(){
@@ -91,6 +94,7 @@
 						this.touxiangID=data.id;
 						localStorage.setItem("TouxiangImg",res.body.data.url);
 						img.src=localStorage.getItem("TouxiangImg");
+						this.$emit("to-parent",res.body.data.url);
 					}else{
 						Toast("上传失败请重新上传");
 					}

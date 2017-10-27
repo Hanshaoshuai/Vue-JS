@@ -87,14 +87,23 @@
 				mimas:false
 			}
 		},
+		activated(){
+			var denglu=window.location.href
+			localStorage.setItem("denglu",denglu)
+		},
 		mounted(){
-			
+			var denglu=window.location.href
+			localStorage.setItem("denglu",denglu)
 		},
 		methods:{
 			fanhui(){
 				history.go(-1)
 			},
 			denglus(){
+				this.$refs.mima.blur();
+//				cttx.disabled = true
+//				window.dapi.hideinput()
+//				document.activeElement.blur();
 				document.activeElement.blur();//隐藏软键盘；
 				var tate=this;
 				var phone=/^1[34578]\d{9}$/;

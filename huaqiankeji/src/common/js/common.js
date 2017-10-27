@@ -9,42 +9,42 @@
 	document.oncontextmenu=shield;//屏蔽选择函数
 	// H5 plus事件处理
 	var ws=null,as='pop-in';
-	function plusReady(){
-		ws=plus.webview.currentWebview();
-		// Android处理返回键
-		plus.key.addEventListener('backbutton',function(){
-			back();
-		},false);
-		compatibleAdjust();
-	}
-	if(w.plus){
-		plusReady();
-	}else{
-		document.addEventListener('plusready',plusReady,false);
-	}
-	// DOMContentLoaded事件处理
-	var domready=false;
-	document.addEventListener('DOMContentLoaded',function(){
-		domready=true;
-		gInit();
-		document.body.onselectstart=shield;
-		compatibleAdjust();
-	},false);
-	// 处理返回事件
-	w.back=function(hide){
-		if(w.plus){
-			ws||(ws=plus.webview.currentWebview());
-			if(hide||ws.preate){
-				ws.hide('auto');
-			}else{
-				ws.close('auto');
-			}
-		}else if(history.length>1){
-			history.back();
-		}else{
-			w.close();
-		}
-	};
+//	function plusReady(){
+//		ws=plus.webview.currentWebview();
+//		// Android处理返回键
+//		plus.key.addEventListener('backbutton',function(){
+//			back();
+//		},false);
+//		compatibleAdjust();
+//	}
+//	if(w.plus){
+//		plusReady();
+//	}else{
+//		document.addEventListener('plusready',plusReady,false);
+//	}
+//	// DOMContentLoaded事件处理
+//	var domready=false;
+//	document.addEventListener('DOMContentLoaded',function(){
+//		domready=true;
+//		gInit();
+//		document.body.onselectstart=shield;
+//		compatibleAdjust();
+//	},false);
+//	// 处理返回事件
+//	w.back=function(hide){
+//		if(w.plus){
+//			ws||(ws=plus.webview.currentWebview());
+//			if(hide||ws.preate){
+//				ws.hide('auto');
+//			}else{
+//				ws.close('auto');
+//			}
+//		}else if(history.length>1){
+//			history.back();
+//		}else{
+//			w.close();
+//		}
+//	};
 	// 处理点击事件
 	var openw=null,waiting=null;
 	/**

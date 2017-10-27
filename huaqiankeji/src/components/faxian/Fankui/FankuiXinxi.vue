@@ -63,6 +63,7 @@
 				</div>	
 			</div>
 			<tishi ref="tishiShow" :xingXi="xingXi" :content="content"></tishi>
+			<router-view :uid="uid"></router-view>
 		</div>
 	<!--</transition>-->
 </template>
@@ -184,19 +185,15 @@
 					for(var item in res){
 						if(res[item].type==1){		//type=1:评论
 							if(res[item].from_id==this.uid){
+								this.tousuoContent=this.numToTime1(res[item].create_time);
+								this.tousuoGo(this.numToTime1(res[item].create_time));
+								
 								this.You('0',res[item].content)
-	//								this.tousuoContent=res[item].create_time;
-	//								this.TishiNeirong(res[item].create_time);
-								
-								this.tousuoContent=this.numToTime1(res[item].create_time);
-								this.tousuoGo(this.numToTime1(res[item].create_time));
 							}else{
-								this.My('0',res[item].content);
-	//								this.tousuoContent=res[item].create_time;
-	//								this.TishiNeirong(res[item].create_time);
-								
 								this.tousuoContent=this.numToTime1(res[item].create_time);
 								this.tousuoGo(this.numToTime1(res[item].create_time));
+								
+								this.My('0',res[item].content);
 							}
 						}
 						if(res[item].type==2){		//type=2:项目请求
@@ -205,49 +202,42 @@
 								var DianJi=res[item].agree
 								var cont=JSON.parse(res[item].content);
 								var name=cont.user[1]
-								this.You('1',name,cont.to_id,cont.item_id,MingPian,DianJi,res[item].id,cont.com_short)
-	//								this.tousuoContent=res[item].create_time;
-	//								this.TishiNeirong(res[item].create_time);
-								
 								this.tousuoContent=this.numToTime1(res[item].create_time);
 								this.tousuoGo(this.numToTime1(res[item].create_time));
+								
+								this.You('1',name,cont.to_id,cont.item_id,MingPian,DianJi,res[item].id,cont.com_short)
 								console.log(res[item].id)
 								console.log(DianJi)
 							}else{
-								this.TishiNeirong('您已成功向对方索要完整项目')
-	//								this.TishiNeirong(res[item].create_time);
-								
 								this.tousuoGo(this.numToTime1(res[item].create_time));
+								
+								this.TishiNeirong('您已成功向对方索要完整项目')
 							}
 						}
 						if(res[item].type==4){		//type=4:发送项目
 							if(res[item].from_id==this.uid){
 								var cont=JSON.parse(res[item].content);
 								if(cont.operate==1){
-									this.TishiNeirong('对方已将完整项目发送给你')		//提示信息函数
-	//									this.TishiNeirong(res[item].create_time);
-									
 									this.tousuoGo(this.numToTime1(res[item].create_time));
+									
+									this.TishiNeirong('对方已将完整项目发送给你')		//提示信息函数
 								}
 								if(cont.operate==2){
-									this.TishiNeirong('对方拒绝了您索要申请完整项目')
-	//									this.TishiNeirong(res[item].create_time);
-									
 									this.tousuoGo(this.numToTime1(res[item].create_time));
+									
+									this.TishiNeirong('对方拒绝了您索要申请完整项目')
 								}
 							}else{
 								var cont=JSON.parse(res[item].content);
 								if(cont.operate==1){
-									this.TishiNeirong('您同意了向对方发送完整项目')		//提示信息函数
-	//									this.TishiNeirong(res[item].create_time);
-									
 									this.tousuoGo(this.numToTime1(res[item].create_time));
+									
+									this.TishiNeirong('您同意了向对方发送完整项目')		//提示信息函数
 								}
 								if(cont.operate==2){
-									this.TishiNeirong('您拒绝了向对方发送完整项目')
-	//									this.TishiNeirong(res[item].create_time);
-									
 									this.tousuoGo(this.numToTime1(res[item].create_time));
+									
+									this.TishiNeirong('您拒绝了向对方发送完整项目')
 								}
 							}
 						}
@@ -258,20 +248,17 @@
 								var i=0;
 								var cont=JSON.parse(res[item].content);
 								var name=cont.card[1]
-								this.You('1',name,cont.id,cont.item_id,MingPian,DianJi,res[item].id)
-	//								this.tousuoContent=res[item].create_time;
-	//								this.TishiNeirong(res[item].create_time);
-								
 								this.tousuoContent=this.numToTime1(res[item].create_time);
 								this.tousuoGo(this.numToTime1(res[item].create_time));
 								
+								this.You('1',name,cont.id,cont.item_id,MingPian,DianJi,res[item].id)
 								console.log(JSON.parse(res[item].content))
 								console.log(DianJi)
 								i++;
 							}else{
-								this.TishiNeirong('您已成功向对方申请交换名片')
-	//								this.TishiNeirong(res[item].create_time);
 								this.tousuoGo(this.numToTime1(res[item].create_time));
+								
+								this.TishiNeirong('您已成功向对方申请交换名片')
 							}
 						}
 						if(res[item].type==5){		//type=5:发送名片
@@ -281,49 +268,48 @@
 								var cont=JSON.parse(res[item].content)
 								if(cont.operate==1){
 									cont.card[0];
-									this.You('1',cont.card[0],'0','1',MingPian);
-	//									this.tousuoContent=res[item].create_time;
-	//									this.TishiNeirong(res[item].create_time);
 									this.tousuoContent=this.numToTime1(res[item].create_time);
 									this.tousuoGo(this.numToTime1(res[item].create_time));
 									
+									this.You('1',cont.card[0],'0','1',MingPian);
 									console.log(JSON.parse(res[item].content).card[0])
 								}
 								if(cont.operate==2){
 	//									cont.card[i];
-									this.TishiNeirong('对方拒绝了您交换名片的申请')
-	//									this.TishiNeirong(res[item].create_time);
 									this.tousuoGo(this.numToTime1(res[item].create_time));
+									
+									this.TishiNeirong('对方拒绝了您交换名片的申请')
 								}
 								i++;
 							}else{
 								var MingPian="5";
 								var cont=JSON.parse(res[item].content)
 								if(cont.operate==2){
-									this.TishiNeirong('您拒绝了对方交换名片的申请')		//提示信息函数
-	//									this.TishiNeirong(res[item].create_time);
 									this.tousuoGo(this.numToTime1(res[item].create_time));
+									
+									this.TishiNeirong('您拒绝了对方交换名片的申请')		//提示信息函数
 								}else{
+									this.tousuoGo(this.numToTime1(res[item].create_time));
+									
 									this.TishiNeirong('您同意了对方交换名片的申请')		//提示信息函数
-	//									this.TishiNeirong(res[item].create_time);
+									
 									this.tousuoGo(this.numToTime1(res[item].create_time));
 									
 									this.You('1',cont.card[1],'0','1',MingPian);
-									this.tousuoGo(this.numToTime1(res[item].create_time));
 								}
 							}
-	//							this.tousuoContent=res[item].create_time;
-	//							this.TishiNeirong(res[item].create_time);
 						}
 						if(res[item].type==6){		//type=1:跟进和不跟进
 							if(res[item].from_id==this.uid){
 								var follow=res[item].follow;
 								var com_short=res[item].com_short;
-								if(follow==1){//跟进
-									this.TishiNeirong(localStorage.getItem("name")+'对“'+com_short+'”'+'有投资兴趣，将进一步跟进本次融资安排')		//提示信息函数
-									this.tousuoGo(this.numToTime1(res[item].create_time));
-								}
 								this.tousuoGo(this.numToTime1(res[item].create_time));
+								
+								if(follow==1){//跟进
+									this.tousuoGo(this.numToTime1(res[item].create_time));
+									
+									this.TishiNeirong(localStorage.getItem("name")+'对“'+com_short+'”'+'有投资兴趣，将进一步跟进本次融资安排')		//提示信息函数
+								}
 							}
 						}
 					}
@@ -563,7 +549,7 @@
 					imgs.style.background="#fff";
 					span.appendChild(this.MingpianTishi(cont));
 				}else{
-					span.innerText=cont;							//对应插入
+					span.innerHTML=cont;							//对应插入
 					this.introduction="";
 				}
 //				this.FasongShijian();
@@ -578,6 +564,7 @@
 				var imaF=document.createElement("div");
 				var img=document.createElement("img");
 				var imgs=document.createElement("div");
+				var tata=this;
 				my.setAttribute("class","fankiu-my");			//添加属性
 				neiRong.setAttribute("class","fankiu-text");
 				touXiang.setAttribute("class","fankiu-img");
@@ -615,6 +602,35 @@
 				imaF.style.boxSizing="border-box";
 				imaF.style.overflow="hidden";
 				imaF.style.borderRadius="0.02rem";
+				imaF.onclick=function(){
+	//				对方个人资料
+					var params={
+		//	    		token:this.userContent.token,
+			    		uid:tata.uid
+			    	}
+					tata.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
+						var ctype=res.body.data.ctype
+						var Tid=res.body.data.info.investment_type
+//						(id,Tid,uid){		//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构/研究咨询 5:券商研究员 6:新三板做市商 7:财务顾问
+//						console.log(Tid)
+//						(item.ctype,item.investment_type,item.uid)
+						if(ctype=='2'){
+							if(Tid=='0'){
+								window.location.href="#/fankuixinxi/1/2/3/ziLiaoT1"+"/"+tata.uid;//1:股权投资   2:债权投资   3:股债兼投
+							}else{
+								window.location.href="#/fankuixinxi/1/2/3/ziLiaoT"+Tid+"/"+tata.uid;//1:股权投资   2:债权投资   3:股债兼投
+							}
+							
+						}else{
+							window.location.href="#/fankuixinxi/1/2/3/ziLiao"+ctype+"/"+tata.uid;
+						}
+						
+						
+						console.log(res);
+					},function(res){
+					    console.log(res);
+					})
+				}
 //				img.style.width="0.38rem";
 //				img.style.height="0.38rem";
 				img.style.background="#EAEAEA";
@@ -640,7 +656,7 @@
 						span.appendChild(this.HuanquSenqing(cont,id,item_id,MingPian,DianJi,chat_id,com_short));
 					}
 				}else{
-					span.innerText=cont;							//对应插入
+					span.innerHTML=cont;							//对应插入
 					this.introduction="";
 				}
 				contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
@@ -951,11 +967,15 @@
 					this.introduction="";
 					return;
 				}
-				
-				
-				
-				
-				
+				this.FasongShijian();	//发送时间
+				if(typeName){			//发送函数
+					if(typeName==2){		//type=2:项目请求
+						this.My('1',typeCont)
+					}
+					if(typeName==3){		//type=3:名片请求
+						this.My('1',typeCont)
+					}
+				}
 				var Height=shuru.clientHeight		//底部高度
 				console.log(shuru.clientHeight)							//显示框高度
 //				contentTexte.style.height=(DEHeight-93)/100+"rem";
@@ -966,14 +986,6 @@
 //					console.log(contentTexte.scrollTop )
 //					console.log(contentTexte.scrollHeight )
 //				}
-				if(typeName){
-					if(typeName==2){		//type=2:项目请求
-						this.My('1',typeCont)
-					}
-					if(typeName==3){		//type=3:名片请求
-						this.My('1',typeCont)
-					}
-				}
 				if(texts!=""){
 //					var cont="xxx 总经理 申请换取名片"
 //					var type=1					//如果tyoe=1发送的是名片
@@ -993,7 +1005,6 @@
 						this.My(type,cont);		//调用发送评论函数
 //						this.You(type,cont)
 						this.$nextTick(function(){
-							this.FasongShijian();
 							var img = this.$refs.contentTexte.getElementsByTagName("img");
 							var length=img.length;
 							var contentTexte=this.$refs.contentTexte;
@@ -1025,44 +1036,16 @@
 //					console.log(newVal +"*********"+ oldVal)
 //				}
 			}
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
 		},
 		filters:{
-//			formatDate(time){
-//				let date = new Date(time);
-//				return formatDate(date,'yyyy-MM-dd hh:mm');
-//			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 			tishi
-//			cartcontrol,
-//			ratingselect,
-//			split
 		}
 	}
 </script>

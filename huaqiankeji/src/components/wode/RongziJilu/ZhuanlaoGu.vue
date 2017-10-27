@@ -1,6 +1,106 @@
 <template>
 	<!--<transition name="fade">-->
 		<div v-show="tucaoShow" class="xiangmu">
+			<div class="xiangmu-header"></div>
+			<div class="header-content" @click.stap="yijianHind()">
+				<span class="xiangmu-left"><img src="../img/back.png"/></span>
+				<span>项目详情</span>
+			</div>
+			<div class="box">
+				<div style="width:100%;height:0.55rem;"></div>
+				<div class="tishi-bottom">
+					<div class="border">
+						<ul>
+							<li class="border-bottom"></li>
+							<li class="tishi-center">
+								<div class="content-heder">
+									<span>{{texta}}</span>
+									<span class="text-center">{{textb}}</span>
+									<span v-if="Xiangmutype==1" class="texts">&nbsp;定增</span>
+									<span v-if="Xiangmutype==2" class="texts">&nbsp;做市</span>
+									<span v-if="Xiangmutype==3" class="texts">&nbsp;转老股</span>
+									<span v-if="Xiangmutype==4" class="texts">&nbsp;股权质押</span>
+									<span v-if="Xiangmutype==5" class="texts">&nbsp;融资租赁</span>
+									<span v-if="Xiangmutype==6" class="texts">&nbsp;研报支持</span>
+									<span v-if="Xiangmutype==7" class="texts">&nbsp;公司调研</span>
+									<!--<span>&nbsp;{{data.type}}</span>-->
+								</div>
+							</li>
+							<li class="border-bottom"></li>
+						</ul>
+						<div v-if="industry" class="zhuying_1 liangdian_1">
+							<div class="ferst"><span></span>所在行业</div>
+							<div ref="biaoqian" class="last">
+								<font v-if="BianJi==0" v-for="item in industry1" class="bianse">{{item}}</font>
+								<!--<font v-if="BianJi==1" v-for="(item,index) in BiaoQian" @click.stap="xuanze(index)" :id="item.id">{{item.title}}</font>-->
+							</div>
+							<!--<ul ref="biaoqian">
+								<span v-if="BianJi==0" v-for="(item,index) in industry1" class="bianse">{{item}}</span>
+								<span v-if="BianJi==1" v-for="(item,index) in BiaoQian" @click.stap="xuanze(index)" :id="item.id">{{item.title}}</span>
+							</ul>-->
+						</div>
+						<div class="zhuying_1">
+							<div class="ferst"><span></span>投资亮点</div>
+							<div class="last">
+								<p>{{textc}}</p>
+							</div>
+						</div>
+					</div>
+					<div class="zhuying_1 border">
+						<div class="ferst"><span></span>经营业绩</div>
+						<div class="last">
+							<p>上一财年：营收&nbsp;<span>{{numbera}}亿元</span>&nbsp;&nbsp;&nbsp;&nbsp;净利润&nbsp;<span>{{numberb}}万元</span></p>
+							<p>今年预计：营收&nbsp;<span>{{numberc}}亿元</span>&nbsp;&nbsp;&nbsp;&nbsp;净利润&nbsp;<span>{{numberd}}万元</span></p>
+						</div>
+					</div>
+					<div class="zhuying_1 border">
+						<div class="ferst"><span></span>转让计划</div>
+						<div class="last">
+							<p>企业估值：<span>{{numberi}}亿元</span></p>
+							<p>拟转股份数：<span>{{numbere}}万股</span></p>
+							<p>每股价格：<span>{{numberf}}元</span></p>
+						</div>
+					</div>
+					<!--<div class="zhuying_1 border">
+						<div class="ferst"><span></span>拟转股份数</div>
+						<div class="last">
+							<p><span>{{numbere}}万股</span></p>
+						</div>
+					</div>
+					<div class="zhuying_1 border">
+						<div class="ferst"><span></span>每股价格</div>
+						<div class="last">
+							<p><span>{{numberf}}元</span></p>
+						</div>
+					</div>-->
+					<div class="zhuying_1 border">
+						<div class="ferst"><span></span>是否本人股份</div>
+						<div class="last">
+							<p><span>{{numberg}}</span></p>
+						</div>
+					</div>
+					<div class="zhuying_1 border">
+						<div class="ferst"><span></span>所在省份</div>
+						<div class="last">
+							<p><span>{{numberh}}</span></p>
+						</div>
+					</div>
+					<div style="width:100%;height:0.65rem;"></div>
+				</div>
+			</div>
+			<div v-if="data.end_follow!='2'" class="baoming border-top">
+				<span class="border-right" :class="butenLeft" @click.stap="genJin()">已投清单</span>
+				<span :class="butenRight" @click.stap="xiayibuGo()">继续投递</span>
+			</div>
+			<router-view :token="token" :type="type" :XiangmuID="XiangmuID" :Xiangmutype="Xiangmutype"></router-view>
+			<tishi ref="tishiShow" :xingXi="xingXi" :content="content"></tishi>
+		</div>
+	<!--</transition>-->
+</template>
+
+<!--<template>
+	<transition name="fade">
+		<div v-show="tucaoShow" class="xiangmu">
 			<div class="xiangmu-header" @click.stap="yijianHind()">
 				<span class="xiangmu-left"><img src="../img/back.png"/></span>
 				<span>项目详情</span>
@@ -8,13 +108,6 @@
 			<div class="box" ref="guanzhuLingyu">
 				<div style="width:100%;height:0.45rem;"></div>
 				<box></box>
-				<!--<div class="fankiu border-topbottom">
-					<div class="content-food" style="text-align:center;">
-						<img src="../img/lishi.png"/>
-						<span class="content-header">尚无历史融资记录</span>
-					</div>
-				</div>
-				<box></box>-->
 				<div class="fankiu-content">
 					<div class="zhuying_1">
 						<div class="ferst"><span>*</span>企业名称</div>
@@ -40,11 +133,6 @@
 						<ul ref="biaoqian">
 							<span v-if="BianJi==0" v-for="(item,index) in industry1" class="bianse">{{item}}</span>
 							<span v-if="BianJi==1" v-for="(item,index) in BiaoQian" @click.stap="xuanze(index)" :id="item.id">{{item.title}}</span>
-							<!--<span @click.stap="xuanze('1')">行业标签</span>
-							<span @click.stap="xuanze('2')">行业标签</span>
-							<span @click.stap="xuanze('3')">行业标签</span>
-							<span @click.stap="xuanze('4')">行业标签</span>
-							<span @click.stap="xuanze('5')">行业标签</span>-->
 						</ul>
 					</div>
 					<div class="zhuying_1">
@@ -87,21 +175,6 @@
 							<input readOnly="true" v-model="numberg" placeholder="是 / 否" number="true" type="text" class="mint-field-core">
 						</div>
 					</div>
-					<!--<div class="zhuying_1 jihua">
-						<div class="ferst"><span>*</span>融资计划</div>
-						<div class="last number last-bottom">
-							<input readOnly="true" v-model="numbere" placeholder="输入数字" number="true" type="number" class="mint-field-core">
-							<span>亿元</span>
-						</div>
-						<div class="last number last-bottom">
-							<input readOnly="true" v-model="numberf" placeholder="输入数字" number="true" type="number" class="mint-field-core">
-							<span>万元</span>
-						</div>
-						<div class="last number last-bottom">
-							<input readOnly="true" v-model="numberg" placeholder="是 / 否" number="true" type="number" class="mint-field-core">
-							<span>元/股</span>
-						</div>
-					</div>-->
 					<div class="zhuying_1">
 						<div class="ferst"><span>*</span>所在省份</div>
 						<div class="last number">
@@ -109,36 +182,18 @@
 						</div>
 					</div>
 					<div class="times">
-						<!--<span class="times_1">领天</span>
-						<span class="text-center">1小时前</span>
-						<span>发布</span>
-						<div class="times-name">
-							<span>{{fankui}}反馈</span>
-							<span class="text-center">{{genjin}}跟进</span>
-						</div>-->
 					</div>
 				</div>
 				<div class="baoming border-top">
 					<span v-show="none" :class="butenRight" @click.stap="buGen()">重编辑</span>
 					<span class="border-right" :class="butenLeft" @click.stap="xiayibuGo()">继续投递</span>
-					<!--<span class="border-right" :class="butenLeft" @click.stap="genJin()">我要报名</span>
-					<span :class="butenRight" @click.stap="buGen()">不参加</span>-->
 				</div>
-				<!--<div class="butten">
-					<ul @click.stop="chongxin()">
-						<li><span>重编辑</span></li>
-					</ul>
-					<ul @click.stop="xiayibuGo()">
-						<li><span>继续投递</span></li>
-					</ul>
-				</div>-->
 			</div>
-			<!--<pipei ref="pipeiShow" :token="token" :type="type" :XiangmuID="XiangmuID"></pipei>-->
 			<router-view :token="token" :type="type" :XiangmuID="XiangmuID" :Xiangmutype="Xiangmutype"></router-view>
 			<tishi ref="tishiShow" :xingXi="xingXi" :content="content"></tishi>
 		</div>
-	<!--</transition>-->
-</template>
+	</transition>
+</template>-->
 
 <script type="text/ecmascript">
 	import {URL} from '../../../common/js/path';
@@ -146,10 +201,7 @@
 	import { Toast } from 'mint-ui';
 	import { Indicator } from 'mint-ui';
 	import box from "../../box.vue";
-//	import pipei from "../../faxian/WoyaoRongzi/PipeiTouziRen/Pipei.vue";
 	import tishi from "../../Tishi.vue";
-//	import youhuiquan from "../../shendu/PeixunZixun/YouhuiQuan.vue";
-//	import fankuixinxi from "./FankuiXinxi.vue";
 	
 	
 	export default {
@@ -170,8 +222,8 @@
 				z:'',
 				industry:"",
 				industry1:[],
-				butenLeft:"butenLeft",
-				butenRight:"",
+				butenLeft:"",
+				butenRight:"butenRight",
 				BianJi:0,
 				BiaoQian:"",
 				datas:"",
@@ -186,6 +238,7 @@
 				numberf:"",	//融资计划		请填写融资总额
 				numberg:"",	//融资计划		请填写每股价格
 				numberh:"",	//所在省份
+				numberi:"",
 				texta:"",	//公司名称
 				textb:"",	//公司代码
 				textc:"",	//项目推荐		请填写直营业务、投资亮点等
@@ -247,10 +300,11 @@
 					this.numberb=this.data.last_year_profit
 					this.numberc=this.data.predict_revenue
 					this.numberd=this.data.predict_profit
-					this.numbere=this.data.appraisement
-					this.numberf=this.data.total_finance
+					this.numbere=this.data.transfe_share
+					this.numberf=this.data.share_price
 					this.numberg=shifou
 					this.numberh=this.data.city
+					this.numberi=this.data.appraisement
 					this.industry=this.data.industry
 					this.type=this.data.type
 					
@@ -278,6 +332,9 @@
 			yijianHind(){
 				history.go(-1)
 //				this.tucaoShow=false;
+			},
+			genJin(){
+				window.location.href='#/ZhuanlaoGu1/1/'+this.XiangmuID+'/1/YitouQingdan';
 			},
 			xuanze(index){
 				var spans=this.$refs.biaoqian.getElementsByTagName("span");	
@@ -323,8 +380,8 @@
 						this.numberg='';
 					}
 				}
-				this.butenLeft="butenLeft";
-				this.butenRight="";
+//				this.butenLeft="butenLeft";
+//				this.butenRight="";
 				var CanShu={				//给下级要传的参数
 					texta:this.texta,
 					textb:this.textb,
@@ -352,7 +409,7 @@
 					this.content=this.$refs.pipeiShow;
 					if(this.is_send=='1'){
 //						this.$refs.pipeiShow.pipeiBlock(CanShu);
-						window.location.href='#/ZhuanlaoGu1/1/3/1/Pipei';
+						window.location.href='#/ZhuanlaoGu1/1/'+this.XiangmuID+'/1/Pipei';
 					}else{
 						this.$refs.tishiShow.tishiBlock(CanShu,'pipei');//CanShu是下级要传的参数
 					}
@@ -367,17 +424,6 @@
 				this.none=false;
 				var textInputs = this.$refs.guanzhuLingyu.getElementsByClassName("mint-field-core");
 				var length=textInputs.length;
-//				this.numbera=""	//上一财年营收、净利润		请填写年营业
-//				this.numberb=""	//上一财年营收、净利润		请填写净利润
-//				this.numberc=""	//今年预计营收、净利润		请填写预计营收
-//				this.numberd=""	//今年预计营收、净利润		请填写净利润
-//				this.numbere=""	//融资计划		请填写融资估值
-//				this.numberf=""	//融资计划		请填写融资总额
-//				this.numberg=""	//融资计划		请填写每股价格
-//				this.numberh=""	//所在省份
-//				this.texta=""	//公司名称
-//				this.textb=""	//公司代码
-//				this.textc=""
 				//获取标签
 				if(this.industry){
 					this.BianJi=1;
@@ -397,58 +443,30 @@
 				this.butenLeft="butenLeft";
 			}
 			
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		watch:{					//监听输入范围
-			textc:function(newVal,oldVal){
-				var x=newVal.length;
-				if(x<=200){
-					this.x=x;
-				}else{
-					this.textc=oldVal;
-					Toast("您的输入超出范围！")
-				}
-				
-				
-			}
+//			textc:function(newVal,oldVal){
+//				var x=newVal.length;
+//				if(x<=200){
+//					this.x=x;
+//				}else{
+//					this.textc=oldVal;
+//					Toast("您的输入超出范围！")
+//				}
+//				
+//				
+//			}
 		},
 		events:{
 			
 		},
 		filters:{
-//			formatDate(time){
-//				let date = new Date(time);
-//				return formatDate(date,'yyyy-MM-dd hh:mm');
-//			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 			box,
-//			pipei,
 			tishi
-//			youhuiquan
-//			fankuixinxi
 		}
 	}
 </script>
@@ -462,10 +480,220 @@
 	}
 	.fade-enter, .fade-leave-active {
 	  	transform: translateX(4.17rem);
-	  	/*transform:rotate(360deg);*/
-	  	/*opacity: 0;*/
 	}
+	
 	.xiangmu{
+		position:fixed;
+		background:#f5f4f9;
+		bottom:0;
+		top:0;
+		left:0;
+		right:0;
+		z-index:120;
+		.xiangmu-header{
+			position:absolute;
+			top:0;
+			left:0;
+			width:100%;
+			height:1.02rem;
+			background:#ff7a59;
+			z-index:300;
+		}
+		.header-content{
+			position:fixed;
+			width:100%;
+			font-weight:600;
+			top:0;
+			left:0;
+			font-size:0.2rem;
+			text-align:center;
+			line-height:0.45rem;
+			color:#fff;
+			z-index:420;
+			background:#ff7a59;
+			.xiangmu-left{
+				position:absolute;
+				height:100%;
+				padding-left:0.16rem;
+				display:inline-block;
+				top:0.04rem;
+				left:0;
+				img{
+					height:0.2rem;
+				}
+			}
+		}
+		.box::-webkit-scrollbar{width:0px;}
+		.box{
+			position:absolute;
+			overflow-y:scroll;
+			width:94%;
+			padding-right:0.03rem;
+			margin:auto;
+			height:100%;
+			top:0;
+			left:0;
+			right:0;
+			z-index:310;
+			-webkit-overflow-scrolling:touch;
+			.fankiu{
+				width:100%;
+				display:flex;
+				padding-bottom:0.45rem;
+				box-shadow: 0.01rem 0.02rem 0.04rem #a7503a;
+				.content-food{
+					flex:1;
+					padding:0.14rem 0.2rem;
+					font-size:0.16rem;
+					background:#fff;
+					position:relative;
+					display:flex;
+					align-items:center;
+					.laizi{
+						color:#b8b8b8;
+					}
+					img{
+						width:0.25rem;
+						height:0.25rem;
+					}
+					.bbb{
+						width:0.01rem;
+						height:0.16rem;
+						display:inline-block;
+						padding-left:0.03rem;
+					}
+				}
+			}
+			.tishi-bottom{
+				width:100%;
+				/*height:0.36rem;*/
+				.border{
+					box-shadow: 0.01rem 0.02rem 0.04rem #dfdfdf;
+				}
+				ul{
+					height:0.3rem;
+					padding:0.2rem 2.5% 0.1rem 2.5%;
+					display:flex;
+					background:#fff;
+					li{
+						flex:1;
+						height:0.2rem;
+						&:first-child{
+							max-width:10%;
+						}
+						&:last-child{
+							max-width:10%;
+						}
+						&.tishi-center{
+							width:0.57rem;
+							line-height:0.36rem;
+							text-align:center;
+							font-size:0.2rem;
+							color:#323232;
+						}
+					}
+				}
+				.zhuying_1{
+					width:100%;
+					font-size:0.16rem;
+					background:#fff;
+					margin-bottom:0.1rem;
+					span{
+						color:#2abdfc;
+					}
+					.ferst{
+						display:flex;
+						height:0.38rem;
+						align-content: center;
+						align-items: center;
+						span{
+							display:inline-block;
+							position:relative;
+							width:0.08rem;
+							height:0.16rem;
+							background:#ff7a59;
+							margin-right:0.08rem;
+							margin-left:-0.008rem;
+							z-index:200;
+						}
+					}
+					.last{
+						flex:1;
+						color:#676767;
+						padding:0rem 0.14rem 0.18rem 0.14rem;
+						line-height:0.26rem;
+						overflow:hidden;
+						font{
+							display:inline-block;
+							width:0.7rem;
+							height:0.22rem;
+							color:#ff7a59;
+							text-align:center;
+							float:left;
+							padding:0.04rem 0;
+							background:#fde9e2;
+							border-radius:0.04rem;
+							font-size:0.14rem;
+							line-height:0.15rem;
+							margin:0.04rem 0.07rem 0.04rem 0;
+							box-sizing:border-box;
+							border:1px solid #ff7a59;
+							&:first-child{
+								
+							}
+						}
+						p{
+							word-wrap:break-word;
+							text-align: justify;
+						}
+						/*box-shadow: 0 0.02rem 0.04rem #dedde1;*/
+					}
+				}
+			}
+		}
+		.baoming{
+			position:fixed;
+			bottom:0;
+			left:0;
+			width:100%;
+			height:0.5rem;
+			display:flex;
+			justify-content:center;
+			align-content:center;
+			align-items:center;
+			background:#fff;
+			box-shadow:0 0.02rem 0.04rem #dedde1;
+			z-index: 320;
+			span{
+				flex:1;
+				height:0.5rem;
+				line-height:0.5rem;
+				display:inline-block;
+				text-align:center;
+				background:#ececec;
+				font-size:0.18rem;
+				/*font{
+					display:inline-block;
+					width:0.18rem;
+					height:0.18rem;
+					background-image:url("../img/jian.png");
+					background-size:100% 100%;
+					margin:0 0 -0.04rem 0.06rem;
+				}*/
+			}
+			.butenLeft{
+				color:#fff;
+				background:#ff7a59;
+			}
+			.butenRight{
+				color:#fff;
+				background:#ff7a59;
+			}
+		}
+	}
+	
+	
+	/*.xiangmu{
 		position:fixed;
 		background:#f5f4f9;
 		bottom:0;
@@ -504,7 +732,7 @@
 			width:100%;
 			height:100%;
 			background:#fff;
-			-webkit-overflow-scrolling:touch;  		/*解决ios滑动*/
+			-webkit-overflow-scrolling:touch;  		
 			.fankiu{
 				width:100%;
 				display:flex;
@@ -523,7 +751,6 @@
 						height:0.24rem;
 					}
 					span{
-						/*font-weight:bold;*/
 					}
 				}
 			}
@@ -550,12 +777,10 @@
 						flex:1;
 						padding:0 0.06rem;
 						border:1px solid #ebebeb;
-						/*background:#f5f4f9;*/
 						.mint-field-core{
 							color: #787777;
 							resize: none;
 							font-size:0.14rem;
-							/*background:#f5f4f9;*/
 							height:0.33rem;
 							line-height:0.33rem;
 							&::-webkit-scrollbar{width:0;height:0}
@@ -569,7 +794,6 @@
 						.mint-field-core{
 							color: #787777;
 							resize: none;
-							/*background:#f5f4f9;*/
 							min-height:1.22rem;
 							line-height:0.21rem;
 							&::-webkit-scrollbar{width:0;height:0}
@@ -672,30 +896,8 @@
 					background:#ff7a59;
 				}
 			}
-			/*.butten{
-				width:100%;
-				background:#f5f4f9;
-				padding:0.2rem 0;
-				display:flex;
-				ul{
-					flex:1;
-					height:0.58rem;
-					margin:0 auto;
-					background:#ff7a59;
-					display:flex;
-					align-content:center;
-					align-items:center;
-					justify-content:center;
-					li{
-						span{
-							font-size:0.18rem;
-							color:#fff;
-						}
-					}
-				}
-			}*/
 		}
-	}
+	}*/
 </style>
 
 

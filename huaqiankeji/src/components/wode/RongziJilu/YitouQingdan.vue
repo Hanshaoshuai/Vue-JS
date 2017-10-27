@@ -1,22 +1,24 @@
 <template>
-	<!--<transition name="fade">-->
+	<transition name="fade">
 		<div v-show="showFlag" class="wenzhang">
 			<div class="xiangmu-header" @click.stop="listnone1()">
 				<span class="xiangmu-left"><img src="../img/back.png"/></span>
-				<span>一键投递</span>
+				<span>已投清单</span>
 			</div>
 			<div class="wenzhang-list">
 				<div ref="tianjia" class="wenzhang-content">
-					<div class="fankiu">
-						<div class="tubiao"></div>
-						<div class="content-food">
-							<span>已为您投递至如下投资人，请注意查收投资人反馈并及时回复</span>
-						</div>
-					</div>
 					<div class="donghuaGo" ref="donghuaGo">
 						<!--<transition-group name="list" tag="p" >-->
-							<div v-for="(item,index) in data" v-bind:key="index" class="list-item">
-								<!--{{item}}-->
+							<!--<div v-for="(item,index) in data" v-bind:key="index" class="list-item">
+								<div v-if="index!=length-1">
+									<div v-if="fenzhong[index]!=fenzhong[index-1]" class="fankiu">
+										<div class="tubiao"></div>
+										<div class="content-food">
+											<span>{{numToTime2(item.send_time)}}</span>
+										</div>
+										<div @click.stop="zhanKai()" class="anNui"></div>
+									</div>
+								</div>
 								<div class="sousuo-content border-topbottom">
 									<div class="content-header">
 										<font><img :src="item.photo"/></font>
@@ -27,56 +29,48 @@
 										</div>
 									</div>
 								</div>
-							</div>
-							<!--<div v-for="(item,index) in items" v-bind:key="index" class="list-item">
-								{{item}}
-								<div class="sousuo-content border-topbottom">
-									<div class="content-header">
-										<font><img :src="items[index].photo"/></font>
-										<div class="names">
-											<span class="border-right">{{items[index].uname}}</span>
-											<span>{{items[index].com_short}}</span>&nbsp;
-											<span>{{items[index].position}}</span>
+								<div style="width:100%;height:0.1rem;"></div>
+							</div>-->
+							<div v-for="(item,index) in data" v-bind:key="index" class="list-item heights">
+								<div v-if="index!=length-1">
+									<div class="fankiu">
+										<div class="tubiao"></div>
+										<div class="content-food">
+											<span>{{numToTime2(item['0'].send_time)}}</span>
+											<span style="display:inline-block;margin-left:0.2rem;">（{{item.length}}&nbsp;条）</span>
+										</div>
+										<div @click.stop="zhanKai(index)" class="anNui"><div class="imgas"></div></div>
+									</div>
+								</div>
+								<div v-for="(item,index) in item">
+									<div class="sousuo-content border-topbottom">
+										<div class="content-header">
+											<font><img :src="item.photo"/></font>
+											<div class="names">
+												<span class="border-right">{{item.uname}}</span>
+												<span>{{item.com_short}}</span>&nbsp;
+												<span>{{item.position}}</span>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>-->
+								<div style="width:100%;height:0.1rem;"></div>
+							</div>
 						<!--</transition-group>-->
 					</div>
 				</div>
 			</div>
-			<!--<div class="donghua">
-				<span ref="donghua">
-					
-				</span>
-			</div>-->
-			<div class="zhaiyao-food">
-				<span class="last" @click.stop="butten">返回首页</span>
-			</div>
-			<div class="endtop" v-show="disnone">
-				<li>
-					<p><img src="../img/loader.gif"/><span>正在为您投递，请稍候…</span></p>
-				</li>
-			</div>
-			<!--<router-view></router-view>-->
 		</div>
-	<!--</transition>-->
+	</transition>
 </template>
 
 <script type="text/ecmascript">
-	import {URL} from '../../../../common/js/path';
+	import {URL} from '../../../common/js/path';
+	import {numToTime} from "../../../common/js/date.js";
+	import {numToTime2} from "../../../common/js/date.js";
 	import { Toast } from 'mint-ui';
 	import { Indicator } from 'mint-ui';
-//	import Vue from "vue";
 	import { MessageBox } from 'mint-ui';
-//	import BScroll from "better-scroll";
-//	import Vue from "vue";
-//	import {formatDate} from "../../common/js/date.js";
-//	import cartcontrol from "../cartcontrol/cartcontrol.vue";
-//	import ratingselect from "../ratingselect/ratingselect.vue";
-//	import split from "../split/split.vue";
-	
-	
 	export default {
 		props:{
 			childnone:{
@@ -97,61 +91,59 @@
 				showblock:true,
 				items: [],
     			nextNum:[],
-    			disnone:true
-    			
+    			disnone:true,
+    			numToTime:"",
+    			numToTime2:"",
+    			ri:[],
+    			fenzhong:[],
+    			length:"",
+    			heights:"heights"
 			}
 		},
 		mounted(){
+			this.numToTime=numToTime;
+			this.numToTime2=numToTime2;
 			var tata=this;
 			var times=setTimeout(function(){
 				tata.disnone=false;
 				if(tata.disnone==false){
 					clearTimeout(times)
 				}
-			},2000)
-			Indicator.open({spinnerType: 'fading-circle'});
-			console.log(this.$route.params.uID);
-			this.token=this.$route.params.token;
+			},3000)
+//			Indicator.open({spinnerType: 'fading-circle'});
+//			console.log(this.$route.params.uID);
+			this.token=localStorage.getItem("token");
 			this.XiangmuID=this.$route.params.XiangmuID;
 			this.type=this.$route.params.type;
-			this.uID=this.$route.params.uID;
-			var x=this.uID.split(";").length;
-			console.log(x.length)
+//			this.uID=this.$route.params.uID;
 			//发送项目	
 			var datas = {
 				token:this.token,		//	token	是	[string]		
 				item_id:this.XiangmuID,	//项目id	是	[string]		
-				type:this.type,			//类型 1:项目 2:活动	是	[string]		
-				to_id:this.uID,			//接受者id	是	[string]		
-				status:"",			//状态 1:已发送 2:未发送 3:拒绝		[string]		
-				demand:""		//	是否索要 1:非索要 2:索要		[string]
+				page:1,					//page	是	[string]		
+				size:10					//size			//是	[string]	
 			}
-			this.$http.post(URL.path+'finance/send_item',datas,{emulateJSON:true}).then(function(res){
+			this.$http.post(URL.path+'finance/get_send_list',datas,{emulateJSON:true}).then(function(res){
 				var tata=this;
 				Indicator.close();
 				this.data=res.body.data
-//				Toast("您已成功投递 "+x+" 位投资人请您注意查收投资人的反馈并及时回复");
 //				var y=0;
 //				for(var item in this.data){
-////						console.log(this.nextNum)
-//					this.nextNum[y]=this.data[item]
+//					var fenzhong=numToTime2(this.data[item].send_time).substr(-2,2)
+//					var length=this.data.length;
+//					this.fenzhong[y]=fenzhong;
+////					console.log(numToTime2(this.data[item].send_time).substr(-2,2))
+//					for(var i=0; i<length; i++){
+//						if(numToTime2(this.data[item].send_time)[i]=='日'){
+//							this.ri[y]=numToTime2(this.data[item].send_time).substr(i-2,2);
+////							return;
+//						}
+//					}
+//					this.length=this.fenzhong.length;
+//					console.log(this.length)
+//					console.log(this.fenzhong)
 //					y+=1;
 //				}
-//				var tata=this;
-//				var x=0;
-//		    	var times=setInterval(function(){
-//		    		var contentTexte=tata.$refs.donghuaGo;
-//					contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
-//		    		if(x==tata.nextNum.length){
-//		    			tata.$refs.donghua.style.background="#f5f4f9";
-//		    			clearInterval(times)
-//		    			return;
-//		    		}
-////			    		console.log(tata.nextNum[x])
-//					tata.items.splice(tata.items.length, 0, tata.nextNum[x])
-//					x+=1;
-//					contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
-//				},200)
 		    	
 		    	
 		    	tata.$nextTick(function(){
@@ -196,6 +188,24 @@
 		    },
 		    remove: function () {
 		      	this.items.splice(this.randomIndex(), 1)
+		    },
+		    zhanKai(index){
+		    	var contlist=this.$refs.donghuaGo.getElementsByClassName("list-item");
+		    	var length=contlist.length;
+		    	this.heights='heights';
+		    	for(var i=0; i<length; i++){
+		    		if(i!=index){
+		    			if(contlist[i].getAttribute("class")!=='list-item heights'){
+			    			contlist[i].setAttribute("class",'list-item heights')
+			    		}
+		    		}
+		    	}
+		    	if(contlist[index].getAttribute("class")=='list-item heights'){
+		    		contlist[index].setAttribute("class",'list-item')
+		    	}else{
+		    		contlist[index].setAttribute("class",'list-item heights')
+		    	}
+//		    	console.log(contlist)
 		    },
 			butten(){
 //				MessageBox.confirm('您确定要联系对方并索要完整项目信息吗?').then(action => {
@@ -283,7 +293,7 @@
 		left:0;
 		right:0;
 		bottom:0;
-		z-index:300;
+		z-index:460;
 		.xiangmu-header{
 			position:fixed;
 			top:0;
@@ -296,7 +306,7 @@
 			text-align:center;
 			line-height:0.45rem;
 			color:#fff;
-			z-index:310;
+			z-index:480;
 			.xiangmu-left{
 				position:absolute;
 				height:100%;
@@ -318,48 +328,65 @@
 			-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
 			.wenzhang-content{
 				width:95%;
-				height:100%;
+				height:90%;
 				margin:0 auto;
 				overflow: hidden;
-				padding:0.48rem 0 0 0;
-				.fankiu{
-					width:100%;
-					display:flex;
-					padding:0.1rem 0 0.2rem 0;
-					/*align-items:center;*/
-					.tubiao{
-						width:0.19rem;
-						height:0.17rem;
-						background-image:url("../img/fei.png");
-						background-size:100% 100%;
-						margin:0.04rem 0.04rem 0 0.02rem;
-					}
-					.content-food{
-						line-height:0.22rem;
-						color:#6e6e6e;
-						/*background:#fff;*/
-						span{
-							font-size:0.16rem;
-						}
-					}
-				}
+				padding:0.56rem 0 0 0;
 				.donghuaGo::-webkit-scrollbar{width:0px}
 				.donghuaGo{
 					width:100%;
-					height:74%;
+					height:100%;
 					overflow-y:auto;
 					-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
+					.heights{
+						height:1.166rem;
+						overflow:hidden;
+					}
+					.fankiu{
+						width:100%;
+						position:relative;
+						display:flex;
+						background:#fff;
+						padding:0.1rem 0 0.1rem 0;
+						/*align-items:center;*/
+						.tubiao{
+							width:0.19rem;
+							height:0.17rem;
+							background-image:url("../img/fei.png");
+							background-size:100% 100%;
+							margin:0.04rem 0.04rem 0 0.02rem;
+						}
+						.content-food{
+							line-height:0.22rem;
+							color:#6e6e6e;
+							/*background:#fff;*/
+							span{
+								font-size:0.16rem;
+							}
+						}
+						.anNui{
+							position:absolute;
+							top:0rem;
+							right:0.16rem;
+							height:100%;
+							width:0.3rem;
+							.imgas{
+								width:0.16rem;
+								height:0.1rem;
+								margin-top:0.16rem;
+								background-image:url("../img/ico_16.png");
+								background-size:100% 100%;
+							}
+						}
+					}
 					.sousuo-content{
 						width:100%;
 						height:auto;
 						background:#fff;
-						margin-bottom:0.1rem;
+						/*margin-bottom:0.08rem;*/
 						border-radius:0.02rem;
-						/*border:1px solid #ff7a59;*/
 						box-sizing:border-box;
 						box-shadow: 0.02rem 0.02rem 0.02rem #e4e3e8;
-						/*display:flex;*/
-						/*flex-direction:column;*/
 						.content-header{
 							padding:0.1rem 0.16rem 0.08rem 0.16rem;
 							font-size:0.16rem;
@@ -402,77 +429,6 @@
 			align-content: center;
 			align-items: center;
 			justify-content: center;
-			/*&>div{
-				display:flex;
-				align-content: center;
-				align-items: center;
-				justify-content: center;
-				flex:1;
-				
-			}*/
-			span{
-				display:inline-block;
-				width:100%;
-				height:100%;
-				background-image:url("../img/6.gif");
-				background-size:100%;
-				background-position:0 -0.32rem;
-				background-repeat:no-repeat;
-			}
-		}
-		.zhaiyao-food{
-			position:fixed;
-			bottom:0;
-			left:0;
-			width:100%;
-			height:0.45rem;
-			color:#ffffff;
-			background:#ff7a59;
-			font-size:0.18rem;
-			display:flex;
-			-webkit-box-pack:center;
-			justify-content:center;
-			-webkit-box-align:center;
-			align-items:center;
-			z-index:280;
-			.ferst{
-				flex:1;
-				text-align:center;
-			}
-			.last{
-				line-height:0.45rem;
-				padding:0 0.2rem;
-				display:inline-block;
-				color:#fff;
-			}
-		}
-		.endtop{
-			position:fixed;
-			top:0.46rem;
-			left:0;
-			width:100%;
-			height:100%;
-			background:#f5f4f9;
-			display:flex;
-			-webkit-box-pack:center;
-			justify-content:center;
-			-webkit-box-align:center;
-			align-items:center;
-			z-index:300;
-			li{
-				/*width:100%;*/
-				p{
-					line-height:0.6rem;
-					font-size:0.20rem;
-					img{
-						width:0.6rem;
-						height:0.6rem;
-						float:left;
-						margin-right:0.1rem;
-						/*vertical-align:top;*/
-					}
-				}
-			}
 		}
 	}
 </style>

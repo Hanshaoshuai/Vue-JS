@@ -206,7 +206,7 @@
 				this.$refs.xinxiShow.xinxiBlock();
 			},
 			liuYan(){
-				window.location.href="#/fankuixinxi/"+this.userContent.token+"/"+this.data.id+'/1';
+				window.location.href="#/fankuixinxi/"+this.userContent.token+"/"+this.uid+this.data.uname;
 			},
 			baoMing(){
 				this.$refs.youhuiShow.YouhuiBlock();
@@ -273,7 +273,7 @@
 		top:0;
 		left:0;
 		right:0;
-		z-index:220;
+		z-index:1500;
 		.xiangmu-header{
 			position:fixed;
 			top:0;
@@ -286,7 +286,7 @@
 			text-align:center;
 			line-height:0.45rem;
 			color:#fff;
-			z-index:300;
+			z-index:1600;
 			.xiangmu-left{
 				position:absolute;
 				height:100%;

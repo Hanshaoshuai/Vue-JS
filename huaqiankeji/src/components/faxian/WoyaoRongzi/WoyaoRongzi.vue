@@ -60,9 +60,9 @@
 					</div>-->
 					<jiLuqingdan ref="youhuiShow"></jiLuqingdan>
 				</div>
-				<div class="butten">
+				<!--<div class="butten">
 					<span @click.stop="XiaYibu()">继续手机端操作</span>
-				</div>
+				</div>-->
 			</div>
 			<router-view :token="token" :BiaoQian="BiaoQian" :type="type"></router-view>
 		</div>

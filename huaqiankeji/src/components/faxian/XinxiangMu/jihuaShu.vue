@@ -3,7 +3,7 @@
 		<div v-show="tucaoShow" class="xiangmu">
 			<div class="xiangmu-header" @click.stop="yijianHind()">
 				<span class="xiangmu-left"><img src="./img/back.png"/></span>
-				<span>商业计划书</span>
+				<span>调研详情</span>
 			</div>
 			<div class="box" ref="box">
 				<div style="width:100%;height:0.55rem;"></div>

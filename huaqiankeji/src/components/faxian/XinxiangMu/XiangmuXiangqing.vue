@@ -40,7 +40,7 @@
 							<li class="border-bottom"></li>
 						</ul>
 						<div class="zhuying_1">
-							<div class="ferst"><span></span>项目推荐</div>
+							<div class="ferst"><span></span>投资亮点</div>
 							<div class="last">
 								<p>{{data.lightspot}}</p>
 							</div>
@@ -49,34 +49,37 @@
 					<div class="zhuying_1 border">
 						<div class="ferst"><span></span>经营业绩</div>
 						<div class="last">
-							<p>上一财年：营收&nbsp;<span>{{data.last_year_revenue}}亿</span>&nbsp;&nbsp;净利润&nbsp;<span>{{data.last_year_profit}}万</span></p>
-							<p>今年预计：营收&nbsp;<span>{{data.predict_revenue}}亿</span>&nbsp;&nbsp;净利润&nbsp;<span>{{data.predict_profit}}万</span></p>
+							<p>上一财年：营收&nbsp;<span>{{data.last_year_revenue}}亿</span>&nbsp;&nbsp;扣非净利润&nbsp;<span>{{data.last_year_profit}}万</span></p>
+							<p>今年预计：营收&nbsp;<span>{{data.predict_revenue}}亿</span>&nbsp;&nbsp;扣非净利润&nbsp;<span>{{data.predict_profit}}万</span></p>
 						</div>
 					</div>
 					<div class="zhuying_1 border">
 						<div class="ferst"><span></span>融资计划</div>
 						<div class="last">
-							<p>融资总额：<span>{{data.total_finance}}万</span></p>
-							<p>投前估值：<span>{{data.appraisement}}万</span></p>
+							<p>投前估值：<span>{{data.appraisement}}&nbsp;亿元</span></p>
+							<p>融资总额：<span>{{data.total_finance}}&nbsp;万元</span></p>
+							<p>每股价格：<span>{{data.share_price}}&nbsp;元</span></p>
+							<p>投前静态市盈率：<span>{{(data.appraisement*10000/data.last_year_profit).toFixed(1)}}&nbsp;倍</span></p>
+							<p>投后动态市盈率：<span>{{((data.appraisement*10000+data.total_finance*1)/data.predict_profit).toFixed(1)}}&nbsp;倍</span></p>
 						</div>
 					</div>
 				</div>
 				<div class="border aaa">
-					<div class="content-header" @click.stap="xiangguan()">
-						<span>查看项目分析与尽调报告</span>
-						<font></font>
-					</div>
 					<div class="content-header" @click.stap="chakanBA()">
 						<span>查看商业计划书（BP）</span>
 						<font></font>
 					</div>
+					<div ref="baogao" class="content-header" @click.stap="xiangguan()">
+						<span>查看项目分析与尽调报告</span>
+						<font></font>
+					</div>
 				</div>
 				<div class="times border">
-					<span class="text-center">{{numToTime(data.create_time)}}</span>
+					<span class="text-center">{{left}}</span>
 					<span>发布</span>
 					<div class="times-name">
 						<font></font>
-						<span class="text-center">剩余有效期{{genjin}}</span>
+						<span class="text-center">剩余有效期&nbsp;{{right}}</span>
 					</div>
 				</div>
 				<box></box>
@@ -86,23 +89,12 @@
 						<li @click.stap="liuYanTo()"><span :class="liuYans"></span><p>留言询问</p></li>
 						<li @click.stap="jiaoHuanTo()"><span :class="jiaoHuans"></span><p>换名片</p></li>
 					</ul>
-					<!--<ul>-->
-						<!--<li><span @click.stop="touSu()">投诉</span></li>-->
-						<!--<li><span @click.stop="genJin()">跟进</span></li>-->
-						<!--<li><span @click.stop="jiaoHuan()">换名片</span></li>
-						<li><span @click.stop="baoMing()">我报名</span></li>-->
-						<!--<li><span @click.stop="buGen()">暂不跟进</span></li>-->
-						<!--<li><span @click.stop="liuYan()">留言询问</span></li>-->
-					<!--</ul>-->
 				</div>
 			</div>
 			<div v-if="data.end_follow!='2'" class="baoming border-top">
 				<span class="border-right" :class="butenLeft" @click.stap="genJin()">{{genjins}}</span>
 				<span :class="butenRight" @click.stap="buGen()">暂不跟进</span>
-				<!--<span class="border-right" :class="butenLeft" @click.stap="genJin()">我要报名</span>
-				<span :class="butenRight" @click.stap="buGen()">不参加</span>-->
 			</div>
-			<!--<youhuiquan ref="youhuiShow"></youhuiquan>-->
 			<tishi ref="tishiShow" :xingXi="xingXi" :content="content"></tishi>
 			<transition name="fades">
 				<div ref="xianShi" v-show="onlyContent" class="loding" style="position: absolute;z-index: 1600; top: 0;right: 0;bottom: 0;left: 0;background-color: rgba(0,0,0,0.3);display: none;">
@@ -116,7 +108,7 @@
 					</div>	
 				</div>
 			</transition>
-			<router-view></router-view>
+			<router-view :srcgo="srcgo" :jihuaShu='jihuaShu'></router-view>
 		</div>
 	</transition>
 </template>
@@ -129,15 +121,15 @@
 	import { Indicator } from 'mint-ui';
 	import box from "../../box.vue";
 	import tishi from "../../Tishi.vue";
-//	import youhuiquan from "../../shendu/PeixunZixun/YouhuiQuan.vue";
-//	import fankuixinxi from "./FankuiXinxi.vue";
 	
 	
 	export default {
 		props:{
 			datas:{},
 			XiangmuID:{},
-			userContent:{}
+			userContent:{},
+			left:{},
+			right:{}
 //			food:{
 //				type:Object
 //			}
@@ -174,7 +166,9 @@
 				onlyContent:false,
 				firstTop:true,
 				lastBottom:false,
-				textcont:"备案申请成功，请等待审核"
+				textcont:"备案申请成功，请等待审核",
+				srcgo:"",
+				jihuaShu:""
 			}
 		},
 		mounted(){
@@ -190,10 +184,15 @@
 			this.$http.post(URL.path+'finance/item_detail',data,{emulateJSON:true}).then(function(res){
 				Indicator.close();
 				this.data=res.body.data[0]
+				this.srcgo=res.body.data[0].plan;
+				this.jihuaShu=res.body.data[0].report;
+				if(this.jihuaShu==''){
+					this.$refs.baogao.style.color="#b8b8b8"
+				}
 				if(this.data.follow==1){
 					this.types=1;
 					this.yigenJin=1;
-					this.butenLeft="";
+					this.butenLeft="butenLeft";
 					this.liuYans="liuYan";
 					this.jiaoHuans="jiaoHuan";
 					this.butenRight="";
@@ -201,7 +200,7 @@
 //					this.bugen="停止跟进";
 				}else{
 					this.yigenJin=2;
-					this.butenLeft="";
+//					this.butenLeft="butenLeft";
 					this.liuYans="";
 					this.jiaoHuans="";
 				}
@@ -221,6 +220,12 @@
 			yijianHind(){
 				history.go(-1)
 //				this.tucaoShow=false;
+			},
+			xiangguan(){
+				if(this.jihuaShu==''){
+					return;
+				}
+				window.location.href="#/faxian/XinxiangMu/"+this.userContent.token+"/XiangmuXiangqing/"+this.data.uid+'/jihuaShu';
 			},
 			xiangqingBlock(){
 				this.tucaoShow=true;
@@ -365,10 +370,10 @@
 			buGen(){
 				this.types=0;
 //				this.butenRight="butenRight";
-				this.butenLeft="";
-				this.liuYans="";
-				this.jiaoHuans="";
 				if(this.yigenJin==0){
+					this.butenLeft="";
+					this.liuYans="";
+					this.jiaoHuans="";
 					var params={
 			      		token:this.$route.params.token,
 			      		item_id:this.XiangmuID,		//	项目id	是	[string]		
@@ -578,7 +583,7 @@
 				}
 				ul{
 					height:0.3rem;
-					padding:0.28rem 2.5% 0 2.5%;
+					padding:0.2rem 2.5% 0.1rem 2.5%;
 					display:flex;
 					background:#fff;
 					li{
@@ -662,7 +667,7 @@
 				height:0.33rem;
 				background:#fff;
 				line-height:0.34rem;
-				margin-top:0.08rem;
+				/*margin-top:0.08rem;*/
 				box-shadow:0 0.02rem 0.04rem #dedde1;
 				.text-center{
 					display:inline-block;

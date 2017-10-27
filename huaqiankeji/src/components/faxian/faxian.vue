@@ -13,7 +13,8 @@
 				<div style="width:100%;height:0.48rem;"></div>
 				<!--<div style="width:100%;height:0.5rem;"></div>-->
 	    		<!--mt-loadmore中添加:auto-fill="autoFill"属性  不够高是会自动撑开屏幕-->
-	      		<mt-loadmore :top-method="loadTop" @translate-change="translateChange" @top-status-change="handleTopChange" :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :bottom-all-loaded="allLoaded" :top-distance=40 :bottom-distance=40 ref="loadmore">
+	    		<!--刷新top-distance已设置为200 相当于不可刷新-->
+	      		<mt-loadmore :top-method="loadTop" @translate-change="translateChange" @top-status-change="handleTopChange" :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :bottom-all-loaded="allLoaded" :top-distance=400 :bottom-distance=40 ref="loadmore">
 		        <ul ref="boxcontent" class="page-loadmore-list">
 				<!--<div class="FadeContent">-->
 					<div class="banner">
@@ -27,14 +28,6 @@
 									<span>{{item.content}}</span>
 									<span>{{item.title}}</span>
 								</div>
-								<!--<div class="gaikuang-list border-right">
-									<span>{{dongTai[1].content}}个</span>
-									<span>{{dongTai[1].title}}</span>
-								</div>
-								<div class="gaikuang-list">
-									<span>{{dongTai[2].content}}次</span>
-									<span>{{dongTai[2].title}}</span>
-								</div>-->
 							</div>
 						</div>
 					</div>
@@ -166,7 +159,7 @@
 				<!--</div>-->
 				</ul>
 		       	<div slot="top" class="mint-loadmore-top">
-		          	<span v-show="topStatus !== 'loading'" :class="{ 'is-rotate': topStatus === 'drop' }"> ↓ </span>
+		          	<span v-show="topStatus !== 'loading'" :class="{ 'is-rotate': topStatus === 'drop' }">  </span>
 		          	<span v-show="topStatus == 'drop'">请释放更新吧</span>
 		          	<span v-show="topStatus === 'loading'">
 		            	<mt-spinner :type="3" color="#26a2ff" :size="30"></mt-spinner>
@@ -185,6 +178,7 @@
 		      	</transition>-->
 		      	<div style="width:100%;height:0.6rem;"></div>
 		    </div>
+			<xiangmugenjin></xiangmugenjin>
 			<!--</div>-->
 			<router-view :setscrollTop="scrollTop" :datas="datas" :userContent='userContent' :type="type" :FankuiShu="FankuiShu"></router-view>
 		</div>
@@ -196,6 +190,7 @@
 	import { Indicator } from 'mint-ui';
 	import {URL} from '../../common/js/path';
 	import { Toast } from 'mint-ui';
+	import xiangmugenjin from "./xiangmuGenjin.vue";
 	
 	export default {
 		props:{
@@ -226,7 +221,6 @@
 //				q1:false,
 				times:20177111129,
 				showList:false,
-				onlyContent:true,
 				mySwiper:"",
 				scrollTop:"",
 				list: [],
@@ -242,10 +236,14 @@
 		        Fankuiblock:false,
 		        ZongHe:"",
 		        botent:"亲已经到底了",
-		        numToTime:""
+		        numToTime:"",
+		        gengJingdu:'',
+//		        onlyContent:true,
 			}
 		},
 		mounted() {	//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商
+			var faxian=window.location.href
+			localStorage.setItem("faxian",faxian)
 			this.numToTime=numToTime;
 			this.userContent={
 	  			userID:localStorage.getItem("userID"),			//用户ID
@@ -291,8 +289,6 @@
 			},function(res){
 			    console.log(res);
 			})
-	    	
-	    	
 //	    	console.log("计算高度")
 	      	this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
 	      	this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
@@ -304,7 +300,7 @@
 //					speed : 2000,//改变Swiper的切换时间曲线
 //					loop:true,
 //					autoplayDisableOnInteraction:false,
-////						pagination:".swiper-pagination"
+//						pagination:".swiper-pagination"
 //				})
 			});
 	    },
@@ -538,11 +534,7 @@
 //			}
 		},
 		components:{
-//			xiangmu,
-//			fankui,
-//			DingzengZhaiyao,
-//			GuquanZhaiyao,
-//			yijian
+			xiangmugenjin
 		}
 	}
 </script>
@@ -943,7 +935,7 @@
 						.TypeList{
 							float:left;
 							width:100%;
-							height:0.3rem;
+							/*min-height:0.3rem;*/
 							color:#ff7a59;
 							overflow:hidden;
 							span{

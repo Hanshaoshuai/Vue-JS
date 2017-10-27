@@ -464,7 +464,7 @@
 				height:auto;
 				margin:0 auto;
 				margin-top:0.45rem;
-				padding-bottom:0.45rem;
+				padding-bottom:0.6rem;
 				.tishi-bottom{
 					width:100%;
 					/*height:0.36rem;*/

@@ -21,7 +21,7 @@
 		        	
 			
 			<div class="box">
-				<div v-for="(item,index) in data" class="tishi-bottom" @click.stop="xiangqing(item.id)">
+				<div v-for="(item,index) in data" class="tishi-bottom" @click.stop="xiangqing(item.id,numToTime(item.send_time),item.end_time.day,item.end_time.hour)">
 					<div v-if="item.is_read=='0'" class="tubiao"></div>
 					<div class="borders">
 						<ul>
@@ -58,11 +58,11 @@
 						</div>
 						<div class="jieshu"><font>保密信息，禁止传播</font><span v-if="item.follow=='1' && item.end_follow!=1 && item.end_follow!=2" @click.stop="jieshu(item.id)">结束项目</span></div>
 						<div class="times border">
-							<span class="text-center">{{numToTime(item.create_time)}}</span>
+							<span class="text-center">{{numToTime(item.send_time)}}</span>
 							<span>发布</span>
 							<div class="times-name">
 								<font></font>
-								<span class="text-center">剩余有效期{{genjin}}</span>
+								<span class="text-center">剩余有效期&nbsp;<a v-if="item.end_time.day!=0">{{item.end_time.day}}</a>天<a >{{item.end_time.hour}}</a>小时</span>
 							</div>
 						</div>
 					</div>
@@ -101,7 +101,7 @@
 	    </div>
 	    	<tishi ref="tishiShow" :xingXi="texts" :token="token" :XiangmuID="XiangmuID"></tishi>
 			<!--<yifouxiangmu ref="yifouShou"></yifouxiangmu>-->
-			<router-view :userContent="userContent" :XiangmuID="XiangmuID"></router-view>
+			<router-view :userContent="userContent" :XiangmuID="XiangmuID" :left='left' :right="right"></router-view>
 		</div>
 	</transition>
 </template>
@@ -109,6 +109,7 @@
 <script type="text/ecmascript">
 	import {URL} from '../../../common/js/path';
 	import {numToTime} from "../../../common/js/date.js";
+	import {numToTime3} from "../../../common/js/date.js";
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
 	import { Indicator } from 'mint-ui';
@@ -151,17 +152,24 @@
 		        topStatus: '',
 		        promps:false,
 		        scrollTop:"",
-		        numToTime:""
+		        numToTime:"",
+		        numToTime3:"",
+		        left:"",
+		        right:""
 			}
 		},
 		mounted() {
 			this.numToTime=numToTime;
+			this.numToTime3=numToTime3;
 			this.LieBiao()
 	    	console.log("计算高度")
 	      	this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
 	      	this.$refs.wrapper.addEventListener('scroll', this.handleScroll)	//做一个scroll监听
 	      	console.log(this.userContent)
 	    },
+	    activated(){
+			this.LieBiao();
+		},
 		methods:{
 			handleTopChange(status) {    //头部函数
 //	      		console.log("top")
@@ -172,9 +180,6 @@
 //	      	console.log(document.documentElement.clientHeight)
 //	      	console.log(this.$refs.wrapper.getBoundingClientRect().top)
 	      	},
-	      	activated(){
-				this.LieBiao();
-			},
 			LieBiao(){
 				Indicator.open({spinnerType: 'fading-circle'});
 				var token={
@@ -252,9 +257,11 @@
 				window.location.href="#/faxian/YifouXiangmu/"+this.userContent['token'];
 //				this.$refs.yifouShou.yifouBlock();
 			},
-			xiangqing(XiangmuID){
+			xiangqing(XiangmuID,send_time,day,hour){
 				console.log(XiangmuID)
 				this.XiangmuID=XiangmuID
+				this.left=send_time;
+				this.right=day+'天'+hour+'小时'
 				//已读项目标记
 				var farams={
 		      		token:this.token,		//	token	是	[string]		
@@ -574,6 +581,9 @@
 					}
 					.times-name{
 						color:#ff7a59;
+						a{
+							color:#ff7a59;
+						}
 						font{
 							display:inline-block;
 							width:0.16rem;
