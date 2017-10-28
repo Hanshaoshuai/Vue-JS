@@ -133,7 +133,9 @@
 							</div>
 							<div class="ContentTime border-top" @click.stop="Guquanzhaiyao()">
 								<div class="tishi-left">
-									<span>{{item.position}}</span>
+									<span v-if="item.ctype==1" class="text-center">企业</span>
+									<span v-if="item.ctype==7" class="text-center">财务顾问</span>
+									<!--<span>{{item.position}}</span>-->
 									<span>{{numToTime(item.create_time)}}</span>&nbsp发布
 									<!--<span>{{item.create_time}}小时前</span>&nbsp;发布-->
 								</div>

@@ -21,8 +21,8 @@
 								<li class="border-bottom"></li>
 								<li class="tishi-center">
 									<div class="content-heder">
-										<span>{{data.com_name}}</span>
-										<span class="text-center">{{data.com_code}}</span>
+										<span>* {{data.com_short.substr(1, 1)}} *</span>
+										<span class="text-center">（{{data.com_code.substr(0, 2)}} **** ）</span>
 										<span v-if="data.type==1" class="texts">&nbsp;定增</span>
 										<span v-if="data.type==2" class="texts">&nbsp;做市</span>
 										<span v-if="data.type==3" class="texts">&nbsp;转老股</span>
@@ -36,37 +36,39 @@
 								<li class="border-bottom"></li>
 							</ul>
 							<div class="zhuying_1">
-								<div class="ferst"><span></span>主营业务</div>
+								<div class="ferst"><span></span>投资亮点</div>
 								<div class="last">
-									<p>{{data.lightspot}}资经理资经理资主营业经理主营业资经理资主营业经理资经理资经理</p>
+									<p>{{data.lightspot}}</p>
 								</div>
 							</div>
 						</div>
 						<div class="zhuying_1 border">
 							<div class="ferst"><span></span>经营业绩</div>
 							<div class="last">
-								<p>上一财年：营收&nbsp;<span>{{data.last_year_revenue}}亿</span>&nbsp;&nbsp;净利润&nbsp;<span>{{data.last_year_profit}}万</span></p>
-								<p>今年预计：营收&nbsp;<span>{{data.predict_revenue}}亿</span>&nbsp;&nbsp;净利润&nbsp;<span>{{data.predict_profit}}万</span></p>
+								<p>上一财年：营收&nbsp;<span>{{data.last_year_revenue}}亿</span>&nbsp;&nbsp;扣非净利润&nbsp;<span>{{data.last_year_profit}}万</span></p>
+								<p>今年预计：营收&nbsp;<span>{{data.predict_revenue}}亿</span>&nbsp;&nbsp;扣非净利润&nbsp;<span>{{data.predict_profit}}万</span></p>
 							</div>
 						</div>
-						<div class="zhuying_1 border">
+						<div class="zhuying_1 border" style="margin-bottom:0;">
 							<div class="ferst"><span></span>融资计划</div>
 							<div class="last">
 								<p>融资总额：<span>{{data.total_finance}}万</span></p>
-								<p>投前估值：<span>{{data.appraisement}}万</span></p>
+								<!--<p>投前估值：<span>{{data.appraisement}}万</span></p>-->
 							</div>
 						</div>
 					</div>
 					
 					
-					<div class="times border-topbottom">
-						<span class="text-center">{{data.position}}</span>
+					<div class="times border-topbottom" style="margin-top:0;">
+						<!--<span class="text-center">{{data.position}}</span>-->
+						<span v-if="data.ctype==1" class="text-center">企业</span>
+						<span v-if="data.ctype==7" class="text-center">财务顾问</span>
 						<span class="text-center">{{numToTime(data.create_time)}}</span>
 						<span>发布</span>
 					</div>
 				</div>
 			</div>
-			<div class="zhaiyao-food" @click.stop="butten"><span>{{ButtenName}}</span></div>
+			<div v-show="buttenBlock" class="zhaiyao-food" @click.stop="butten"><span>{{ButtenName}}</span></div>
 			
 			
 			<div id="nativeShare"></div>
@@ -103,7 +105,9 @@
 				showFlag:true,
 				fankui:13,
 				genjin:50,
-				numToTime:''
+				numToTime:'',
+				buttenBlock:false,
+				utype:false
 //				onlyContent:true
 			}
 		},
@@ -116,7 +120,12 @@
 			}
 			console.log(this.data)
 			this.$http.post(URL.path+'finance/item_detail',data,{emulateJSON:true}).then(function(res){
-				this.data=res.body.data[0]
+				this.data=res.body.data[0];
+				if(localStorage.getItem("type")!=1 || localStorage.getItem("type")!=7){
+					this.buttenBlock=false;
+				}else{
+					this.buttenBlock=true;
+				};
 				console.log(res);
 			},function(res){
 			    console.log(res.status);
@@ -473,7 +482,7 @@
 					}
 					ul{
 						height:0.3rem;
-						padding:0 2.5% 0 2.5%;
+						padding:0.2rem 2.5% 0.1rem 2.5%;
 						display:flex;
 						background:#fff;
 						li{
@@ -533,8 +542,8 @@
 				height:0.33rem;
 				background:#fff;
 				line-height:0.34rem;
-				margin-top:0.08rem;
-				box-shadow:0 0.02rem 0.04rem #dedde1;
+				/*margin-top:0.08rem;*/
+				box-shadow:0.02rem 0.02rem 0.04rem #dedde1;
 				.text-center{
 					display:inline-block;
 					padding:0 0 0 0.14rem;

@@ -317,26 +317,33 @@
 				align-content:center;
 				align-items:center;
 				text-align:center;
-				ul>li{
-					position:relative;
-					border:1px solid #f5f4f9;
+				ul{
 					width:1.25rem;
 					height:1.25rem;
-					background-image:url("../img/mingpian.png");
-					background-size:100% 100%;
-					display:flex;
-					justify-content:center;
-					align-content:center;
-					align-items:center;
-					text-align:center;
-					img{
-						width:100%;
-					}
-					.mingpians{
-						position:absolute;
-						top:0.25rem;
-						left:0;
-						opacity:0;
+					overflow:hidden;
+					li{
+						position:relative;
+						border:1px solid #f5f4f9;
+						box-sizing:border-box;
+						width:1.25rem;
+						height:1.25rem;
+						background-image:url("../img/mingpian.png");
+						background-size:100% 100%;
+						display:flex;
+						justify-content:center;
+						align-content:center;
+						align-items:center;
+						text-align:center;
+						overflow:hidden;
+						img{
+							/*width:100%;*/
+						}
+						.mingpians{
+							position:absolute;
+							top:0.25rem;
+							left:0;
+							opacity:0;
+						}
 					}
 				}
 				span{

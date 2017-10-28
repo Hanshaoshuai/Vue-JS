@@ -15,7 +15,7 @@
 							<li class="tishi-center">
 								<div class="content-heder">
 									<span>{{texta}}</span>
-									<span class="text-center">{{textb}}</span>
+									<span class="text-center">（{{textb}}）</span>
 									<span v-if="Xiangmutype==1" class="texts">&nbsp;定增</span>
 									<span v-if="Xiangmutype==2" class="texts">&nbsp;做市</span>
 									<span v-if="Xiangmutype==3" class="texts">&nbsp;转老股</span>
@@ -287,7 +287,6 @@
 								this.industry1.push(this.BiaoQian[item]['title']);
 							}
 						}
-						
 					}
 					
 					console.log(this.data);

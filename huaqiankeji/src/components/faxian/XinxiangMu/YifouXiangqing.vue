@@ -26,7 +26,7 @@
 							<li class="tishi-center">
 								<div class="content-heder">
 									<span>{{data.com_short}}</span>
-									<span class="text-center">{{data.com_code}}</span>
+									<span class="text-center">（{{data.com_code}}）</span>
 									<span v-if="data.type==1" class="texts">&nbsp;定增</span>
 									<span v-if="data.type==2" class="texts">&nbsp;做市</span>
 									<span v-if="data.type==3" class="texts">&nbsp;转老股</span>

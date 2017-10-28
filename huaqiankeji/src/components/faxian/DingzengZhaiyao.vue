@@ -23,7 +23,7 @@
 										</tr>
 									</tbody>
 								</table>
-								<img style="display:none;" ref="pic" id="pic" src="./logo.png"/>
+								<img style="display:none;" ref="pic" id="pic" src="http://www.qironghome.com/static/app/img/120.png"/>
 								<!--<br/>-->
 								<div style="display:none;" class="button" onclick="shareShow()">分 享</div>
 								<div style="display:none;" class="button" onclick="shareSystem()">系统分享</div>
@@ -31,7 +31,7 @@
 								
 								
 								<p style="display:none;" class="heading">链接地址：</p>
-								<input style="display:none;" ref="sharehref" id="sharehref" class="sharehref" type="url" value="https://www.baidu.com/?tn=57095150_2_oem_dg" placeholder="请输入要分享的链接地址"/>
+								<input style="display:none;" ref="sharehref" id="sharehref" class="sharehref" type="url" value="http://www.qironghome.com/index.php/app/demand-info?id=715" placeholder="请输入要分享的链接地址"/>
 								<p style="display:none;" class="heading">链接标题：</p>
 								<input style="display:none;" ref="sharehrefTitle" id="sharehrefTitle" class="sharehref" type="text" value="DCloud HBuilder-做最好的HTML5开发工具" placeholder="请输入要分享的链接标题"/>
 								<p style="display:none;" class="heading">链接描述：</p>
@@ -61,8 +61,8 @@
 								<li class="border-bottom"></li>
 								<li class="tishi-center">
 									<div class="content-heder">
-										<span>{{data.com_short}}</span>
-										<span class="text-center">{{data.com_code}}</span>
+										<span>* {{data.com_short.substr(1,1)}} *</span>
+										<span class="text-center">（{{data.com_code.substr(0,2)}} **** ）<!--{{data.com_code}}--></span>
 										<span v-if="data.type==1" class="texts">&nbsp;定增</span>
 										<span v-if="data.type==2" class="texts">&nbsp;做市</span>
 										<span v-if="data.type==3" class="texts">&nbsp;转老股</span>
@@ -75,34 +75,53 @@
 								</li>
 								<li class="border-bottom"></li>
 							</ul>
+							<div>
+								<div v-if="biaoqianId.length>0" class="zhuying_1 liangdian_1">
+									<div class="ferst"><span></span>所在行业</div>
+									<div ref="biaoqian" class="last">
+										<font v-for="(item,index) in biaoqianId" class="bianse">{{item.title}}</font>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="border">
 							<div class="zhuying_1">
-								<div class="ferst"><span></span>项目推荐</div>
+								<div class="ferst"><span></span>投资亮点</div>
 								<div class="last">
 									<p>{{data.lightspot}}</p>
 								</div>
 							</div>
 						</div>
+						
+						
 						<div class="zhuying_1 border">
 							<div class="ferst"><span></span>经营业绩</div>
 							<div class="last">
-								<p>上一财年：营收&nbsp;<span>{{data.last_year_revenue}}亿</span>&nbsp;&nbsp;净利润&nbsp;<span>{{data.last_year_profit}}万</span></p>
-								<p>今年预计：营收&nbsp;<span>{{data.predict_revenue}}亿</span>&nbsp;&nbsp;净利润&nbsp;<span>{{data.predict_profit}}万</span></p>
+								<p>上一财年：营收&nbsp;<span>{{data.last_year_revenue}}亿</span>&nbsp;&nbsp;扣非净利润&nbsp;<span>{{data.last_year_profit}}万</span></p>
+								<p>今年预计：营收&nbsp;<span>{{data.predict_revenue}}亿</span>&nbsp;&nbsp;扣非净利润&nbsp;<span>{{data.predict_profit}}万</span></p>
 							</div>
 						</div>
-						<div class="zhuying_1 border">
-							<div class="ferst"><span></span>融资计划</div>
+						<div class="zhuying_1 border" style="margin-bottom:0;">
+							<div v-if="data.type!=3" class="ferst"><span></span>融资计划</div>
+							<div v-if="data.type==3" class="ferst"><span></span>转让计划</div>
 							<div class="last">
-								<p>融资总额：<span>{{data.total_finance}}万</span></p>
-								<p>投前估值：<span>{{data.appraisement}}万</span></p>
+								<p v-if="data.type==1">融资总额：<span>{{data.total_finance}}万</span></p>
+								<p v-if="data.type==2">融资总额：<span>{{data.total_finance}}万</span></p>
+								<!--<p v-if="data.type==3">融资总额：<span>{{data.total_finance}}万</span></p>-->
+								<p v-if="data.type==3">拟转股份数：<span>{{data.transfe_share}}&nbsp;万股</span></p>
+								<p v-if="data.type==4">融资总额：<span>{{data.total_finance}}万</span></p>
+								<p v-if="data.type==5">融资总额：<span>{{data.total_finance}}万</span></p>
+								<p v-if="data.type==6">融资总额：<span>{{data.total_finance}}万</span></p>
+								<p v-if="data.type==7">融资总额：<span>{{data.total_finance}}万</span></p>
 							</div>
 						</div>
-					</div>
-					
-					
-					<div class="times border-topbottom">
-						<span class="text-center">{{data.position}}</span>
-						<span class="text-center">{{numToTime(data.create_time)}}</span>
-						<span>发布</span>
+						<!--//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商-->
+						<div class="times border-topbottom">
+							<span v-if="data.ctype==1" class="text-center">企业</span>
+							<span v-if="data.ctype==7" class="text-center">财务顾问</span>
+							<span class="text-center">{{numToTime(data.create_time)}}</span>
+							<span>发布</span>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -154,29 +173,40 @@
 				output:"",
 				dcontent:"",
 				numToTime:'',
-				nativeShare:""
+				nativeShare:"",
+				BiaoQian:[],
+				biaoqianId:'',
+				blockName:false
 //				onlyContent:true
 			}
 		},
 		mounted(){
 			this.nativeShare=nativeShare;
 			this.numToTime=numToTime;
-			if(localStorage.getItem("type")=='1' || localStorage.getItem("type")=='7'){
+			if(localStorage.getItem("type")!=1 || localStorage.getItem("type")!=7){
 				this.utype=false;
+			}else{
+				this.utype=true;
 			};
 			//项目详情
 			var data = {
 				token:this.$route.params.token,
 				item_id:this.$route.params.XiangmuID			//	项目id
 			}
+			var datas = {
+				token:this.$route.params.token//	token	是	[string]	URL获取的参数
+			}
 			console.log(this.data)
 			this.$http.post(URL.path+'finance/item_detail',data,{emulateJSON:true}).then(function(res){
 				this.data=res.body.data[0]
+				if(res.body.data[0].industry){
+					this.blockName=true;
+				}
+				this.biaoqianId=res.body.data[0].industry
 				console.log(res);
 				this.$nextTick(function(){
 					this.output=this.$refs.output
 					this.dcontent=this.$refs.dcontent;
-//					common(this.output,this.dcontent,window);
 				});
 			},function(res){
 			    console.log(res.status);
@@ -545,9 +575,15 @@
 					.border{
 						box-shadow: 0.01rem 0.02rem 0.04rem #dfdfdf;
 					}
+					.borders{
+						box-shadow: 0.01rem 0.02rem 0.04rem #dfdfdf;
+					}
+					.borderd{
+						box-shadow: 0.01rem 0rem 0.04rem #dfdfdf;
+					}
 					ul{
 						height:0.3rem;
-						padding:0 2.5% 0 2.5%;
+						padding:0.2rem 2.5% 0.1rem 2.5%;
 						display:flex;
 						background:#fff;
 						li{
@@ -566,6 +602,39 @@
 								font-size:0.2rem;
 								color:#323232;
 							}
+						}
+					}
+					.liangdian_1{
+						.last{
+							flex:1;
+							color:#676767;
+							padding:0rem 0.14rem 0.18rem 0.14rem;
+							line-height:0.26rem;
+							overflow:hidden;
+							font{
+								display:inline-block;
+								width:0.7rem;
+								height:0.22rem;
+								color:#ff7a59;
+								text-align:center;
+								float:left;
+								padding:0.04rem 0;
+								background:#fde9e2;
+								border-radius:0.04rem;
+								font-size:0.14rem;
+								line-height:0.15rem;
+								margin:0.04rem 0.07rem 0.04rem 0;
+								box-sizing:border-box;
+								border:1px solid #ff7a59;
+								&:first-child{
+									
+								}
+							}
+							p{
+								word-wrap:break-word;
+								text-align: justify;
+							}
+							/*box-shadow: 0 0.02rem 0.04rem #dedde1;*/
 						}
 					}
 					.zhuying_1{
@@ -600,20 +669,46 @@
 							/*box-shadow: 0 0.02rem 0.04rem #dedde1;*/
 						}
 					}
+					.TypeList{
+						float:left;
+						width:100%;
+						/*min-height:0.3rem;*/
+						color:#ff7a59;
+						overflow:hidden;
+						span{
+							display:inline-block;
+							width:0.7rem;
+							height:0.22rem;
+							text-align:center;
+							float:left;
+							padding:0.04rem 0;
+							background:#fde9e2;
+							border-radius:0.04rem;
+							font-size:0.14rem;
+							line-height:0.15rem;
+							margin:0.04rem 0.07rem 0.04rem 0;
+							box-sizing:border-box;
+							border:1px solid #ff7a59;
+							&:first-child{
+								
+							}
+						}
+					}
+				}
+				.times{
+					width:100%;
+					height:0.33rem;
+					background:#fff;
+					line-height:0.34rem;
+					/*margin-top:0.08rem;*/
+					box-shadow:0.02rem 0.02rem 0.04rem #dedde1;
+					.text-center{
+						display:inline-block;
+						padding:0 0 0 0.14rem;
+					}
 				}
 			}
-			.times{
-				width:100%;
-				height:0.33rem;
-				background:#fff;
-				line-height:0.34rem;
-				margin-top:0.08rem;
-				box-shadow:0 0.02rem 0.04rem #dedde1;
-				.text-center{
-					display:inline-block;
-					padding:0 0 0 0.14rem;
-				}
-			}
+			
 		}
 		.zhaiyao-food{
 			width:100%;

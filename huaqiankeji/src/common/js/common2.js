@@ -82,7 +82,6 @@
 			outLine('无效的分享服务！');
 			return;
 		}
-//		thumbs: ['http://www.qironghome.com/static/app/img/120.png'],
 		var msg={content:sharecontent.value,extra:{scene:sb.x}};
 		if(bh){
 			msg.href=sharehref.value;
@@ -92,7 +91,7 @@
 			if(sharehrefDes&&sharehrefDes.value!=''){
 				msg.content=sharehrefDes.value;
 			}
-			msg.thumbs=['http://www.qironghome.com/static/app/img/120.png'];
+			msg.thumbs=['./logo.png'];
 			msg.pictures=['./logo.png'];
 		}else{
 			if(pic&&pic.realUrl){
