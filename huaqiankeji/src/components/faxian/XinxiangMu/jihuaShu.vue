@@ -3,29 +3,26 @@
 		<div v-show="tucaoShow" class="xiangmu">
 			<div class="xiangmu-header" @click.stop="yijianHind()">
 				<span class="xiangmu-left"><img src="./img/back.png"/></span>
-				<span>调研详情</span>
+				<span>商业计划书</span>
 			</div>
 			<div class="box" ref="box">
 				<div style="width:100%;height:0.55rem;"></div>
-				<div class="sousuo-content">
-					<!--<a href="https://test.qironghome.com/bak/web/upload/2017/10/24/150883209561721rqaa.pdf">fsdf</a>-->
-					<!--<iframe  width="100%" height="">-->
-						<!--<img src="https://test.qironghome.com/bak/web/upload/2017/10/24/150883209561721rqaa.pdf"/>
-						<a href="https://test.qironghome.com/bak/web/upload/2017/10/24/150883209561721rqaa.pdf">fsdf</a>-->
-					<!--</iframe>-->
-					<!--<pdf src="https://test.qironghome.com/bak/web/upload/2017/10/24/150883209561721rqaa.pdf"></pdf>
-					<ul ref="index1" class="content-header border-bottom" index="type1"  @click.stap="typeName('0')">
-						<li>
-							<div class="content-top">
-								<span>天立泰&nbsp;(34565645)</span>
-								<span>做市</span>
-								<font>已投递</font>
-							</div>
-							<div class="content-bottom">
-								<span>1小时前</span>
-							</div>
-						</li>
-					</ul>-->
+					<div class="sousuo-content">
+						<div id="dcontent" class="dcontent">
+							<ul class="dlist">
+								<li class="ditem" @click.stop="createDownloadTask()" ref="dataFile" style="color: #4cb6ff;">
+									<span class="homepage-cap">商业计划书</span>
+									<font>{{dataFile}}</font><span>{{titBox}}</span><span>{{daXiao}}</span>
+								</li>
+								<!--<li class="ditem" @click.stop="startDownloadTask()">启动下载任务</li>
+								<li class="ditem" onclick="pauseDownloadTask()">暂停下载任务</li>
+								<li class="ditem" onclick="resumeDownloadTask()">恢复下载任务</li>
+								<li class="ditem" onclick="cancelDownloadTask()">取消下载任务</li>-->
+								<!--<li class="ditem" onclick="clearDownloadTask()">清除所有任务</li>-->
+							</ul>
+						</div>
+						<div id="output">
+					</div>
 				</div>
 				<box></box>
 				<div style="width:100%;height:0.5rem;"></div>
@@ -35,13 +32,15 @@
 </template>
 
 <script type="text/ecmascript">
-	import pdf from "vue-pdf"
+//	import pdf from "vue-pdf"
 	import { Field } from 'mint-ui';
 	import box from "../../box.vue";
+	import {common} from "../../../common/js/common.js";
+	import {createDownloadTask} from "../../../common/js/xiazai.js";
 	
 	export default {
 		props:{
-			srcgo:{
+			jihuaShu:{
 //				type:Object
 			}
 		},
@@ -64,11 +63,15 @@
 					type4:"ZuLin",
 					type5:"Diaoyan"
 				},
-//				srcgo:""
+				dtask:null,
+				xiazai:"",
+				titBox:"",
+				daXiao:'',
+				dataFile:''
 			}
 		},
 		mounted() {
-			
+			this.xiazai=createDownloadTask
 			this.$nextTick(function() {
 				this.boxUl=this.$refs.box.getElementsByTagName("ul");
 				console.log(this.boxUl)
@@ -79,53 +82,108 @@
 				history.go(-1)
 //				this.tucaoShow=false;
 			},
-			typeName(id){
-				
-				window.location.href="https://test.qironghome.com/bak/web/upload/2017/10/24/150883209561721rqaa.pdf";
-				
-//				var Uls=this.boxUl[id]
-//				this.types['type'+id]
-//				console.log(this.types['type'+id])
-//				window.location.href="#/wode/jilu/0/types";
-//				this.$refs.dingzengzuoshiShow.zuoshiBlock();
-			},
-			
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
+			createDownloadTask(){
+				var dataFile = this.dataFile;
+				var that=this;
+//				var dtask=null;
+				var str=''
+				if ( that.dtask ) {
+					plus.runtime.openFile(this.dataFile)
+//					outLine( "下载任务已创建！" );
+					return;
+				}
+			    var url = this.jihuaShu;
+			    var options = {method:"GET"};
+				this.dtask = plus.downloader.createDownload( url, {options},function(d, status) {
+					if(status == 200) { // 下载成功
+						var path = d.filename;
+
+//								mui.toast('下载成功');
+//						othis.attr('data-file',d.filename);
+						that.dataFile=d.filename;
+						plus.runtime.openFile(d.filename);
+					} else { //下载失败
+						mui.toast('下载失败' + status)
+					}
+				});
+			    this.dtask.addEventListener( "statechanged", function(task,status){
+			    	if(!that.dtask){return;}
+			    	switch(task.state) {
+			    		case 1: // 开始
+		//	    			outLine( "开始下载..." );
+			    		break;
+			    		case 2: // 已连接到服务器
+		//	    			outLine( "链接到服务器..." );
+			    			str = '文件加载中，请稍后...'
+			    		break;
+			    		case 3:	// 已接收到数据
+		//	    			outSet( "下载数据更新:" );
+//			    			outLine( task.downloadedSize+"/"+task.totalSize );
+			    			task.downloadedSize = parseInt(task.downloadedSize/1024/1024*100)/100;
+							task.totalSize = parseInt(task.totalSize/1024/1024*100)/100;
+							
+							that.daXiao = '文件加载中，请稍后...'+task.downloadedSize + "M/" + task.totalSize+'M'
+			    		break;
+			    		case 4:	// 下载完成
+		//	    			outSet( "下载完成！" );
+		//	    			outLine( task.totalSize );
+			    			str = '文件加载完成，点击打开'
+						break;
+			    	}
+			    	if(task.downloadedSize==task.totalSize){
+			    		that.daXiao="";
+			    	}
+			    	that.titBox=str;
+			    });
+			    this.dtask.start();
+//			    if(dataFile!=''){
+//					plus.runtime.openFile(dataFile);
+//				}else{
+//					dtask.start();
+//				}
+//				function startDownloadTask(){
+//					if ( !dtask ) {
+//						outSet( "请先创建下载任务！" );
+//						return;
 //					}
-//				});
-//			}
+//					dtask.start();
+//				}
+//				// 暂停下载任务
+//				function pauseDownloadTask(){
+//				    dtask.pause();
+//				    outSet( "暂停下载！" );
+//				}
+//				// 恢复下载任务
+//				function resumeDownloadTask(){
+//				    dtask.resume();
+//				    outSet( "恢复下载！" );
+//				}
+//				function cancelDownloadTask(){
+//					dtask.abort();
+//					dtask = null;
+//					outSet( "取消下载任务！" );
+//				}
+//				function clearDownloadTask(){
+//					
+//				}
+//				function startAll(){
+//					plus.downloader.startAll();
+//				}
+			},
+			typeName(id){
+				window.location.href="https://test.qironghome.com/bak/web/upload/2017/10/24/150883209561721rqaa.pdf";
+			},
 		},
 		events:{
 			
 		},
 		filters:{
-//			formatDate(time){
-//				let date = new Date(time);
-//				return formatDate(date,'yyyy-MM-dd hh:mm');
-//			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 			box,
-			pdf
+//			pdf
 		}
 	}
 </script>

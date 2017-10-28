@@ -181,13 +181,13 @@
 //	      	console.log(this.$refs.wrapper.getBoundingClientRect().top)
 	      	},
 			LieBiao(){
-				Indicator.open({spinnerType: 'fading-circle'});
 				var token={
 		      		token:this.userContent['token']
 		      	}
 		      	this.token=this.userContent['token'];
 	//			项目列表（投资人收到的项目）
 				if(this.data==""){
+					Indicator.open({spinnerType: 'fading-circle'});
 					this.$http.post(URL.path+'finance/received_item_list',token,{emulateJSON:true}).then(function(res){
 						this.data=res.body.data;
 						Indicator.close();

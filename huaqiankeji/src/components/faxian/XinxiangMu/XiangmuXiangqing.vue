@@ -174,7 +174,6 @@
 		mounted(){
 			this.numToTime=numToTime;
 			Indicator.open({spinnerType: 'fading-circle'});
-			console.log("jjjjjjjjjjjj")
 			//项目详情
 			var data = {
 				token:this.userContent.token,
@@ -227,18 +226,18 @@
 				}
 				window.location.href="#/faxian/XinxiangMu/"+this.userContent.token+"/XiangmuXiangqing/"+this.data.uid+'/jihuaShu';
 			},
+			chakanBA(){
+				window.location.href="#/faxian/XinxiangMu/"+this.userContent.token+"/XiangmuXiangqing/"+this.data.uid+'/BP';
+			},
 			xiangqingBlock(){
 				this.tucaoShow=true;
 			},
 			xinxiTo(){
 				this.$refs.xinxiShow.xinxiBlock();
 			},
-			chakanBA(){
-				window.location.href="#/faxian/XinxiangMu/"+this.userContent.token+"/XiangmuXiangqing/"+this.data.uid+'/BP';
-			},
 			liuYanTo(){
 				if(this.types==1){			//跳转到留言页面
-					window.location.href="#/fankuixinxi/"+this.userContent.token+"/"+this.data.uid+'/1';
+					window.location.href="#/fankuixinxi/"+this.userContent.token+"/"+this.data.uid+'/'+this.data.uname;
 				}else{
 					Toast("亲，你还没有跟进是不可以给对方留言的");
 				}

@@ -80,7 +80,8 @@
 						if(res.body.returnCode=='200'){
 							Toast("亲！项目结束成功，请到个人资料编写你本次项目的投资金额。")
 							setTimeout(function(){
-								window.location.href="#/wode/ziliaoH/"+thata.token;
+//								window.location.href="#/wode/ziliaoH/"+thata;
+								window.location.href="#/wode";
 							},3000)
 						}
 						console.log("投资人收到的项目列表");
