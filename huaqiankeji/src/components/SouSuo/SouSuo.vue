@@ -292,7 +292,7 @@
 					this.page=this.page*1;
 					this.page=this.page+=1;
 					Indicator.close();
-					if(this.data.length==4){
+					if(this.data.length==5){
 						this.data=[]
 						this.$refs.wrapper.scrollTop=0;
 						this.height=0;
@@ -408,21 +408,8 @@
 //			}
 		},
 		updated(){
-//			this.sousuoTo();
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
-//			typea
-//			cartcontrol,
-//			ratingselect,
-//			split
 		}
 	}
 </script>

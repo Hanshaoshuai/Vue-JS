@@ -11,7 +11,7 @@
 					<ul>
 						<li @click.stap="shangChuan()">
 							<mingpian @to-parent="child" class="mingpians" ref="mingpianID"></mingpian>
-							<img v-show="images" :src="imgUrl" alt="" />
+							<img ref="tianjia" v-show="images" :src="imgUrl" alt="" />
 						</li>
 						<span>上传营业执照</span>
 					</ul>
@@ -35,6 +35,27 @@
 							<span>万元</span>
 						</div>
 					</div>
+					
+					
+					<div class="zhuying_1">
+						<div class="ferst"><span>*</span>投前估值</div>
+						<div class="last number">
+							<input readOnly="true" v-model="texth" placeholder="输入数字" number="true" type="number" class="mint-field-core">
+							<span>亿元</span>
+						</div>
+					</div>
+					<div class="zhuying_1"><!--类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报 7:公司调研-->
+						<div class="ferst"><span>*</span>融资方式</div>
+						<div ref="selecteds" class="content-bottom">
+							<span class="one src1" @click.stop="xuanZe('1','0')">定增</span>
+							<span class="one src1" @click.stop="xuanZe('2','1')">做市</span>
+							<span class="one src1" @click.stop="xuanZe('3','2')">转老股</span>
+							<span class="one src1" @click.stop="xuanZe('4','3')">股权质押</span>
+							<span class="one src1" @click.stop="xuanZe('5','4')">融资租赁</span>
+							<span class="one src1" @click.stop="xuanZe('7','5')">公司调研</span>
+						</div>
+					</div>
+					
 				</div>
 				<div v-show="showFlag" class="butten">
 					<ul @click.stop="XiuGai()">
@@ -86,6 +107,7 @@
 				texta:"",
 				textb:"",
 				textc:"",
+				texth:"",
 				fankui:"45",
 				genjin:"458",
 				introduction:"",
@@ -107,7 +129,8 @@
 				onlyContent:false,
 				firstTop:true,
 				lastBottom:false,
-				textcont:"备案申请成功，请等待审核"
+				textcont:"备案申请成功，请等待审核",
+				typeId:""
 			}
 		},
 		mounted(){				//<!--1:未审核 2:已审核 3:进行中 4:已结束 5未通过-->
@@ -131,12 +154,20 @@
 				this.texta=this.data.com_name;
 				this.textb=this.data.com_short;
 				this.textc=this.data.total_finance;
+				this.texth=this.data.appraisement;
+				this.typeId=this.data.type;
 				if(res.body.data.id.status!=='1'){
 					this.showFlag=false;
 				}
 				if(res.body.data.id.status==5){
 					this.showFlag=true;
 				}
+				var span=this.$refs.selecteds.getElementsByClassName("one");
+				var index=this.typeId*1-1;
+				if(index==6){
+					index=5;
+				}
+				span[index].setAttribute("class","one src2");
 				console.log(res);
 			},function(res){
 			    console.log(res);
@@ -153,7 +184,30 @@
 				if(MingpianImg){
 					this.images=true;
 				}
+				this.$nextTick(function() {
+					var img = this.$refs.tianjia;
+					var num = img.length;
+					if (img.clientWidth>img.clientHeight) {
+						img.style.height="100%"
+						img.style.width="auto"
+					}else{
+						img.style.width="100%"
+						img.style.height="auto"
+					}
+				})
 				console.log(MingpianImg)
+			},
+			xuanZe(type,index){
+				if(this.showFlag==false){
+					return;
+				}
+				this.typeId=type;
+				var span=this.$refs.selecteds.getElementsByClassName("one");
+				var length=span.length;
+				for(var i=0; i<length; i++){
+					span[i].setAttribute("class","one src1");
+				}
+				span[index].setAttribute("class","one src2");
 			},
 			XiuGai(){
 				var textInputs = this.$refs.guanzhuLingyu.getElementsByClassName("mint-field-core");
@@ -171,6 +225,8 @@
 					texta:this.texta,
 					textb:this.textb,
 					textc:this.textc,
+					texth:this.texth,
+					typeId:this.typeId
 				}
 				if(this.imgUrl==""){
 					Toast("请上传您的营业执照...");
@@ -196,7 +252,9 @@
 					license:'',						//	营业执照	是	[string]		
 					predict_revenue:'',				//	今年预计营收	是	[string]		
 					predict_profit:'',				//	今年预计净利润	是	[string]		
-					id:this.beiAnidQ				//	备案id id为空时创建，不为空时修改	是	[string]
+					id:this.beiAnidQ,				//	备案id id为空时创建，不为空时修改	是	[string]
+					type:this.typeId,						//	融资类型，参见创建项目接口type值	是	[string]
+					appraisement:this.texth			//	投前估值	是	[string]
 		    	}
 				this.$http.post(URL.path+'finance/record',params,{emulateJSON:true}).then(function(res){
 					console.log(res);
@@ -236,20 +294,6 @@
 			liuYan(){
 				window.location.href="#/fankuixinxi";
 			},
-			
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -261,14 +305,6 @@
 //			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 			box,
@@ -352,8 +388,7 @@
 				text-align:center;
 				ul{
 					width:1.25rem;
-					height:1.25rem;
-					overflow:hidden;
+					height:auto;
 					li{
 						position:relative;
 						border:1px solid #f5f4f9;

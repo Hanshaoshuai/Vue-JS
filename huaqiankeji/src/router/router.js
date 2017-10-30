@@ -33,16 +33,16 @@ import Faxian from "../components/faxian/faxian.vue"
 			import YanbaoXiangqing from "../components/Faxian/YanbaoShili/wenzhang.vue"
 
 
-import Shendu from "../components/shendu/shendu.vue"
-	import WenzhangGengduo from "../components/shendu/WenzhangGengduo/gengduo.vue"
-	import XianxiaWenzhang from "../components/shendu/WenzhangYuedu/XianxiaWenzhang.vue"
-	
-	import XianxiaGengduo from "../components/shendu/XianxiaHuodong/XianxiaGengduo.vue"
-	import PreIPO from "../components/shendu/XianxiaHuodong/XianxiaWenzhang.vue"
-	
-	import PeixunGengduo from "../components/shendu/PeixunZixun/PeixunGengduo.vue"
-	import PeixunWenzhang from "../components/shendu/WenzhangYuedu/PeixunWenzhang.vue"
-	import IPO from "../components/shendu/PeixunZixun/PeixunWenzhang.vue"
+//import Shendu from "../components/shendu/shendu.vue"//暂不使用
+//	import WenzhangGengduo from "../components/shendu/WenzhangGengduo/gengduo.vue"
+//	import XianxiaWenzhang from "../components/shendu/WenzhangYuedu/XianxiaWenzhang.vue"
+//	
+//	import XianxiaGengduo from "../components/shendu/XianxiaHuodong/XianxiaGengduo.vue"
+//	import PreIPO from "../components/shendu/XianxiaHuodong/XianxiaWenzhang.vue"
+//	
+//	import PeixunGengduo from "../components/shendu/PeixunZixun/PeixunGengduo.vue"
+//	import PeixunWenzhang from "../components/shendu/WenzhangYuedu/PeixunWenzhang.vue"
+//	import IPO from "../components/shendu/PeixunZixun/PeixunWenzhang.vue"
 
 
 import Wode from "../components/wode/wode.vue"
@@ -54,7 +54,7 @@ import Wode from "../components/wode/wode.vue"
 		import ZuLin1 from "../components/wode/RongziJilu/ZuLin.vue"
 		import Diaoyan1 from "../components/wode/RongziJilu/Diaoyan.vue"
 		import YitouQingdan from "../components/wode/RongziJilu/YitouQingdan.vue"
-	import Baoming from "../components/wode/WoyaoBaoming/Baoming.vue"
+//	import Baoming from "../components/wode/WoyaoBaoming/Baoming.vue"//暂不使用
 	import Ziliao1 from "../components/wode/GerenZiliao/GerenZiliao1.vue"
 	import Ziliao3 from "../components/wode/GerenZiliao/GerenZiliao3.vue"
 	import Ziliao4 from "../components/wode/GerenZiliao/GerenZiliao4.vue"
@@ -153,35 +153,35 @@ export default ({
 			}
 		]
     },
-    {path: '/shendu',component: Shendu,
-    	children:[
-			{path:"WenzhangGengduo/:classid",component:WenzhangGengduo
-			},
-			{path:"XianxiaGengduo/:classid",component:XianxiaGengduo,
-				children:[
-					{path:"XianxiaWenzhang",component:XianxiaWenzhang}
-				]
-			},
-			{path:"PreIpo/:classid",component:PreIPO
-			},
-			{path:"PeixunGengduo/:classid",component:PeixunGengduo,
-				children:[
-					{path:"PeixunWenzhang",component:PeixunWenzhang}
-				]
-			},
-			{path:"IPO/:classid",component:IPO}
-		]
-    },
+//  {path: '/shendu',component: Shendu,//暂不使用
+//  	children:[
+//			{path:"WenzhangGengduo/:classid",component:WenzhangGengduo
+//			},
+//			{path:"XianxiaGengduo/:classid",component:XianxiaGengduo,
+//				children:[
+//					{path:"XianxiaWenzhang",component:XianxiaWenzhang}
+//				]
+//			},
+//			{path:"PreIpo/:classid",component:PreIPO
+//			},
+//			{path:"PeixunGengduo/:classid",component:PeixunGengduo,
+//				children:[
+//					{path:"PeixunWenzhang",component:PeixunWenzhang}
+//				]
+//			},
+//			{path:"IPO/:classid",component:IPO}
+//		]
+//  },
     {path:"/touXiang/:classid",component:touXiang,},
     {path: '/wode',component: Wode,
     	children:[
     		{path:"jilu/:classid",component:Jilu,},
-			{path:"baoming/:classid",component:Baoming,
-				children:[
-					{path:"PreIpo",component:PreIPO},
-					{path:"Ipo",component:IPO}
-				]
-			},
+//			{path:"baoming/:classid",component:Baoming,//暂不使用
+//				children:[
+//					{path:"PreIpo",component:PreIPO},
+//					{path:"Ipo",component:IPO}
+//				]
+//			},
 			{path:"Ziliao1/:token",component:Ziliao1},
 			{path:"Ziliao3/:token",component:Ziliao3},
 			{path:"Ziliao4/:token",component:Ziliao4},

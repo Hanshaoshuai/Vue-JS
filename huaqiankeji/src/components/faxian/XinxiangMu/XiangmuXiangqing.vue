@@ -22,7 +22,7 @@
 				<div class="tishi-bottom">
 					<div class="border">
 						<ul>
-							<li class="border-bottom"></li>
+							<!--<li class="border-bottom"></li>-->
 							<li class="tishi-center">
 								<div class="content-heder">
 									<span>{{data.com_short}}</span>
@@ -37,7 +37,7 @@
 									<!--<span>&nbsp;{{data.type}}</span>-->
 								</div>
 							</li>
-							<li class="border-bottom"></li>
+							<!--<li class="border-bottom"></li>-->
 						</ul>
 						<div class="zhuying_1">
 							<div class="ferst"><span></span>投资亮点</div>
@@ -198,7 +198,7 @@
 
 <script type="text/ecmascript">
 	import {URL} from '../../../common/js/path';
-	import {numToTime} from "../../../common/js/date.js";
+//	import {numToTime} from "../../../common/js/date.js";
 	import {common} from "../../../common/js/common.js";
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
@@ -245,7 +245,7 @@
 				types:"0",
 				genjins:"跟进",
 				bugen:"暂不跟进",
-				numToTime:"",
+//				numToTime:"",
 				yigenJin:0,
 				onlyContent:false,
 				firstTop:true,
@@ -267,7 +267,7 @@
 			}
 		},
 		mounted(){
-			this.numToTime=numToTime;
+//			this.numToTime=numToTime;
 //			this.xiazai=createDownloadTask
 			Indicator.open({spinnerType: 'fading-circle'});
 			this.localId=this.$route.params.XiangmuID
@@ -283,8 +283,12 @@
 				this.srcgo=res.body.data[0].plan;
 				this.jihuaShu=res.body.data[0].report;
 				if(this.jihuaShu==''){
-					this.$refs.baogao.style.color="#b8b8b8";
-					this.$refs.baogaoChild.style.color="#b8b8b8";
+					if(this.$refs.baogao){
+						this.$refs.baogao.style.color="#b8b8b8";
+					}
+					if(this.$refs.baogaoChild){
+						this.$refs.baogaoChild.style.color="#b8b8b8";
+					}
 				}
 				if(this.data.follow==1){
 					this.types=1;
@@ -859,7 +863,11 @@
 					li{
 						flex:1;
 						height:0.2rem;
-						&:first-child{
+						line-height:0.36rem;
+						text-align:center;
+						font-size:0.2rem;
+						color:#323232;
+						/*&:first-child{
 							max-width:10%;
 						}
 						&:last-child{
@@ -871,7 +879,7 @@
 							text-align:center;
 							font-size:0.2rem;
 							color:#323232;
-						}
+						}*/
 					}
 				}
 				.zhuying_1{

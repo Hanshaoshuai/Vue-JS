@@ -40,8 +40,6 @@
 </template>
 
 <script>
-	
-//	import denglu from "./components/DengLu/DengLu.vue";
 	import {URL} from './common/js/path';
 	
 	window.onhashchange = function() {
@@ -98,7 +96,6 @@
 	  	}
 	  },
 	  components:{
-//	  	denglu
 	  }
 	}
 </script>

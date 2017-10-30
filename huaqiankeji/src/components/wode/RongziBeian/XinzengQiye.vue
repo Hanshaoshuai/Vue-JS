@@ -39,6 +39,32 @@
 							<span>万元</span>
 						</div>
 					</div>
+					
+					
+					
+					
+					<div class="zhuying_1">
+						<div class="ferst"><span>*</span>投前估值</div>
+						<div class="last number">
+							<input v-model="texth" placeholder="输入数字" number="true" type="number" class="mint-field-core">
+							<span>亿元</span>
+						</div>
+					</div>
+					<div class="zhuying_1"><!--类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报 7:公司调研-->
+						<div class="ferst"><span>*</span>融资方式</div>
+						<div ref="selecteds" class="content-bottom">
+							<span class="one src1" @click.stop="xuanZe('1','0')">定增</span>
+							<span class="one src1" @click.stop="xuanZe('2','1')">做市</span>
+							<span class="one src1" @click.stop="xuanZe('3','2')">转老股</span>
+							<span class="one src1" @click.stop="xuanZe('4','3')">股权质押</span>
+							<span class="one src1" @click.stop="xuanZe('5','4')">融资租赁</span>
+							<span class="one src1" @click.stop="xuanZe('7','5')">公司调研</span>
+						</div>
+					</div>
+					
+					
+					
+					
 					<div style="display:none;" class="zhuying_1">
 						<div class="ferst"><span>*</span>财顾费用协定</div>
 						<div class="last neirong">
@@ -99,6 +125,8 @@
 				texte:"投资人开始跟进项目后一年内做出的投资总额认定为“平台贡献融资额”",
 				textf:"",
 				textg:"",
+				texth:"",
+				texti:"",
 				fankui:"45",
 				genjin:"458",
 				introduction:"",
@@ -116,7 +144,8 @@
 				onlyContent:false,
 				firstTop:true,
 				lastBottom:false,
-				textcont:"重新申请成功，请等待审核"
+				textcont:"重新申请成功，请等待审核",
+				typeId:""
 			}
 		},
 		mounted(){
@@ -133,6 +162,15 @@
 				history.go(-1)
 //				this.tucaoShow=false;
 			},
+			xuanZe(type,index){
+				this.typeId=type;
+				var span=this.$refs.selecteds.getElementsByClassName("one");
+				var length=span.length;
+				for(var i=0; i<length; i++){
+					span[i].setAttribute("class","one src1");
+				}
+				span[index].setAttribute("class","one src2");
+			},
 			BeiAn(){
 				var CanShu={				//给下级要传的参数
 					texta:this.texta,
@@ -141,7 +179,9 @@
 //					textd:this.textd,
 					texte:this.texte,
 					textf:this.textf,
-					textg:this.textg
+					textg:this.textg,
+					texth:this.texth,
+					typeId:this.typeId
 				}
 				for(var item in CanShu){		//判断填写信息是否完整Ok=1；标签必选
 					if(CanShu[item]==""){
@@ -150,6 +190,7 @@
 					}
 				}
 				this.onlyContent=true;
+				console.log(CanShu)
 			},
 			queding(){
 				var tata=this;
@@ -157,13 +198,15 @@
 		    		token:this.token,
 					com_name:this.texta,			//	公司全称	是	[string]		
 					com_short:this.textb,			//	公司简称	是	[string]		
-					commission:'',			//	佣金协定	是	[string]		
+					commission:'',					//	佣金协定	是	[string]		
 					total_finance:this.textc,		//	投资总额 单位：万	是	[string]		
 					remark:this.texte,				//	有效投资认定	是	[string]		
 					license:'',						//	营业执照	是	[string]		
 					predict_revenue:this.textf,				//	今年预计营收	是	[string]		
 					predict_profit:this.textg,				//	今年预计净利润	是	[string]		
-					id:this.beiAnidC				//	备案id id为空时创建，不为空时修改	是	[string]
+					id:this.beiAnidC,				//	备案id id为空时创建，不为空时修改	是	[string]
+					type:this.typeId,						//	融资类型，参见创建项目接口type值	是	[string]
+					appraisement:this.texth			//	投前估值	是	[string]
 		    	}
 				console.log(params)
 				this.$http.post(URL.path+'finance/record',params,{emulateJSON:true}).then(function(res){
@@ -207,20 +250,6 @@
 			baoMing(){
 				this.$refs.youhuiShow.YouhuiBlock();
 			}
-			
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -232,14 +261,6 @@
 //			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 			box,
@@ -418,6 +439,51 @@
 							color:#FE7F65;
 							font-size:0.16rem;
 						}
+					}
+					.content-bottom{
+						width:100%;
+						/*display:flex;*/
+						/*align-items:center;
+						align-content:center;
+						justify-content:center;*/
+						overflow: hidden;
+						/*span{
+							&:nth-child(2n){
+								margin-left:0.46rem;
+								margin-right:0.46rem;
+							}
+						}*/
+						.src1{
+		            		display:inline-block;
+		            		float:left;
+		            		width:0.9rem;
+		            		padding:0.06rem 0;
+		            		text-align: center;
+		            		font-size: 0.14rem; 
+		            		line-height: 0.15rem;
+		            		border:1px solid #cfcfcf;
+		            		box-sizing:border-box;
+		            		border-radius:0.04rem;
+		            		color:#b4b4b4;
+		            		margin-bottom:0.1rem;
+		            		margin-right:0.1rem;
+		            	}
+		            	.src2{
+		            		display:inline-block;
+		            		float:left;
+		            		width:0.9rem;
+		            		padding:0.06rem 0;
+		            		text-align: center;
+		            		line-height: 0.15rem;
+		            		font-size: 0.14rem; 
+		            		background:#ff7a59;
+		            		border:1px solid #cfcfcf;
+		            		box-sizing:border-box;
+		            		border-radius:0.04rem;
+		            		color:#fff;
+		            		margin-bottom:0.1rem;
+		            		margin-right:0.1rem;
+		            	}
 					}
 				}
 			}

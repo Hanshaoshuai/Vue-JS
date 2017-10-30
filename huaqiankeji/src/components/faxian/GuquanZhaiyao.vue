@@ -7,8 +7,34 @@
 					<span class="fanhui-butten" @click.stop="listnone()"><img src="./XinxiangMu/img/back.png"/></span>
 					<span>项目摘要</span>
 					<div class="fanhui-right">
-						<div @click.stop="yifouXiangmu()">
-							<font>分享gdg</font>
+						<div>
+							<div ref="dcontent" id="dcontent" class="dcontent">
+								<textarea style="display:none;" ref="sharecontent" id="sharecontent" rows="3">我正在使用HBuilder+HTML5开发移动应用，赶紧跟我一起来体验！</textarea>
+								<table style="width:100%; display:none;">
+									<tbody>
+										<tr>
+											<td style="width:30%"><div class="button button-select" onclick="shareCameraPicture()">拍照</div></td>
+											<td style="width:30%"><div class="button button-select" onclick="shareGalleryPicture()">相册选取</div></td>
+											<td style="width:30%"><div class="button button-select" onclick="shareLogoPicture()">使用logo图</div></td>
+										</tr>
+									</tbody>
+								</table>
+								<img style="display:none;" ref="pic" id="pic" src="http://www.qironghome.com/static/app/img/120.png"/>
+								<div style="display:none;" class="button" onclick="shareShow()">分 享</div>
+								<div style="display:none;" class="button" onclick="shareSystem()">系统分享</div>
+								<p style="display:none;" class="heading">链接地址：</p>
+								<input style="display:none;" ref="sharehref" id="sharehref" class="sharehref" type="url" value="http://www.qironghome.com/index.php/app/demand-info?id=715" placeholder="请输入要分享的链接地址"/>
+								<p style="display:none;" class="heading">链接标题：</p>
+								<input style="display:none;" ref="sharehrefTitle" id="sharehrefTitle" class="sharehref" type="text" value="DCloud HBuilder-做最好的HTML5开发工具" placeholder="请输入要分享的链接标题"/>
+								<p style="display:none;" class="heading">链接描述：</p>
+								<input style="display:none;" ref="sharehrefDes" id="sharehrefDes" class="sharehref" type="text" value="我正在使用HBuilder+HTML5开发移动应用，赶紧跟我一起来体验！" placeholder="请输入要分享的链接描述"/>
+								<div class="button" @click.stop="shareHref()">分享</div>
+								<p style="display:none;" class="des">如果需要解除分享中绑定的用户信息，请点击解除授权：</p>
+								<div style="display:none;" class="button" onclick="cancelAuth()">解除授权</div>
+							</div>
+							<div ref="output" id="output" style="display:none;">
+								Share模块管理客户端的社交分享功能，提供调用终端社交软件的分享能力。通过plus.share可获取社交分享管理对象。
+							</div>
 						</div>
 					</div>
 				</div>
@@ -79,7 +105,8 @@
 <script type="text/ecmascript">
 //	import Vue from "vue";
 	import {numToTime} from "../../common/js/date.js";
-	import {nativeShare} from "../../common/js/nativeShare.js";
+	import {common} from "../../common/js/common.js";
+	import {common1} from "../../common/js/common1.js";
 	import { Toast } from 'mint-ui';
 	import { MessageBox } from 'mint-ui';
 	import {URL} from '../../common/js/path';
@@ -107,7 +134,14 @@
 				genjin:50,
 				numToTime:'',
 				buttenBlock:false,
-				utype:false
+				utype:false,
+				dcontent:"",
+				sharecontent:"",
+				pic:"",
+				sharehref:'',
+				sharehrefTitle:'',
+				sharehrefDes:"",
+				output:""
 //				onlyContent:true
 			}
 		},
@@ -126,6 +160,10 @@
 				}else{
 					this.buttenBlock=true;
 				};
+				this.$nextTick(function(){
+					this.output=this.$refs.output
+					this.dcontent=this.$refs.dcontent;
+				});
 				console.log(res);
 			},function(res){
 			    console.log(res.status);
@@ -136,30 +174,17 @@
 				history.go(-1)
 //				this.showFlag=false;
 			},
-			yifouXiangmu(){
-			    var config = {
-			     	url: '', //分享url
-			      title: '', //内容标题
-			      desc: '', //描述
-			      img: '', //分享的图片
-			      img_title: '', //图片名称
-			      from: '' //来源
-			    };
-			    var share_obj = new nativeShare('nativeShare', config);
-			    $(".am-share").addClass("am-modal-active");
-			    if ($(".sharebg").length > 0) {
-			      $(".sharebg").addClass("sharebg-active");
-			    } else {
-			      $("body").append('<div class="sharebg"></div>');
-			      $(".sharebg").addClass("sharebg-active");
-			    }
-			    $(".sharebg-active,.share_btn").click(function() {
-			      $(".am-share").removeClass("am-modal-active");
-			      setTimeout(function() {
-			        $(".sharebg-active").removeClass("sharebg-active");
-			        $(".sharebg").remove();
-			      }, 300);
-			    })
+			shareHref(){
+				this.dcontent=this.$refs.dcontent;
+				this.sharecontent=this.$refs.sharecontent;
+				this.pic=this.$refs.pic;
+				this.sharehref=this.$refs.sharehref;
+				this.sharehrefTitle=this.$refs.sharehrefTitle;
+				this.sharehrefDes=this.$refs.sharehrefDes;
+				this.output=this.$refs.output;
+				console.log(this.sharehref.value)
+//				common(this.output,this.dcontent,window);
+				common1(this.dcontent,this.sharecontent,this.pic,this.sharehref,this.sharehrefTitle,this.sharehrefDes,this.output);
 			},
 			butten(){
 				MessageBox.confirm('您确定要联系对方并索要完整项目信息吗?').then(action => {
@@ -187,19 +212,6 @@
 				});
 				this.block=true;
 			}
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			

@@ -32,7 +32,7 @@
 				<box></box>
 				<div style="width:100%;height:0.5rem;"></div>
 			</div>
-			<router-view :token="token" :XiangmuID="XiangmuID" :is_send="is_send" :type="type"></router-view>
+			<router-view :token="token" :XiangmuID="XiangmuID" :is_send="is_send"></router-view>
 			<!--<dingzengzuoshi ref="dingzengzuoshiShow"></dingzengzuoshi>-->
 			<!--<zhuanlaogu ref="zhuanlaoguShow"></zhuanlaogu>-->
 			<!--<diaoyan ref="diaoyanShow"></diaoyan>-->

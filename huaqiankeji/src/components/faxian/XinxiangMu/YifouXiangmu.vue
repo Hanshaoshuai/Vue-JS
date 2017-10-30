@@ -14,7 +14,7 @@
 			</div>
 			<div class="box">
 				<div style="width:100%;height:0.55rem;"></div>
-				<div v-for="(item,index) in data" class="tishi-bottom" @click.stop="xiangqing(item.id,item.follow)">
+				<div v-for="(item,index) in data" class="tishi-bottom" @click.stop="xiangqing(item.id,item.follow,numToTime(item.send_time),item.audit)">
 					<div v-if="item.is_read=='0'" class="tubiao"></div>
 					<div class="borders">
 						<ul>
@@ -49,9 +49,9 @@
 								<p>{{item.lightspot}}</p>
 							</div>
 						</div>
-						<div class="jieshu"><font>保密信息，禁止传播</font><span v-if="item.follow=='1' && item.end_follow!=1 && item.end_follow!=2" @click.stop="jieshu(item.id)">结束项目</span></div>
+						<div class="jieshu"><font>保密信息，禁止传播</font><!--<span v-if="item.follow=='1' && item.end_follow!=1 && item.end_follow!=2" @click.stop="jieshu(item.id)">结束项目</span>--></div>
 						<div class="times border">
-							<span class="text-center">{{numToTime(item.create_time)}}</span>
+							<span class="text-center">{{numToTime(item.send_time)}}</span>
 							<span>发布</span>
 							<div class="times-name">
 								<!--<font></font>
@@ -61,7 +61,7 @@
 					</div>
 				</div>
 			</div>
-			<router-view :userContent="userContent" :XiangmuID="XiangmuID"></router-view>
+			<router-view :userContent="userContent" :XiangmuID="XiangmuID" :left="left" :right="right"></router-view>
 			<!--<xiangmuxiangqing ref="xiangqingShow"></xiangmuxiangqing>-->
 		</div>
 	</transition>
@@ -96,7 +96,9 @@
 				times:20177111129,
 				showFlag:false,
 				tucaoShow:true,
-				numToTime:""
+				numToTime:"",
+				left:'',
+				right:""
 			}
 		},
 		mounted(){
@@ -133,10 +135,14 @@
 			yifouBlock(){
 				this.tucaoShow=true;
 			},
-			xiangqing(XiangmuID,follow){
+			xiangqing(XiangmuID,follow,send_time,audit){
 				if(follow==3){
 					return;
 				}
+				if(audit==1){
+					return;
+				}
+				this.left=send_time;
 				this.XiangmuID=XiangmuID;
 				window.location.href="#/faxian/YifouXiangmu/"+this.userContent['token']+"/YifouXiangqing/"+this.XiangmuID;
 //				this.$refs.xiangqingShow.xiangqingBlock();

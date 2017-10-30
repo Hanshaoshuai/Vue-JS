@@ -22,7 +22,7 @@
 				<div class="tishi-bottom">
 					<div class="border">
 						<ul>
-							<li class="border-bottom"></li>
+							<!--<li class="border-bottom"></li>-->
 							<li class="tishi-center">
 								<div class="content-heder">
 									<span>{{data.com_short}}</span>
@@ -37,7 +37,7 @@
 									<!--<span>&nbsp;{{data.type}}</span>-->
 								</div>
 							</li>
-							<li class="border-bottom"></li>
+							<!--<li class="border-bottom"></li>-->
 						</ul>
 						<div class="zhuying_1">
 							<div class="ferst"><span></span>项目推荐</div>
@@ -53,26 +53,119 @@
 							<p>今年预计：营收&nbsp;<span>{{data.predict_revenue}}亿</span>&nbsp;&nbsp;净利润&nbsp;<span>{{data.predict_profit}}万</span></p>
 						</div>
 					</div>
-					<div class="zhuying_1 border">
+					<!--<div class="zhuying_1 border">
 						<div class="ferst"><span></span>融资计划</div>
 						<div class="last">
 							<p>融资总额：<span>{{data.total_finance}}万</span></p>
 							<p>投前估值：<span>{{data.appraisement}}万</span></p>
 						</div>
+					</div>-->
+					<div class="zhuying_1 border">
+						<div v-if="data.type!=3" class="ferst"><span></span>融资计划</div>
+						<div v-if="data.type==3" class="ferst"><span></span>转让计划</div>
+						<div class="last">
+							<p v-if="data.type==1">投前估值：<span>{{data.appraisement}}&nbsp;亿元</span></p>
+							<p v-if="data.type==1">融资总额：<span>{{data.total_finance}}&nbsp;万元</span></p>
+							<p v-if="data.type==1">每股价格：<span>{{data.share_price}}&nbsp;元</span></p>
+							<p v-if="data.type==1">投前静态市盈率：<span>{{(data.appraisement*10000/data.last_year_profit).toFixed(1)}}&nbsp;倍</span></p>
+							<p v-if="data.type==1">投后动态市盈率：<span>{{((data.appraisement*10000+data.total_finance*1)/data.predict_profit).toFixed(1)}}&nbsp;倍</span></p>
+							
+							<p v-if="data.type==2">投前估值：<span>{{data.appraisement}}&nbsp;亿元</span></p>
+							<p v-if="data.type==2">融资总额：<span>{{data.total_finance}}&nbsp;万元</span></p>
+							<p v-if="data.type==2">每股价格：<span>{{data.share_price}}&nbsp;元</span></p>
+							<p v-if="data.type==2">投前静态市盈率：<span>{{(data.appraisement*10000/data.last_year_profit).toFixed(1)}}&nbsp;倍</span></p>
+							<p v-if="data.type==2">投后动态市盈率：<span>{{((data.appraisement*10000+data.total_finance*1)/data.predict_profit).toFixed(1)}}&nbsp;倍</span></p>
+							
+							<p v-if="data.type==3">拟转股份数：<span>{{data.transfe_share}}&nbsp;万股</span></p>
+							<p v-if="data.type==3">每股价格：<span>{{data.share_price}}&nbsp;元</span></p>
+							<p v-if="data.type==3">融资总额：<span>{{data.transfe_share*data.share_price}}&nbsp;万元</span></p>
+							<p v-if="data.type==3">企业估值：<span>{{data.appraisement}}&nbsp;亿元</span></p>
+							<p v-if="data.type==3">静态市盈率：<span>{{(data.appraisement*10000/data.last_year_profit).toFixed(1)}}&nbsp;倍</span></p>
+							<p v-if="data.type==3">动态市盈率：<span>{{(data.appraisement*10000/data.predict_profit).toFixed(1)}}&nbsp;倍</span></p>
+							
+							<p v-if="data.type==4">融资总额：<span>{{data.total_finance}}&nbsp;万元</span></p>
+							<p v-if="data.type==4">租赁周期：<span>{{data.pledge_time}}&nbsp;个月</span></p>
+							
+							<p v-if="data.type==5">融资总额：<span>{{data.total_finance}}&nbsp;万元</span></p>
+							<p v-if="data.type==5">质押周期：<span>{{data.repayment_time}}&nbsp;个月</span></p>
+							
+							<p v-if="data.type==7">投前估值：<span>{{data.appraisement}}&nbsp;亿元</span></p>
+							<p v-if="data.type==7">融资总额：<span>{{data.total_finance}}&nbsp;万元</span></p>
+							<p v-if="data.type==7">每股价格：<span>{{data.share_price}}&nbsp;元</span></p>
+							<p v-if="data.type==7">投前静态市盈率：<span>{{(data.appraisement*10000/data.last_year_profit).toFixed(1)}}&nbsp;倍</span></p>
+							<p v-if="data.type==7">投后动态市盈率：<span>{{((data.appraisement*10000+data.total_finance*1)/data.predict_profit).toFixed(1)}}&nbsp;倍</span></p>
+							<!--<p>每股价格：<span>{{data.share_price}}&nbsp;元</span></p>
+							<p>投前静态市盈率：<span>{{(data.appraisement*10000/data.last_year_profit).toFixed(1)}}&nbsp;倍</span></p>
+							<p>投后动态市盈率：<span>{{((data.appraisement*10000+data.total_finance*1)/data.predict_profit).toFixed(1)}}&nbsp;倍</span></p>-->
+						</div>
+					</div>
+					<div v-if="data.type==7" class="zhuying_1 border">
+						<div class="ferst"><span></span>调研时间和地点</div>
+						<div class="last">
+							<p>{{data.research_address}}</p>
+						</div>
+					</div>
+					<div v-if="data.type==3" class="zhuying_1 border" style="margin-top:0.1rem;">
+						<div class="ferst"><span></span>减持原因</div>
+						<div class="last">
+							<p>{{data.is_hold}}</p>
+						</div>
 					</div>
 				</div>
-				<!--<div class="border aaa">
-					<div class="content-header" @click.stap="xiangguan()">
-						<span>查看项目分析与尽调报告</span>
-						<font></font>
-					</div>
-					<div class="content-header" @click.stap="chakanBA()">
+				<div class="border aaa">
+					<div v-if="data.type==1" class="content-header" @click.stap="xiangguan()">
 						<span>查看商业计划书（BP）</span>
-						<font></font>
+						<!--<font>{{dataFile2}}</font>--><font ref="baogaoChild">{{titBox}}</font><span>{{daXiao}}</span>
+						<!--<font></font>-->
 					</div>
-				</div>-->
+					<div v-if="data.type==1" ref="baogao" class="content-header" @click.stap="xiangguan()">
+						<span>查看项目分析与尽调报告</span>
+						<!--<font>{{dataFile2}}</font>--><font ref="baogaoChild">{{titBox2}}</font><span>{{daXiao2}}</span>
+						<!--<font></font>-->
+					</div>
+					<div v-if="data.type==2" class="content-header" @click.stap="xiangguan()">
+						<span>查看商业计划书（BP）</span>
+						<!--<font>{{dataFile2}}</font>--><font ref="baogaoChild">{{titBox}}</font><span>{{daXiao}}</span>
+						<!--<font></font>-->
+					</div>
+					<div v-if="data.type==2" ref="baogao" class="content-header" @click.stap="xiangguan()">
+						<span>查看项目分析与尽调报告</span>
+						<!--<font>{{dataFile2}}</font>--><font ref="baogaoChild">{{titBox2}}</font><span>{{daXiao2}}</span>
+						<!--<font></font>-->
+					</div>
+					<div v-if="data.type==3" class="content-header" @click.stap="xiangguan()">
+						<span>查看商业计划书（BP）</span>
+						<!--<font>{{dataFile2}}</font>--><font ref="baogaoChild">{{titBox}}</font><span>{{daXiao}}</span>
+						<!--<font></font>-->
+					</div>
+					<div v-if="data.type==3" ref="baogao" class="content-header" @click.stap="xiangguan()">
+						<span>查看项目分析与尽调报告</span>
+						<!--<font>{{dataFile2}}</font>--><font ref="baogaoChild">{{titBox2}}</font><span>{{daXiao2}}</span>
+						<!--<font></font>-->
+					</div>
+					<div v-if="data.type==4" class="content-header" @click.stap="chakanBA()">
+						<span>查看资金用途及还款计划</span>
+						<!--<font>{{dataFile}}</font>--><font>{{titBox}}</font><span>{{daXiao}}</span>
+						<!--<font></font>-->
+					</div>
+					<div v-if="data.type==5" class="content-header" @click.stap="chakanBA()">
+						<span>查看资金用途及还款计划</span>
+						<!--<font>{{dataFile}}</font>--><font>{{titBox}}</font><span>{{daXiao}}</span>
+						<!--<font></font>-->
+					</div>
+					<div v-if="data.type==7" class="content-header" @click.stap="xiangguan()">
+						<span>查看商业计划书（BP）</span>
+						<!--<font>{{dataFile2}}</font>--><font ref="baogaoChild">{{titBox}}</font><span>{{daXiao}}</span>
+						<!--<font></font>-->
+					</div>
+					<div v-if="data.type==7" ref="baogao" class="content-header" @click.stap="xiangguan()">
+						<span>查看项目分析与尽调报告</span>
+						<!--<font>{{dataFile2}}</font>--><font ref="baogaoChild">{{titBox2}}</font><span>{{daXiao2}}</span>
+						<!--<font></font>-->
+					</div>
+				</div>
 				<div class="times border">
-					<span class="text-center">{{numToTime(data.create_time)}}</span>
+					<span class="text-center">{{left}}</span>
 					<span>发布</span>
 					<div class="times-name">
 						<!--<font></font>-->
@@ -90,8 +183,9 @@
 
 <script type="text/ecmascript">
 	import {URL} from '../../../common/js/path';
-	import {numToTime} from "../../../common/js/date.js";
+//	import {numToTime} from "../../../common/js/date.js";
 	import { Field } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 	import box from "../../box.vue";
 	import tishi from "../../Tishi.vue";
 //	import youhuiquan from "../../shendu/PeixunZixun/YouhuiQuan.vue";
@@ -102,7 +196,9 @@
 		props:{
 			datas:{},
 			XiangmuID:{},
-			userContent:{}
+			userContent:{},
+			left:{},
+			right:{}
 //			food:{
 //				type:Object
 //			}
@@ -132,28 +228,237 @@
 				content:"xiangmuXiangqing",			//给下级要传的参数
 				mingPian:"huanQu",
 				types:"0",
-				numToTime:""
+//				numToTime:"",
+				srcgo:"",
+				jihuaShu:"",
+				dtask:null,
+				xiazai:"",
+				titBox:"点击下载",
+				daXiao:'',
+				dataFile:'',
+				dtask2:null,
+				xiazai2:"",
+				titBox2:"点击下载",
+				daXiao2:'',
+				dataFile2:'',
+				localId:""
 			}
 		},
 		mounted(){
-			this.numToTime=numToTime;
+//			this.numToTime=numToTime;
+			this.localId=this.$route.params.XiangmuID
 			//项目详情
 			var data = {
 				token:this.userContent.token,
 				item_id:this.$route.params.XiangmuID			//	项目id
 			}
+			Indicator.open({spinnerType: 'fading-circle'});
 			console.log(this.data)
 			this.$http.post(URL.path+'finance/item_detail',data,{emulateJSON:true}).then(function(res){
-				this.data=res.body.data[0]
+				Indicator.close();
+				this.data=res.body.data[0];
+				this.srcgo=res.body.data[0].plan;
+				this.jihuaShu=res.body.data[0].report;
+				if(this.jihuaShu==''){
+					if(this.$refs.baogao){
+						this.$refs.baogao.style.color="#b8b8b8";
+					}
+					if(this.$refs.baogaoChild){
+						this.$refs.baogaoChild.style.color="#b8b8b8";
+					}
+				}
 				console.log(res);
 			},function(res){
+				Indicator.close();
 			    console.log(res.status);
-			})
+			});
+			if(localStorage.getItem(this.localId)){
+				this.titBox="点击打开"
+			}
+			if(localStorage.getItem(this.localId+'b')){
+				this.titBox2="点击打开"
+			}
 		},
 		methods:{
 			yijianHind(){
 				history.go(-1)
 //				this.tucaoShow=false;
+			},
+			createDownloadTask(){
+//				var yes=1;
+//				if(localStorage.getItem(this.localId)){
+//					plus.runtime.openFile(localStorage.getItem(this.localId),function(errorCB){
+//						if(!errorCB){
+//							yes=0;
+//						}else{
+//							localStorage.setItem(this.localId,'')
+//						}
+//					});
+//				}
+//				if(yes==0){
+//					return;
+//				}
+				var that=this;
+//				var dtask=null;
+				var str=''
+				if ( this.dtask ) {
+					plus.runtime.openFile(this.dataFile)
+//					outLine( "下载任务已创建！" );
+					return;
+				}
+			    var url = this.srcgo;
+			    var options = {method:"GET"};
+				this.dtask = plus.downloader.createDownload( url, {options},function(d, status) {
+					if(status == 200) { // 下载成功
+						var path = d.filename;
+
+//								mui.toast('下载成功');
+//						othis.attr('data-file',d.filename);
+						that.dataFile=d.filename;
+						localStorage.setItem(that.localId,d.filename)
+						plus.runtime.openFile(d.filename);
+					} else { //下载失败
+						mui.toast('下载失败' + status)
+					}
+				});
+			    this.dtask.addEventListener( "statechanged", function(task,status){
+			    	if(!that.dtask){return;}
+			    	switch(task.state) {
+			    		case 1: // 开始
+		//	    			outLine( "开始下载..." );
+			    		break;
+			    		case 2: // 已连接到服务器
+		//	    			outLine( "链接到服务器..." );
+			    			str = '请稍后...'
+			    		break;
+			    		case 3:	// 已接收到数据
+		//	    			outSet( "下载数据更新:" );
+//			    			outLine( task.downloadedSize+"/"+task.totalSize );
+			    			task.downloadedSize = parseInt(task.downloadedSize/1024/1024*100)/100;
+							task.totalSize = parseInt(task.totalSize/1024/1024*100)/100;
+							
+							str = '加载中...'+task.downloadedSize + "M/" + task.totalSize+'M'
+			    		break;
+			    		case 4:	// 下载完成
+		//	    			outSet( "下载完成！" );
+		//	    			outLine( task.totalSize );
+			    			str = '点击打开'
+						break;
+			    	}
+//			    	if(task.downloadedSize==task.totalSize){
+//			    		that.daXiao="";
+//			    	}
+			    	that.titBox=str;
+			    });
+			    this.dtask.start();
+//			    if(dataFile!=''){
+//					plus.runtime.openFile(dataFile);
+//				}else{
+//					dtask.start();
+//				}
+//				function startDownloadTask(){
+//					if ( !dtask ) {
+//						outSet( "请先创建下载任务！" );
+//						return;
+//					}
+//					dtask.start();
+//				}
+//				// 暂停下载任务
+//				function pauseDownloadTask(){
+//				    dtask.pause();
+//				    outSet( "暂停下载！" );
+//				}
+//				// 恢复下载任务
+//				function resumeDownloadTask(){
+//				    dtask.resume();
+//				    outSet( "恢复下载！" );
+//				}
+//				function cancelDownloadTask(){
+//					dtask.abort();
+//					dtask = null;
+//					outSet( "取消下载任务！" );
+//				}
+//				function clearDownloadTask(){
+//					
+//				}
+//				function startAll(){
+//					plus.downloader.startAll();
+//				}
+			},
+			chakanBA(){
+				this.createDownloadTask();
+			},
+			xiangguan(){
+				if(this.jihuaShu==''){
+					
+					return;
+				}
+//				var yes=1;
+//				if(localStorage.getItem(this.localId+'b')){
+//					plus.runtime.openFile(localStorage.getItem(this.localId+'b'),function(errorCB){
+//						if(!errorCB){
+//							yes=0
+//						}else{
+//							localStorage.setItem(this.localId+'b','')
+//						}
+//					});
+//				}
+//				if(yes==0){
+//					return;
+//				}
+				var that=this;
+//				var dtask=null;
+				var str=''
+				if ( this.dtask2 ) {
+					plus.runtime.openFile(this.dataFile2)
+//					outLine( "下载任务已创建！" );
+					return;
+				}
+			    var url = this.jihuaShu;
+			    var options = {method:"GET"};
+				this.dtask2 = plus.downloader.createDownload( url, {options},function(d, status) {
+					if(status == 200) { // 下载成功
+						var path = d.filename;
+
+//								mui.toast('下载成功');
+//						othis.attr('data-file',d.filename);
+						that.dataFile2=d.filename;
+						localStorage.setItem(that.localId+'b',d.filename)
+						plus.runtime.openFile(d.filename);
+					} else { //下载失败
+						mui.toast('下载失败' + status)
+					}
+				});
+			    this.dtask2.addEventListener( "statechanged", function(task,status){
+			    	if(!that.dtask){return;}
+			    	switch(task.state) {
+			    		case 1: // 开始
+		//	    			outLine( "开始下载..." );
+			    		break;
+			    		case 2: // 已连接到服务器
+		//	    			outLine( "链接到服务器..." );
+			    			str = '请稍后...'
+			    		break;
+			    		case 3:	// 已接收到数据
+		//	    			outSet( "下载数据更新:" );
+//			    			outLine( task.downloadedSize+"/"+task.totalSize );
+			    			task.downloadedSize = parseInt(task.downloadedSize/1024/1024*100)/100;
+							task.totalSize = parseInt(task.totalSize/1024/1024*100)/100;
+							
+							str = '加载中...'+task.downloadedSize + "M/" + task.totalSize+'M'
+			    		break;
+			    		case 4:	// 下载完成
+		//	    			outSet( "下载完成！" );
+		//	    			outLine( task.totalSize );
+			    			str = '点击打开'
+						break;
+			    	}
+//			    	if(task.downloadedSize==task.totalSize){
+//			    		that.daXiao2="";
+//			    	}
+			    	that.titBox2=str;
+			    });
+			    this.dtask2.start();
 			},
 			xiangqingBlock(){
 				this.tucaoShow=true;
@@ -213,20 +518,6 @@
 				this.liuYans="";
 				this.jiaoHuans="";
 			}
-			
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -238,14 +529,6 @@
 //			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 			box,
@@ -374,13 +657,17 @@
 				}
 				ul{
 					height:0.3rem;
-					padding:0.28rem 2.5% 0 2.5%;
+					padding:0.2rem 2.5% 0.1rem 2.5%;
 					display:flex;
 					background:#fff;
 					li{
 						flex:1;
 						height:0.2rem;
-						&:first-child{
+						line-height:0.36rem;
+						text-align:center;
+						font-size:0.2rem;
+						color:#323232;
+						/*&:first-child{
 							max-width:10%;
 						}
 						&:last-child{
@@ -392,7 +679,7 @@
 							text-align:center;
 							font-size:0.2rem;
 							color:#323232;
-						}
+						}*/
 					}
 				}
 				.zhuying_1{
@@ -443,11 +730,14 @@
 					right:0;*/
 					float:right;
 					display:inline-block;
-					width:0.2rem;
+					/*width:0.2rem;*/
 					height:0.2rem;
-					margin-top:0.04rem;
-					background-image:url("./img/jiantou.png");
-					background-size:100% 100%;
+					margin-top:0.06rem;
+					margin-right:0.02rem;
+					color: #4cb6ff;
+					font-size:0.15rem;
+					/*background-image:url("./img/jiantou.png");
+					background-size:100% 100%;*/
 				}
 			}
 			.aaa{
@@ -458,7 +748,7 @@
 				height:0.33rem;
 				background:#fff;
 				line-height:0.34rem;
-				margin-top:0.08rem;
+				/*margin-top:0.08rem;*/
 				box-shadow:0 0.02rem 0.04rem #dedde1;
 				.text-center{
 					display:inline-block;

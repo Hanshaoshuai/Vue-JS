@@ -9,11 +9,7 @@
 					<div class="fanhui-right">
 						<div>
 							<div ref="dcontent" id="dcontent" class="dcontent">
-								<!--<br/>-->
-								<!--<p class="heading">分享内容：</p>-->
 								<textarea style="display:none;" ref="sharecontent" id="sharecontent" rows="3">我正在使用HBuilder+HTML5开发移动应用，赶紧跟我一起来体验！</textarea>
-								<!--<br/><br/>-->
-								<!--<p class="heading">分享图片：</p>-->
 								<table style="width:100%; display:none;">
 									<tbody>
 										<tr>
@@ -24,12 +20,8 @@
 									</tbody>
 								</table>
 								<img style="display:none;" ref="pic" id="pic" src="http://www.qironghome.com/static/app/img/120.png"/>
-								<!--<br/>-->
 								<div style="display:none;" class="button" onclick="shareShow()">分 享</div>
 								<div style="display:none;" class="button" onclick="shareSystem()">系统分享</div>
-								<!--<div style="padding: 0.5em 1em;"><hr color="#EEE"/></div>-->
-								
-								
 								<p style="display:none;" class="heading">链接地址：</p>
 								<input style="display:none;" ref="sharehref" id="sharehref" class="sharehref" type="url" value="http://www.qironghome.com/index.php/app/demand-info?id=715" placeholder="请输入要分享的链接地址"/>
 								<p style="display:none;" class="heading">链接标题：</p>
@@ -37,12 +29,6 @@
 								<p style="display:none;" class="heading">链接描述：</p>
 								<input style="display:none;" ref="sharehrefDes" id="sharehrefDes" class="sharehref" type="text" value="我正在使用HBuilder+HTML5开发移动应用，赶紧跟我一起来体验！" placeholder="请输入要分享的链接描述"/>
 								<div class="button" @click.stop="shareHref()">分享</div>
-								<!--<div class="button" @click.stop="yifouXiangmu()">分享</div>-->
-								<!--v-on:click="increment"-->
-								
-								
-								<!--<br/><br/>-->
-								<!--<div style="padding: 0.5em 1em;"><hr color="#EEE"/></div>-->
 								<p style="display:none;" class="des">如果需要解除分享中绑定的用户信息，请点击解除授权：</p>
 								<div style="display:none;" class="button" onclick="cancelAuth()">解除授权</div>
 							</div>
@@ -92,8 +78,6 @@
 								</div>
 							</div>
 						</div>
-						
-						
 						<div class="zhuying_1 border">
 							<div class="ferst"><span></span>经营业绩</div>
 							<div class="last">
@@ -126,28 +110,17 @@
 				</div>
 			</div>
 			<div v-show="utype" class="zhaiyao-food" @click.stop="butten()"><span>{{ButtenName}}</span></div>
-			
-			<div id="nativeShare"></div>
 		</div>
 	</transition>
 </template>
 
 <script type="text/ecmascript">
-//	import $ from 'jquery';
-//	import Vue from "vue";
 	import {numToTime} from "../../common/js/date.js";
 	import {common} from "../../common/js/common.js";
 	import {common1} from "../../common/js/common1.js";
-	import {nativeShare} from "../../common/js/nativeShare.js";
 	import { Toast } from 'mint-ui';
 	import { MessageBox } from 'mint-ui';
 	import {URL} from '../../common/js/path';
-//	import BScroll from "better-scroll";
-//	import Vue from "vue";
-//	import {formatDate} from "../../common/js/date.js";
-//	import cartcontrol from "../cartcontrol/cartcontrol.vue";
-//	import ratingselect from "../ratingselect/ratingselect.vue";
-//	import split from "../split/split.vue";
 	
 	
 	export default {
@@ -173,7 +146,6 @@
 				output:"",
 				dcontent:"",
 				numToTime:'',
-				nativeShare:"",
 				BiaoQian:[],
 				biaoqianId:'',
 				blockName:false
@@ -181,7 +153,6 @@
 			}
 		},
 		mounted(){
-			this.nativeShare=nativeShare;
 			this.numToTime=numToTime;
 			if(localStorage.getItem("type")!=1 || localStorage.getItem("type")!=7){
 				this.utype=false;
@@ -198,11 +169,11 @@
 			}
 			console.log(this.data)
 			this.$http.post(URL.path+'finance/item_detail',data,{emulateJSON:true}).then(function(res){
-				this.data=res.body.data[0]
-				if(res.body.data[0].industry){
+				this.data=res.body.data['0']
+				if(res.body.data['0'].industry){
 					this.blockName=true;
 				}
-				this.biaoqianId=res.body.data[0].industry
+				this.biaoqianId=res.body.data['0'].industry
 				console.log(res);
 				this.$nextTick(function(){
 					this.output=this.$refs.output
@@ -229,32 +200,6 @@
 //				common(this.output,this.dcontent,window);
 				common1(this.dcontent,this.sharecontent,this.pic,this.sharehref,this.sharehrefTitle,this.sharehrefDes,this.output);
 			},
-//			yifouXiangmu(){
-//			    var config = {
-//			     	url: '', //分享url
-//			      title: '', //内容标题
-//			      desc: '', //描述
-//			      img: '', //分享的图片
-//			      img_title: '', //图片名称
-//			      from: '' //来源
-//			    };
-////			    var share_obj = new nativeShare('nativeShare', config);
-//			   var share_obj =this.nativeShare('nativeShare', config)
-//			    $(".am-share").addClass("am-modal-active");
-//			    if ($(".sharebg").length > 0) {
-//			      $(".sharebg").addClass("sharebg-active");
-//			    } else {
-//			      $("body").append('<div class="sharebg"></div>');
-//			      $(".sharebg").addClass("sharebg-active");
-//			    }
-//			    $(".sharebg-active,.share_btn").click(function() {
-//			      $(".am-share").removeClass("am-modal-active");
-//			      setTimeout(function() {
-//			        $(".sharebg-active").removeClass("sharebg-active");
-//			        $(".sharebg").remove();
-//			      }, 300);
-//			    })
-//			},
 			butten(){
 				MessageBox.confirm('您确定要联系对方并索要完整项目信息吗?').then(action => {
 					//投资人索要项目
@@ -281,19 +226,6 @@
 				});
 				this.block=true;
 			}
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -305,19 +237,8 @@
 //			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
-//			cartcontrol,
-//			ratingselect,
-//			split
 		}
 	}
 </script>
@@ -433,62 +354,6 @@
       display: block;
     }
 
-
-    /*插件*/
-
-    #nativeShare .list {
-      width: 100%;
-      margin: 0 auto;
-    }
-
-    #nativeShare .list span {
-      width: 25%;
-      display: inline-block;
-      text-align: center;
-      margin: 10px 0;
-    }
-
-    #nativeShare .list span i {
-      width: 40px;
-      height: 40px;
-      display: block;
-      margin: 0 auto;
-      margin-bottom: 5px;
-    }
-
-    #nativeShare .weibo i {
-      background-image: url(./weixin.jpg);
-      background-size: cover;
-    }
-
-    #nativeShare .weixin i {
-      background-image: url(./weixin.jpg);
-      background-size: cover;
-    }
-
-    #nativeShare .weixin_timeline i {
-      background-image: url(./weixin.jpg);
-      background-size: cover;
-    }
-
-    #nativeShare .qq i {
-      background-image: url(./weixin.jpg);
-      background-size: cover;
-    }
-
-    #nativeShare .qzone i {
-      background-image: url(./weixin.jpg);
-      background-size: cover;
-    }
-
-    #nativeShare .more i {
-      background-image: url(./weixin.jpg);
-      background-size: cover;
-    }
-	
-	
-	
-	
 	.zhaiyao{
 		position:fixed;
 		background:#f5f4f9;

@@ -11,7 +11,7 @@
 					<ul>
 						<li @click.stap="shangChuan()">
 							<mingpian @to-parent="child" class="mingpians" ref="mingpianID"></mingpian>
-							<img v-show="images" :src="imgUrl" alt="" />
+							<img ref="tianjia" v-show="images" :src="imgUrl" alt="" />
 						</li>
 						<span>上传营业执照</span>
 					</ul>
@@ -35,6 +35,28 @@
 							<span>万元</span>
 						</div>
 					</div>
+					
+					
+					<div class="zhuying_1">
+						<div class="ferst"><span>*</span>投前估值</div>
+						<div class="last number">
+							<input v-model="texth" placeholder="输入数字" number="true" type="number" class="mint-field-core">
+							<span>亿元</span>
+						</div>
+					</div>
+					<div class="zhuying_1"><!--类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报 7:公司调研-->
+						<div class="ferst"><span>*</span>融资方式</div>
+						<div ref="selecteds" class="content-bottom">
+							<span class="one src1" @click.stop="xuanZe('1','0')">定增</span>
+							<span class="one src1" @click.stop="xuanZe('2','1')">做市</span>
+							<span class="one src1" @click.stop="xuanZe('3','2')">转老股</span>
+							<span class="one src1" @click.stop="xuanZe('4','3')">股权质押</span>
+							<span class="one src1" @click.stop="xuanZe('5','4')">融资租赁</span>
+							<span class="one src1" @click.stop="xuanZe('7','5')">公司调研</span>
+						</div>
+					</div>
+					
+					
 				</div>
 				<div class="butten">
 					<ul @click.stop="BeiAn()">
@@ -81,6 +103,7 @@
 				texta:"",
 				textb:"",
 				textc:"",
+				texth:"",
 				fankui:"45",
 				genjin:"458",
 				introduction:"",
@@ -101,7 +124,8 @@
 				onlyContent:false,
 				firstTop:true,
 				lastBottom:false,
-				textcont:"备案申请成功，请等待审核"
+				textcont:"备案申请成功，请等待审核",
+				typeId:""
 			}
 		},
 		mounted(){
@@ -123,13 +147,35 @@
 				if(MingpianImg){
 					this.images=true;
 				}
+				this.$nextTick(function() {
+					var img = this.$refs.tianjia;
+					var num = img.length;
+					if (img.clientWidth>img.clientHeight) {
+						img.style.height="100%"
+						img.style.width="auto"
+					}else{
+						img.style.width="100%"
+						img.style.height="auto"
+					}
+				})
 				console.log(MingpianImg)
+			},
+			xuanZe(type,index){
+				this.typeId=type;
+				var span=this.$refs.selecteds.getElementsByClassName("one");
+				var length=span.length;
+				for(var i=0; i<length; i++){
+					span[i].setAttribute("class","one src1");
+				}
+				span[index].setAttribute("class","one src2");
 			},
 			BeiAn(){
 				var CanShu={				//给下级要传的参数
 					texta:this.texta,
 					textb:this.textb,
 					textc:this.textc,
+					texth:this.texth,
+					typeId:this.typeId
 				}
 				if(this.imgUrl==""){
 					Toast("请上传您的营业执照...");
@@ -142,7 +188,7 @@
 					}
 				}
 				this.onlyContent=true;
-					
+					console.log(CanShu)
 			},
 			queding(){
 				//添加企业备案
@@ -156,7 +202,9 @@
 					license:this.$refs.mingpianID.mingpianID,						//	营业执照	是	[string]		
 					predict_revenue:this.texta,				//	今年预计营收	是	[string]		
 					predict_profit:this.textb,				//	今年预计净利润	是	[string]		
-					id:''				//	备案id id为空时创建，不为空时修改	是	[string]
+					id:'',				//	备案id id为空时创建，不为空时修改	是	[string]
+					type:this.typeId,						//	融资类型，参见创建项目接口type值	是	[string]
+					appraisement:this.texth			//	投前估值	是	[string]
 		    	}
 				console.log(params)
 				this.$http.post(URL.path+'finance/record',params,{emulateJSON:true}).then(function(res){
@@ -319,8 +367,7 @@
 				text-align:center;
 				ul{
 					width:1.25rem;
-					height:1.25rem;
-					overflow:hidden;
+					height:auto;
 					li{
 						position:relative;
 						border:1px solid #f5f4f9;
@@ -439,6 +486,51 @@
 					}
 					.last-bottom{
 						margin-bottom:0.1rem;
+					}
+					.content-bottom{
+						width:100%;
+						/*display:flex;*/
+						/*align-items:center;
+						align-content:center;
+						justify-content:center;*/
+						overflow: hidden;
+						/*span{
+							&:nth-child(2n){
+								margin-left:0.46rem;
+								margin-right:0.46rem;
+							}
+						}*/
+						.src1{
+		            		display:inline-block;
+		            		float:left;
+		            		width:0.9rem;
+		            		padding:0.06rem 0;
+		            		text-align: center;
+		            		font-size: 0.14rem; 
+		            		line-height: 0.15rem;
+		            		border:1px solid #cfcfcf;
+		            		box-sizing:border-box;
+		            		border-radius:0.04rem;
+		            		color:#b4b4b4;
+		            		margin-bottom:0.1rem;
+		            		margin-right:0.1rem;
+		            	}
+		            	.src2{
+		            		display:inline-block;
+		            		float:left;
+		            		width:0.9rem;
+		            		padding:0.06rem 0;
+		            		text-align: center;
+		            		line-height: 0.15rem;
+		            		font-size: 0.14rem; 
+		            		background:#ff7a59;
+		            		border:1px solid #cfcfcf;
+		            		box-sizing:border-box;
+		            		border-radius:0.04rem;
+		            		color:#fff;
+		            		margin-bottom:0.1rem;
+		            		margin-right:0.1rem;
+		            	}
 					}
 				}
 			}

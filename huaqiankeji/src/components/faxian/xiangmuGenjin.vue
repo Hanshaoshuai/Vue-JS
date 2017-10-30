@@ -2,8 +2,8 @@
 	<transition name="fade">
 		<div v-show="showFlag" class="wenzhang">
 			<div class="xiangmu-header">
-				<span class="xiangmu-left" @click.stop="listnone1()"><img src="./img/back.png"/></span>
-				<span>您是否还在跟进以下项目</span>
+				<span v-show="fanhui" class="xiangmu-left" @click.stop="listnone1()"><img src="./img/back.png"/></span>
+				<span>项目进展询问</span>
 			</div>
 			<div class="wenzhang-list">
 				<div ref="tianjia" class="wenzhang-content">
@@ -14,44 +14,36 @@
 						</div>
 					</div>
 					<div class="donghuaGo" ref="donghuaGo">
-						<div v-for="(item,index) in data" v-bind:key="index" class="list-item" @click.stop="quereng(item.item_id,item.com_short,index)">
-							<!--{{item}}-->
+						<div v-for="(item,index) in data" class="list-item">
 							<div class="sousuo-content border-topbottom">
 								<div class="content-header">
-									<font><img :src="item.photo"/></font>
+									<font></font>
 									<div class="names">
-										<span class="border-right">{{item.uname}}</span>
 										<span>{{item.com_short}}</span>&nbsp;
-										<span>{{item.position}}</span>
-										<span class="one right1">已过会</span>
-										<span class="tue right2">停止跟进</span>
+										<span>（{{item.com_code}}）</span>
+										<span class="right2">（已确认）</span>
+										<!--<span class="tue right2">停止跟进</span>-->
+									</div>
+								</div>
+								<div ref="selecteds" class="content-bottom">
+									<span class="one src1" @click.stop="xuanZe(item.item_id,'2','0',index,item.send_id)">已过会</span>
+									<span class="one src1" @click.stop="xuanZe(item.item_id,'3','1',index,item.send_id)">跟进中</span>
+									<span class="one src1" @click.stop="xuanZe(item.item_id,'1','2',index,item.send_id)">已放弃</span>
+								</div>
+								<div class="type-content">
+									<div class="type-cont">
+										<ul>
+											<font>投资金额</font>
+											<input placeholder="请输入投资金额" number="true" type="number" class="mint-field-core border">
+											<span>万元&nbsp;</span>
+										</ul>
 									</div>
 								</div>
 							</div>
 						</div>
+						<div class="zhaiyao-food" @click.stop="butten()"><span>保存</span></div>
 					</div>
 				</div>
-			</div>
-			<div ref="xianShi" v-show="onlyContent" class="loding" style="position: absolute;z-index: 1600; top: 0;right: 0;bottom: 0;left: 0;background-color: rgba(0,0,0,0.3);display: none;">
-				<div class="loadEffect" ref="padding" v-show="idBlock">
-					<span class="firsts" ref="selecteds">
-						<li>{{xiangmuMing}}</li>
-						<font class="src1" @click.stop="xuanZe(index,item.id)" v-for="(item,index) in selected">{{item.title}}</font>
-					</span>
-			        <div class='load-butten'>
-				        <font @click.stop="right1on()" class="first">已过会</font>
-				        <font @click.stop="right2on()" class="last">停止跟进</font>
-			        </div>
-				</div>	
-			    <!--<div class="loadEffect" ref="padding" v-show="contBlock">
-					<span>
-						<textarea ref="texts" placeholder="请输入您的投诉说明..." class="mint-field-core tousuContent" v-model="tousuContent"></textarea>
-					</span>
-			        <div class='load-butten'>
-				        <font @click.stop="guoHui()" class="first">确定</font>
-				        <font @click.stop="fangQi()" class="last">取消</font>
-			        </div>
-				</div>	-->
 			</div>
 		</div>
 	</transition>
@@ -61,14 +53,7 @@
 	import {URL} from '../../common/js/path';
 	import { Toast } from 'mint-ui';
 	import { Indicator } from 'mint-ui';
-//	import Vue from "vue";
 	import { MessageBox } from 'mint-ui';
-//	import BScroll from "better-scroll";
-//	import Vue from "vue";
-//	import {formatDate} from "../../common/js/date.js";
-//	import cartcontrol from "../cartcontrol/cartcontrol.vue";
-//	import ratingselect from "../ratingselect/ratingselect.vue";
-//	import split from "../split/split.vue";
 	
 	
 	export default {
@@ -79,6 +64,7 @@
 		},
 		data () {
 			return {
+				fanhui:false,
 				data:"",
 				token:"",
 				XiangmuID:"",
@@ -104,7 +90,11 @@
 				right1DOM:'',
 				right2DOM:'',
 				index:'',
-				item_id:""
+				item_id:"",
+				content:[],
+				inputBlock:false,
+				p:0,
+				got:false
 			}
 		},
 		mounted(){
@@ -126,19 +116,6 @@
 						this.right1DOM=this.$refs.donghuaGo.getElementsByClassName("one")
 						this.right2DOM=this.$refs.donghuaGo.getElementsByClassName("tue")
 						console.log(this.right1DOM)
-//						var img = tata.$refs.tianjia.getElementsByTagName("img");
-//						var length=img.length;
-//						for (var i = 0; i < length; i++) {
-//							img[i].onload =function(){
-//								if (this.clientWidth>this.clientHeight) {
-//									this.style.height="100%"
-//									this.style.width="auto"
-//								}else{
-//									this.style.width="100%"
-//									this.style.height="auto"
-//								}
-//							}
-//						}
 					})
 				}
 				console.log("每月提醒一次");
@@ -149,6 +126,50 @@
 			})
 		},
 		methods:{
+			xuanZe(item_id,follow,list,index,send_id){
+				this.genjinJiekou(item_id,follow)
+				var that=this;
+				var inputNont=this.$refs.donghuaGo.getElementsByClassName("type-content")[index]
+				var span=this.$refs.donghuaGo.getElementsByClassName("content-bottom")[index].getElementsByClassName("one")
+				var queren=this.$refs.donghuaGo.getElementsByClassName("names")[index].getElementsByClassName("right2")[0]
+				var queren2=this.$refs.donghuaGo.getElementsByClassName("names")[index].getElementsByClassName("right2")[0]
+				var value=this.$refs.donghuaGo.getElementsByClassName("type-content")[index].getElementsByTagName("input")[0]
+				var length=span.length;
+//				if(!queren2){
+//					return;
+//				}
+				if(follow!='2'){
+					inputNont.setAttribute("class","type-content");
+					inputNont.getElementsByClassName("mint-field-core")[0].value='';
+				}else{
+					inputNont.setAttribute("class","type-content inputNont");
+				}
+				if(follow==2){
+					this.inputBlock=true;
+					this.$nextTick(function(){
+						if(inputNont.getAttribute("class")=="type-content inputNont"){
+							console.log(inputNont.getAttribute("class"))
+							value.onblur=function(){
+								if(this.value!=""){
+									that.content[that.p]={"item_id":item_id,"send_id":send_id,"investment":this.value}
+									console.log(that.content[that.p])
+									queren.setAttribute("class",'right1')
+								}
+								this.p+=1
+							}
+						}
+					})
+//					console.log(this.content)
+				}else{
+					if(queren){
+						queren.setAttribute("class",'right1')
+					}
+				}
+				for(var i=0; i<length; i++){
+					span[i].setAttribute("class","one src1");
+				}
+				span[list].setAttribute("class","one src2");
+			},
 			quereng(item_id,name,index){
 				var right1=this.$refs.donghuaGo.getElementsByClassName("right")[index]
 				if(right1){
@@ -160,29 +181,8 @@
 				this.onlyContent=true;
 				console.log(right1)
 			},
-			right1on(){
-				console.log(this.index)
-				this.right1DOM[this.index].setAttribute("class","one right")
-				this.x+=1;
-				this.onlyContent=false;
-				this.genjinJiekou(this.item_id,'2')
-			},
-			right2on(){
-				this.right2DOM[this.index].setAttribute("class","tue right")
-				this.y+=1;
-				this.onlyContent=false;
-				this.genjinJiekou(this.item_id,'1')
-			},
 			listnone1(){
-				console.log(this.y)
-				console.log(this.x)
-				console.log(this.data.length)
-				if(this.x+this.y==this.data.length){
-					this.showFlag=false;
-				}else{
-					Toast("请确认完您的项目！")
-				}
-//				history.go(-1)
+				this.showFlag=false;
 			},
 			genjinJiekou(item_id,follow){//投资人更改反馈进度
 				var params={
@@ -191,7 +191,6 @@
 					follow:follow		//	跟进状态 1:停止跟进 2:已过会 3:继续跟进	是	[string]
 		      	}
 				this.$http.post(URL.path+'finance/update_feedback',params,{emulateJSON:true}).then(function(res){
-//					this.data=res.body.data;
 					if(res.body.returnCode=='201'){
 						
 					}
@@ -211,37 +210,87 @@
 		    	setInterval(function(){
 					tata.items.splice(tata.items.length, 0, tata.nextNum++)
 				},1000)
-//		      	this.items.splice(this.items.length, 0, this.nextNum++)
 		    },
 		    remove: function () {
 		      	this.items.splice(this.randomIndex(), 1)
 		    },
 			butten(){
-//				MessageBox.confirm('您确定要联系对方并索要完整项目信息吗?').then(action => {
-//					this.ButtenName="申请成功，等待反馈";
-//					var tate=this;
-//					setTimeout(function(){
-//						tate.showFlag=false;
-//						tate.ButtenName="索要完整项目信息";
-//					},2000)
-//				  console.log("ijfj")
-//				});
-//				this.block=true;
-				window.location.href="#/faxian";
-			}
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
+				this.$nextTick(function(){
+//					var inputNont=this.$refs.donghuaGo.getElementsByClassName("type-content")
+//					var vlength=inputNont.length;
+//					var to=0;
+//					for(var v=0; v<vlength; v++){
+//						var vlue=inputNont[v].getElementsByClassName("inputNont")
+//						if(vlue.value==''){
+//							Toast("请填写投资金额！")
+//							to=1;
+//						}
 //					}
-//				});
-//			}
+//					if(to==1){
+//						return;
+//					}
+					
+					var queren=this.$refs.donghuaGo.getElementsByClassName("names")
+					var length=queren.length;
+					var chang=0;
+					for(var i=0; i<length; i++){
+						if(queren[i].getElementsByClassName("right1")[0]){
+							chang+=1
+						}
+					}
+					if(this.got==true){
+						return;
+					}
+					if(chang!=length){
+						console.log(chang)
+						console.log(length)
+						Toast("您还有没确认的或未填写金额！")
+						return;
+					}
+					this.got=true;
+					var length=this.content.length;
+					var content='';
+					var content2='';
+					var lastcont='';
+					var lastcont2='';
+					if(length==0){
+						this.fanhui=true;
+						Toast("您已保存成功")
+						return;
+					}
+					for(var i=0; i<length; i++){
+						content=''
+						for(var item in this.content[i]){
+							content+='"'+item+'"'+':'+this.content[i][item]+','
+						}
+						for(var x=0; x<content.length-1; x++){
+							content2+=content[x]
+						}
+						lastcont+="{"+content2+"},"
+						console.log(content2);
+					}
+					for(var o=0; o<lastcont.length-1; o++){
+						lastcont2+=lastcont[o]
+					}
+					lastcont='['+lastcont2+']'
+		//			保存修改投资额
+					var anliParam={
+			    		token:localStorage.getItem("token"),
+			    		item:lastcont
+//			    		item:'[{"item_id":3,"send_id":132,"investment":22},{"item_id":1,"send_id":131,"investment":3}]'
+			    	}
+					this.$http.post(URL.path+'finance/edit_investment',anliParam,{emulateJSON:true}).then(function(res){
+						console.log(res);
+						if(res.body.returnCode=='200'){
+							Toast("您已保存成功")
+							this.fanhui=true;
+							this.showFlag=false;
+						}
+					},function(res){
+					    console.log(res);
+					})
+				})
+			},
 		},
 		events:{
 			
@@ -329,7 +378,7 @@
 				.fankiu{
 					width:100%;
 					display:flex;
-					padding:0.1rem 0 0.2rem 0;
+					padding:0.08rem 0 0.1rem 0;
 					/*align-items:center;*/
 					.tubiao{
 						width:0.19rem;
@@ -350,12 +399,13 @@
 				.donghuaGo::-webkit-scrollbar{width:0px}
 				.donghuaGo{
 					width:100%;
-					height:74%;
+					height:84%;
 					overflow-y:auto;
 					-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
 					.sousuo-content{
 						width:100%;
 						height:auto;
+						padding-bottom:0.12rem;
 						background:#fff;
 						margin-bottom:0.1rem;
 						border-radius:0.02rem;
@@ -365,28 +415,26 @@
 						/*display:flex;*/
 						/*flex-direction:column;*/
 						.content-header{
-							padding:0.1rem 0.16rem 0.08rem 0.16rem;
-							font-size:0.16rem;
+							padding:0.1rem 0 0.08rem 0;
+							font-size:0.18rem;
 							display:flex;
 							align-items:center;
 							font{
 								display:inline-block;
-								width:0.43rem;
-								height:0.43rem;
-								margin-right:0.1rem;
-								/*border-radius:0.3rem;*/
-								border:none;
-								border:2px solid #e5e4e4;
-								overflow:hidden;
-								img{
-									/*width:100%;
-									height:100%;*/
-								}
+								position:relative;
+								width:0.08rem;
+								height:0.16rem;
+								background:#ff7a59;
+								margin-right:0.2rem;
+								margin-left:-0.008rem;
+								z-index:200;
 							}
 							.names{
 								flex:1;
+								padding:0.1rem;
 								.border-right{
 									min-width:0.55rem;
+									padding-right:0.1rem;
 									display:inline-block;
 									margin-right:0.02rem;
 								}
@@ -395,6 +443,10 @@
 									color:#ff7a59;
 								}
 								.right1{
+									float:right;
+									margin-right:0.19rem;
+									font-size:0.16rem;
+									color:#ff7a59;
 									display:none;
 								}
 								.right2{
@@ -402,101 +454,112 @@
 								}
 							}
 						}
+						.content-bottom{
+							width:100%;
+							display:flex;
+							align-items:center;
+							align-content:center;
+							justify-content:center;
+							span{
+								&:nth-child(2n){
+									margin-left:0.46rem;
+									margin-right:0.46rem;
+								}
+							}
+							.src1{
+			            		display:inline-block;
+			            		float:left;
+			            		padding:0.06rem 0.1rem;
+			            		font-size: 0.14rem; 
+			            		line-height: 0.15rem;
+			            		border:1px solid #cfcfcf;
+			            		box-sizing:border-box;
+			            		border-radius:0.04rem;
+			            		color:#b4b4b4;
+			            		margin-bottom:0.1rem;
+			            	}
+			            	.src2{
+			            		display:inline-block;
+			            		float:left;
+			            		padding:0.06rem 0.1rem;
+			            		line-height: 0.15rem;
+			            		font-size: 0.14rem; 
+			            		background:#ff7a59;
+			            		border:1px solid #cfcfcf;
+			            		box-sizing:border-box;
+			            		border-radius:0.04rem;
+			            		color:#fff;
+			            		margin-bottom:0.1rem;
+			            	}
+						}
+						.type-content{
+							width:100%;
+							height:auto;
+							display:none;
+							.type-cont{
+								flex:1;
+								padding:0 0 0.04rem 0.38rem;
+								background:#fff;
+								font-size:0.14rem;
+								ul{
+									font{
+										font-size:0.14rem;
+										/*color:#959595;*/
+									}
+									span{
+										color:#2abdfc;
+									}
+									.mint-field-core::-webkit-input-placeholder{
+										color: #d2d2d2;
+									}
+									.mint-field-core{
+										border:0.008rem solid #d2d2d2;
+										width:1.2rem;
+										color:#2abdfc;
+										margin:0;
+										padding:0.04rem 0.1rem;
+										margin:0.06rem 0.1rem;
+									}
+									li{
+										display:inline-block;
+										margin:0;
+										padding:0.08rem 0.18rem;
+										margin:0.06rem 0.1rem;
+									}
+								}
+						   	}
+						}
+						.inputNont{
+							display:block;
+						}
+					}
+					.zhaiyao-food{
+						width:100%;
+						height:0.45rem;
+						color:#ffffff;
+						/*position: fixed;*/
+						font-size:0.18rem;
+						display:flex;
+						/*left:0;
+					   	bottom:0;*/
+					   	margin-top:0.3rem;
+					   	margin-bottom:0.2rem;
+						-webkit-box-pack:center;
+						justify-content:center;
+						-webkit-box-align:center;
+						align-items:center;
+						z-index:320;
+						span{
+							width:60%;
+							height:100%;
+							line-height:0.45rem;
+							text-align:center;
+							background:#ff7a59;
+						}
 					}
 				}
 			}
 		}
-		.loding{
-			display:flex;
-			align-content:center;
-			align-items:center;
-			justify-content:center;
-			.loadEffect{
-	            width: 70%;
-	            min-height: 0.40rem;
-	            position: relative;
-	            padding:0.2rem 0 0.3rem 0;
-	            background: #fff;
-	            border-radius:0.06rem;
-	            .load-butten{
-	            	width:100%;
-	            	height:0.3rem;
-	            	font{
-		            	position:absolute;
-		            	display:inline-block;
-		            	background:#ff7a59;
-		            	padding:0.06rem 0.1rem;
-		            	color:#fff;
-		            	border-radius:0.04rem;
-		            	&.first{
-		            		bottom:0.2rem;
-		            		left:12%;
-		            	}
-		            	&.last{
-		            		bottom:0.2rem;
-		            		right:12%;
-		            	}
-		            }
-	            }
-	            .firsts{
-	            	overflow:hidden;
-	            	width: 83%;
-	            	li{
-	            		display:block;
-	            		width:100%;
-	            		font-size:0.16rem;
-	            		text-align: center;
-	            		padding-bottom:0.16rem;
-	            	}
-	            	.src1{
-	            		display:inline-block;
-	            		float:left;
-	            		padding:0.06rem 0.1rem;
-	            		font-size: 0.14rem; 
-	            		line-height: 0.15rem;
-	            		border:1px solid #cfcfcf;
-	            		box-sizing:border-box;
-	            		border-radius:0.04rem;
-	            		color:#b4b4b4;
-	            		margin:0 0.06rem 0.06rem 0;
-	            		&:nth-child(5n){
-	            			margin-right:0;
-	            		}
-	            	}
-	            	.src2{
-	            		display:inline-block;
-	            		float:left;
-	            		padding:0.06rem 0.1rem;
-	            		line-height: 0.15rem;
-	            		font-size: 0.14rem; 
-	            		background:#ff7a59;
-	            		border:1px solid #cfcfcf;
-	            		box-sizing:border-box;
-	            		border-radius:0.04rem;
-	            		color:#fff;
-	            		margin:0 0.06rem 0.06rem 0;
-	            		&:nth-child(5n){
-	            			margin-right:0;
-	            		}
-	            	}
-	            }
-	        }
-	        .loadEffect span{
-	        	margin:0 auto;
-	            display: block;
-	            text-align:justify;
-	            line-height: 0.22rem;
-	            font-size: 0.16rem;
-	            width: 80%;
-	            .mint-field-core{
-					resize: none;
-					width:100%;
-					min-height:0.77rem;
-					line-height:0.16rem;
-					&::-webkit-scrollbar{width:0;height:0}
-				}
-	        }
-	    }
 	}
 </style>
 

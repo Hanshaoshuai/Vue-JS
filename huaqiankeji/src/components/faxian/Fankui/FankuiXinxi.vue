@@ -1,11 +1,6 @@
 <template>
 	<!--<transition name="fade">-->
 		<div v-show="tucaoShow" class="yijian">
-			<!--<div class="xiangmu-header" @click.stop="yijianHind()">
-				<span class="xiangmu-left"><img src="./img/back.png"/></span>
-				<span>{{type}}</span>
-				<div class="tousu" @click.stop="tousuoGo()"><span>投诉</span></div>
-			</div>-->
 			<div class="searchBox">
 				<div class="home-search">
 					<span class="fanhui-butten" @click.stop="yijianHind()"><img src="./img/back.png"/></span>
@@ -28,7 +23,6 @@
 				</div>
 			</div>
 			<div class="shuru" ref="shuru">
-				<!--<div class="tousu" @click.stop="tousuoGo()"><span>投诉</span></div>-->
 				<ul>
 					<li>
 						<!--<div ref="texts" class="test_box" contenteditable="true"></div>--> 
@@ -1266,7 +1260,7 @@
 	            		box-sizing:border-box;
 	            		border-radius:0.04rem;
 	            		color:#b4b4b4;
-	            		margin:0 0.06rem 0.06rem 0;
+	            		margin:0 0.055rem 0.06rem 0;
 	            		&:nth-child(5n){
 	            			margin-right:0;
 	            		}
@@ -1282,7 +1276,7 @@
 	            		box-sizing:border-box;
 	            		border-radius:0.04rem;
 	            		color:#fff;
-	            		margin:0 0.06rem 0.06rem 0;
+	            		margin:0 0.055rem 0.06rem 0;
 	            		&:nth-child(5n){
 	            			margin-right:0;
 	            		}

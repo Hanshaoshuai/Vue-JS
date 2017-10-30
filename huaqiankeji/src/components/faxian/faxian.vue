@@ -8,15 +8,9 @@
 				</div>
 				<!--<li class="tubiao" @click.stop="wode"><span></span></li>-->
 			</div>
-			<!--<div class="box">-->
-			<div class="page-loadmore-wrapper" id="fanxian" ref="wrapper" :style="{ height: wrapperHeight + 'px' }">
+			<div ref="wrapper" class="box">
 				<div style="width:100%;height:0.48rem;"></div>
-				<!--<div style="width:100%;height:0.5rem;"></div>-->
-	    		<!--mt-loadmore中添加:auto-fill="autoFill"属性  不够高是会自动撑开屏幕-->
-	    		<!--刷新top-distance已设置为200 相当于不可刷新-->
-	      		<mt-loadmore :top-method="loadTop" @translate-change="translateChange" @top-status-change="handleTopChange" :bottom-method="loadBottom" @bottom-status-change="handleBottomChange" :bottom-all-loaded="allLoaded" :top-distance=400 :bottom-distance=40 ref="loadmore">
-		        <ul ref="boxcontent" class="page-loadmore-list">
-				<!--<div class="FadeContent">-->
+				<div class="FadeContent">
 					<div class="banner">
 						<img src="./img/bg.jpg"/>
 						<div class="gaikuang">
@@ -111,41 +105,41 @@
 					
 <!--循环遍历data-->	<li v-for="item in list" class="page-loadmore-listitem">
 						<div v-for="(item,index) in data" class="Content" >
-						<div  class="ContentText" :id="index" @click.stop="contblock(item.id,item.type)">
-							<div class="TextMame">
-								<div class="margin">		<!--类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报 6：公司调研-->
-									<span v-if="item.type==1" class="texts">定增</span>
-									<span v-if="item.type==2" class="texts">做市</span>
-									<span v-if="item.type==3" class="texts">转老股</span>
-									<span v-if="item.type==4" class="texts">股权质押</span>
-									<span v-if="item.type==5" class="texts">融资租赁</span>
-									<span v-if="item.type==6" class="texts">研报支持</span>
-									<span v-if="item.type==7" class="texts">公司调研</span>
-									<span class="texts">* {{item.com_short.substr(1, 1)}} *</span>
-									<span class="texts">（{{item.com_code.substr(0, 2)}} **** ）</span>
+							<div class="ContentText" :id="index" @click.stop="contblock(item.id,item.type)">
+								<div class="TextMame">
+									<div class="margin">		<!--类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报 6：公司调研-->
+										<span v-if="item.type==1" class="texts">定增</span>
+										<span v-if="item.type==2" class="texts">做市</span>
+										<span v-if="item.type==3" class="texts">转老股</span>
+										<span v-if="item.type==4" class="texts">股权质押</span>
+										<span v-if="item.type==5" class="texts">融资租赁</span>
+										<span v-if="item.type==6" class="texts">研报支持</span>
+										<span v-if="item.type==7" class="texts">公司调研</span>
+										<span class="texts">* {{item.com_short.substr(1, 1)}} *</span>
+										<span class="texts">（{{item.com_code.substr(0, 2)}} **** ）</span>
+									</div>
+									<div class="TypeList">
+										<span v-for="(name,index) in item.industry" class="texts">{{name.title}}</span>
+									</div>
 								</div>
-								<div class="TypeList">
-									<span v-for="(name,index) in item.industry" class="texts">{{name.title}}</span>
+								<div class="BottomText">
+									<span class="texts">{{item.lightspot}}</span>
 								</div>
-							</div>
-							<div class="BottomText">
-								<span class="texts">{{item.lightspot}}</span>
-							</div>
-							<div class="ContentTime border-top" @click.stop="Guquanzhaiyao()">
-								<div class="tishi-left">
-									<span v-if="item.ctype==1" class="text-center">企业</span>
-									<span v-if="item.ctype==7" class="text-center">财务顾问</span>
-									<!--<span>{{item.position}}</span>-->
-									<span>{{numToTime(item.create_time)}}</span>&nbsp发布
-									<!--<span>{{item.create_time}}小时前</span>&nbsp;发布-->
+								<div class="ContentTime border-top" @click.stop="Guquanzhaiyao()">
+									<div class="tishi-left">
+										<span v-if="item.ctype==1" class="text-center">企业</span>
+										<span v-if="item.ctype==7" class="text-center">财务顾问</span>
+										<!--<span>{{item.position}}</span>-->
+										<span>{{numToTime(item.create_time)}}</span>&nbsp发布
+										<!--<span>{{item.create_time}}小时前</span>&nbsp;发布-->
+									</div>
+									<div class="tishi-right">
+										<span>{{item.feedback}} 反馈</span>
+										<span>{{item.follow}} 跟进</span>
+									</div>
 								</div>
-								<div class="tishi-right">
-									<span>{{item.feedback}} 反馈</span>
-									<span>{{item.follow}} 跟进</span>
-								</div>
-							</div>
-							<li class="li"></li>
-							<ol class="ol"></ol>
+								<li class="li"></li>
+								<ol class="ol"></ol>
 							</div>
 						</div>
 					</li>
@@ -158,30 +152,10 @@
 						</ul>
 					</div>
 					</transition>
-				<!--</div>-->
-				</ul>
-		       	<div slot="top" class="mint-loadmore-top">
-		          	<span v-show="topStatus !== 'loading'" :class="{ 'is-rotate': topStatus === 'drop' }">  </span>
-		          	<span v-show="topStatus == 'drop'">请释放更新吧</span>
-		          	<span v-show="topStatus === 'loading'">
-		            	<mt-spinner :type="3" color="#26a2ff" :size="30"></mt-spinner>
-		          	</span>
-		        </div>    
-		        <div slot="bottom" class="mint-loadmore-bottom">
-		          	<span v-show="bottomStatus !== 'loading'" :class="{ 'is-rotate': bottomStatus === 'drop' }"> ↑ </span>
-		          	<span v-show="bottomStatus == 'drop'">请释放加载吧</span>
-		          	<span v-show="bottomStatus === 'loading'">
-		            	<mt-spinner :type="3" color="#26a2ff" :size="30"></mt-spinner>
-		          	</span>
-		        </div>
-				</mt-loadmore>
-		      	<!--<transition name="promps">
-		      		<p class="page-loadmore-desc" v-show="promps">暂无数据</p>
-		      	</transition>-->
-		      	<div style="width:100%;height:0.6rem;"></div>
+				</div>
+		      	<!--<div style="width:100%;height:0.6rem;"></div>-->
 		    </div>
 			<xiangmugenjin></xiangmugenjin>
-			<!--</div>-->
 			<router-view :setscrollTop="scrollTop" :datas="datas" :userContent='userContent' :type="type" :FankuiShu="FankuiShu"></router-view>
 		</div>
 	<!--</transition>-->
@@ -231,7 +205,7 @@
 		        bottomStatus: '',
 		        wrapperHeight: 0,
 		        topStatus: '',
-		        promps:false,
+		        promps:true,
 		        scrollTop:"",
 		        XiangmuShu:"",
 		        FankuiShu:"",
@@ -291,8 +265,7 @@
 			},function(res){
 			    console.log(res);
 			})
-//	    	console.log("计算高度")
-	      	this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+//	      	this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
 	      	this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
 	      	this.$nextTick(function() {
 	      		this.ZongHe=this.XiangmuShu*1+this.FankuiShu*1
@@ -343,10 +316,6 @@
 				    console.log(res);
 				})
 			},
-//			child(FankuiShus){
-//				this.XiangmuShu=FankuiShus
-//				console.log(FankuiShus)
-//			},
 			userType(type){
 //				t:false,
 //				t1:false,
@@ -552,7 +521,7 @@
 		    width: 100%;
 		    height:0.48rem;
 		    background-color: #ff7a59;
-		    z-index:10;
+		    z-index:20;
 		    .home-search {
 		    	position: absolute;
 		    	margin:auto;
@@ -597,80 +566,16 @@
 				}
 			}
 		}
-		/*.box{*/
+		.box::-webkit-scrollbar{width:0px}
+		.box{
 			width:100%;
 			height:100%;
-			/*overflow-y:auto;*/
-			
-			
-			
-			
-		.page-loadmore-wrapper {
-		    overflow-y: scroll;
-		    -webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
-		    /*overflow-x:hidden;*/
-		}
-		.page-loadmore-wrapper::-webkit-scrollbar{width:0px}
-		.mint-loadmore-top span {
-		    -webkit-transition: .2s linear;
-		    transition: .2s linear;
-		    display: inline-block;
-		    vertical-align: middle
-		}
-		.mint-loadmore-top span.is-rotate {
-		    -webkit-transform: rotate(180deg);
-		    transform: rotate(180deg)
-		}
-		.page-loadmore-desc {
-		    text-align: center;
-		    color: #666;
-		    padding-bottom: 5px
-		}
-		.page-loadmore-desc:last-of-type,
-		/*.page-loadmore-listitem {
-		    border-bottom: 1px solid #eee
-		}
-		.page-loadmore-listitem {
-		    height: 50px;
-		    line-height: 50px;
-		    text-align: center
-		}
-		.page-loadmore-listitem:first-child {
-		    border-top: 1px solid #eee
-		}*/
-		.mint-loadmore-bottom span {
-		    display: inline-block;
-		    -webkit-transition: .2s linear;
-		    transition: .2s linear;
-		    vertical-align: middle
-		}
-		.mint-loadmore-bottom span.is-rotate {
-		    -webkit-transform: rotate(180deg);
-		    transform: rotate(180deg)
-		}
-		.mint-loadmore-bottom{
-			/*height:0.3rem;*/
-			/*position:absolute;
-			bottom:0;
-			left:0;*/
-		}
-		/*c3动画*/
-		.promps-enter-active {
-		  	transition: all .1s ease;
-		}
-		.promps-leave-active {
-		  	transition: all .1s ease;
-		}
-		.promps-enter, .promps-leave-active {
-		  	/*transform: translateY(0.5rem);*/
-		  	/*transform:rotate(360deg);*/
-		  	opacity: 0;
-		}
-			
-			
-			/*.FadeContent{
+			overflow-y:auto;
+			-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
+			.FadeContent{
+				position:relative;
 				width:100%;
-				height:auto;*/
+				height:auto;
 				.banner{
 					width:100%;
 					min-height:1.28rem;
@@ -687,7 +592,7 @@
 				    	border-radius:0.15rem;
 				    	background-color:rgba(255,255,255,0.7);
 				    	position:absolute;
-				    	top:0.62rem;
+				    	top:0.12rem;
 				    	left:2.5%;
 				    	box-shadow: 0.03rem 0.03rem 0.04rem #eeeef5;
 				    	.gaikuang-header{
@@ -699,7 +604,6 @@
 				    		span{
 				    			font-size:0.18rem;
 				    			line-height:0.18rem;
-				    			/*font-weight:bold;*/
 				    		}
 				    	}
 					    .gaikuang-content{
@@ -1026,7 +930,7 @@
 				    	top:-0.15rem;
 				    	background-image:url("./img/lianjie.png");
 				    	background-size:100% 100%;
-				    	z-index:1000;
+				    	z-index:16;
 				    }
 				    ol{
 				    	width:0.1rem;
@@ -1036,7 +940,7 @@
 				    	top:-0.15rem;
 				    	background-image:url("./img/lianjie.png");
 				    	background-size:100% 100%;
-				    	z-index:1000;
+				    	z-index:16;
 				    }
 				}
 				.tishi-bottom{
@@ -1060,8 +964,8 @@
 						}
 					}
 				}
-			/*}*/
-		/*}*/
+			}
+		}
 	}
 </style>
 
