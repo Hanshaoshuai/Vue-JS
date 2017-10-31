@@ -20,116 +20,118 @@
 							<span>已为您匹配{{body.length}}人</span>
 						</div>
 					</div>
-					<div v-for="(item,index) in body" class="sousuo-content border-topbottom">
-						<div class="content-header">
-							<font><img src="" :rul="item.photo"/></font>
-							<div class="names">
-								<span class="border-right">{{item.uname}}</span>
-								<span>{{item.com_short}}</span>&nbsp;
-								<span>{{item.position}}</span>
+					<!--<div v-for="(cont,index) in data" class="add" :id="index" ref="lisitTop">-->
+						<div v-for="(item,index) in body" class="sousuo-content border-topbottom">
+							<div class="content-header">
+								<font><img src="" :rul="item.photo"/></font>
+								<div class="names">
+									<span class="border-right">{{item.uname}}</span>
+									<span>{{item.com_short}}</span>&nbsp;
+									<span>{{item.position}}</span>
+								</div>
+								<div class="borders typeA" :id="item.id"  @click.stop="xuanZe(index,item.id)"></div>
 							</div>
-							<div class="borders typeA" :id="item.id"  @click.stop="xuanZe(index,item.id)"></div>
-						</div>
-						<div v-if="item.ctype=='2'" class="xiaolv border-topbottom">
-							<div class="border-right">
-								<li>
-									<font style="font-size:0.14rem;" v-if="item.itemnums==0">暂无</font>
-									<font v-if="item.itemnums!=0">{{item.itemnums}}</font>
-								</li>
-								<span>收获项目数</span>
+							<div v-if="item.ctype=='2'" class="xiaolv border-topbottom">
+								<div class="border-right">
+									<li>
+										<font style="font-size:0.14rem;" v-if="item.itemnums==0">暂无</font>
+										<font v-if="item.itemnums!=0">{{item.itemnums}}</font>
+									</li>
+									<span>收获项目数</span>
+								</div>
+								<div class="border-right">
+									<li>
+										<font v-if="item.feedback==''" class="center">0&nbsp;%</font>
+										<font v-if="item.feedback!=''" v-else class="center">{{item.feedback}}</font>
+									</li>
+									<span class="center">反馈率</span>
+								</div>
+								<div class="border-right">
+									<li>
+										<font v-if="item.changenums==0" class="center">0&nbsp;%</font>
+										<font v-if="item.changenums!=0">{{Math.round((item.changenums/item.itemnums)*100)}}&nbsp;%</font>
+									</li>
+									<span>约谈率</span>
+								</div>
 							</div>
-							<div class="border-right">
-								<li>
-									<font v-if="item.feedback==''" class="center">0&nbsp;%</font>
-									<font v-if="item.feedback!=''" v-else class="center">{{item.feedback}}</font>
-								</li>
-								<span class="center">反馈率</span>
+							<div v-if="item.ctype=='3'" class="xiaolv border-topbottom">
+								<div class="border-right">
+									<li>
+										<font style="font-size:0.14rem;" v-if="item.itemnums==0">暂无</font>
+										<font v-if="item.itemnums!=0">{{item.itemnums}}</font>
+									</li>
+									<span>收获项目数</span>
+								</div>
+								<div class="border-right">
+									<li>
+										<font v-if="item.feedback==''" class="center">0&nbsp;%</font>
+										<font v-if="item.feedback!=''" v-else class="center">{{item.feedback}}</font>
+									</li>
+									<span class="center">反馈率</span>
+								</div>
+								<div class="border-right">
+									<li>
+										<font v-if="item.changenums==0" class="center">0&nbsp;%</font>
+										<font v-if="item.changenums!=0">{{Math.round((item.changenums/item.itemnums)*100)}}&nbsp;%</font>
+									</li>
+									<span>约谈率</span>
+								</div>
 							</div>
-							<div class="border-right">
-								<li>
-									<font v-if="item.changenums==0" class="center">0&nbsp;%</font>
-									<font v-if="item.changenums!=0">{{Math.round((item.changenums/item.itemnums)*100)}}&nbsp;%</font>
-								</li>
-								<span>约谈率</span>
+							<div v-if="item.ctype=='6'" class="xiaolv border-topbottom">
+								<div class="border-right">
+									<li>
+										<font style="font-size:0.14rem;" v-if="item.itemnums==0">暂无</font>
+										<font v-if="item.itemnums!=0">{{item.itemnums}}</font>
+									</li>
+									<span>收获项目数</span>
+								</div>
+								<div class="border-right">
+									<li>
+										<font v-if="item.feedback==''" class="center">0&nbsp;%</font>
+										<font v-if="item.feedback!=''" v-else class="center">{{item.feedback}}</font>
+									</li>
+									<span class="center">反馈率</span>
+								</div>
+								<div class="border-right">
+									<li>
+										<font v-if="item.changenums==0" class="center">0&nbsp;%</font>
+										<font v-if="item.changenums!=0">{{Math.round((item.changenums/item.itemnums)*100)}}&nbsp;%</font>
+									</li>
+									<span>约谈率</span>
+								</div>
 							</div>
-						</div>
-						<div v-if="item.ctype=='3'" class="xiaolv border-topbottom">
-							<div class="border-right">
-								<li>
-									<font style="font-size:0.14rem;" v-if="item.itemnums==0">暂无</font>
-									<font v-if="item.itemnums!=0">{{item.itemnums}}</font>
-								</li>
-								<span>收获项目数</span>
+							<div class="leimu">
+								<div class="zhonglei">
+									
+									<span v-if="Xiangmutype==1" class="jieduan"><a style="color:#2abdfc">阶段：</a>{{item.fund_stage.exts[1].value}}</span>
+									<span v-if="Xiangmutype==1" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
+									<span v-if="Xiangmutype==1" class="jieduan Yibai"><a style="color:#2abdfc">行业：</a>{{item.fund_stage.exts[0].value}}</span>
+									
+									<span v-if="Xiangmutype==2" class="jieduan"><a style="color:#2abdfc">阶段：</a>{{item.fund_stage.exts[1].value}}</span>
+									<span v-if="Xiangmutype==2" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
+									<span v-if="Xiangmutype==2" class="jieduan Yibai"><a style="color:#2abdfc">行业：</a>{{item.fund_stage.exts[0].value}}</span>
+									
+									<span v-if="Xiangmutype==3" class="jieduan"><a style="color:#2abdfc">阶段：</a>{{item.fund_stage.exts[1].value}}</span>
+									<span v-if="Xiangmutype==3" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
+									<span v-if="Xiangmutype==3" class="jieduan Yibai"><a style="color:#2abdfc">行业：</a>{{item.fund_stage.exts[0].value}}</span>
+									
+									<span v-if="Xiangmutype==7" class="jieduan"><a style="color:#2abdfc">阶段：</a>{{item.fund_stage.exts[1].value}}</span>
+									<span v-if="Xiangmutype==7" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
+									<span v-if="Xiangmutype==7" class="jieduan Yibai"><a style="color:#2abdfc">行业：</a>{{item.fund_stage.exts[0].value}}</span>
+									
+									<!--<span v-if="item.total_finance" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.total_finance}}万</span>-->
+									
+									<span v-if="Xiangmutype==4" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
+									<span v-if="Xiangmutype==4" class="zijin"><a style="color:#2abdfc">资金成本：</a>年化{{item.fund_min}}%-{{item.fund_max}}%</span>
+									<span v-if="Xiangmutype==4" class="fangkuan"><a style="color:#2abdfc">放款速度：</a>不超过{{item.loan_time}}天</span>
+									
+									<span v-if="Xiangmutype==5" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
+									<span v-if="Xiangmutype==5" class="zijin"><a style="color:#2abdfc">资金成本：</a>年化{{item.fund_min}}%-{{item.fund_max}}%</span>
+									<span v-if="Xiangmutype==5" class="fangkuan"><a style="color:#2abdfc">放款速度：</a>不超过{{item.loan_time}}天</span>
+									
+								</div>
 							</div>
-							<div class="border-right">
-								<li>
-									<font v-if="item.feedback==''" class="center">0&nbsp;%</font>
-									<font v-if="item.feedback!=''" v-else class="center">{{item.feedback}}</font>
-								</li>
-								<span class="center">反馈率</span>
-							</div>
-							<div class="border-right">
-								<li>
-									<font v-if="item.changenums==0" class="center">0&nbsp;%</font>
-									<font v-if="item.changenums!=0">{{Math.round((item.changenums/item.itemnums)*100)}}&nbsp;%</font>
-								</li>
-								<span>约谈率</span>
-							</div>
-						</div>
-						<div v-if="item.ctype=='6'" class="xiaolv border-topbottom">
-							<div class="border-right">
-								<li>
-									<font style="font-size:0.14rem;" v-if="item.itemnums==0">暂无</font>
-									<font v-if="item.itemnums!=0">{{item.itemnums}}</font>
-								</li>
-								<span>收获项目数</span>
-							</div>
-							<div class="border-right">
-								<li>
-									<font v-if="item.feedback==''" class="center">0&nbsp;%</font>
-									<font v-if="item.feedback!=''" v-else class="center">{{item.feedback}}</font>
-								</li>
-								<span class="center">反馈率</span>
-							</div>
-							<div class="border-right">
-								<li>
-									<font v-if="item.changenums==0" class="center">0&nbsp;%</font>
-									<font v-if="item.changenums!=0">{{Math.round((item.changenums/item.itemnums)*100)}}&nbsp;%</font>
-								</li>
-								<span>约谈率</span>
-							</div>
-						</div>
-						<div class="leimu">
-							<div class="zhonglei">
-								
-								<span v-if="Xiangmutype==1" class="jieduan"><a style="color:#2abdfc">阶段：</a>{{item.fund_stage.exts[1].value}}</span>
-								<span v-if="Xiangmutype==1" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
-								<span v-if="Xiangmutype==1" class="jieduan Yibai"><a style="color:#2abdfc">行业：</a>{{item.fund_stage.exts[0].value}}</span>
-								
-								<span v-if="Xiangmutype==2" class="jieduan"><a style="color:#2abdfc">阶段：</a>{{item.fund_stage.exts[1].value}}</span>
-								<span v-if="Xiangmutype==2" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
-								<span v-if="Xiangmutype==2" class="jieduan Yibai"><a style="color:#2abdfc">行业：</a>{{item.fund_stage.exts[0].value}}</span>
-								
-								<span v-if="Xiangmutype==3" class="jieduan"><a style="color:#2abdfc">阶段：</a>{{item.fund_stage.exts[1].value}}</span>
-								<span v-if="Xiangmutype==3" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
-								<span v-if="Xiangmutype==3" class="jieduan Yibai"><a style="color:#2abdfc">行业：</a>{{item.fund_stage.exts[0].value}}</span>
-								
-								<span v-if="Xiangmutype==7" class="jieduan"><a style="color:#2abdfc">阶段：</a>{{item.fund_stage.exts[1].value}}</span>
-								<span v-if="Xiangmutype==7" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
-								<span v-if="Xiangmutype==7" class="jieduan Yibai"><a style="color:#2abdfc">行业：</a>{{item.fund_stage.exts[0].value}}</span>
-								
-								<!--<span v-if="item.total_finance" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.total_finance}}万</span>-->
-								
-								<span v-if="Xiangmutype==4" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
-								<span v-if="Xiangmutype==4" class="zijin"><a style="color:#2abdfc">资金成本：</a>年化{{item.fund_min}}%-{{item.fund_max}}%</span>
-								<span v-if="Xiangmutype==4" class="fangkuan"><a style="color:#2abdfc">放款速度：</a>不超过{{item.loan_time}}天</span>
-								
-								<span v-if="Xiangmutype==5" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
-								<span v-if="Xiangmutype==5" class="zijin"><a style="color:#2abdfc">资金成本：</a>年化{{item.fund_min}}%-{{item.fund_max}}%</span>
-								<span v-if="Xiangmutype==5" class="fangkuan"><a style="color:#2abdfc">放款速度：</a>不超过{{item.loan_time}}天</span>
-								
-							</div>
-						</div>
+						<!--</div>-->
 					</div>
 				</div>
 			</div>
@@ -167,6 +169,7 @@
 		},
 		data () {
 			return {
+				data:[],
 				y:0,
 				body:"",
 				CanShu:"",

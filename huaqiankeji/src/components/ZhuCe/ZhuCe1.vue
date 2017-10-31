@@ -143,7 +143,7 @@
 						Indicator.close();
 	                    console.log(res);
 						if(res.body.returnCode=='200'){
-							Toast('注册成功请进行下一步完善信息');
+//							Toast('注册成功请进行下一步完善信息');
 							this.XiajiCanshu={
 						        id:res.body.data.id,
 						        phone:res.body.data.phone,
@@ -174,7 +174,7 @@
 							Indicator.close();
 		                    console.log(res);
 							if(res.body.returnCode=='200'){
-								Toast('注册成功');
+								Toast('系统将在24小时内审核您的注册申请');
 								this.XiajiCanshu={
 							        id:res.body.data.id,
 							        phone:res.body.data.phone,
@@ -238,7 +238,7 @@
 				var length=spans.length;
 				this.index=index;
 				if(this.index==1 || this.index==5){		//类型1和5 直接下一步；
-					this.butten="确定"
+					this.butten="提交审核"
 				}else{
 					this.butten="下一步"
 				}

@@ -15,8 +15,8 @@
 				<div ref="yitouAnli" class="sousuo-content border-topbottom">
 					<div class="content-header">
 						<span>已投案例</span>
-						<span v-if="bianList" ref="text5" class="lasst" @click.stap="bianji5('5')">编辑</span>
-						<span v-if="!bianList" ref='text5' class="lasst" @click.stap="baocunList()">保存</span>
+						<!--<span v-if="bianList" ref="text5" class="lasst" @click.stap="bianji5('5')">编辑</span>
+						<span v-if="!bianList" ref='text5' class="lasst" @click.stap="baocunList()">保存</span>-->
 					</div>
 					<div class="xiaolv anli">
 						<div v-if="!YitouList" class="anli-list border-top">

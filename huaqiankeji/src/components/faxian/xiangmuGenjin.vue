@@ -60,7 +60,8 @@
 		props:{
 			childnone:{
 //				type:"boolean"
-			}
+			},
+			shifouZhuce:{}
 		},
 		data () {
 			return {
@@ -98,32 +99,37 @@
 			}
 		},
 		mounted(){
-			Indicator.open({spinnerType: 'fading-circle'});
 			var token={
 	    		token:localStorage.getItem("token")
 	    	}
-//			项目跟进反馈列表（每月提醒一次）
-			this.$http.post(URL.path+'finance/get_feedback',token,{emulateJSON:true}).then(function(res){
-				Indicator.close();
-				var returnCode=res.body.returnCode
-				if(returnCode=="201"){
-					this.data=res.body.data;
-					this.showFlag=false;
-				}else{
-					this.data=res.body.data;
-					this.showFlag=true;
-					this.$nextTick(function(){
-						this.right1DOM=this.$refs.donghuaGo.getElementsByClassName("one")
-						this.right2DOM=this.$refs.donghuaGo.getElementsByClassName("tue")
-						console.log(this.right1DOM)
-					})
-				}
-				console.log("每月提醒一次");
-				console.log(res);
-			},function(res){
-				Indicator.close();
-			    console.log(res);
-			})
+			if(this.shifouZhuce==2){
+				Indicator.open({spinnerType: 'fading-circle'});
+	//			项目跟进反馈列表（每月提醒一次）
+				this.$http.post(URL.path+'finance/get_feedback',token,{emulateJSON:true}).then(function(res){
+					Indicator.close();
+					var returnCode=res.body.returnCode
+					if(res.body.data.length==0){
+						return;
+					}
+					if(returnCode=="201"){
+						this.data=res.body.data;
+						this.showFlag=false;
+					}else{
+						this.data=res.body.data;
+						this.showFlag=true;
+						this.$nextTick(function(){
+							this.right1DOM=this.$refs.donghuaGo.getElementsByClassName("one")
+							this.right2DOM=this.$refs.donghuaGo.getElementsByClassName("tue")
+							console.log(this.right1DOM)
+						})
+					}
+					console.log("每月提醒一次");
+					console.log(res);
+				},function(res){
+					Indicator.close();
+				    console.log(res);
+				})
+			}
 		},
 		methods:{
 			xuanZe(item_id,follow,list,index,send_id){

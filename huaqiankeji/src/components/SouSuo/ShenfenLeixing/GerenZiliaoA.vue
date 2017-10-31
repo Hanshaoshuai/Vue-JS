@@ -34,7 +34,8 @@
 								<span ref="bianji" class="lasst"></span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
-										<input readOnly="true" v-model="numbera" placeholder="暂无填写" type="text" class="mint-field-core">
+										<p class="mint-field-core">{{numbera}}</p>
+										<!--<input readOnly="true" v-model="numbera" placeholder="暂无填写" type="text" class="mint-field-core">-->
 									</li>
 									<!--<li>
 										<input readOnly="true" v-model="numberb" placeholder="食品" type="text" class="mint-field-core">
@@ -66,7 +67,8 @@
 								<span>单个投资额</span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
-										<input readOnly="true" v-model="numberg" placeholder="2000万-5000万" type="text" class="mint-field-core">
+										<input v-if="single_project_max!=0" readOnly="true" v-model="numberg" placeholder="2000万-5000万" type="text" class="mint-field-core">
+										<input v-if="single_project_max==0" readOnly="true" v-model="numberg1" placeholder="2000万-5000万" type="text" class="mint-field-core">
 									</li>
 								</ul>
 								<div v-if="BianJi==1" class="type-conts">
@@ -169,6 +171,7 @@
 				numbere:"",
 				numberf:"",
 				numberg:"",
+				numberg1:"",
 				numberh:"",
 				numberi:"",
 				numberj:"",
@@ -200,6 +203,7 @@
 				biaoQianid2:'',		//储存标签id字符串
 				oDbiaoQianID2:'',		//后台获取的储存标签id
 				scrollTop:"",
+				single_project_max:""
 			}
 		},
 		mounted(){
@@ -214,7 +218,9 @@
 				Indicator.close();
 				this.data=res.body.data;
 				this.imgs=res.body.data.photo.url;
+				this.single_project_max=res.body.data.info.single_project_max
 				this.numberg=this.data.info.single_project_max+'万-'+this.data.info.single_project_min+'万';
+				this.numberg1=this.data.info.single_project['0'].title
 				this.numberh=this.data.info.territory;
 				this.textc=this.data.info.resources;
 				this.textd=this.data.info.restructuring;
@@ -461,12 +467,12 @@
 					}
 					.first{
 						padding-top:0.14rem;
-						height:0.31rem;
+						/*height:0.31rem;*/
 						display:flex;
 						justify-content:space-between;
 						li{
 							width:100%;
-							height:0.31rem;
+							/*height:0.31rem;*/
 							float:left;
 							font-size:0.16rem;
 							display:inline-block;
@@ -475,7 +481,7 @@
 							.mint-field-core{
 								color: #787777;
 								width:100%;
-								height:100%;
+								/*height:100%;*/
 								line-height:0.3rem;
 							}
 						}

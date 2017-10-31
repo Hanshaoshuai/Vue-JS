@@ -209,6 +209,7 @@
 				console.log(params)
 				this.$http.post(URL.path+'finance/record',params,{emulateJSON:true}).then(function(res){
 					this.type=res.body.data.id
+					var tata=this;
 					if(this.beiAnidQ==""){
 						this.firstTop=false
 						this.lastBottom=true

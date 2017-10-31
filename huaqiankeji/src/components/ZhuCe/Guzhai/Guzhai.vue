@@ -37,7 +37,7 @@
 				<div class="type-content">
 					<div class="type-cont border-bottom">
 						<div class="tuse">
-							<font></font><span>您关注什么阶段的投资机会<a>（可后台添加）</a></span>
+							<font></font><span>您关注什么阶段的投资机会<!--<a>（可后台添加）</a>--></span>
 						</div>
 						<div class="content-touzi" ref="foods1">
 							<ul>
@@ -159,6 +159,16 @@
 					biaoQianid1:this.biaoQianid1,
 					typeID:this.typeID
 				}
+				var CanShu1={				//给下级要传的参数
+					id:this.XiajiCanshu.id,			//	uid	是	[string]
+					fund_stage:'15',			//投资阶段 15债转股 16债权 17 新三板 62PE 63 VC 64 天使投资 75PreIPO	是	[string]
+//					texta:this.texta,
+					numbere:this.numbere,
+					numberf:this.numberf,
+					biaoQianid:this.biaoQianid,
+					biaoQianid1:this.biaoQianid1,
+					typeID:this.typeID
+				}
 				this.CanShu=CanShu;
 				var datas={
 					id:this.XiajiCanshu.id,			//	uid	是	[string]		
@@ -177,8 +187,8 @@
 					borrow:''				//借债主体	是	[string]
 				}
 				var ok=0;
-				for(var item in CanShu){		//判断填写信息是否完整Ok=1；标签必选
-					if(!CanShu[item]=="" && this.y>=1 && this.y1>=1){
+				for(var item in CanShu1){		//判断填写信息是否完整Ok=1；标签必选
+					if(!CanShu1[item]=="" && this.y>=1 && this.y1>=1){
 						
 					}else{
 						ok+=1;
@@ -223,6 +233,10 @@
 						}
 					}
 				}else{
+//					if(this.biaoQianID.length==3){
+//						Toast('最多可选三个');
+//						return;
+//					}
 					typeLi[index].setAttribute("class","src1");
 					this.y+=1;
 					for(var i=0; i<this.y; i++){
@@ -271,19 +285,6 @@
 					console.log(this.biaoQianid1)
 				}
 			}
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -295,14 +296,6 @@
 //			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 //			ratingselect,

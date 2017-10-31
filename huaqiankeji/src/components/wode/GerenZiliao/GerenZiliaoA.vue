@@ -26,7 +26,8 @@
 								<span ref="bianji" class="lasst" @click.stap="bianji('1')">编辑</span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
-										<input readOnly="true" v-model="numbera" placeholder="暂无" type="text" class="mint-field-core">
+										<p class="mint-field-core">{{numbera}}</p>
+										<!--<input readOnly="true" v-model="numbera" placeholder="暂无" type="text" class="mint-field-core">-->
 									</li>
 								</ul>
 								<div v-if="BianJi==1" class="zhuying_1 liangdian_1">
@@ -41,7 +42,8 @@
 								<span>投资阶段</span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
-										<input readOnly="true" v-model="numberd" placeholder="暂无" type="text" class="mint-field-core">
+										<p class="mint-field-core">{{numberd}}</p>
+										<!--<input readOnly="true" v-model="numberd" placeholder="暂无" type="text" class="mint-field-core">-->
 									</li>
 								</ul>
 								<div  v-if="BianJi==1" class="zhuying_1 liangdian_1" ref="foods1">
@@ -76,7 +78,8 @@
 								<span>地域要求</span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
-										<input readOnly="true" v-model="numberh" :placeholder="numberToc" type="text" class="mint-field-core">
+										<input v-if="texta!=''" readOnly="true" :placeholder="numberToc" type="text" class="mint-field-core">
+										<input v-if="texta==''" readOnly="true" placeholder="暂无" type="text" class="mint-field-core">
 									</li>
 								</ul>
 								<div v-if="BianJi==1" class="xiaolv">
@@ -92,8 +95,8 @@
 						<div class="content-header">
 							<span>已投案例</span>
 							<font>（仅自己可见）</font>
-							<span v-if="bianList" ref='text5' class="lasst" @click.stap="bianji('0')">编辑</span>
-							<span v-if="!bianList" ref='text5' class="lasst" @click.stap="baocunList()">保存</span>
+							<!--<span v-if="bianList" ref='text5' class="lasst" @click.stap="bianji('0')">编辑</span>
+							<span v-if="!bianList" ref='text5' class="lasst" @click.stap="baocunList()">保存</span>-->
 						</div>
 						<div ref="listInput" class="xiaolv anli">
 							<div v-if="!YitouList" class="anli-list border-top">
@@ -231,7 +234,12 @@
 				create_time:'',		//已投案例接口   已投项目列表	日期
 				Wancent:"",
 				bianList:true,
-				textInputs:""		//已投案input  DOM;
+				textInputs:"",		//已投案input  DOM;
+				
+				xx:[],
+				yy:[],
+				xx1:[],
+				yy1:[]
 			}
 		},
 		mounted(){
@@ -267,10 +275,12 @@
 				var y1=[];
 				for(var item in SuozaiHangye){
 					x.push(SuozaiHangye[item].id);
+					this.xx.push(SuozaiHangye[item].id);
 					y.push(SuozaiHangye[item].title);
 				}
 				for(var item in fund_stage){
 					x1.push(fund_stage[item].id);
+					this.xx1.push(fund_stage[item].id);
 					y1.push(fund_stage[item].title);
 				}
 				this.oDbiaoQianID=x.join(',');
@@ -429,12 +439,8 @@
 			},
 			bianji(id){
 				if(id==1){
-					this.y=1;
-					this.biaoQianID=[];
-					this.biaoQianid='';
-					this.y1=1;
-					this.biaoQianID1=[];
-					this.biaoQianid1='';
+					this.y=this.xx.length;
+					this.y1=this.xx1.length;
 					if(this.BianJi==1){
 						this.BianJi=0;
 						this.$refs.bianji.innerText="编辑";
@@ -448,15 +454,34 @@
 						this.$http.post(URL.path1+'login/three',datas,{emulateJSON:true}).then(function(res){
 							this.BiaoQian=res.body.data
 							this.$nextTick(function() {
-								var spans=this.$refs.biaoqian.getElementsByTagName("span")[0];
-								var spans1=this.$refs.biaoqian1.getElementsByTagName("span")[0];
-								spans.setAttribute("class","bianse")
-								spans1.setAttribute("class","bianse")
-								this.biaoQianID.push(spans.id);
-								this.biaoQianID1.push(spans1.id);
-								console.log(spans1.id)
+								var spans=this.$refs.biaoqian.getElementsByTagName("span");
+								var length0=spans.length;
+								var length=this.xx.length;
+								var spans1=this.$refs.biaoqian1.getElementsByTagName("span");
+								var changdu0=spans1.length;
+								var changdu=this.xx1.length;
+								for(var i=0; i<length; i++){
+									for(var x=0; x<length0; x++){
+										if(this.xx[i]==spans[x].id){
+											spans[x].setAttribute("class","bianse")
+											this.biaoQianID[i]=spans[x].id;
+//											return;
+										}
+									}
+								}
+								this.biaoQianid=this.biaoQianID.join()
+								for(var i=0; i<changdu; i++){
+									for(var x=0; x<changdu0; x++){
+										if(this.xx1[i]==spans1[x].id){
+											spans1[x].setAttribute("class","bianse")
+											this.biaoQianID1[i]=spans1[x].id;
+//											return;
+										}
+									}
+								}
+								this.biaoQianid1=this.biaoQianID1.join()
+								console.log(changdu);
 							});
-							console.log(this.BiaoQian);
 						},function(res){
 						    console.log(res.status);
 						})
@@ -521,17 +546,6 @@
 					
 				}
 			},
-//			bianji2(id){
-//				this.handleScroll();
-//				if(this.BianJi2==1){
-//					this.BianJi2=0;
-//					this.$refs.text2.innerText="编辑";
-//				}else{
-//					this.BianJi2=1;
-//					this.$refs.text2.innerText="取消"
-//				}
-//				
-//			},
 			bianji3(){
 				this.handleScroll();
 				if(this.BianJi3==1){
@@ -576,7 +590,6 @@
 					for(var z=0; z<this.y; z++){
 						if(this.biaoQianID[z]==spans[index].id){
 							this.biaoQianID.splice(z,1);
-//							console.log(this.biaoQianID)
 							this.biaoQianid=this.biaoQianID.join()
 							console.log(this.biaoQianid)
 							this.y-=1
@@ -584,21 +597,17 @@
 						}
 					}
 				}else{
-					if(this.y>2){
-						Toast('最多可选三个');
-					}else{
+//					if(this.y>2){
+//						Toast('最多可选三个');
+//						return;
+//					}else{
 						spans[index].setAttribute("class","bianse");
+						
+						this.biaoQianID[this.y]=spans[index].id;
 						this.y+=1;
-						for(var i=0; i<this.y; i++){
-							if(this.biaoQianID[i]!=spans[index].id){
-								this.biaoQianID.push(spans[index].id)
-								break;
-							}
-						}
-//						console.log(this.biaoQianID)
 						this.biaoQianid=this.biaoQianID.join()
 						console.log(this.biaoQianid)
-					}
+//					}
 				}
 			},
 			xuanze1(index){
@@ -609,7 +618,6 @@
 					for(var z=0; z<this.y1; z++){
 						if(this.biaoQianID1[z]==spans[index].id){
 							this.biaoQianID1.splice(z,1);
-//							console.log(this.biaoQianID1)
 							this.biaoQianid1=this.biaoQianID1.join()
 							console.log(this.biaoQianid1)
 							this.y1-=1
@@ -617,21 +625,15 @@
 						}
 					}
 				}else{
-					if(this.y1>2){
-						Toast('最多可选三个');
-					}else{
+//					if(this.y1>2){
+//						Toast('最多可选三个');
+//					}else{
 						spans[index].setAttribute("class","bianse");
+						this.biaoQianID1[this.y1]=spans[index].id;
 						this.y1+=1;
-						for(var i=0; i<this.y1; i++){
-							if(this.biaoQianID1[i]!=spans[index].id){
-								this.biaoQianID1.push(spans[index].id)
-								break;
-							}
-						}
-//						console.log(this.biaoQianID1)
 						this.biaoQianid1=this.biaoQianID1.join()
 						console.log(this.biaoQianid1)
-					}
+//					}
 				}
 			},
 			types(index,id){
@@ -664,20 +666,6 @@
 					console.log(this.biaoQianid2)
 				}
 			}
-			
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -689,21 +677,9 @@
 //			}
 		},
 		updated(){
-//			this.$refs.box.scrollTop=0;
-//			this.$refs.box.scrollTop=this.scrollTop
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 			box
-//			youhuiquan
-//			fankuixinxi
 		}
 	}
 </script>
@@ -797,12 +773,12 @@
 					}
 					.first{
 						padding-top:0.14rem;
-						height:0.31rem;
+						/*height:0.31rem;*/
 						display:flex;
 						justify-content:space-between;
 						li{
 							width:100%;
-							height:0.31rem;
+							/*height:0.31rem;*/
 							float:left;
 							font-size:0.16rem;
 							display:inline-block;
@@ -811,7 +787,7 @@
 							.mint-field-core{
 								color: #787777;
 								width:100%;
-								height:100%;
+								/*height:100%;*/
 								line-height:0.3rem;
 							}
 						}

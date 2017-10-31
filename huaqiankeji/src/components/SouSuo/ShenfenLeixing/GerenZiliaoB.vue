@@ -83,10 +83,10 @@
 					</div>
 					<div class="fankiu border-bottom dangeDiyu">
 						<div class="content-food">
-							<span>您能提供的年化资金成本范围</span>
+							<span>年化资金成本</span>
 							<ul v-if="BianJi3==0" class="first">
 								<li>
-									<input readOnly="true" v-model="numberg" :placeholder="numberj" type="text" class="mint-field-core">
+									<input readOnly="true" v-model="numberj" :placeholder="numberj" type="text" class="mint-field-core">
 								</li>
 							</ul>
 							<ul v-if="BianJi3==1" class="last">
@@ -99,7 +99,7 @@
 					</div>
 					<div class="fankiu border-bottom dangeDiyu">
 						<div class="content-food">
-							<span>从接触项目到放款的时间周期不超过</span>
+							<span>从项目尽调至放款不超过</span>
 							<ul v-if="BianJi3==0" class="first">
 								<li>
 									<input readOnly="true" v-model="numberg" :placeholder="numberg" type="text" class="mint-field-core">
@@ -129,7 +129,7 @@
 					<div style="height:0.06rem;width:100%;background:#f5f4f9"></div>
 					<div class="fankiu border-bottom dangeDiyu">
 						<div class="content-food">
-							<span>借债主题是</span><span ref="text4" class="lasst"></span>
+							<span>借债主体是</span><span ref="text4" class="lasst"></span>
 							<ul v-if="BianJi4==0" class="first">
 								<li>
 									<input readOnly="true" v-model="numberi" placeholder="暂无填写" type="text" class="mint-field-core">
@@ -240,7 +240,7 @@
 				
 				this.numbere=this.data.info.fund_min;//原来的数据
 				this.numberf=this.data.info.fund_max;//原来的数据
-				this.numberj=this.numbere+'万 - '+this.numberf+'万'
+				this.numberj=this.numbere+'% - '+this.numberf+'%'
 				
 				this.numberg=this.data.info.loan_time+'天';
 				

@@ -213,7 +213,7 @@
 		top:0;
 		left:0;
 		right:0;
-		z-index:10;
+		z-index:1000;
 		.xiangmu-header{
 			position:fixed;
 			top:0;
@@ -226,7 +226,7 @@
 			text-align:center;
 			line-height:0.45rem;
 			color:#fff;
-			z-index:30;
+			z-index:1130;
 			.xiangmu-left{
 				position:absolute;
 				height:100%;
@@ -314,7 +314,7 @@
 			    justify-content: center;
 			    -webkit-box-align: center;
 			    align-items: center;
-			    z-index:200;
+			    z-index:1200;
 			    font{
 		    		display:inline-block;
 			    	position:absolute;

@@ -221,7 +221,7 @@
 							display:flex;
 							span{
 								display:inline-block;
-								width:0.97rem;
+								width:0.8rem;
 								&:first-child{
 									color:#323232;
 									font-size:0.18rem;
@@ -230,7 +230,7 @@
 							}
 							font{
 								display:inline-block;
-								width:0.58rem;
+								width:0.5rem;
 								font-size:0.12rem;
 								color:#717070;
 								line-height:0.18rem;

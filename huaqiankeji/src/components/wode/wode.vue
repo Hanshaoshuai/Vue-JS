@@ -5,7 +5,7 @@
 				<div class="home-search" @click.stop="gaiBian()">
 					<img ref="images" :src="photourl"/>
 				</div>
-				<div class="header-name">
+				<div v-if="shifouZhuce==2" class="header-name">
 					<font>{{data.uname}}</font>
 					<div class="header-content">
 						<span>{{data.com_short}}</span>
@@ -78,6 +78,7 @@
 	import box from "../box.vue"
 	import {URL} from '../../common/js/path';
 	import { Indicator } from 'mint-ui';
+	import { Toast } from 'mint-ui';
 //	import BScroll from "better-scroll";
 //	import bidu from "./RongziBidu/biDu.vue";
 //	import jilu from "./RongziJilu/jiLu.vue";
@@ -111,7 +112,8 @@
 				investment_type:'',		//用户的投资类型；   是投资机构时才会出现
 				beianShow:false,
 				completeness:"",
-				yuetan:""
+				yuetan:"",
+				shifouZhuce:""
 			}
 		},
 		activated(){
@@ -130,6 +132,8 @@
 			});
 		},
 		mounted(){
+			this.shifouZhuce=localStorage.getItem("shifouZhuce")
+			console.log(this.shifouZhuce)
 			this.userContent={
 	  			userID:localStorage.getItem("userID"),			//用户ID
 				token:localStorage.getItem("token"),		//用户token
@@ -211,23 +215,43 @@
 				window.location.href="#/wode/shezhi/"+this.userContent["token"];
 			},
 			ziliaoShow(id,Tid){			//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构/研究咨询 5:券商研究员/财务顾问 6:新三板做市商
-				if(id=='2'){
-					window.location.href="#/wode/ZiliaoT"+localStorage.getItem("typeID")+"/"+this.userContent["token"];//1:股权投资   2:债权投资   3:股债兼投
+				if(this.shifouZhuce==2){
+					if(id=='2'){
+						window.location.href="#/wode/ZiliaoT"+localStorage.getItem("typeID")+"/"+this.userContent["token"];//1:股权投资   2:债权投资   3:股债兼投
+					}else{
+						window.location.href="#/wode/Ziliao"+id+"/"+this.userContent["token"];
+					}
 				}else{
-					window.location.href="#/wode/Ziliao"+id+"/"+this.userContent["token"];
+					Toast("您的注册申请尚在审核中！")
 				}
 			},
 			RongziBeian(){
-				window.location.href="#/wode/RongziBeian/"+this.token;
+				if(this.shifouZhuce==2){
+					window.location.href="#/wode/RongziBeian/"+this.token;
+				}else{
+					Toast("您的注册申请尚在审核中")
+				}
 			},
 			jiluGo(){
-				window.location.href="#/wode/jilu/0";
+				if(this.shifouZhuce==2){
+					window.location.href="#/wode/jilu/0";
+				}else{
+					Toast("您的注册申请尚在审核中")
+				}
 			},
 			baomingGo(){
-				window.location.href="#/wode/baoming/0";
+				if(this.shifouZhuce==2){
+					window.location.href="#/wode/baoming/0";
+				}else{
+					Toast("您的注册申请尚在审核中")
+				}
 			},
 			gangweiGo(){
-				window.location.href="#/wode/gangwei/0";
+				if(this.shifouZhuce==2){
+					window.location.href="#/wode/gangwei/0";
+				}else{
+					Toast("您的注册申请尚在审核中")
+				}
 			}
 //			show(){
 ////				dom更新后在执行使用$refs

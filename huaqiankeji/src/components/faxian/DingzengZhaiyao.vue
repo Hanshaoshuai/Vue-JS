@@ -23,11 +23,11 @@
 								<div style="display:none;" class="button" onclick="shareShow()">分 享</div>
 								<div style="display:none;" class="button" onclick="shareSystem()">系统分享</div>
 								<p style="display:none;" class="heading">链接地址：</p>
-								<input style="display:none;" ref="sharehref" id="sharehref" class="sharehref" type="url" value="http://www.qironghome.com/index.php/app/demand-info?id=715" placeholder="请输入要分享的链接地址"/>
+								<input style="display:none;" ref="sharehref" id="sharehref" class="sharehref" type="url" v-model="fenciangURL" placeholder="请输入要分享的链接地址"/>
 								<p style="display:none;" class="heading">链接标题：</p>
-								<input style="display:none;" ref="sharehrefTitle" id="sharehrefTitle" class="sharehref" type="text" value="DCloud HBuilder-做最好的HTML5开发工具" placeholder="请输入要分享的链接标题"/>
+								<input style="display:none;" ref="sharehrefTitle" id="sharehrefTitle" class="sharehref" type="text" v-model="fenxiangBiaoti" placeholder="请输入要分享的链接标题"/>
 								<p style="display:none;" class="heading">链接描述：</p>
-								<input style="display:none;" ref="sharehrefDes" id="sharehrefDes" class="sharehref" type="text" value="我正在使用HBuilder+HTML5开发移动应用，赶紧跟我一起来体验！" placeholder="请输入要分享的链接描述"/>
+								<input style="display:none;" ref="sharehrefDes" id="sharehrefDes" class="sharehref" type="text" v-model="fenxiangCont" placeholder="请输入要分享的链接描述"/>
 								<div class="button" @click.stop="shareHref()">分享</div>
 								<p style="display:none;" class="des">如果需要解除分享中绑定的用户信息，请点击解除授权：</p>
 								<div style="display:none;" class="button" onclick="cancelAuth()">解除授权</div>
@@ -148,7 +148,10 @@
 				numToTime:'',
 				BiaoQian:[],
 				biaoqianId:'',
-				blockName:false
+				blockName:false,
+				fenciangURL:"https://www.baidu.com/?tn=57095150_2_oem_dg",
+				fenxiangBiaoti:"给的韩国",
+				fenxiangCont:"海固防化服感觉"
 //				onlyContent:true
 			}
 		},
@@ -170,6 +173,9 @@
 			console.log(this.data)
 			this.$http.post(URL.path+'finance/item_detail',data,{emulateJSON:true}).then(function(res){
 				this.data=res.body.data['0']
+//				this.fenciangURL=
+//				this.fenxiangBiaoti=
+//				this.fenxiangCont=
 				if(res.body.data['0'].industry){
 					this.blockName=true;
 				}

@@ -130,7 +130,8 @@
 				firstTop:true,
 				lastBottom:false,
 				textcont:"备案申请成功，请等待审核",
-				typeId:""
+				typeId:"",
+				license:""
 			}
 		},
 		mounted(){				//<!--1:未审核 2:已审核 3:进行中 4:已结束 5未通过-->
@@ -150,9 +151,13 @@
 	    	}
 			this.$http.post(URL.path+'finance/record_detail',params,{emulateJSON:true}).then(function(res){
 				this.data=res.body.data.id;
-				this.imgUrl=localStorage.getItem("MingpianImg");
-				this.texta=this.data.com_name;
-				this.textb=this.data.com_short;
+				this.imgUrl=this.data.license;
+				if(this.imgUrl){
+					this.images=true;
+				}
+				this.license=this.data.license;
+				this.texta=this.data.predict_revenue;
+				this.textb=this.data.predict_profit;
 				this.textc=this.data.total_finance;
 				this.texth=this.data.appraisement;
 				this.typeId=this.data.type;
@@ -168,6 +173,20 @@
 					index=5;
 				}
 				span[index].setAttribute("class","one src2");
+				this.$nextTick(function() {
+					var img = this.$refs.tianjia;
+					var num = img.length;
+					if (img.clientWidth>img.clientHeight) {
+						img.style.height="100%"
+						img.style.width="auto"
+					}else{
+						img.style.width="100%"
+						img.style.height="auto"
+					}
+				})
+				if(this.onlyContent==false){
+					this.$refs.tianjia.style.zIndex="100";
+				}
 				console.log(res);
 			},function(res){
 			    console.log(res);
@@ -210,6 +229,7 @@
 				span[index].setAttribute("class","one src2");
 			},
 			XiuGai(){
+				this.$refs.tianjia.style.zIndex="1";
 				var textInputs = this.$refs.guanzhuLingyu.getElementsByClassName("mint-field-core");
 				console.log(textInputs)
 				var length=textInputs.length;
@@ -244,14 +264,14 @@
 				//修改备案
 				var params={
 		    		token:this.token,
-					com_name:this.texta,			//	公司全称	是	[string]		
-					com_short:this.textb,			//	公司简称	是	[string]		
+					com_name:'',			//	公司全称	是	[string]		
+					com_short:'',			//	公司简称	是	[string]		
 					commission:'',			//	佣金协定	是	[string]		
 					total_finance:this.textc,		//	投资总额 单位：万	是	[string]		
 					remark:this.texte,				//	有效投资认定	是	[string]		
 					license:'',						//	营业执照	是	[string]		
-					predict_revenue:'',				//	今年预计营收	是	[string]		
-					predict_profit:'',				//	今年预计净利润	是	[string]		
+					predict_revenue:this.texta,				//	今年预计营收	是	[string]		
+					predict_profit:this.textb,				//	今年预计净利润	是	[string]		
 					id:this.beiAnidQ,				//	备案id id为空时创建，不为空时修改	是	[string]
 					type:this.typeId,						//	融资类型，参见创建项目接口type值	是	[string]
 					appraisement:this.texth			//	投前估值	是	[string]
@@ -404,6 +424,7 @@
 						text-align:center;
 						overflow:hidden;
 						img{
+							position:relative;
 							/*width:100%;*/
 						}
 						.mingpians{
@@ -411,6 +432,7 @@
 							top:0.25rem;
 							left:0;
 							opacity:0;
+							z-index: 10;
 						}
 					}
 				}

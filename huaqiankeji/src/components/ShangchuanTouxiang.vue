@@ -92,8 +92,8 @@
 					if(res.body.returnCode=='200'){
 						var data=res.body.data
 						this.touxiangID=data.id;
-						localStorage.setItem("TouxiangImg",res.body.data.url);
-						img.src=localStorage.getItem("TouxiangImg");
+						localStorage.setItem("photourl",res.body.data.url);
+						img.src=localStorage.getItem("photourl");
 						this.$emit("to-parent",res.body.data.url);
 					}else{
 						Toast("上传失败请重新上传");

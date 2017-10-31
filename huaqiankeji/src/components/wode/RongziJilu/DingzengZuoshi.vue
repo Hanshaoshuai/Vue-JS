@@ -240,69 +240,75 @@
 				biaoQianid:'',		//储存标签id字符串
 			}
 		},
+		activated(){
+			this.shuaXin()
+		},
 		mounted(){
-			this.token=localStorage.getItem("token");
-			this.XiangmuID=this.$route.params.XiangmuID;
-			this.Xiangmutype=this.$route.params.type;
-			this.is_send=this.$route.params.is_send;
-			if(this.is_send=='1'){
-				this.none=false;
-				this.toudi='继续投递';
-			}
-			Indicator.open({spinnerType: 'fading-circle'});
-			var datas = {
-				token:this.token,
-				item_id:this.XiangmuID,			//	项目id
-			}
-			this.datas=datas;
-			console.log(this.token)
-			//获取标签
-			this.$http.post(URL.path1+'login/three',this.datas,{emulateJSON:true}).then(function(res){
-				this.BiaoQian=res.body.data[0]
-				this.z=res.body.data[0].length;
-				console.log(this.BiaoQian);
-				//历史项目详情
-				this.$http.post(URL.path+'finance/item_detail',datas,{emulateJSON:true}).then(function(res){
-					Indicator.close();
-					this.data=res.body.data[0]
-					this.texta=this.data.com_short
-					this.textb=this.data.com_code
-					this.textc=this.data.lightspot
-					this.numbera=this.data.last_year_revenue
-					this.numberb=this.data.last_year_profit
-					this.numberc=this.data.predict_revenue
-					this.numberd=this.data.predict_profit
-					this.numbere=this.data.appraisement
-					this.numberf=this.data.total_finance
-					this.numberg=this.data.share_price
-					this.numberh=this.data.city
-					this.industry=this.data.industry
-					this.type=this.data.type
-					
-					this.industry=this.industry.split(",")
-					for(var i=0; i<this.z; i++){
-						for(var item in this.BiaoQian){
-//							console.log(this.BiaoQian)
-							if(this.BiaoQian[item]['id']==this.industry[i]){
-								this.industry1.push(this.BiaoQian[item]['title']);
-							}
-						}
-					}
-					
-					console.log(this.data);
-				},function(res){
-					Indicator.close();
-				    console.log(res.status);
-				})
-			},function(res){
-				Indicator.close();
-			    console.log(res.status);
-			})
+			this.shuaXin()
 		},
 		methods:{
 			yijianHind(){
 				history.go(-1)
 //				this.tucaoShow=false;
+			},
+			shuaXin(){
+				this.token=localStorage.getItem("token");
+				this.XiangmuID=this.$route.params.XiangmuID;
+				this.Xiangmutype=this.$route.params.type;
+				this.is_send=this.$route.params.is_send;
+				if(this.is_send=='1'){
+					this.none=false;
+					this.toudi='继续投递';
+				}
+				Indicator.open({spinnerType: 'fading-circle'});
+				var datas = {
+					token:this.token,
+					item_id:this.XiangmuID,			//	项目id
+				}
+				this.datas=datas;
+				console.log(this.token)
+				//获取标签
+				this.$http.post(URL.path1+'login/three',this.datas,{emulateJSON:true}).then(function(res){
+					this.BiaoQian=res.body.data[0]
+					this.z=res.body.data[0].length;
+					console.log(this.BiaoQian);
+					//历史项目详情
+					this.$http.post(URL.path+'finance/item_detail',datas,{emulateJSON:true}).then(function(res){
+						Indicator.close();
+						this.data=res.body.data[0]
+						this.texta=this.data.com_short
+						this.textb=this.data.com_code
+						this.textc=this.data.lightspot
+						this.numbera=this.data.last_year_revenue
+						this.numberb=this.data.last_year_profit
+						this.numberc=this.data.predict_revenue
+						this.numberd=this.data.predict_profit
+						this.numbere=this.data.appraisement
+						this.numberf=this.data.total_finance
+						this.numberg=this.data.share_price
+						this.numberh=this.data.city
+						this.industry=this.data.industry
+						this.type=this.data.type
+						
+						this.industry=this.industry.split(",")
+						for(var i=0; i<this.z; i++){
+							for(var item in this.BiaoQian){
+	//							console.log(this.BiaoQian)
+								if(this.BiaoQian[item]['id']==this.industry[i]){
+									this.industry1.push(this.BiaoQian[item]['title']);
+								}
+							}
+						}
+						
+						console.log(this.data);
+					},function(res){
+						Indicator.close();
+					    console.log(res.status);
+					})
+				},function(res){
+					Indicator.close();
+				    console.log(res.status);
+				})
 			},
 			xuanze(index){
 				var spans=this.$refs.biaoqian.getElementsByTagName("span");	
@@ -320,7 +326,7 @@
 				console.log(this.y)
 			},
 			genJin(){
-				window.location.href='#/DingzengZuoshi/1/'+this.XiangmuID+'/1/YitouQingdan';
+				window.location.href='#/DingzengZuoshi/'+this.XiangmuID+'/'+this.XiangmuID+'/1/YitouQingdan';
 			},
 			xiayibuGo(){
 //				this.butenLeft="butenLeft";

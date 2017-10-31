@@ -35,7 +35,7 @@
 							</div>
 							<div v-if="BianJi2==1" class="content-touzi" ref="foods">
 								<ul>
-									<li class="src1" id='4' @click.stap="types('0','4')">
+									<li class="src0" id='4' @click.stap="types('0','4')">
 										<span>融资租赁</span><font class="img1"></font>
 									</li>
 									<li class="src0" id="5" @click.stap="types('1','5')">
@@ -158,8 +158,8 @@
 					<div class="content-header">
 						<span>已投案例</span>
 						<font>（仅自己可见）</font>
-						<span v-if="bianList" ref='text5' class="lasst" @click.stap="bianji5('2')">编辑</span>
-						<span v-if="!bianList" ref='text5' class="lasst" @click.stap="baocunList()">保存</span>
+						<!--<span v-if="bianList" ref='text5' class="lasst" @click.stap="bianji5('2')">编辑</span>
+						<span v-if="!bianList" ref='text5' class="lasst" @click.stap="baocunList()">保存</span>-->
 					</div>
 					<div class="xiaolv anli">
 						<div v-if="!YitouList" class="anli-list border-top">
@@ -213,7 +213,7 @@
 				x:false,
 				z:false,
 				data:"",
-				y:1,			//判断是否选择标签；》=1为选择；
+				y:0,			//判断是否选择标签；》=1为选择；
 				BianJi:'0',
 				BianJi2:"0",
 				BianJi3:"0",
@@ -409,10 +409,6 @@
 					Toast(res.status);
 				    console.log(res.status);
 				})
-				
-				
-				
-				
 			},
 			baocunList(){
 				this.Wancent="";
@@ -501,7 +497,6 @@
 								spans1.setAttribute("class","bianse")
 								this.biaoQianID.push(spans.id);
 								this.biaoQianID1.push(spans.id);
-								
 							});
 							console.log(this.BiaoQian);
 						},function(res){
@@ -550,14 +545,23 @@
 				}else{
 					this.BianJi2=1;
 					this.$refs.text2.innerText="取消"
-					var typeLi=this.$refs.foods.getElementsByTagName("li");
-					if(typeLi[0].getAttribute("class")=="src1"){
-						this.biaoQianID2=['4'];
-						this.biaoQianid2='4';
-					}else{
-						this.biaoQianID2=[];
-						this.biaoQianid2='';
-					}
+					this.biaoQianID2=[];
+					this.biaoQianid2=''
+					this.$nextTick(function() {
+						var typeLi=this.$refs.foods.getElementsByTagName("li");
+						var lenth=this.SuozaiHangye.length;
+						for(var i=0; i<lenth;i++){
+							for(var x=0; x<typeLi.length; x++){
+								if(this.SuozaiHangye[i]==typeLi[x].id){
+									typeLi[x].setAttribute("class","src1")
+									this.biaoQianID2[i]=typeLi[x].id;
+								}
+							}
+						}
+						this.y=this.biaoQianid2.length;
+						this.biaoQianid2=this.biaoQianID2.join();
+						console.log(this.biaoQianid2)
+					})
 				}
 				
 			},
@@ -652,9 +656,9 @@
 						}
 					}
 				}else{
-					if(this.y>2){
-						Toast('最多可选三个');
-					}else{
+//					if(this.y>2){
+//						Toast('最多可选三个');
+//					}else{
 						spans[index].setAttribute("class","bianse");
 						this.y+=1;
 						for(var i=0; i<this.y; i++){
@@ -664,7 +668,7 @@
 							}
 						}
 						console.log(this.biaoQianID1)
-					}
+//					}
 				}
 			},
 			types(index,id){
@@ -673,44 +677,24 @@
 				this.urlName=id;
 				if(typeLi[index].getAttribute("class")=="src1"){			//判断是否选择标签；》=1为选择；
 					typeLi[index].setAttribute("class","src0")
-					for(var z=0; z<this.y; z++){
+					for(var z=0; z<this.biaoQianID2.length; z++){
 						if(this.biaoQianID2[z]==typeLi[index].id){
 							this.biaoQianID2.splice(z,1);
-//							console.log(this.biaoQianID2)
 							this.biaoQianid2=this.biaoQianID2.join()
 							console.log(this.biaoQianid2)
 							this.y-=1
-							break;
+							return;
 						}
 					}
 				}else{
 					typeLi[index].setAttribute("class","src1");
 					this.y+=1;
-					for(var i=0; i<this.y; i++){
-						if(this.biaoQianID2[i]!=typeLi[index].id){
-							this.biaoQianID2.push(typeLi[index].id)
-							break;
-						}
-					}
-//					console.log(this.biaoQianID2)
+					this.biaoQianID2[this.biaoQianID2.length]=typeLi[index].id;
 					this.biaoQianid2=this.biaoQianID2.join()
 					console.log(this.biaoQianid2)
 				}
 			}
 			
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -726,8 +710,6 @@
 		},
 		components:{
 			box
-//			youhuiquan
-//			fankuixinxi
 		}
 	}
 </script>

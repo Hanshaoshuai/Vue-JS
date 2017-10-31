@@ -30,10 +30,10 @@
 							<span class="lasst" ref="text2"></span>
 							<div v-if="BianJi2==0" class="content-touzi" ref="foods">
 								<ul>
-									<li v-show="x" class="src1" id='5'>
+									<li v-show="x" class="src1" id='1'>
 										<span>定增</span><font class="img1"></font>
 									</li>
-									<li v-show="z" class="src1" id="4">
+									<li v-show="z" class="src1" id="2">
 										<span>接老股</span><font class="img1"></font>
 									</li>
 									
@@ -41,10 +41,10 @@
 							</div>
 							<div v-if="BianJi2==1" class="content-touzi" ref="foods">
 								<ul>
-									<li class="src1" id='5' @click.stap="types('0','5')">
+									<li class="src1" id='1' @click.stap="types('0','1')">
 										<span>定增</span><font class="img1"></font>
 									</li>
-									<li class="src0" id="4" @click.stap="types('1','4')">
+									<li class="src0" id="2" @click.stap="types('1','2')">
 										<span>接老股</span><font class="img1"></font>
 									</li>
 									
@@ -199,10 +199,10 @@
 				var SuozaiHangye=this.data.info.investment_way;		//投资方式		原来的数据字符串
 				this.SuozaiHangye=SuozaiHangye.split(',');
 				for(var i=0; i<SuozaiHangye.length; i++){
-					if(SuozaiHangye[i]==5){
+					if(SuozaiHangye[i]==1){
 						this.x=true;
 					}
-					if(SuozaiHangye[i]==4){
+					if(SuozaiHangye[i]==2){
 						this.z=true;
 					}
 				}
@@ -216,6 +216,7 @@
 						images.style.height="auto"
 					}
 				});
+				 console.log(res);
 			},function(res){
 				Indicator.close();
 			    console.log(res);

@@ -77,7 +77,7 @@
 				</div>
 				<div class="type-food" @click.stop="ToHoom()">
 					<div class="type-food-text">
-						<span>确定</span>
+						<span>提交审核</span>
 					</div>
 				</div>
 			</div>
@@ -174,7 +174,7 @@
 				if(ok=1){
 					this.$http.post(URL.path+'regist/personal',datas,{emulateJSON:true}).then(function(res){
 						if(res.body.returnCode=='200'){
-							Toast('资料完善成功');
+							Toast('系统将在24小时内审核您的注册申请');
 							console.log(res.body)
 							window.location.href="#/faxian";
 						}else{

@@ -24,7 +24,7 @@
 					<div ref="guanzhuLingyu">
 						<div class="fankiu border-topbottom">
 							<div class="content-food">
-								<span>公司所在行业</span>
+								<span>所在行业</span>
 								<span ref="bianji" class="lasst"></span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
@@ -44,12 +44,12 @@
 				<div style="height:0.06rem;width:100%;background:#f5f4f9"></div>
 				<div ref="chanYe" class="sousuo-content border-topbottom">
 					<div class="content-header border-topbottom">
-						<span>直营业务</span><span ref="bianji3" class="lasst" ></span>
+						<span>主营业务</span><span ref="bianji3" class="lasst" ></span>
 					</div>
 					<div class="xiaolv anli">
 						<ul class="first">
 							<li>
-								<textarea readOnly="true" placeholder="请填写直营业务、投资亮点等" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+								<textarea readOnly="true" placeholder="请填写主营业务、投资亮点等" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
 							</li>
 						</ul>
 					</div>

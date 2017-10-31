@@ -55,7 +55,7 @@
 				<div class="type-content">
 					<div class="type-cont">
 						<div class="tuse">
-							<font></font><span>您实际能提供的年化资金成本范围？</span>
+							<font></font><span>您实际能提供的年化资金成本范围</span>
 						</div>
 						<ul>
 							<input v-model="numberc" placeholder="输入数字" number="true" type="number" class="mint-field-core border">
@@ -68,7 +68,7 @@
 				<div class="type-content">
 					<div class="type-cont">
 						<div class="tuse">
-							<font></font><span>您的单笔能提供的投资规模？</span>
+							<font></font><span>您的单笔能提供的投资规模</span>
 						</div>
 						<ul>
 							<input v-model="numbere" placeholder="输入数字" number="true" type="number" class="mint-field-core border">
@@ -81,7 +81,7 @@
 				<div class="type-content">
 					<div class="type-cont">
 						<div class="tuse">
-							<font></font><span>从接触项目到放款的时间不超过？</span>
+							<font></font><span>从项目尽调至放款不超过</span>
 						</div>
 						<ul>
 							<input v-model="numberg" placeholder="输入数字" number="true" type="number" class="mint-field-core border">
@@ -105,7 +105,7 @@
 				<div class="type-content">
 					<div class="type-cont">
 						<div class="tuse">
-							<font></font><span>借债主题是<a>（选填）</a></span>
+							<font></font><span>借债主体是<a>（选填）</a></span>
 						</div>
 						<div class="xiaolv anli">
 							<ul>
@@ -117,7 +117,7 @@
 				
 				<div class="type-food" @click.stop="ToHoom()">
 					<div class="type-food-text">
-						<span>确定</span>
+						<span>提交审核</span>
 					</div>
 				</div>
 			</div>
@@ -148,7 +148,7 @@
 			return {
 				y:1,			//判断是否选择标签；》=1为选择；
 				biaoQianID:[],		//储存标签id
-				biaoQianid:'',		//储存标签id字符串
+				biaoQianid:'4',		//储存标签id字符串
 				numbera:"",
 				numberb:"",
 				numberc:"",
@@ -195,6 +195,18 @@
 					numberg:this.numberg,
 //					XiangmuID:this.XiangmuID
 				}
+				var CanShu1={				//给下级要传的参数
+//					texta:this.texta,
+//					textb:this.textb,
+					numbera:this.numbera,
+					numberb:this.numberb,
+					numberc:this.numberc,
+					numberd:this.numberd,
+					numbere:this.numbere,
+					numberf:this.numberf,
+					numberg:this.numberg,
+//					XiangmuID:this.XiangmuID
+				}
 				var datas={
 					id:this.XiajiCanshu.id,			//	uid	是	[string]		
 					investment_type:this.typeID,			//投资类型 1:股权投资 2:债权投资 3:股债兼投	是	[string]		
@@ -211,9 +223,10 @@
 					loan_time:this.numberg,			//放款时间	是	[string]		
 					borrow:this.textb				//借债主体	是	[string]
 				}
+				console.log(datas)
 				var ok=0;
-				for(var item in CanShu){		//判断填写信息是否完整Ok=1；标签必选
-					if(!CanShu[item]=="" && this.y>=1){
+				for(var item in CanShu1){		//判断填写信息是否完整Ok=1；标签必选
+					if(!CanShu1[item]=="" && this.y>=1){
 						
 					}else{
 						ok+=1;
@@ -224,7 +237,7 @@
 					this.$http.post(URL.path+'regist/regist2',datas,{emulateJSON:true}).then(function(res){
 						Indicator.close();
 						if(res.body.returnCode=='200'){
-							Toast('资料完善成功');
+							Toast('系统将在24小时内审核您的注册申请');
 							console.log(res.body)
 							window.location.href="#/faxian";
 						}else{

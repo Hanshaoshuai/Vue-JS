@@ -103,7 +103,7 @@
 						<img src="./img/hongbao.png" alt="" />
 					</div>-->
 					
-<!--循环遍历data-->	<li v-for="item in list" class="page-loadmore-listitem">
+<!--循环遍历data-->	<!--<li v-for="item in list" class="page-loadmore-listitem">-->
 						<div v-for="(item,index) in data" class="Content" >
 							<div class="ContentText" :id="index" @click.stop="contblock(item.id,item.type)">
 								<div class="TextMame">
@@ -142,7 +142,7 @@
 								<ol class="ol"></ol>
 							</div>
 						</div>
-					</li>
+					<!--</li>-->
 					<transition name="promps">
 					<div class="tishi-bottom" v-show="promps">
 						<ul>
@@ -152,10 +152,11 @@
 						</ul>
 					</div>
 					</transition>
+					<div style="width:100%;height:0.62rem;"></div>
 				</div>
 		      	<!--<div style="width:100%;height:0.6rem;"></div>-->
 		    </div>
-			<xiangmugenjin></xiangmugenjin>
+			<xiangmugenjin :shifouZhuce="shifouZhuce"></xiangmugenjin>
 			<router-view :setscrollTop="scrollTop" :datas="datas" :userContent='userContent' :type="type" :FankuiShu="FankuiShu"></router-view>
 		</div>
 	<!--</transition>-->
@@ -214,6 +215,7 @@
 		        botent:"亲已经到底了",
 		        numToTime:"",
 		        gengJingdu:'',
+		        shifouZhuce:''		//注册是否通过
 //		        onlyContent:true,
 			}
 		},
@@ -242,29 +244,50 @@
 	    	}
 	    	var that=this;
 	    	this.token=token;
-//	    	this.TouziToken=token;
-	    	this.qinQiu(token);
-//			投资机构收到的新项目数
-			this.huoqugeshu();
-//			企业获取反馈数	和	投资机构收获取反馈数
-			this.qiyeFankui();
-//			setInterval(function(){
-//				that.huoqugeshu();
-//				that.qiyeFankui();
-//			},10000)
-			this.$on("to-parent",function(msg){
-				console.log(msg);
-				that.FankuiShu = msg
-			})
-//			获取企融直通车动态数据
-			this.$http.post(URL.path+'common/dynamic',token,{emulateJSON:true}).then(function(res){
-				this.dongTai=res.body.data
-				console.log("获取企融直通车动态数据");
-				console.log(this.dongTai[0].content);
+//	    	个人信息
+			var params={
+	    		token:this.userContent["token"],
+	    		terminalNo:3
+	    	}
+			this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
+				console.log('个人信息');
+				this.shifouZhuce=res.body.data.status;
+				localStorage.setItem("shifouZhuce",res.body.data.status)
+				if(res.body.data.status==2){
+					console.log("判断注册是否未通过的首页项目列表成功");
+		//	    	首页项目列表（非自己收到的项目）接口
+			    	this.qinQiu(token);
+		//			投资机构收到的新项目数
+					this.huoqugeshu();
+		//			企业获取反馈数	和	投资机构收获取反馈数
+					this.qiyeFankui();			
+				}else{
+					var post={
+						item:2
+					}
+					this.$http.post(URL.path+'common/item_list',post,{emulateJSON:true}).then(function(res){
+						this.data=res.body.data;
+						console.log("注册未通过的首页项目列表成功");
+						console.log(this.data)
+						if(this.data.length>2){
+							this.$nextTick(function(){
+								if(this.yici=='0'){
+									this.tuCao();
+									this.yici=1;
+								}
+							});
+						}else{
+							this.botent="暂无数据"
+						}
+					})
+				}
 				console.log(res);
 			},function(res){
 			    console.log(res);
 			})
+//	    	this.TouziToken=token;
+//			获取企融直通车动态数据
+			this.dongtaiShuju()
 //	      	this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
 	      	this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
 	      	this.$nextTick(function() {
@@ -280,10 +303,26 @@
 			});
 	    },
 	    activated(){
-			this.huoqugeshu();
-			this.qiyeFankui();
+	    	if(this.shifouZhuce=='2'){
+				this.huoqugeshu();
+				this.qiyeFankui();
+			}
 		},
 		methods:{	//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商 7:财务顾问
+			dongtaiShuju(){
+				var token={
+		    		post:3
+		    	}
+//				获取企融直通车动态数据
+				this.$http.post(URL.path+'common/dynamic',token,{emulateJSON:true}).then(function(res){
+					this.dongTai=res.body.data
+					console.log("获取企融直通车动态数据");
+					console.log(this.dongTai[0].content);
+					console.log(res);
+				},function(res){
+				    console.log(res);
+				})
+			},
 			huoqugeshu(){
 //			投资机构收到的新项目数
 				var token={
@@ -373,28 +412,52 @@
 //		        }, 1000);
 	      	},
 			sousuo(){
-				window.location.href="#/faxian/sousuo/";
+				if(this.shifouZhuce==2){
+					window.location.href="#/faxian/sousuo/";
+				}else{
+					Toast("您的注册申请尚在审核中")
+				}
 			},
 			rongziGo(){
-				window.location.href="#/faxian/WoyaoRongzi/"+this.userContent["token"];
+				if(this.shifouZhuce==2){
+					window.location.href="#/faxian/WoyaoRongzi/"+this.userContent["token"];
+				}else{
+					Toast("您的注册申请尚在审核中")
+				}
 			},
 			touzifankuiGo(){
-				console.log(this.userContent)
-				window.location.href="#/faxian/Fankui/"+this.userContent["token"];
+				if(this.shifouZhuce==2){
+					console.log(this.userContent)
+					window.location.href="#/faxian/Fankui/"+this.userContent["token"];
+				}else{
+					Toast("您的注册申请尚在审核中")
+				}
 			},
 			XiangMuGo(){
-				window.location.href="#/faxian/XinxiangMu/"+this.userContent["token"];
-				this.scrollTop=sessionStorage.getItem("scrollTop")
+				if(this.shifouZhuce==2){
+					window.location.href="#/faxian/XinxiangMu/"+this.userContent["token"];
+					this.scrollTop=sessionStorage.getItem("scrollTop")
+				}else{
+					Toast("您的注册申请尚在审核中")
+				}
 			},
 			qiyefankuiGo(){
-				console.log(this.userContent)
-				window.location.href="#/faxian/Fankui/"+this.userContent["token"];
+				if(this.shifouZhuce==2){
+					console.log(this.userContent)
+					window.location.href="#/faxian/Fankui/"+this.userContent["token"];
+				}else{
+					Toast("您的注册申请尚在审核中")
+				}
 			},
 			contblock(id,type){		//<!--类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报 7:公司调研-->
-				if(type==1 || type==2 ||type==3 || type==7){
-					window.location.href="#/faxian/DingzengZhaiyao/"+this.userContent["token"]+'/'+id;
+				if(this.shifouZhuce==2){
+					if(type==1 || type==2 ||type==3 || type==7){
+						window.location.href="#/faxian/DingzengZhaiyao/"+this.userContent["token"]+'/'+id;
+					}else{
+						window.location.href="#/faxian/GuquanZhaiyao/"+this.userContent["token"]+'/'+id;
+					}
 				}else{
-					window.location.href="#/faxian/GuquanZhaiyao/"+this.userContent["token"]+'/'+id;
+					Toast("您的注册申请尚在审核中")
 				}
 			},
 			Guquanzhaiyao(){
@@ -415,19 +478,21 @@
 	//	    	首页项目列表（非自己收到的项目）接口
 				this.$http.post(URL.path+'finance/get_item_list',token,{emulateJSON:true}).then(function(res){
 					Indicator.close();
-					this.data=res.body.data;
-					console.log("首页项目列表成功");
-					console.log(res)
-					if(this.data.length>2){
-						this.$nextTick(function(){
-							if(this.yici=='0'){
-								this.tuCao();
-								this.yici=1;
-							}
-						});
-					}else{
-						this.botent="暂无数据"
-					}
+//					if(res.body.){			//判断是否注册通过审核；
+						this.data=res.body.data;
+						console.log("首页项目列表成功");
+						console.log(res)
+						if(this.data.length>2){
+							this.$nextTick(function(){
+								if(this.yici=='0'){
+									this.tuCao();
+									this.yici=1;
+								}
+							});
+						}else{
+							this.botent="暂无数据"
+						}
+//					}
 				},function(res){
 				    console.log(res);
 				    Indicator.close();
@@ -568,15 +633,19 @@
 		}
 		.box::-webkit-scrollbar{width:0px}
 		.box{
+			position:absolute;
+			overflow-y:scroll;
 			width:100%;
 			height:100%;
-			overflow-y:auto;
+			top:0;
+			left:0;
+			overflow-y:scroll;
 			-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
 			.FadeContent{
-				position:relative;
 				width:100%;
 				height:auto;
 				.banner{
+					position:relative;
 					width:100%;
 					min-height:1.28rem;
 					/*padding:1.42rem solid #f5f5f9;*/
@@ -654,7 +723,7 @@
 					margin-top:0.1rem;
 					zoom:1;
 					position:relative;
-					z-index:11;
+					/*z-index:11;*/
 					.TypeList{
 						width:48%;
 						color:#323232;
@@ -930,7 +999,7 @@
 				    	top:-0.15rem;
 				    	background-image:url("./img/lianjie.png");
 				    	background-size:100% 100%;
-				    	z-index:16;
+				    	/*z-index:16;*/
 				    }
 				    ol{
 				    	width:0.1rem;
@@ -940,7 +1009,7 @@
 				    	top:-0.15rem;
 				    	background-image:url("./img/lianjie.png");
 				    	background-size:100% 100%;
-				    	z-index:16;
+				    	/*z-index:16;*/
 				    }
 				}
 				.tishi-bottom{

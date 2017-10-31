@@ -78,7 +78,7 @@
 					<!--<li class="beian-first">
 						{{numToTime(item.create_time)}}
 					</li>-->
-					<ul v-if="item.status=='2'" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
+					<ul v-if="item.status=='2'" ref="index1" class="content-header" index="type1"  @click.stap="typeName1(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
 								<span>{{item.com_short}}</span>

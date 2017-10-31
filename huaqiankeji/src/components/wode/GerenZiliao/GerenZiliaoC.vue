@@ -26,7 +26,8 @@
 								<span ref="bianji" class="lasst" @click.stap="bianji('1')">编辑</span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
-										<input readOnly="true" v-model="numbera" placeholder="暂无" type="text" class="mint-field-core">
+										<p class="mint-field-core">{{numbera}}</p>
+										<!--<input readOnly="true" v-model="numbera" placeholder="暂无" type="text" class="mint-field-core">-->
 									</li>
 								</ul>
 								<div v-if="BianJi==1" class="zhuying_1 liangdian_1">
@@ -41,7 +42,8 @@
 								<span>投资阶段</span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
-										<input readOnly="true" v-model="numberd" placeholder="暂无" type="text" class="mint-field-core">
+										<p class="mint-field-core">{{numberd}}</p>
+										<!--<input readOnly="true" v-model="numberd" placeholder="暂无" type="text" class="mint-field-core">-->
 									</li>
 								</ul>
 								<div  v-if="BianJi==1" class="zhuying_1 liangdian_1" ref="foods1">
@@ -92,8 +94,8 @@
 						<div class="content-header">
 							<span>已投案例</span>
 							<font>（仅自己可见）</font>
-							<span v-if="bianList" ref='text5' class="lasst" @click.stap="bianji('0')">编辑</span>
-							<span v-if="!bianList" ref='text5' class="lasst" @click.stap="baocunList()">保存</span>
+							<!--<span v-if="bianList" ref='text5' class="lasst" @click.stap="bianji('0')">编辑</span>
+							<span v-if="!bianList" ref='text5' class="lasst" @click.stap="baocunList()">保存</span>-->
 						</div>
 						<div class="xiaolv anli">
 							<div v-if="!YitouList" class="anli-list border-top">
@@ -179,7 +181,7 @@
 							</div>
 							<div v-if="BianJi2==1" class="content-touzi" ref="foods">
 								<ul>
-									<li class="src1" id='4' @click.stap="types('0','4')">
+									<li class="src0" id='4' @click.stap="types('0','4')">
 										<span>融资租赁</span><font class="img1"></font>
 									</li>
 									<li class="src0" id="5" @click.stap="types('1','5')">
@@ -283,15 +285,15 @@
 					<div style="height:0.06rem;width:100%;background:#f5f4f9"></div>
 					<div class="fankiu border-bottom dangeDiyu">
 						<div class="content-food">
-							<span>借债主题是</span><span ref="text4" class="lasst" @click.stap="bianji4('2')">编辑</span>
-							<ul v-if="BianJi4==0" class="first">
+							<span>借债主题是</span><span ref="BianJi5" class="lasst" @click.stap="bianji4('2')">编辑</span>
+							<ul v-if="BianJi5==0" class="first">
 								<li>
 									<input readOnly="true" placeholder="请填写资金出借方的公司全称" v-model="numberm" type="text" class="mint-field-core">
 								</li>
 							</ul>
-							<div v-if="BianJi4==1" class="xiaolv anli">
+							<div v-if="BianJi5==1" class="xiaolv anli">
 								<ul>
-									<textarea placeholder="请填写资金出借方的公司全称" class="mint-field-core ziyuanChongzu" v-model="textb"></textarea>
+									<textarea ref="chongGou1" placeholder="请填写资金出借方的公司全称" class="mint-field-core ziyuanChongzu" v-model="textb"></textarea>
 								</ul>
 							</div>
 						</div>
@@ -302,8 +304,8 @@
 					<div class="content-header">
 						<span>已投案例</span>
 						<font>（仅自己可见）</font>
-						<span v-if="bianList1" ref='text5' class="lasst" @click.stap="bianji5('2')">编辑</span>
-						<span v-if="!bianList1" ref='text5' class="lasst" @click.stap="baocunList1()">保存</span>
+						<!--<span v-if="bianList1" ref='text5' class="lasst" @click.stap="bianji5('2')">编辑</span>
+						<span v-if="!bianList1" ref='text5' class="lasst" @click.stap="baocunList1()">保存</span>-->
 					</div>
 					<div class="xiaolv anli">
 						<div v-if="!YitouList1" class="anli-list border-top">
@@ -355,7 +357,7 @@
 				L:0,
 				x:false,
 				z:false,
-				y:1,			//判断是否选择标签；》=1为选择；
+				y:0,			//判断是否选择标签；》=1为选择；
 				y1:1,			//判断是否选择标签；》=1为选择；
 				BianJi:'0',
 				BianJi2:"0",
@@ -435,7 +437,13 @@
 				create_time1:'',	//已投案例接口   已投项目列表	日期
 				Wancent1:"",
 				bianList1:true,
-				textInputs:""		//已投案input  DOM;
+				textInputs:"",		//已投案input  DOM;
+				
+				xx:[],
+				yy:[],
+				xx1:[],
+				yy1:[],
+				SuozaiHangye:''
 			}
 		},
 		mounted(){
@@ -457,6 +465,7 @@
 				this.texta=this.data.info.territory;		//要插到页面的地区
 				
 				var SuozaiHangye=this.data.info.interested;
+				this.SuozaiHangye=this.data.info.interested;
 				var fund_stage=this.data.info.fund_stage;
 				var fund_stage=this.data.info.fund_stage;
 				console.log(SuozaiHangye);
@@ -519,10 +528,12 @@
 				var y2=[];
 				for(var item in SuozaiHangye){
 					x.push(SuozaiHangye[item].id);
+					this.xx.push(SuozaiHangye[item].id);
 					y.push(SuozaiHangye[item].title);
 				}
 				for(var item in fund_stage){
 					x1.push(fund_stage[item].id);
+					this.xx1.push(fund_stage[item].id);
 					y1.push(fund_stage[item].title);
 				}
 				for(var item in fund_stage){
@@ -601,11 +612,14 @@
 					GQterritory=this.texta;
 				}
 				if(this.BianJi4=='0'){				//原来数据
-					ZQborrow=this.numberm;
 					textd2=this.data.info.restructuring;
 				}else{
-					ZQborrow=this.textb;			//改后数据
 					textd2=this.textd2;
+				}
+				if(this.BianJi5=='0'){				//原来数据
+					ZQborrow=this.numberm;
+				}else{
+					ZQborrow=this.textb;			//改后数据
 				}
 				if(this.BianJi3=='0'){
 					ZQnuwID=this.textc1;		//债权原来数据
@@ -789,12 +803,8 @@
 			},
 			bianji(id){
 				if(id==1){
-					this.y=1;
-					this.biaoQianID=[];
-					this.biaoQianid='';
-					this.y1=1;
-					this.biaoQianID1=[];
-					this.biaoQianid1='';
+					this.y=this.xx.length;
+					this.y1=this.xx1.length;
 					if(this.BianJi==1){
 						this.BianJi=0;
 						this.$refs.bianji.innerText="编辑";
@@ -808,12 +818,41 @@
 						this.$http.post(URL.path1+'login/three',datas,{emulateJSON:true}).then(function(res){
 							this.BiaoQian=res.body.data
 							this.$nextTick(function() {
-								var spans=this.$refs.biaoqian.getElementsByTagName("span")[0];
-								var spans1=this.$refs.biaoqian1.getElementsByTagName("span")[0];
-								spans.setAttribute("class","bianse")
-								spans1.setAttribute("class","bianse")
-								this.biaoQianID.push(spans.id);
-								this.biaoQianID1.push(spans1.id);
+								var spans=this.$refs.biaoqian.getElementsByTagName("span");
+								var length0=spans.length;
+								var length=this.xx.length;
+								var spans1=this.$refs.biaoqian1.getElementsByTagName("span");
+								var changdu0=spans1.length;
+								var changdu=this.xx1.length;
+								for(var i=0; i<length; i++){
+									for(var x=0; x<length0; x++){
+										if(this.xx[i]==spans[x].id){
+											spans[x].setAttribute("class","bianse")
+											this.biaoQianID[i]=spans[x].id;
+//											return;
+										}
+									}
+								}
+								this.biaoQianid=this.biaoQianID.join()
+								for(var i=0; i<changdu; i++){
+									for(var x=0; x<changdu0; x++){
+										if(this.xx1[i]==spans1[x].id){
+											spans1[x].setAttribute("class","bianse")
+											this.biaoQianID1[i]=spans1[x].id;
+//											return;
+										}
+									}
+								}
+								this.biaoQianid1=this.biaoQianID1.join()
+								
+								
+								
+//								var spans=this.$refs.biaoqian.getElementsByTagName("span")[0];
+//								var spans1=this.$refs.biaoqian1.getElementsByTagName("span")[0];
+//								spans.setAttribute("class","bianse")
+//								spans1.setAttribute("class","bianse")
+//								this.biaoQianID.push(spans.id);
+//								this.biaoQianID1.push(spans1.id);
 								
 							});
 							console.log(this.BiaoQian);
@@ -850,20 +889,6 @@
 //						textInputs[0].focus();		//点击编辑   input获取焦点
 						console.log();
 					}
-//					if(this.$refs.text5.innerText=="编辑"){
-//						this.$refs.text5.innerText="取消";
-//						var textInputs = this.$refs.guquanBian.getElementsByClassName("mint-field-core");
-//						textInputs[0].removeAttribute("readOnly")		//点击编辑   input去除属性readOnly即可编辑
-//						textInputs[0].focus();		//点击编辑   input获取焦点
-//						console.log();
-//					}else{
-//						this.$refs.text5.innerText="编辑";
-//						var textInputs = this.$refs.guquanBian.getElementsByClassName("mint-field-core");
-//						textInputs[0].setAttribute("readOnly","readOnly")		//点击编辑   input去除属性readOnly即可编辑
-//						textInputs[0].focus();		//点击编辑   input获取焦点
-//						console.log();
-//					}
-//					textInputs[0].focus();
 				}
 				if(id==3 || id==4){
 					if(id==3){
@@ -902,14 +927,23 @@
 				}else{
 					this.BianJi2=1;
 					this.$refs.text2.innerText="取消"
-					var typeLi=this.$refs.foods.getElementsByTagName("li");
-					if(typeLi[0].getAttribute("class")=="src1"){
-						this.biaoQianID2=['4'];
-						this.biaoQianid2='4';
-					}else{
-						this.biaoQianID2=[];
-						this.biaoQianid2='';
-					}
+					this.biaoQianID2=[];
+					this.biaoQianid2=''
+					this.$nextTick(function() {
+						var typeLi=this.$refs.foods.getElementsByTagName("li");
+						var lenth=this.SuozaiHangye1.length;
+						for(var i=0; i<lenth;i++){
+							for(var x=0; x<typeLi.length; x++){
+								if(this.SuozaiHangye1[i]==typeLi[x].id){
+									typeLi[x].setAttribute("class","src1")
+									this.biaoQianID2[i]=typeLi[x].id;
+								}
+							}
+						}
+						this.y=this.biaoQianid2.length;
+						this.biaoQianid2=this.biaoQianID2.join();
+						console.log(this.biaoQianid2)
+					})
 				}
 				
 			},
@@ -925,13 +959,24 @@
 			},
 			bianji4(){
 				this.handleScroll();
-				if(this.BianJi4==1){
-					this.BianJi4=0;
-					this.$refs.text4.innerText="编辑";
+				if(this.$refs.BianJi5.innerText=="编辑"){
+					this.$refs.BianJi5.innerText="取消";
+					this.BianJi5=1;
+					this.$nextTick(function() {
+						this.$refs.chongGou1.focus();	//点击编辑   input获取焦点
+						console.log();
+					})
 				}else{
-					this.BianJi4=1;
-					this.$refs.text4.innerText="取消"
+					this.$refs.BianJi5.innerText="编辑";
+					this.BianJi5=0;
 				}
+//				if(this.BianJi5==1){
+//					this.BianJi5=0;
+//					this.$refs.text4.innerText="编辑";
+//				}else{
+//					this.BianJi5=1;
+//					this.$refs.text4.innerText="取消"
+//				}
 			},
 			bianji5(id){
 				this.handleScroll();
@@ -970,7 +1015,6 @@
 					for(var z=0; z<this.y; z++){
 						if(this.biaoQianID[z]==spans[index].id){
 							this.biaoQianID.splice(z,1);
-//							console.log(this.biaoQianID)
 							this.biaoQianid=this.biaoQianID.join()
 							console.log(this.biaoQianid)
 							this.y-=1
@@ -978,21 +1022,16 @@
 						}
 					}
 				}else{
-					if(this.y>2){
-						Toast('最多可选三个');
-					}else{
+//					if(this.y>2){
+//						Toast('最多可选三个');
+//						return;
+//					}else{
 						spans[index].setAttribute("class","bianse");
+						this.biaoQianID[this.y]=spans[index].id;
 						this.y+=1;
-						for(var i=0; i<this.y; i++){
-							if(this.biaoQianID[i]!=spans[index].id){
-								this.biaoQianID.push(spans[index].id)
-								break;
-							}
-						}
-//						console.log(this.biaoQianID)
 						this.biaoQianid=this.biaoQianID.join()
 						console.log(this.biaoQianid)
-					}
+//					}
 				}
 			},
 			xuanze1(index){
@@ -1003,7 +1042,6 @@
 					for(var z=0; z<this.y1; z++){
 						if(this.biaoQianID1[z]==spans[index].id){
 							this.biaoQianID1.splice(z,1);
-//							console.log(this.biaoQianID1)
 							this.biaoQianid1=this.biaoQianID1.join()
 							console.log(this.biaoQianid1)
 							this.y1-=1
@@ -1011,21 +1049,15 @@
 						}
 					}
 				}else{
-					if(this.y1>2){
-						Toast('最多可选三个');
-					}else{
+//					if(this.y1>2){
+//						Toast('最多可选三个');
+//					}else{
 						spans[index].setAttribute("class","bianse");
+						this.biaoQianID1[this.y1]=spans[index].id;
 						this.y1+=1;
-						for(var i=0; i<this.y1; i++){
-							if(this.biaoQianID1[i]!=spans[index].id){
-								this.biaoQianID1.push(spans[index].id)
-								break;
-							}
-						}
-//						console.log(this.biaoQianID1)
 						this.biaoQianid1=this.biaoQianID1.join()
 						console.log(this.biaoQianid1)
-					}
+//					}
 				}
 			},
 			types(index,id){
@@ -1034,10 +1066,9 @@
 				this.urlName=id;
 				if(typeLi[index].getAttribute("class")=="src1"){			//判断是否选择标签；》=1为选择；
 					typeLi[index].setAttribute("class","src0")
-					for(var z=0; z<this.y; z++){
+					for(var z=0; z<this.biaoQianID2.length; z++){
 						if(this.biaoQianID2[z]==typeLi[index].id){
 							this.biaoQianID2.splice(z,1);
-//							console.log(this.biaoQianID2)
 							this.biaoQianid2=this.biaoQianID2.join()
 							console.log(this.biaoQianid2)
 							this.y-=1
@@ -1047,31 +1078,11 @@
 				}else{
 					typeLi[index].setAttribute("class","src1");
 					this.y+=1;
-					for(var i=0; i<this.y; i++){
-						if(this.biaoQianID2[i]!=typeLi[index].id){
-							this.biaoQianID2.push(typeLi[index].id)
-							break;
-						}
-					}
-					console.log(this.biaoQianID2)
+					this.biaoQianID2[this.biaoQianID2.length]=typeLi[index].id;
 					this.biaoQianid2=this.biaoQianID2.join()
 					console.log(this.biaoQianid2)
 				}
 			}
-			
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -1083,21 +1094,9 @@
 //			}
 		},
 		updated(){
-//			this.$refs.box.scrollTop=0;
-//			this.$refs.box.scrollTop=this.scrollTop
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 			box
-//			youhuiquan
-//			fankuixinxi
 		}
 	}
 </script>
@@ -1191,12 +1190,12 @@
 					}
 					.first{
 						padding-top:0.14rem;
-						height:0.31rem;
+						/*height:0.31rem;*/
 						display:flex;
 						justify-content:space-between;
 						li{
 							width:100%;
-							height:0.31rem;
+							/*height:0.31rem;*/
 							float:left;
 							font-size:0.16rem;
 							display:inline-block;
@@ -1205,7 +1204,7 @@
 							.mint-field-core{
 								color: #787777;
 								width:100%;
-								height:100%;
+								/*height:100%;*/
 								line-height:0.3rem;
 							}
 						}
@@ -1247,6 +1246,12 @@
 							.mint-field-core::-webkit-input-placeholder{
 							  color: #787777;
 							}
+							/*:not(input,textarea) {
+								-webkit-user-select: none;
+								-webkit-tap-highlight-color: rgba(0,0,0,0);
+								-webkit-touch-callout: none;
+								-webkit-text-size-adjust: none; 
+							}*/
 							.ziyuanChongzu{
 								resize: none;
 								min-height:1.02rem;
@@ -1499,6 +1504,7 @@
 						}
 					}
 				}
+				
 			}
 			.zhaiQuan{
 				width:100%;

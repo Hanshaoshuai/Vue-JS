@@ -105,56 +105,46 @@
 						</div>
 					</div>
 				</div>
-				<div class="border aaa">
-					<div v-if="data.type==1" class="content-header" @click.stap="xiangguan()">
+				<div ref="foods" class="border aaa">
+					<div v-if="data.type==1" class="content-header" @click.stap="chakanBA()">
 						<span>查看商业计划书（BP）</span>
-						<!--<font>{{dataFile2}}</font>--><font ref="baogaoChild">{{titBox}}</font><span>{{daXiao}}</span>
-						<!--<font></font>-->
+						<font>{{titBox}}</font><span>{{daXiao}}</span>
 					</div>
 					<div v-if="data.type==1" ref="baogao" class="content-header" @click.stap="xiangguan()">
 						<span>查看项目分析与尽调报告</span>
-						<!--<font>{{dataFile2}}</font>--><font ref="baogaoChild">{{titBox2}}</font><span>{{daXiao2}}</span>
-						<!--<font></font>-->
+						<font ref="baogaoChild">{{titBox2}}</font><span>{{daXiao2}}</span>
 					</div>
-					<div v-if="data.type==2" class="content-header" @click.stap="xiangguan()">
+					<div v-if="data.type==2" class="content-header" @click.stap="chakanBA()">
 						<span>查看商业计划书（BP）</span>
-						<!--<font>{{dataFile2}}</font>--><font ref="baogaoChild">{{titBox}}</font><span>{{daXiao}}</span>
-						<!--<font></font>-->
+						<font>{{titBox}}</font><span>{{daXiao}}</span>
 					</div>
 					<div v-if="data.type==2" ref="baogao" class="content-header" @click.stap="xiangguan()">
 						<span>查看项目分析与尽调报告</span>
-						<!--<font>{{dataFile2}}</font>--><font ref="baogaoChild">{{titBox2}}</font><span>{{daXiao2}}</span>
-						<!--<font></font>-->
+						<font ref="baogaoChild">{{titBox2}}</font><span>{{daXiao2}}</span>
 					</div>
-					<div v-if="data.type==3" class="content-header" @click.stap="xiangguan()">
+					<div v-if="data.type==3" class="content-header" @click.stap="chakanBA()">
 						<span>查看商业计划书（BP）</span>
-						<!--<font>{{dataFile2}}</font>--><font ref="baogaoChild">{{titBox}}</font><span>{{daXiao}}</span>
-						<!--<font></font>-->
+						<font>{{titBox}}</font><span>{{daXiao}}</span>
 					</div>
 					<div v-if="data.type==3" ref="baogao" class="content-header" @click.stap="xiangguan()">
 						<span>查看项目分析与尽调报告</span>
-						<!--<font>{{dataFile2}}</font>--><font ref="baogaoChild">{{titBox2}}</font><span>{{daXiao2}}</span>
-						<!--<font></font>-->
+						<font ref="baogaoChild">{{titBox2}}</font><span>{{daXiao2}}</span>
 					</div>
 					<div v-if="data.type==4" class="content-header" @click.stap="chakanBA()">
 						<span>查看资金用途及还款计划</span>
-						<!--<font>{{dataFile}}</font>--><font>{{titBox}}</font><span>{{daXiao}}</span>
-						<!--<font></font>-->
+						<font>{{titBox}}</font><span>{{daXiao}}</span>
 					</div>
 					<div v-if="data.type==5" class="content-header" @click.stap="chakanBA()">
 						<span>查看资金用途及还款计划</span>
-						<!--<font>{{dataFile}}</font>--><font>{{titBox}}</font><span>{{daXiao}}</span>
-						<!--<font></font>-->
+						<font>{{titBox}}</font><span>{{daXiao}}</span>
 					</div>
-					<div v-if="data.type==7" class="content-header" @click.stap="xiangguan()">
+					<div v-if="data.type==7" class="content-header" @click.stap="chakanBA()">
 						<span>查看商业计划书（BP）</span>
-						<!--<font>{{dataFile2}}</font>--><font ref="baogaoChild">{{titBox}}</font><span>{{daXiao}}</span>
-						<!--<font></font>-->
+						<font>{{titBox}}</font><span>{{daXiao}}</span>
 					</div>
 					<div v-if="data.type==7" ref="baogao" class="content-header" @click.stap="xiangguan()">
 						<span>查看项目分析与尽调报告</span>
-						<!--<font>{{dataFile2}}</font>--><font ref="baogaoChild">{{titBox2}}</font><span>{{daXiao2}}</span>
-						<!--<font></font>-->
+						<font ref="baogaoChild">{{titBox2}}</font><span>{{daXiao2}}</span>
 					</div>
 				</div>
 				<div class="times border">
@@ -280,15 +270,17 @@
 			this.$http.post(URL.path+'finance/item_detail',data,{emulateJSON:true}).then(function(res){
 				Indicator.close();
 				this.data=res.body.data[0]
-				this.srcgo=res.body.data[0].plan;
+				this.srcgo=res.body.data[0].plan;//BP
 				this.jihuaShu=res.body.data[0].report;
 				if(this.jihuaShu==''){
-					if(this.$refs.baogao){
-						this.$refs.baogao.style.color="#b8b8b8";
-					}
-					if(this.$refs.baogaoChild){
-						this.$refs.baogaoChild.style.color="#b8b8b8";
-					}
+					this.$nextTick(function() {
+						if(this.$refs.foods){
+							this.$refs.baogao.style.color="#b8b8b8";
+						}
+						if(this.$refs.baogaoChild){
+							this.$refs.baogaoChild.style.color="#b8b8b8";
+						}
+					})
 				}
 				if(this.data.follow==1){
 					this.types=1;
@@ -328,7 +320,7 @@
 				history.go(-1)
 //				this.tucaoShow=false;
 			},
-			createDownloadTask(){
+			createDownloadTask(){//下载BP
 //				var yes=1;
 //				if(localStorage.getItem(this.localId)){
 //					plus.runtime.openFile(localStorage.getItem(this.localId),function(errorCB){
@@ -938,7 +930,7 @@
 					margin-top:0.06rem;
 					margin-right:0.02rem;
 					color: #4cb6ff;
-					font-size:0.15rem;
+					font-size:0.13rem;
 					/*background-image:url("./img/jiantou.png");
 					background-size:100% 100%;*/
 				}

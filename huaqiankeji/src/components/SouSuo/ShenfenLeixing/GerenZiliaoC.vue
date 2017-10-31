@@ -34,7 +34,8 @@
 								<span ref="bianji" class="lasst"></span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
-										<input readOnly="true" v-model="numbera" placeholder="暂无填写" type="text" class="mint-field-core">
+										<p class="mint-field-core">{{numbera}}</p>
+										<!--<input readOnly="true" v-model="numbera" placeholder="暂无填写" type="text" class="mint-field-core">-->
 									</li>
 									<!--<li>
 										<input readOnly="true" v-model="numberb" placeholder="食品" type="text" class="mint-field-core">
@@ -66,7 +67,7 @@
 								<span>单个投资额</span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
-										<input readOnly="true" v-model="numberg" placeholder="2000万-5000万" type="text" class="mint-field-core">
+										<input readOnly="true" v-model="numberg" placeholder="" type="text" class="mint-field-core">
 									</li>
 								</ul>
 								<div v-if="BianJi==1" class="type-conts">
@@ -196,7 +197,7 @@
 					</div>
 					<div class="fankiu border-bottom dangeDiyu">
 						<div class="content-food">
-							<span>您能提供的年化资金成本范围</span>
+							<span>年化资金成本</span>
 							<ul v-if="BianJi3==0" class="first">
 								<li>
 									<input readOnly="true" v-model="numberj" :placeholder="numberj" type="text" class="mint-field-core">
@@ -212,10 +213,10 @@
 					</div>
 					<div class="fankiu border-bottom dangeDiyu">
 						<div class="content-food">
-							<span>从接触项目到放款的时间周期不超过</span>
+							<span>从项目尽调至放款不超过</span>
 							<ul v-if="BianJi3==0" class="first">
 								<li>
-									<input readOnly="true" v-model="numberg" placeholder="numberg" type="text" class="mint-field-core">
+									<input readOnly="true" v-model="numberq" placeholder="numberg" type="text" class="mint-field-core">
 								</li>
 							</ul>
 							<ul v-if="BianJi3==1" class="last">
@@ -308,6 +309,7 @@
 				numberh:"",
 				numberi:"",
 				numberj:"",
+				numberq:"",
 				numberj1:"",
 				numberk:"",
 				numberToa:"",
@@ -362,13 +364,36 @@
 				
 				this.numbere=this.data.info.fund_min;//原来的数据
 				this.numberf=this.data.info.fund_max;//原来的数据
-				this.numberj=this.numbere+'万 - '+this.numberf+'万'
+				this.numberj=this.numbere+'% - '+this.numberf+'%'
 				
-				this.numberg=this.data.info.loan_time+'天';
+				this.numberq=this.data.info.loan_time+'天';
 				
 				this.numberb=this.data.info.territory//地域要求	原来的数据
 				
 				this.numberi=this.data.info.borrow//请填写资金出借方的公司全称	原来的数据
+				
+				var SuozaiHangye1=this.data.info.interested;
+				var fund_stage=this.data.info.fund_stage;
+				console.log(SuozaiHangye1);
+				var x=[];
+				var y=[];
+				var x1=[];
+				var y1=[];
+				for(var item in SuozaiHangye1){
+					x.push(SuozaiHangye1[item].id);
+					y.push(SuozaiHangye1[item].title);
+				}
+				for(var item in fund_stage){
+					x1.push(fund_stage[item].id);
+					y1.push(fund_stage[item].title);
+				}
+				this.oDbiaoQianID=x.join(',');
+				this.numbera=y.join('、');
+				
+				this.oDbiaoQianID1=x1.join(',');
+				this.numberd=y1.join('、');
+				console.log(this.oDbiaoQianID1);
+				
 				
 				var SuozaiHangye=this.data.info.investment_way;		//投资方式		原来的数据字符串
 				this.SuozaiHangye=SuozaiHangye.split(',');
@@ -602,12 +627,12 @@
 					}
 					.first{
 						padding-top:0.14rem;
-						height:0.31rem;
+						/*height:0.31rem;*/
 						display:flex;
 						justify-content:space-between;
 						li{
 							width:100%;
-							height:0.31rem;
+							/*height:0.31rem;*/
 							float:left;
 							font-size:0.16rem;
 							display:inline-block;
@@ -615,7 +640,8 @@
 							}
 							.mint-field-core{
 								width:100%;
-								height:100%;
+								color:#787777;
+								/*height:100%;*/
 								line-height:0.3rem;
 							}
 						}

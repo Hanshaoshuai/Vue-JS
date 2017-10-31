@@ -130,7 +130,12 @@
 				biaoQianID:[],		//储存标签id
 				biaoQianid:'',		//储存标签id字符串
 				oDbiaoQianID:'',		//后台获取的储存标签id
-				scrollTop:""
+				scrollTop:"",
+				
+				xx:[],
+				yy:[],
+				xx1:[],
+				yy1:[]
 			}
 		},
 		mounted(){
@@ -158,8 +163,6 @@
 				var x=[];
 				var y=[];
 				for(var item in SuozaiHangye){
-//					console.log(SuozaiHangye[item].title)
-//					console.log(SuozaiHangye[item].id)
 					x.push(SuozaiHangye[item].id);
 					y.push(SuozaiHangye[item].title);
 				}
@@ -248,8 +251,8 @@
 			bianji(id){
 				if(id==1){
 					this.y=1;
-					this.biaoQianID=[];
-					this.biaoQianid='';
+					this.y=this.xx.length;
+					this.y1=this.xx1.length;
 					console.log(this.biaoQianID)
 					if(this.BianJi==1){
 						this.BianJi=0;
@@ -265,8 +268,32 @@
 							this.BiaoQian=res.body.data
 							this.$nextTick(function() {
 								var spans=this.$refs.biaoqian.getElementsByTagName("span")[0];
-								spans.setAttribute("class","bianse")
-								this.biaoQianID.push(spans.id);
+								var length0=spans.length;
+								var length=this.xx.length;
+								var spans1=this.$refs.biaoqian1.getElementsByTagName("span");
+								var changdu0=spans1.length;
+								var changdu=this.xx1.length;
+								for(var i=0; i<length; i++){
+									for(var x=0; x<length0; x++){
+										if(this.xx[i]==spans[x].id){
+											spans[x].setAttribute("class","bianse")
+											this.biaoQianID[i]=spans[x].id;
+//											return;
+										}
+									}
+								}
+								this.biaoQianid=this.biaoQianID.join()
+//								for(var i=0; i<changdu; i++){
+//									for(var x=0; x<changdu0; x++){
+//										if(this.xx1[i]==spans1[x].id){
+//											spans1[x].setAttribute("class","bianse")
+//											this.biaoQianID1[i]=spans1[x].id;
+////											return;
+//										}
+//									}
+//								}
+//								this.biaoQianid1=this.biaoQianID1.join()
+								console.log(changdu);
 								
 							});
 							console.log(this.BiaoQian);
@@ -358,7 +385,6 @@
 					for(var z=0; z<this.y; z++){
 						if(this.biaoQianID[z]==spans[index].id){
 							this.biaoQianID.splice(z,1);
-//							console.log(this.biaoQianID)
 							this.biaoQianid=this.biaoQianID.join()
 							console.log(this.biaoQianid)
 							this.y-=1
@@ -370,14 +396,8 @@
 						Toast('最多可选三个');
 					}else{
 						spans[index].setAttribute("class","bianse");
+						this.biaoQianID[this.y]=spans[index].id;
 						this.y+=1;
-						for(var i=0; i<this.y; i++){
-							if(this.biaoQianID[i]!=spans[index].id){
-								this.biaoQianID.push(spans[index].id)
-								break;
-							}
-						}
-//						console.log(this.biaoQianID)
 						this.biaoQianid=this.biaoQianID.join()
 						console.log(this.biaoQianid)
 					}

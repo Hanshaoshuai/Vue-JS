@@ -23,7 +23,7 @@
 				<div class="type-content">
 					<div class="type-cont">
 						<div class="tuse">
-							<font></font><span>您的单笔投资规模？</span>
+							<font></font><span>您的单笔投资规模</span>
 						</div>
 						<ul>
 							<input v-model="numbere" placeholder="输入数字" number="true" type="number" class="mint-field-core border">
@@ -37,7 +37,7 @@
 				<div class="type-content">
 					<div class="type-cont border-bottom">
 						<div class="tuse">
-							<font></font><span>您关注什么阶段的投资机会<a>（可后台添加）</a></span>
+							<font></font><span>您关注什么阶段的投资机会<!--<a>（可后台添加）</a>--></span>
 						</div>
 						<div class="content-touzi" ref="foods1">
 							<ul>
@@ -66,7 +66,7 @@
 				
 				<div class="type-food" @click.stop="ToHoom()">
 					<div class="type-food-text">
-						<span>确定</span>
+						<span>提交审核</span>
 					</div>
 				</div>
 			</div>
@@ -154,6 +154,12 @@
 					numberf:this.numberf,
 //					XiangmuID:this.XiangmuID
 				}
+				var CanShu1={				//给下级要传的参数
+//					texta:this.texta,
+					numbere:this.numbere,
+					numberf:this.numberf,
+//					XiangmuID:this.XiangmuID
+				}
 				var ok=0;
 				var datas
 				if(this.$route.params.token==0){
@@ -191,8 +197,8 @@
 						borrow:''				//借债主体	是	[string]
 					}
 				}
-				for(var item in CanShu){		//判断填写信息是否完整Ok=1；标签必选
-					if(!CanShu[item]=="" && this.y>=1 && this.y1>=1){
+				for(var item in CanShu1){		//判断填写信息是否完整Ok=1；标签必选
+					if(!CanShu1[item]=="" && this.y>=1 && this.y1>=1){
 						
 					}else{
 						ok+=1;
@@ -203,7 +209,7 @@
 					this.$http.post(URL.path+'regist/regist2',datas,{emulateJSON:true}).then(function(res){
 						Indicator.close();
 						if(res.body.returnCode=='200'){
-							Toast('资料完善成功');
+							Toast('系统将在24小时内审核您的注册申请');
 							console.log(res.body)
 							window.location.href="#/faxian";
 						}else{
@@ -241,6 +247,10 @@
 						}
 					}
 				}else{
+//					if(this.biaoQianID.length==3){
+//						Toast('最多可选三个');
+//						return;
+//					}
 					typeLi[index].setAttribute("class","src1");
 					this.y+=1;
 					for(var i=0; i<this.y; i++){
@@ -289,19 +299,6 @@
 					console.log(this.biaoQianid1)
 				}
 			}
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -313,18 +310,8 @@
 //			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
-//			ratingselect,
-//			split
 		}
 	}
 </script>

@@ -7,13 +7,12 @@
 					<input v-model="texts" placeholder="请输入网址" type="url" class="mint-field-core sousuo">
 				</div>
 				<span class="sousuoGo" @click.stap="sousuoGo()">搜索</span>
-				<!--<span @click.stop="sousuoTo">搜索</span>-->
 			</div>
 			<div class="box" ref="wrapper">
 				<div class="wenzhang-content" ref="tianjia">
 					<!--<div v-for="(item,index) in data" class="sousuo-content border-topbottom" @click.stop="xiangQing('7','3',item.id)">-->
-					<div v-for="(item,index) in data" class="add" :id="index" ref="lisitTop">
-	<!--循环遍历-->		<div v-for="(item,index) in item" class="sousuo-content border-topbottom" @click.stop="xiangQing(item.ctype,item.investment_type,item.uid)">
+					<div v-for="(cont,index) in data" class="add" :id="index" ref="lisitTop">
+	<!--循环遍历-->		<div v-for="(item,index) in cont" class="sousuo-content border-topbottom" @click.stop="xiangQing(item.ctype,item.investment_type,item.uid)">
 							<div class="content-header">
 								<!--<font><img src="" :rul="item.photo"/></font>-->
 								<font><img :src="item.photo"/></font>
@@ -88,7 +87,6 @@
 							</div>
 							<div class="leimu">
 								<div class="zhonglei">
-									<span v-if="item.ctype==1" class="jieduan"><a style="color:#2abdfc">行业：</a><a v-for="(item,index) in item.industry">{{item.title}}、</a></span>
 									<span v-if="item.investment_type==1" class="jieduan"><a style="color:#2abdfc">阶段：</a><a v-for="(item,index) in item.fund_stage">{{item.title}}、</a></span>
 									<span v-if="item.investment_type==1" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
 									<span v-if="item.investment_type==1" class="lingyu"><a style="color:#2abdfc">行业：</a><a v-for="(item,index) in item.interested">{{item.title}}、</a></span>
@@ -100,9 +98,12 @@
 									<span v-if="item.investment_type==3" class="fangkuan"><a style="color:#2abdfc">放款速度：</a>不超过{{item.loan_time}}天</span>
 									
 									
+									<span v-if="item.ctype==1" class="jieduan"><a style="color:#2abdfc">行业：</a><a v-for="(item,index) in item.industry">{{item.title}}、</a></span>
 									<span v-if="item.ctype==2" class="jieduan"><font v-if="item.investment_type==0"><a style="color:#2abdfc">阶段：</a><a v-for="(item,index) in item.fund_stage">{{item.title}}、</a></font></span>
 									<span v-if="item.ctype==2" class="dangbi"><font v-if="item.investment_type==0"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project[0].title}}</font></span>
 									<span v-if="item.ctype==2" class="lingyu"><font v-if="item.investment_type==0"><a style="color:#2abdfc">行业：</a><a v-for="(item,index) in item.interested">{{item.title}}、</a></font></span>
+									<span v-if="item.ctype==3" class="lingyu"><a style="color:#2abdfc">行业：</a><a v-for="item in item.interested">{{item.title}}、</a></span>
+									<span v-if="item.ctype==4" class="lingyu"><a style="color:#2abdfc">行业：</a><a v-for="item in item.interested">{{item.title}}、</a></span>
 									<!--<span v-if="item.ctype==3" class="lingyu">领域：<a v-for="(item,index) in item.interested">{{item.title}}、</a></span>
 									<span v-if="item.ctype==4" class="lingyu">领域：<a v-for="(item,index) in item.interested">{{item.title}}、</a></span>-->
 								</div>
@@ -114,7 +115,7 @@
 					<div class="tishis">
 						<ul>
 							<li class="border-bottom"></li>
-							<li class="tishi-center">亲已经到底了</li>
+							<li class="tishi-center">{{jeiguo}}</li>
 							<li class="border-bottom"></li>
 						</ul>
 					</div>
@@ -124,7 +125,6 @@
 	          	</span>
 			</div>
 			<router-view :userContent="userContent" :uid="uid"></router-view>
-			<!--<router-view :setscrollTop="scrollTop" :datas="datas" :TouziToken='TouziToken'></router-view>-->
 		</div>
 	</transition>
 </template>
@@ -163,7 +163,8 @@
 				topStatus:false,
 				tems:'',
 				tishis:false,
-				blockLength:0
+				blockLength:0,
+				jeiguo:"亲已经到底了"
 			}
 		},
 		mounted(){
@@ -272,6 +273,8 @@
 				console.log("开始搜索")
 				var thata=this;
 				if(this.texts!==""){
+					this.page=1;
+					this.data=[];
 					this.qingqiu();
 				}
 			},
@@ -285,12 +288,11 @@
 //					ctype:thata.type,			//用户身份
 //					interested:			//1,2,3,4,5,6
 					kw:this.texts,					//关键词搜索
-					page:thata.page
+					page:this.page
 		    	}
 				console.log(params)
-				thata.$http.post(URL.path1+'welcome',params,{emulateJSON:true}).then(function(res){
-					this.page=this.page*1;
-					this.page=this.page+=1;
+				this.$http.post(URL.path1+'welcome',params,{emulateJSON:true}).then(function(res){
+					console.log(res);
 					Indicator.close();
 					if(this.data.length==5){
 						this.data=[]
@@ -299,7 +301,10 @@
 					}
 					this.topStatus=false;
 					if(res.body.data.length==0){
-						 this.$refs.wrapper.removeEventListener('scroll', this.faxianScroll);
+						if(this.data.length==0){
+							this.jeiguo="暂无搜索结果"
+						}
+						this.$refs.wrapper.removeEventListener('scroll', this.faxianScroll);
 						this.tishis=true;
 						return;
 					}else{
@@ -308,6 +313,8 @@
 					if(this.n !== 0){
 						clearTimeout(this.tems);
 					}
+					this.page=this.page*1;
+					this.page=this.page+=1;
 					this.$nextTick(function(){
 						var img = this.$refs.tianjia.getElementsByTagName("img");
 						var length=img.length;
@@ -343,61 +350,60 @@
 	  						this.imgs()
 						});
 					}
-					console.log(res);
 				},function(res){
 					Indicator.close();
 				    console.log(res);
 				})
 			}
 		},
-//		watch:{
-//			texts:function(newVal){
-			sousuoGo(newVal){
-				Indicator.open({spinnerType: 'fading-circle'});
-				this.height=0;
-				console.log("开始搜索")
-				var thata=this;
-				if(this.texts!==""){
-					var thata=this;
-//					clearTimeout(this.timer);
-//					this.timer=setTimeout(function(){
-						//搜索接口地址
-	//					var url = 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd='+newVal;
-	//					that.requestData(url)
-						var params={
-				    		terminalNo:3,
-				    		ctype:6,
-//							ctype:thata.type,			//用户身份
-	//						interested:			//1,2,3,4,5,6
-							kw:this.texts,					//关键词搜索
-							page:thata.page
-				    	}
-						console.log(params)
-						thata.$http.post(URL.path1+'welcome',params,{emulateJSON:true}).then(function(res){
-							this.page=this.page*1;
-							this.page=this.page+=1;
-							Indicator.close();
-							thata.data=res.body.data;
-							if(thata.data.length=='0'){
-								Toast("暂无您想要的结果！")
-							}
-							this.$nextTick(function(){
-								this.img = this.$refs.tianjia.getElementsByTagName("img");
-								this.num = this.img.length;
-								this.n = 0; //存储图片加载到的位置，避免每次都从第一张图片开始遍历
-								this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
-	      						this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
-	      						this.imgs()
-							});
-							console.log(res);
-						},function(res){
-							Indicator.close();
-						    console.log(res);
-						})
-//					},500)
-				}
-//			}
-		},
+////		watch:{
+////			texts:function(newVal){
+//			sousuoGo(newVal){
+//				Indicator.open({spinnerType: 'fading-circle'});
+//				this.height=0;
+//				console.log("开始搜索")
+//				var thata=this;
+//				if(this.texts!==""){
+//					var thata=this;
+////					clearTimeout(this.timer);
+////					this.timer=setTimeout(function(){
+//						//搜索接口地址
+//	//					var url = 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd='+newVal;
+//	//					that.requestData(url)
+//						var params={
+//				    		terminalNo:3,
+//				    		ctype:6,
+////							ctype:thata.type,			//用户身份
+//	//						interested:			//1,2,3,4,5,6
+//							kw:this.texts,					//关键词搜索
+//							page:thata.page
+//				    	}
+//						console.log(params)
+//						thata.$http.post(URL.path1+'welcome',params,{emulateJSON:true}).then(function(res){
+//							this.page=this.page*1;
+//							this.page=this.page+=1;
+//							Indicator.close();
+//							thata.data=res.body.data;
+//							if(thata.data.length=='0'){
+//								Toast("暂无您想要的结果！")
+//							}
+//							this.$nextTick(function(){
+//								this.img = this.$refs.tianjia.getElementsByTagName("img");
+//								this.num = this.img.length;
+//								this.n = 0; //存储图片加载到的位置，避免每次都从第一张图片开始遍历
+//								this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+//	      						this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
+//	      						this.imgs()
+//							});
+//							console.log(res);
+//						},function(res){
+//							Indicator.close();
+//						    console.log(res);
+//						})
+////					},500)
+//				}
+////			}
+//		},
 		events:{
 			
 		},
