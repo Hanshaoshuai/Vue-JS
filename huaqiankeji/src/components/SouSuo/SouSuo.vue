@@ -100,7 +100,7 @@
 									
 									<span v-if="item.ctype==1" class="jieduan"><a style="color:#2abdfc">行业：</a><a v-for="(item,index) in item.industry">{{item.title}}、</a></span>
 									<span v-if="item.ctype==2" class="jieduan"><font v-if="item.investment_type==0"><a style="color:#2abdfc">阶段：</a><a v-for="(item,index) in item.fund_stage">{{item.title}}、</a></font></span>
-									<span v-if="item.ctype==2" class="dangbi"><font v-if="item.investment_type==0"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project[0].title}}</font></span>
+									<span v-if="item.ctype==2" class="dangbi"><font v-if="item.investment_type==0"><font v-if="item.single_project!=0"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project[0].title}}</font></font></span>
 									<span v-if="item.ctype==2" class="lingyu"><font v-if="item.investment_type==0"><a style="color:#2abdfc">行业：</a><a v-for="(item,index) in item.interested">{{item.title}}、</a></font></span>
 									<span v-if="item.ctype==3" class="lingyu"><a style="color:#2abdfc">行业：</a><a v-for="item in item.interested">{{item.title}}、</a></span>
 									<span v-if="item.ctype==4" class="lingyu"><a style="color:#2abdfc">行业：</a><a v-for="item in item.interested">{{item.title}}、</a></span>
@@ -125,6 +125,9 @@
 	          	</span>
 			</div>
 			<router-view :userContent="userContent" :uid="uid"></router-view>
+			<transition name="fade1">
+				<div v-show="topBlock" @click.stop="zhiDing()" class="zhiDing"></div>
+			</transition>
 		</div>
 	</transition>
 </template>
@@ -164,7 +167,8 @@
 				tems:'',
 				tishis:false,
 				blockLength:0,
-				jeiguo:"亲已经到底了"
+				jeiguo:"亲已经到底了",
+				topBlock:false
 			}
 		},
 		mounted(){
@@ -173,6 +177,9 @@
 		methods:{
 			yijianHind(){
 				history.go(-1)
+			},
+			zhiDing(){		//返回顶部；
+				this.$refs.wrapper.scrollTop=0;
 			},
 			xiangQing(id,Tid,uid){		//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构/研究咨询 5:券商研究员 6:新三板做市商 7:财务顾问
 //				window.location.href="#/faxian/sousuo/"+this.$route.params.token+'/'+"SousuoLeixing";
@@ -188,76 +195,20 @@
 				}else{
 					window.location.href="#/faxian/sousuo/Ziliao"+id+"/"+this.userContent["token"];
 				}
-//				this.$refs.TypeA.typeShow();
 			},
 			faxianScroll(){
+				if(this.$refs.wrapper.scrollTop>800){
+					this.topBlock=true;
+				}else{
+					this.topBlock=false;
+				}
 				var parend = this.$refs.tianjia.getElementsByClassName("add")[this.data.length-1]
-//				var parend = this.$refs.tianjia.getElementsByClassName("add")
-//				var scrollTop = this.$refs.wrapper.scrollTop; //滚动条距离顶部高度
-//				var y=Math.abs(Math.round(scrollTop))
-//				var length=parend.length;
-//				for(var i=0; i<length; i++){
-//					var lisitTop = parend[i].clientHeight
-//					console.log(lisitTop)
-//				}
-//				if(parend[this.blockLength].clientHeight<y){
-//					this.blockLength+=1;
-//					for(var i=0; i<length-1; i++){
-//						parend[i].style.display="none";
-//					}
-//				}else{
-//					if(parend[0].style.display=="block"){
-//						return;
-//						for(var i=0; i<length; i++){
-//							parend[i].style.display="block";
-//						}
-//					}
-//				}
-//				if(y==0){
-//					console.log(parend[this.blockLength-1].getAttribute("style"))
-//					if(parend[this.blockLength-1].getAttribute("style")=='display: none;'){
-//						console.log(this.blockLength)
-//						parend[this.blockLength-1].style.display="block";
-//						this.blockLength-=1;
-////						return;
-//					}else{
-//						
-//					}
-//				}
-//				console.log(this.blockLength)
-//				console.log(y)
-//				var lisitTop = parend.height
-//				console.log(parend.id)
-//				console.log(this.parend)
 				this.imgs()
-//				console.log(this.parend[2].offsetHeight)
 			},
 			imgs(){
-//				this.img = this.$refs.tianjia.getElementsByTagName("img");
 				var scrollHeights=this.$refs.wrapper.scrollHeight;
 				var setHeight = document.documentElement.clientHeight; //可见区域高度
 				var scrollTop = this.$refs.wrapper.scrollTop; //滚动条距离顶部高度
-//				for (var i = this.n; i < this.num; i++) {
-////					this.img[i].offsetTop+=200;
-//					if (this.height < setHeight + scrollTop) {
-//						if (this.img[i].getAttribute("src") == "") {
-//							this.img[i].src = this.img[i].getAttribute("rul");
-//							if (this.img[i].clientWidth>this.img[i].clientHeight) {
-//								this.img[i].style.height="100%"
-//								this.img[i].style.width="auto"
-//							}else{
-//								this.img[i].style.width="100%"
-//								this.img[i].style.height="auto"
-//							}
-//						}else{
-//							return;
-//						}
-//						this.n = i + 1;
-//						this.height+=this.parend[i].offsetHeight;
-//					}
-//				}
-//				console.log(this.parend)
-				
 				var x=Math.abs(Math.round(setHeight + scrollTop))
 //				console.log(x)
 //				console.log(scrollHeights)
@@ -272,6 +223,7 @@
 			sousuoGo(newVal){
 				console.log("开始搜索")
 				var thata=this;
+				this.tishis=false;
 				if(this.texts!==""){
 					this.page=1;
 					this.data=[];
@@ -279,11 +231,11 @@
 				}
 			},
 			qingqiu(){
-				Indicator.open({spinnerType: 'fading-circle'});
+//				Indicator.open({spinnerType: 'fading-circle'});
 				var thata=this;
 				var params={
 		    		terminalNo:3,
-		    		limit:20,
+		    		limit:50,
 //				    ctype:1,
 //					ctype:thata.type,			//用户身份
 //					interested:			//1,2,3,4,5,6
@@ -293,12 +245,12 @@
 				console.log(params)
 				this.$http.post(URL.path1+'welcome',params,{emulateJSON:true}).then(function(res){
 					console.log(res);
-					Indicator.close();
-					if(this.data.length==5){
-						this.data=[]
-						this.$refs.wrapper.scrollTop=0;
-						this.height=0;
-					}
+//					Indicator.close();
+//					if(this.data.length==5){//长度大于5从新开始
+//						this.data=[]
+//						this.$refs.wrapper.scrollTop=0;
+//						this.height=0;
+//					}
 					this.topStatus=false;
 					if(res.body.data.length==0){
 						if(this.data.length==0){
@@ -329,15 +281,6 @@
 								}
 							}
 						}
-//						if(this.data.length!=1){
-//							this.parend = this.$refs.tianjia.getElementsByClassName("add")[this.data.length-1].getElementsByClassName("sousuo-content");
-//							this.img = this.$refs.tianjia.getElementsByClassName("add")[this.data.length-1].getElementsByTagName("img");
-//							this.num=this.img.length;
-//							this.n=0
-//							console.log(this.parend)
-//							console.log(this.img)
-//							console.log(this.$refs.tianjia.getElementsByClassName("add")[this.data.length-1].id)
-//						}
 					})
 					if(this.n == 0){
 						this.$nextTick(function(){
@@ -351,59 +294,11 @@
 						});
 					}
 				},function(res){
-					Indicator.close();
+//					Indicator.close();
 				    console.log(res);
 				})
 			}
 		},
-////		watch:{
-////			texts:function(newVal){
-//			sousuoGo(newVal){
-//				Indicator.open({spinnerType: 'fading-circle'});
-//				this.height=0;
-//				console.log("开始搜索")
-//				var thata=this;
-//				if(this.texts!==""){
-//					var thata=this;
-////					clearTimeout(this.timer);
-////					this.timer=setTimeout(function(){
-//						//搜索接口地址
-//	//					var url = 'https://sp0.baidu.com/5a1Fazu8AA54nxGko9WTAnF6hhy/su?wd='+newVal;
-//	//					that.requestData(url)
-//						var params={
-//				    		terminalNo:3,
-//				    		ctype:6,
-////							ctype:thata.type,			//用户身份
-//	//						interested:			//1,2,3,4,5,6
-//							kw:this.texts,					//关键词搜索
-//							page:thata.page
-//				    	}
-//						console.log(params)
-//						thata.$http.post(URL.path1+'welcome',params,{emulateJSON:true}).then(function(res){
-//							this.page=this.page*1;
-//							this.page=this.page+=1;
-//							Indicator.close();
-//							thata.data=res.body.data;
-//							if(thata.data.length=='0'){
-//								Toast("暂无您想要的结果！")
-//							}
-//							this.$nextTick(function(){
-//								this.img = this.$refs.tianjia.getElementsByTagName("img");
-//								this.num = this.img.length;
-//								this.n = 0; //存储图片加载到的位置，避免每次都从第一张图片开始遍历
-//								this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
-//	      						this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
-//	      						this.imgs()
-//							});
-//							console.log(res);
-//						},function(res){
-//							Indicator.close();
-//						    console.log(res);
-//						})
-////					},500)
-//				}
-////			}
-//		},
 		events:{
 			
 		},
@@ -428,6 +323,17 @@
 	  	transition: all .5s ease;
 	}
 	.fade-enter, .fade-leave-active {
+	  	transform: translateX(4.17rem);
+	  	/*transform:rotate(360deg);*/
+	  	/*opacity: 0;*/
+	}
+	.fade1-enter-active {
+	  	transition: all .5s ease;
+	}
+	.fade1-leave-active {
+	  	transition: all .5s ease;
+	}
+	.fade1-enter, .fade1-leave-active {
 	  	transform: translateX(4.17rem);
 	  	/*transform:rotate(360deg);*/
 	  	/*opacity: 0;*/
@@ -657,6 +563,16 @@
 					}
 				}
 			}
+		}
+		.zhiDing{
+			position:fixed;
+			bottom:1.6rem;
+			right:0.2rem;
+			background-image:url("./img/top.png");
+			background-size:100% 100%;
+			width:0.5rem;
+			height:0.5rem;
+			/*z-index: 200;*/
 		}
 	}
 </style>

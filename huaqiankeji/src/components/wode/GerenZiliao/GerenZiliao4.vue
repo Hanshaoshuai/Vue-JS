@@ -20,7 +20,8 @@
 								<span ref="bianji" class="lasst" @click.stap="bianji('1')">编辑</span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
-										<input readOnly="true" :placeholder="numbera" type="text" class="mint-field-core">
+										<p class="mint-field-core">{{numbera}}</p>
+										<!--<input readOnly="true" :placeholder="numbera" type="text" class="mint-field-core">-->
 									</li>
 								</ul>
 								<div v-if="BianJi==1" class="zhuying_1 liangdian_1">
@@ -70,7 +71,8 @@
 						<div class="xiaolv anli">
 							<ul v-if="BianJi2==0" class="first">
 								<li>
-									<textarea readOnly="true" placeholder="请用文字表述您所在机构能给企业带来的产业资源" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+									<textarea v-if="textc!=''" readOnly="true" placeholder="" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+									<textarea v-if="textc==''" readOnly="true" placeholder="暂无" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
 								</li>
 							</ul>
 							<ul v-if="BianJi2==1" class="first">
@@ -88,7 +90,8 @@
 						<div class="xiaolv anli">
 							<ul v-if="BianJi4==0" class="first">
 								<li>
-									<textarea readOnly="true" placeholder="请用文字表述您有意愿进行收购和出售的资产" class="mint-field-core ziyuanChongzu" v-model="textd"></textarea>
+									<textarea v-if="textd!=''" readOnly="true" placeholder="" class="mint-field-core ziyuanChongzu" v-model="textd"></textarea>
+									<textarea v-if="textd==''" readOnly="true" placeholder="暂无" class="mint-field-core ziyuanChongzu" v-model="textd"></textarea>
 								</li>
 							</ul>
 							<ul v-if="BianJi4==1" class="first">
@@ -174,7 +177,12 @@
 				create_time:'',		//已投案例接口   已投项目列表	日期
 				Wancent:"",
 				bianList:true,
-				textInputs:""		//已投案input  DOM;
+				textInputs:"",		//已投案input  DOM;
+				
+				xx:[],
+				yy:[],
+				xx1:[],
+				yy1:[]
 			}
 		},
 		mounted(){
@@ -210,6 +218,7 @@
 //					console.log(SuozaiHangye[item].title)
 //					console.log(SuozaiHangye[item].id)
 					x.push(SuozaiHangye[item].id);
+					this.xx.push(SuozaiHangye[item].id);
 					y.push(SuozaiHangye[item].title);
 				}
 				this.oDbiaoQianID=x.join(',');
@@ -334,9 +343,8 @@
 			},
 			bianji(id){
 				if(id==1){
-					this.y=1;
-					this.biaoQianID=[];
-					this.biaoQianid='';
+					this.y=this.xx.length;
+					this.y1=this.xx1.length;
 					if(this.BianJi==1){
 						this.BianJi=0;
 						this.$refs.bianji.innerText="编辑";
@@ -350,12 +358,19 @@
 						this.$http.post(URL.path1+'login/three',datas,{emulateJSON:true}).then(function(res){
 							this.BiaoQian=res.body.data
 							this.$nextTick(function() {
-								var spans=this.$refs.biaoqian.getElementsByTagName("span")[0];
-								spans.setAttribute("class","bianse")
-								this.biaoQianID.push(spans.id);
-								
+								var spans=this.$refs.biaoqian.getElementsByTagName("span");
+								var length0=spans.length;
+								var length=this.xx.length;
+								for(var i=0; i<length; i++){
+									for(var x=0; x<length0; x++){
+										if(this.xx[i]==spans[x].id){
+											spans[x].setAttribute("class","bianse")
+											this.biaoQianID[i]=spans[x].id;
+//											return;
+										}
+									}
+								}
 							});
-							console.log(this.BiaoQian);
 						},function(res){
 						    console.log(res.status);
 						})
@@ -467,7 +482,6 @@
 					for(var z=0; z<this.y; z++){
 						if(this.biaoQianID[z]==spans[index].id){
 							this.biaoQianID.splice(z,1);
-							console.log(this.biaoQianID)
 							this.biaoQianid=this.biaoQianID.join()
 							console.log(this.biaoQianid)
 							this.y-=1
@@ -475,21 +489,16 @@
 						}
 					}
 				}else{
-					if(this.y>2){
-						Toast('最多可选三个');
-					}else{
+//					if(this.y>2){
+//						Toast('最多可选三个');
+//					}else{
 						spans[index].setAttribute("class","bianse");
+						
+						this.biaoQianID[this.y]=spans[index].id;
 						this.y+=1;
-						for(var i=0; i<this.y; i++){
-							if(this.biaoQianID[i]!=spans[index].id){
-								this.biaoQianID.push(spans[index].id)
-								break;
-							}
-						}
-						console.log(this.biaoQianID)
 						this.biaoQianid=this.biaoQianID.join()
 						console.log(this.biaoQianid)
-					}
+//					}
 				}
 			},
 			xuanze1(index){
@@ -680,20 +689,21 @@
 					}
 					.first{
 						padding-top:0.14rem;
-						height:0.31rem;
+						/*height:0.31rem;*/
 						display:flex;
 						justify-content:space-between;
 						li{
 							width:100%;
-							height:0.31rem;
+							/*height:0.31rem;*/
 							float:left;
 							font-size:0.16rem;
 							display:inline-block;
 							.mint-field-core::-webkit-input-placeholder{
 							}
 							.mint-field-core{
+								color: #787777;
 								width:100%;
-								height:100%;
+								/*height:100%;*/
 								line-height:0.3rem;
 							}
 						}

@@ -16,7 +16,7 @@
 						<font class="bbb border-left"></font>
 						<span>{{data.short}}</span>
 						<span>&nbsp;&nbsp;{{data.position}}</span>
-						<div class="tousu"><span>投诉</span></div>
+						<div @click.stap="tousuBlock()" class="tousu"><span>投诉</span></div>
 					</div>
 				</div>
 				<div class="tishi-bottom">
@@ -164,7 +164,19 @@
 				</div>
 				<box></box>
 			</div>
-			<!--<youhuiquan ref="youhuiShow"></youhuiquan>-->
+			<!--1、买方身份的投诉（企业反馈）：投资机构、合格投资人、做市商、研究咨询-->
+			<transition name="fades1">
+				<div @click.stop="xiaoShi()" ref="xianShi" v-show="onlyContent1" class="loding" style="position: absolute;z-index: 1600; top: 0;right: 0;bottom: 0;left: 0;background-color: rgba(0,0,0,0.3);display: none;">
+				    <div class="loadEffect" ref="padding">
+						<ul>
+							<li class="border-bottom" @click.stop="BugenYuanyin1('项目业绩涉嫌严重造假')"><span>项目业绩涉嫌严重造假</span></li>
+							<li class="" @click.stop="BugenYuanyin1('其他原因')"><span>其他原因</span></li>
+							<!--<li class="border-bottom" @click.stop="BugenYuanyin1('发布项目与实际融资项目不符')"><span>发布项目与实际融资项目不符</span></li>
+							<li @click.stop="BugenYuanyin1('其他原因')"><span>其他原因</span></li>-->
+						</ul>
+					</div>	
+				</div>
+			</transition>
 			<tishi ref="tishiShow" :xingXi="xingXi" :content="content"></tishi>
 			<router-view></router-view>
 		</div>
@@ -176,10 +188,9 @@
 //	import {numToTime} from "../../../common/js/date.js";
 	import { Field } from 'mint-ui';
 	import { Indicator } from 'mint-ui';
+	import { Toast } from 'mint-ui';
 	import box from "../../box.vue";
 	import tishi from "../../Tishi.vue";
-//	import youhuiquan from "../../shendu/PeixunZixun/YouhuiQuan.vue";
-//	import fankuixinxi from "./FankuiXinxi.vue";
 	
 	
 	export default {
@@ -231,7 +242,8 @@
 				titBox2:"点击下载",
 				daXiao2:'',
 				dataFile2:'',
-				localId:""
+				localId:"",
+				onlyContent1:false,
 			}
 		},
 		mounted(){
@@ -251,7 +263,7 @@
 				this.jihuaShu=res.body.data[0].report;
 				if(this.jihuaShu==''){
 					this.$nextTick(function() {
-						if(this.$refs.foods){
+						if(this.$refs.baogao){
 							this.$refs.baogao.style.color="#b8b8b8";
 						}
 						if(this.$refs.baogaoChild){
@@ -275,6 +287,44 @@
 			yijianHind(){
 				history.go(-1)
 //				this.tucaoShow=false;
+			},
+//			退出投诉
+			xiaoShi(){
+				this.onlyContent1=false;
+			},
+//			投诉显示调用
+			tousuBlock(){
+				var type=localStorage.getItem("type");
+//				if(type=='1' || type=='7'){
+					this.onlyContent1=true;
+//				}else{
+//					this.onlyContent=true;
+//				}
+			},
+//			投诉调用
+			BugenYuanyin1(texts){
+				var farams={			//发送评论接口
+					token:this.userContent.token,
+//					to_id:this.uid,					//对方id	是	[string]
+					terminalNo: '3',
+					rid: this.data.com_short,
+					content:texts,
+					ctype:6		//举报原因id
+//					ctype: this.selectedID		//举报原因id
+				}
+				console.log(farams)
+				Indicator.open({spinnerType: 'fading-circle'});
+				this.$http.post(URL.path1+'account/report',farams,{emulateJSON:true}).then(function(res){
+					Indicator.close();
+					Toast("投诉成功")
+//					Toast("提交后我们将在24小时内处理")
+					this.onlyContent1=false;
+					console.log(res);
+				},function(res){
+					Indicator.close();
+					Toast(data.msg)
+				    console.log(res);
+				})
 			},
 			createDownloadTask(){
 //				var yes=1;
@@ -343,39 +393,6 @@
 			    	that.titBox=str;
 			    });
 			    this.dtask.start();
-//			    if(dataFile!=''){
-//					plus.runtime.openFile(dataFile);
-//				}else{
-//					dtask.start();
-//				}
-//				function startDownloadTask(){
-//					if ( !dtask ) {
-//						outSet( "请先创建下载任务！" );
-//						return;
-//					}
-//					dtask.start();
-//				}
-//				// 暂停下载任务
-//				function pauseDownloadTask(){
-//				    dtask.pause();
-//				    outSet( "暂停下载！" );
-//				}
-//				// 恢复下载任务
-//				function resumeDownloadTask(){
-//				    dtask.resume();
-//				    outSet( "恢复下载！" );
-//				}
-//				function cancelDownloadTask(){
-//					dtask.abort();
-//					dtask = null;
-//					outSet( "取消下载任务！" );
-//				}
-//				function clearDownloadTask(){
-//					
-//				}
-//				function startAll(){
-//					plus.downloader.startAll();
-//				}
 			},
 			chakanBA(){
 				this.createDownloadTask();
@@ -522,8 +539,6 @@
 		components:{
 			box,
 			tishi
-//			youhuiquan
-//			fankuixinxi
 		}
 	}
 </script>
@@ -540,6 +555,18 @@
 	  	/*transform:rotate(360deg);*/
 	  	/*opacity: 0;*/
 	}
+	.fade1-enter-active {
+	  	transition: all .5s ease;
+	}
+	.fade1-leave-active {
+	  	transition: all .5s ease;
+	}
+	.fade1-enter, .fade1-leave-active {
+	  	/*transform: translateX(4.17rem);*/
+	  	/*transform:rotate(360deg);*/
+	  	opacity: 0;
+	}
+	
 	.xiangmu{
 		position:fixed;
 		background:#f5f4f9;
@@ -759,6 +786,62 @@
 				}
 			}
 		}
+		.loding{
+			display:flex;
+			align-content:center;
+			align-items:center;
+			justify-content:center;
+			.loadEffect{
+	            width: 70%;
+	            min-height: 0.40rem;
+	            position: relative;
+	            padding:0.3rem 0;
+	            background: #fff;
+	            border-radius:0.06rem;
+	            .load-butten{
+	            	width:100%;
+	            	height:0.4rem;
+	            	font{
+		            	position:absolute;
+		            	display:inline-block;
+		            	background:#ff7a59;
+		            	padding:0.06rem 0.1rem;
+		            	color:#fff;
+		            	border-radius:0.04rem;
+		            	&.first{
+		            		bottom:0.2rem;
+		            		left:16%;
+		            	}
+		            	&.last{
+		            		bottom:0.2rem;
+		            		right:16%;
+		            	}
+		            }
+	            }
+	        }
+	        .loadEffect span{
+	        	margin:0 auto;
+	            display: block;
+	            text-align:justify;
+	            line-height: 0.22rem;
+	            font-size: 0.16rem;
+	            width: 80%;
+	        }
+	        .loadEffect{
+	        	position:relative;
+	        	ul{
+	            	li{
+	            		span{
+	            			/*text-align:center;*/
+	            			line-height: 0.46rem;
+	            		}
+	            		.last-bottom{
+	            			line-height: 0.36rem;
+	            		}
+	            	}
+	            }
+	        }
+	    }
 	}
 </style>
 

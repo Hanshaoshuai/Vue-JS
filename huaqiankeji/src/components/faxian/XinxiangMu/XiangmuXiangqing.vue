@@ -16,7 +16,7 @@
 						<font class="bbb border-left"></font>
 						<span>{{data.short}}</span>
 						<span>&nbsp;&nbsp;{{data.position}}</span>
-						<div class="tousu"><span>投诉</span></div>
+						<div @click.stap="tousuBlock()" class="tousu"><span>投诉</span></div>
 					</div>
 				</div>
 				<div class="tishi-bottom">
@@ -77,10 +77,10 @@
 							<p v-if="data.type==3">动态市盈率：<span>{{(data.appraisement*10000/data.predict_profit).toFixed(1)}}&nbsp;倍</span></p>
 							
 							<p v-if="data.type==4">融资总额：<span>{{data.total_finance}}&nbsp;万元</span></p>
-							<p v-if="data.type==4">租赁周期：<span>{{data.pledge_time}}&nbsp;个月</span></p>
+							<p v-if="data.type==4">质押周期：<span>{{data.pledge_time}}&nbsp;个月</span></p>
 							
 							<p v-if="data.type==5">融资总额：<span>{{data.total_finance}}&nbsp;万元</span></p>
-							<p v-if="data.type==5">质押周期：<span>{{data.repayment_time}}&nbsp;个月</span></p>
+							<p v-if="data.type==5">租赁周期：<span>{{data.repayment_time}}&nbsp;个月</span></p>
 							
 							<p v-if="data.type==7">投前估值：<span>{{data.appraisement}}&nbsp;亿元</span></p>
 							<p v-if="data.type==7">融资总额：<span>{{data.total_finance}}&nbsp;万元</span></p>
@@ -181,6 +181,19 @@
 					</div>	
 				</div>
 			</transition>
+			<!--1、买方身份的投诉（企业反馈）：投资机构、合格投资人、做市商、研究咨询-->
+			<transition name="fades1">
+				<div @click.stop="xiaoShi()" ref="xianShi" v-show="onlyContent1" class="loding" style="position: absolute;z-index: 1600; top: 0;right: 0;bottom: 0;left: 0;background-color: rgba(0,0,0,0.3);display: none;">
+				    <div class="loadEffect" ref="padding">
+						<ul>
+							<li class="border-bottom" @click.stop="BugenYuanyin1('项目业绩涉嫌严重造假')"><span>项目业绩涉嫌严重造假</span></li>
+							<li class="" @click.stop="BugenYuanyin1('其他原因')"><span>其他原因</span></li>
+							<!--<li class="border-bottom" @click.stop="BugenYuanyin1('发布项目与实际融资项目不符')"><span>发布项目与实际融资项目不符</span></li>
+							<li @click.stop="BugenYuanyin1('其他原因')"><span>其他原因</span></li>-->
+						</ul>
+					</div>	
+				</div>
+			</transition>
 			<router-view :srcgo="srcgo" :jihuaShu='jihuaShu'></router-view>
 		</div>
 	</transition>
@@ -238,6 +251,7 @@
 //				numToTime:"",
 				yigenJin:0,
 				onlyContent:false,
+				onlyContent1:false,
 				firstTop:true,
 				lastBottom:false,
 				textcont:"备案申请成功，请等待审核",
@@ -269,12 +283,13 @@
 			console.log(this.data)
 			this.$http.post(URL.path+'finance/item_detail',data,{emulateJSON:true}).then(function(res){
 				Indicator.close();
+				console.log(res);
 				this.data=res.body.data[0]
 				this.srcgo=res.body.data[0].plan;//BP
 				this.jihuaShu=res.body.data[0].report;
 				if(this.jihuaShu==''){
 					this.$nextTick(function() {
-						if(this.$refs.foods){
+						if(this.$refs.baogao){
 							this.$refs.baogao.style.color="#b8b8b8";
 						}
 						if(this.$refs.baogaoChild){
@@ -303,7 +318,6 @@
 //					this.jiaoHuans="";
 ////					this.genjins="继续跟进"
 //				}
-				console.log(res);
 			},function(res){
 				Indicator.close();
 			    console.log(res.status);
@@ -319,6 +333,44 @@
 			yijianHind(){
 				history.go(-1)
 //				this.tucaoShow=false;
+			},
+//			退出投诉
+			xiaoShi(){
+				this.onlyContent1=false;
+			},
+//			投诉显示调用
+			tousuBlock(){
+				var type=localStorage.getItem("type");
+//				if(type=='1' || type=='7'){
+					this.onlyContent1=true;
+//				}else{
+//					this.onlyContent=true;
+//				}
+			},
+//			投诉调用
+			BugenYuanyin1(texts){
+				var farams={			//发送评论接口
+					token:this.userContent.token,
+//					to_id:this.uid,					//对方id	是	[string]
+					terminalNo: '3',
+					rid: this.data.com_short,
+					content:texts,
+					ctype:6		//举报原因id
+//					ctype: this.selectedID		//举报原因id
+				}
+				console.log(farams)
+				Indicator.open({spinnerType: 'fading-circle'});
+				this.$http.post(URL.path1+'account/report',farams,{emulateJSON:true}).then(function(res){
+					Indicator.close();
+					Toast("投诉成功")
+//					Toast("提交后我们将在24小时内处理")
+					this.onlyContent1=false;
+					console.log(res);
+				},function(res){
+					Indicator.close();
+					Toast(data.msg)
+				    console.log(res);
+				})
 			},
 			createDownloadTask(){//下载BP
 //				var yes=1;
@@ -387,39 +439,6 @@
 			    	that.titBox=str;
 			    });
 			    this.dtask.start();
-//			    if(dataFile!=''){
-//					plus.runtime.openFile(dataFile);
-//				}else{
-//					dtask.start();
-//				}
-//				function startDownloadTask(){
-//					if ( !dtask ) {
-//						outSet( "请先创建下载任务！" );
-//						return;
-//					}
-//					dtask.start();
-//				}
-//				// 暂停下载任务
-//				function pauseDownloadTask(){
-//				    dtask.pause();
-//				    outSet( "暂停下载！" );
-//				}
-//				// 恢复下载任务
-//				function resumeDownloadTask(){
-//				    dtask.resume();
-//				    outSet( "恢复下载！" );
-//				}
-//				function cancelDownloadTask(){
-//					dtask.abort();
-//					dtask = null;
-//					outSet( "取消下载任务！" );
-//				}
-//				function clearDownloadTask(){
-//					
-//				}
-//				function startAll(){
-//					plus.downloader.startAll();
-//				}
 			},
 			chakanBA(){
 				this.createDownloadTask();
@@ -515,11 +534,12 @@
 				var data = {
 					token:this.$route.params.token,
 					content:'您好，由于贵公司'+texts+'，我暂不跟进“'+this.data.com_short+'”本次融资安排',					//评论内容
-					type:'1',
-					uid:this.data.uid
+					type:'8',
+					to_id:this.data.uid
+//					uid:this.data.uid
 				}
 				console.log(data)
-				this.$http.post(URL.path+'finance/demand_item',data,{emulateJSON:true}).then(function(res){
+				this.$http.post(URL.path+'chatcomment/send_msg',data,{emulateJSON:true}).then(function(res){
 					if(res.body.msg=="操作成功"){
 						
 					}
@@ -557,6 +577,10 @@
 			},
 			genJin(){
 				if(this.data.follow==0){
+					if(this.yigenJin==1){
+						return;
+					}
+					this.yigenJin=0
 					this.types=1;
 					if(this.wanchengDu=="0"){
 						this.$refs.tishiShow.tishiBlock(this.content);//CanShu是下级要传的参数
@@ -576,30 +600,30 @@
 							if(res.body.returnCode=='201'){
 								
 							}
+							//向对方发送跟进消息记录
+							var data = {
+								token:this.$route.params.token,
+								content:localStorage.getItem("name")+'您的“'+this.data.com_short+'”'+'项目有投资兴趣，将进一步跟进本次融资安排',					//评论内容
+								type:'6',
+								uid:this.data.uid
+							}
+							console.log(data)
+							this.$http.post(URL.path+'finance/demand_item',data,{emulateJSON:true}).then(function(res){
+								if(res.body.msg=="操作成功"){
+									
+								}
+								console.log(res);
+								Toast("亲，您已跟进可以给对方留言或换名片啦");
+							},function(res){
+							    console.log(res.status);
+							})
 							this.genjins="跟进中"
 							this.yigenJin=1;
 //							this.bugen="停止跟进"
-							Toast("亲，您已跟进可以给对方留言或换名片啦");
 							console.log("跟进");
 							console.log(res.body);
 						},function(res){
 						    console.log(res);
-						})
-						//向对方发送跟进消息记录
-						var data = {
-							token:this.$route.params.token,
-							content:localStorage.getItem("name")+'“'+this.data.com_short+'”'+'有投资兴趣，将进一步跟进本次融资安排',					//评论内容
-							type:'6',
-							uid:this.data.uid
-						}
-						console.log(data)
-						this.$http.post(URL.path+'finance/demand_item',data,{emulateJSON:true}).then(function(res){
-							if(res.body.msg=="操作成功"){
-								
-							}
-							console.log(res);
-						},function(res){
-						    console.log(res.status);
 						})
 					}
 				}else{
@@ -634,9 +658,13 @@
 				}
 			},
 			buGen(){
-				this.types=0;
 //				this.butenRight="butenRight";
-				if(this.yigenJin==0){
+				if(this.data.follow==0){
+					if(this.yigenJin==0){
+						return;
+					}
+					this.types=0;
+					this.yigenJin=1
 					this.butenLeft="";
 					this.liuYans="";
 					this.jiaoHuans="";
@@ -700,20 +728,10 @@
 //			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 			box,
 			tishi
-//			youhuiquan
-//			fankuixinxi
 		}
 	}
 </script>
@@ -738,6 +756,17 @@
 	  	transition: all .5s ease;
 	}
 	.fades-enter, .fades-leave-active {
+	  	/*transform: translateX(4.17rem);*/
+	  	/*transform:rotate(360deg);*/
+	  	opacity: 0;
+	}
+	.fades1-enter-active {
+	  	transition: all .5s ease;
+	}
+	.fades1-leave-active {
+	  	transition: all .5s ease;
+	}
+	.fades1-enter, .fades1-leave-active {
 	  	/*transform: translateX(4.17rem);*/
 	  	/*transform:rotate(360deg);*/
 	  	opacity: 0;

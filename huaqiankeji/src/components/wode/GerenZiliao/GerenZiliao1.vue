@@ -35,17 +35,18 @@
 				<div style="height:0.06rem;width:100%;background:#f5f4f9"></div>
 				<div class="sousuo-content border-topbottom">
 					<div class="content-header border-topbottom">
-						<span>直营业务</span><span ref="bianji3" class="lasst" @click.stap="bianji('3')">编辑</span>
+						<span>主营业务</span><span ref="bianji3" class="lasst" @click.stap="bianji('3')">编辑</span>
 					</div>
 					<div class="xiaolv anli">
 						<ul v-if="BianJi2==0" class="first">
 							<li>
-								<textarea readOnly="true" placeholder="请填写直营业务、投资亮点等" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+								<textarea v-if="textc!=''" readOnly="true" placeholder="" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+								<textarea v-if="textc==''" readOnly="true" placeholder="暂无填写" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
 							</li>
 						</ul>
 						<ul v-if="BianJi2==1" class="first">
 							<li>
-								<textarea ref="chanYe" placeholder="请填写直营业务、投资亮点等" class="mint-field-core ziyuanChongzu" v-model="textc1"></textarea>
+								<textarea readOnly="true" ref="chanYe" placeholder="请填写主营业务、投资亮点等" class="mint-field-core ziyuanChongzu" v-model="textc1"></textarea>
 							</li>
 						</ul>
 					</div>
@@ -54,7 +55,7 @@
 				<div class="zhaiQuan">
 					<div class="sousuo-content border-topbottom">
 						<div class="content-header">
-							<span>最近一年财营收、净利润</span><span ref="text3" class="lasst" @click.stap="bianji3('3')">编辑</span>
+							<span>最近一财年的营收、扣非净利润</span><span ref="text3" class="lasst" @click.stap="bianji3('3')">编辑</span>
 						</div>
 						<div class="shouru">
 							<div v-if="BianJi3==0">
@@ -69,11 +70,11 @@
 							<ul v-if="BianJi3==1">
 								<div>
 									<span>营业收入不低于</span>
-									<input v-model="numberb" placeholder="输入数字" number="true" type="number" class="mint-field-core border"><font>亿元</font>
+									<input ref="chanYe1" readOnly="true" v-model="numberb" placeholder="输入数字" number="true" type="number" class="mint-field-core border"><font>亿元</font>
 								</div>
 								<div>
 									<span>净利润不低于</span>
-									<input v-model="numberc" placeholder="输入数字" number="true" type="number" class="mint-field-core border"><font>万</font>
+									<input ref="chanYe2" readOnly="true" v-model="numberc" placeholder="输入数字" number="true" type="number" class="mint-field-core border"><font>万</font>
 								</div>
 							</ul>
 						</div>
@@ -164,6 +165,7 @@
 				var y=[];
 				for(var item in SuozaiHangye){
 					x.push(SuozaiHangye[item].id);
+					this.xx.push(SuozaiHangye[item].id);
 					y.push(SuozaiHangye[item].title);
 				}
 				this.oDbiaoQianID=x.join(',');
@@ -267,12 +269,12 @@
 						this.$http.post(URL.path1+'login/three',datas,{emulateJSON:true}).then(function(res){
 							this.BiaoQian=res.body.data
 							this.$nextTick(function() {
-								var spans=this.$refs.biaoqian.getElementsByTagName("span")[0];
+								var spans=this.$refs.biaoqian.getElementsByTagName("span");
 								var length0=spans.length;
 								var length=this.xx.length;
-								var spans1=this.$refs.biaoqian1.getElementsByTagName("span");
-								var changdu0=spans1.length;
-								var changdu=this.xx1.length;
+//								var spans1=this.$refs.biaoqian1.getElementsByTagName("span");
+//								var changdu0=spans1.length;
+//								var changdu=this.xx1.length;
 								for(var i=0; i<length; i++){
 									for(var x=0; x<length0; x++){
 										if(this.xx[i]==spans[x].id){
@@ -293,7 +295,6 @@
 //									}
 //								}
 //								this.biaoQianid1=this.biaoQianID1.join()
-								console.log(changdu);
 								
 							});
 							console.log(this.BiaoQian);
@@ -317,6 +318,7 @@
 							this.$refs.bianji3.innerText="取消";
 							this.BianJi2=1;
 							this.$nextTick(function() {
+								this.$refs.chanYe.removeAttribute("readOnly")
 								this.$refs.chanYe.focus();	//点击编辑   input获取焦点
 								console.log();
 							})
@@ -355,6 +357,12 @@
 				}else{
 					this.BianJi3=1;
 					this.$refs.text3.innerText="取消"
+					this.$nextTick(function() {
+						this.$refs.chanYe1.removeAttribute("readOnly")
+						this.$refs.chanYe2.removeAttribute("readOnly")
+						this.$refs.chanYe1.focus();	//点击编辑   input获取焦点
+						console.log();
+					})
 				}
 			},
 			bianji4(){

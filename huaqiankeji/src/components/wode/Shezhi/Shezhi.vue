@@ -23,7 +23,7 @@
 				<box></box>
 				<div class="sousuo-content border-topbottom" @click.stap="qingChu()">
 					<div class="content-header">
-						<span>清楚缓存</span>
+						<span>清除缓存</span>
 						<font></font>
 					</div>
 				</div>
@@ -74,7 +74,7 @@
 				window.location.href="#/wode/shezhi/"+this.token+"/LianxiWomen";
 			},
 			qingChu(){
-				Toast("清楚成功")
+				Toast("清除成功")
 //				this.$refs.xiangqingShow.xiangqingBlock();
 			},
 			tuiChu(){
@@ -92,7 +92,7 @@
 //						history.go(0)
 //						location.reload()
 						location.replace(document.referrer); 
-					},1000)
+					},600)
 				});
 			}
 			

@@ -90,7 +90,7 @@ export function numToTime1(num){
       return '';
     });
     num = (newNum - num) / 1000;
-    console.log(new Date().getDate())
+//  console.log(new Date().getDate())
 //  console.log(day)
 //  if(num < 3600){
 //    fenzhong = parseInt(num / 60);

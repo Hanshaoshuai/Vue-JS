@@ -57,7 +57,7 @@
 						</div>
 						<div class="fankiu border-bottom dangeDiyu">
 							<div class="content-food">
-								<span>单个投资额</span>
+								<span>单笔投资额</span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
 										<input readOnly="true" :placeholder="numberTod" type="text" class="mint-field-core">
@@ -78,12 +78,13 @@
 								<span>地域要求</span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
-										<input readOnly="true" :placeholder="numberToc" type="text" class="mint-field-core">
+										<input v-if="numberToc!=''" readOnly="true" :placeholder="numberToc" type="text" class="mint-field-core">
+										<input v-if="numberToc==''" readOnly="true" placeholder="暂无" type="text" class="mint-field-core">
 									</li>
 								</ul>
 								<div v-if="BianJi==1" class="xiaolv">
 									<ul>
-										<textarea placeholder="" class="mint-field-core ziyuanChongzu" v-model="texta"></textarea>
+										<textarea placeholder="请填写地域要求如：长三角、珠三角、北京" class="mint-field-core ziyuanChongzu" v-model="texta"></textarea>
 									</ul>
 								</div>
 							</div>
@@ -126,7 +127,8 @@
 						<div class="xiaolv anli">
 							<ul v-if="BianJi2==0" class="first">
 								<li>
-									<textarea readOnly="true" placeholder="请用文字表述您所在机构能给企业带来的产业资源" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+									<textarea v-if="textc!=''" readOnly="true" placeholder="" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+									<textarea  v-if="textc==''" readOnly="true" placeholder="暂无" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
 								</li>
 							</ul>
 							<ul v-if="BianJi2==1" class="first">
@@ -144,7 +146,8 @@
 						<div class="xiaolv anli">
 							<ul v-if="BianJi4==0" class="first">
 								<li>
-									<textarea readOnly="true" placeholder="请用文字表述您有意愿进行收购和出售的资产" class="mint-field-core ziyuanChongzu" v-model="textd"></textarea>
+									<textarea v-if="textd!=''" readOnly="true" placeholder="" class="mint-field-core ziyuanChongzu" v-model="textd"></textarea>
+									<textarea v-if="textd==''" readOnly="true" placeholder="暂无" class="mint-field-core ziyuanChongzu" v-model="textd"></textarea>
 								</li>
 							</ul>
 							<ul v-if="BianJi4==1" class="first">
@@ -221,7 +224,7 @@
 					</div>
 					<div class="fankiu border-bottom dangeDiyu">
 						<div class="content-food">
-							<span>您能提供的年化资金成本范围</span>
+							<span>年化资金成本</span>
 							<ul v-if="BianJi3==0" class="first">
 								<li>
 									<input readOnly="true" :placeholder="numberi" type="text" class="mint-field-core">
@@ -255,7 +258,7 @@
 					</div>
 					<div class="fankiu border-bottom dangeDiyu">
 						<div class="content-food">
-							<span>从接触项目到放款的时间周期不超过</span>
+							<span>从项目尽调至放款不超过</span>
 							<ul v-if="BianJi3==0" class="first">
 								<li>
 									<input readOnly="true" :placeholder="numberg1" type="text" class="mint-field-core">
@@ -272,12 +275,13 @@
 							<span>地域要求</span>
 							<ul v-if="BianJi3==0" class="first">
 								<li>
-									<input readOnly="true" :placeholder="texte" type="text" class="mint-field-core">
+									<input v-if="texte!=''" readOnly="true" :placeholder="texte" type="text" class="mint-field-core">
+									<input v-if="texte==''" readOnly="true" placeholder="暂无" type="text" class="mint-field-core">
 								</li>
 							</ul>
 							<div v-if="BianJi3==1" class="xiaolv anli">
 								<ul>
-									<textarea placeholder="" class="mint-field-core ziyuanChongzu" v-model="textg"></textarea>
+									<textarea placeholder="请填写地域要求如：长三角、珠三角、北京" class="mint-field-core ziyuanChongzu" v-model="textg"></textarea>
 								</ul>
 							</div>
 						</div>
@@ -285,10 +289,11 @@
 					<div style="height:0.06rem;width:100%;background:#f5f4f9"></div>
 					<div class="fankiu border-bottom dangeDiyu">
 						<div class="content-food">
-							<span>借债主题是</span><span ref="BianJi5" class="lasst" @click.stap="bianji4('2')">编辑</span>
+							<span>借债主体是</span><span ref="BianJi5" class="lasst" @click.stap="bianji4('2')">编辑</span>
 							<ul v-if="BianJi5==0" class="first">
 								<li>
-									<input readOnly="true" placeholder="请填写资金出借方的公司全称" v-model="numberm" type="text" class="mint-field-core">
+									<input v-if="numberm!=''" readOnly="true" placeholder="" v-model="numberm" type="text" class="mint-field-core">
+									<input v-if="numberm==''" readOnly="true" placeholder="暂无" v-model="numberm" type="text" class="mint-field-core">
 								</li>
 							</ul>
 							<div v-if="BianJi5==1" class="xiaolv anli">

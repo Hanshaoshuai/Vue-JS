@@ -34,7 +34,7 @@
 							</div>
 							<div v-if="BianJi2==1" class="content-touzi" ref="foods">
 								<ul>
-									<li class="src1" id='1' @click.stap="types('0','1')">
+									<li class="src0" id='1' @click.stap="types('0','1')">
 										<span>定增</span><font class="img1"></font>
 									</li>
 									<li class="src0" id="2" @click.stap="types('1','2')">
@@ -103,7 +103,8 @@
 						<div class="xiaolv anli">
 							<ul v-if="BianJi5==0" class="first">
 								<li>
-									<textarea readOnly="true" placeholder="请用文字表述您所在机构能给企业带来的产业资源" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+									<textarea v-if="textc!=''" readOnly="true" placeholder="" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+									<textarea v-if="textc==''" readOnly="true" placeholder="暂无" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
 								</li>
 							</ul>
 							<ul v-if="BianJi5==1" class="first">
@@ -121,7 +122,8 @@
 						<div class="xiaolv anli">
 							<ul v-if="BianJi4==0" class="first">
 								<li>
-									<textarea readOnly="true" placeholder="请用文字表述您有意愿进行收购和出售的资产" class="mint-field-core ziyuanChongzu" v-model="textd"></textarea>
+									<textarea v-if="textd!=''" readOnly="true" placeholder="" class="mint-field-core ziyuanChongzu" v-model="textd"></textarea>
+									<textarea v-if="textd==''" readOnly="true" placeholder="暂无" class="mint-field-core ziyuanChongzu" v-model="textd"></textarea>
 								</li>
 							</ul>
 							<ul v-if="BianJi4==1" class="first">
@@ -403,14 +405,23 @@
 				}else{
 					this.BianJi2=1;
 					this.$refs.text2.innerText="取消"
-					var typeLi=this.$refs.foods.getElementsByTagName("li");
-					if(typeLi[0].getAttribute("class")=="src1"){
-						this.biaoQianID2=['1'];
-						this.biaoQianid2='1';
-					}else{
-						this.biaoQianID2=[];
-						this.biaoQianid2='';
-					}
+					this.biaoQianID2=[];
+					this.biaoQianid2=''
+					this.$nextTick(function() {
+						var typeLi=this.$refs.foods.getElementsByTagName("li");
+						var lenth=this.SuozaiHangye.length;
+						for(var i=0; i<lenth;i++){
+							for(var x=0; x<typeLi.length; x++){
+								if(this.SuozaiHangye[i]==typeLi[x].id){
+									typeLi[x].setAttribute("class","src1")
+									this.biaoQianID2[i]=typeLi[x].id;
+								}
+							}
+						}
+						this.y=this.biaoQianid2.length;
+						this.biaoQianid2=this.biaoQianID2.join();
+						console.log(this.biaoQianid2)
+					})
 				}
 				
 			},
@@ -527,26 +538,19 @@
 				this.urlName=id;
 				if(typeLi[index].getAttribute("class")=="src1"){			//判断是否选择标签；》=1为选择；
 					typeLi[index].setAttribute("class","src0")
-					for(var z=0; z<this.y; z++){
+					for(var z=0; z<this.biaoQianID2.length; z++){
 						if(this.biaoQianID2[z]==typeLi[index].id){
 							this.biaoQianID2.splice(z,1);
-//							console.log(this.biaoQianID2)
 							this.biaoQianid2=this.biaoQianID2.join()
 							console.log(this.biaoQianid2)
 							this.y-=1
-							break;
+							return;
 						}
 					}
 				}else{
 					typeLi[index].setAttribute("class","src1");
 					this.y+=1;
-					for(var i=0; i<this.y; i++){
-						if(this.biaoQianID2[i]!=typeLi[index].id){
-							this.biaoQianID2.push(typeLi[index].id)
-							break;
-						}
-					}
-//					console.log(this.biaoQianID2)
+					this.biaoQianID2[this.biaoQianID2.length]=typeLi[index].id;
 					this.biaoQianid2=this.biaoQianID2.join()
 					console.log(this.biaoQianid2)
 				}

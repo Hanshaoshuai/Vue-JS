@@ -3,7 +3,7 @@
 		<div v-show="tucaoShow" class="xiangmu">
 			<div class="xiangmu-header">
 				<span class="xiangmu-left"  @click.stap="yijianHind()"><img src="../img/back.png"/></span>
-				<span>个人资料</span>
+				<span></span>
 			</div>
 			<div class="box" ref="box">
 				<div style="width:100%;height:0.2rem;"></div>

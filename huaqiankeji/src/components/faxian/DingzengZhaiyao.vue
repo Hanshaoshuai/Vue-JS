@@ -44,7 +44,7 @@
 					<div class="tishi-bottom">
 						<div class="border">
 							<ul>
-								<li class="border-bottom"></li>
+								<!--<li class="border-bottom"></li>-->
 								<li class="tishi-center">
 									<div class="content-heder">
 										<span>* {{data.com_short.substr(1,1)}} *</span>
@@ -59,7 +59,7 @@
 										<!--<span>&nbsp;{{data.type}}</span>-->
 									</div>
 								</li>
-								<li class="border-bottom"></li>
+								<!--<li class="border-bottom"></li>-->
 							</ul>
 							<div>
 								<div v-if="biaoqianId.length>0" class="zhuying_1 liangdian_1">
@@ -149,15 +149,16 @@
 				BiaoQian:[],
 				biaoqianId:'',
 				blockName:false,
-				fenciangURL:"https://www.baidu.com/?tn=57095150_2_oem_dg",
-				fenxiangBiaoti:"给的韩国",
-				fenxiangCont:"海固防化服感觉"
+				fenciangURL:"",
+				fenxiangBiaoti:"",
+				fenxiangCont:"",
+				yisuoYao:false
 //				onlyContent:true
 			}
 		},
 		mounted(){
 			this.numToTime=numToTime;
-			if(localStorage.getItem("type")!=1 || localStorage.getItem("type")!=7){
+			if(localStorage.getItem("type")=='1' || localStorage.getItem("type")=='7'){
 				this.utype=false;
 			}else{
 				this.utype=true;
@@ -195,6 +196,29 @@
 //				this.showFlag=false;
 			},
 			shareHref(){
+				var biaoQian='';
+				if(this.data.type==1){
+					biaoQian='定增'
+				}
+				if(this.data.type==2){
+					biaoQian='做市'
+				}
+				if(this.data.type==3){
+					biaoQian='转老股'
+				}
+				if(this.data.type==4){
+					biaoQian='融资租赁'
+				}
+				if(this.data.type==5){
+					biaoQian='研报支持'
+				}
+				if(this.data.type==6){
+					biaoQian='公司调研'
+				}
+				this.fenciangURL='http://test.qironghome.com/bak/web//index.php/app/item-info?id=715'
+				this.fenxiangBiaoti="* "+this.data.com_short.substr(1, 1)+" *"+this.data.com_code.substr(0, 2)+" **** "+biaoQian
+				this.fenxiangCont=this.data.lightspot;
+				
 				this.dcontent=this.$refs.dcontent;
 				this.sharecontent=this.$refs.sharecontent;
 				this.pic=this.$refs.pic;
@@ -207,8 +231,12 @@
 				common1(this.dcontent,this.sharecontent,this.pic,this.sharehref,this.sharehrefTitle,this.sharehrefDes,this.output);
 			},
 			butten(){
+				if(this.yisuoYao==true){
+					Toast("您已经索要过该项目信息，请您等待反馈")
+					return;
+				}
 				MessageBox.confirm('您确定要联系对方并索要完整项目信息吗?').then(action => {
-					//投资人索要项目
+					//投资人索要项目要记录在聊天
 					var data = {
 						token:this.$route.params.token,
 						item_id:this.$route.params.XiangmuID,			//	项目id
@@ -217,14 +245,16 @@
 					}
 					console.log(this.data)
 					this.$http.post(URL.path+'finance/demand_item',data,{emulateJSON:true}).then(function(res){
-						if(res.body.msg=="操作成功"){
+						console.log(res);
+						if(res.body.returnCode==202){
+							this.yisuoYao=true;
+							Toast("您已经索要过该项目信息，请您等待反馈")
+							return;
+						}
+						if(res.body.returnCode==200){
+							this.yisuoYao=true;
 							Toast("申请成功，请您等待反馈")
 							this.ButtenName="已索要完整项目信息"
-//							setTimeout(function(){
-////								history.go(-1)
-//								tate.ButtenName="索要完整项目信息";
-//							},2000)
-							console.log(res);
 						}
 					},function(res){
 					    console.log(res.status);
@@ -460,7 +490,11 @@
 						li{
 							flex:1;
 							height:0.2rem;
-							&:first-child{
+							line-height:0.36rem;
+							text-align:center;
+							font-size:0.2rem;
+							color:#323232;
+							/*&:first-child{
 								max-width:10%;
 							}
 							&:last-child{
@@ -472,7 +506,7 @@
 								text-align:center;
 								font-size:0.2rem;
 								color:#323232;
-							}
+							}*/
 						}
 					}
 					.liangdian_1{

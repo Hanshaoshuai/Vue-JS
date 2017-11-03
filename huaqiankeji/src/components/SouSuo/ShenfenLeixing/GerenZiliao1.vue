@@ -206,7 +206,7 @@
 				this.$refs.xinxiShow.xinxiBlock();
 			},
 			liuYan(){
-				window.location.href="#/fankuixinxi/"+this.userContent.token+"/"+this.uid+this.data.uname;
+				window.location.href="#/fankuixinxi/"+this.userContent.token+"/"+this.uid+'/'+this.data.uname;
 			},
 			baoMing(){
 				this.$refs.youhuiShow.YouhuiBlock();

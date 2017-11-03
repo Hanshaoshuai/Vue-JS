@@ -213,6 +213,24 @@
 					</div>
 					<div class="fankiu border-bottom dangeDiyu">
 						<div class="content-food">
+							<span>单笔投资额</span>
+							<ul v-if="BianJi3==0" class="first">
+								<li>
+									<input readOnly="true" :placeholder="numberTog" type="text" class="mint-field-core">
+								</li>
+							</ul>
+							<div v-if="BianJi3==1" class="type-conts">
+								<ul>
+									<input v-model="numbern" number="true" type="number" class="mint-field-core border">
+									<font>万&nbsp;至</font>
+									<input v-model="numbero" number="true" type="number" class="mint-field-core border">
+									<font>万&nbsp;</font>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="fankiu border-bottom dangeDiyu">
+						<div class="content-food">
 							<span>从项目尽调至放款不超过</span>
 							<ul v-if="BianJi3==0" class="first">
 								<li>
@@ -315,6 +333,9 @@
 				numberToa:"",
 				numberTod:"",
 				numberToc:"",
+				numberToh:"",
+				numberToi:"",
+				numberTog:"",
 				texta:'',
 				textc:"",
 				textd:"",
@@ -365,6 +386,10 @@
 				this.numbere=this.data.info.fund_min;//原来的数据
 				this.numberf=this.data.info.fund_max;//原来的数据
 				this.numberj=this.numbere+'% - '+this.numberf+'%'
+				
+				this.numberToh=this.data.info.single_project_max;	//原数据
+				this.numberToi=this.data.info.single_project_min;	//原数据
+				this.numberTog=this.numberToi+'万 - '+this.numberToh+'万';  //要插到页面的
 				
 				this.numberq=this.data.info.loan_time+'天';
 				

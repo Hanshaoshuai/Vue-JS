@@ -49,7 +49,8 @@
 						<div class="xiaolv anli">
 							<ul v-if="BianJi3==0" class="first">
 								<li>
-									<textarea readOnly="true" placeholder="请用文字表述您的团队" class="mint-field-core ziyuanChongzu" v-model="textb"></textarea>
+									<textarea v-if="textb!=''" readOnly="true" placeholder="" class="mint-field-core ziyuanChongzu" v-model="textb"></textarea>
+									<textarea v-if="textb==''" readOnly="true" placeholder="暂无" class="mint-field-core ziyuanChongzu" v-model="textb"></textarea>
 								</li>
 							</ul>
 							<ul v-if="BianJi3==1" class="first">
@@ -67,7 +68,8 @@
 						<div class="xiaolv anli">
 							<ul v-if="BianJi2==0" class="first">
 								<li>
-									<textarea readOnly="true" placeholder="请用文字表述您所在机构能给企业带来的产业资源" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+									<textarea v-if="textc!=''" readOnly="true" placeholder="" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+									<textarea v-if="textc==''" readOnly="true" placeholder="暂无" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
 								</li>
 							</ul>
 							<ul v-if="BianJi2==1" class="first">

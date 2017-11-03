@@ -20,10 +20,10 @@
 							<span>已为您匹配{{body.length}}人</span>
 						</div>
 					</div>
-					<!--<div v-for="(cont,index) in data" class="add" :id="index" ref="lisitTop">-->
-						<div v-for="(item,index) in body" class="sousuo-content border-topbottom">
+					<div v-for="(cont,index) in data" class="add" :id="index" ref="lisitTop">
+						<div v-for="(item,index) in cont" class="sousuo-content border-topbottom">
 							<div class="content-header">
-								<font><img src="" :rul="item.photo"/></font>
+								<font><img :src="item.photo" :rul="item.photo"/></font>
 								<div class="names">
 									<span class="border-right">{{item.uname}}</span>
 									<span>{{item.com_short}}</span>&nbsp;
@@ -131,14 +131,30 @@
 									
 								</div>
 							</div>
-						<!--</div>-->
+						</div>
+					</div>
+					<div v-show="tishis" class="tishi-bottom">
+						<div class="tishis">
+							<ul>
+								<li class="border-bottom"></li>
+								<li class="tishi-center">{{jeiguo}}</li>
+								<li class="border-bottom"></li>
+							</ul>
+						</div>
 					</div>
 				</div>
+				<div style="width:100%;height:0.6rem;"></div>
+				<span class="loding" v-show="topStatus">
+	            	<mt-spinner :type="3" color="#26a2ff" :size="30"></mt-spinner>
+	          	</span>
 			</div>
 			<div class="zhaiyao-food">
 				<div class="ferst"><font>您已选择</font><span ref="size" class="ferst-child">{{ButtenName}}</span><font>个投资人</font></div>
 				<span class="last" @click.stop="butten()">下一步</span>
 			</div>
+			<transition name="fade1">
+				<div v-show="topBlock" @click.stop="zhiDing()" class="zhiDing"></div>
+			</transition>
 			<!--<router-view></router-view>-->
 		</div>
 	</transition>
@@ -185,7 +201,13 @@
 				img:'',
 				num:"",
 				n:"",		//存储图片加载到的位置，避免每次都从第一张图片开始遍历
-				height:0
+				height:0,
+				topBlock:false,
+				page:1,
+				tishis:false,
+				jeiguo:"亲已经到底了",
+				topStatus:false,
+				tems:''
 			}
 		},
 		mounted(){
@@ -196,35 +218,35 @@
 //				this.showFlag=false;
 				history.go(-1)
 			},
+			zhiDing(){		//返回顶部；
+				this.$refs.wrapper.scrollTop=0;
+			},
 			faxianScroll(){
+				if(this.$refs.wrapper.scrollTop>600){
+					this.topBlock=true;
+				}else{
+					this.topBlock=false;
+				}
 				this.imgs()
 //				console.log(this.img[6].offsetTop)
 			},
 			imgs(){
+				var scrollHeights=this.$refs.wrapper.scrollHeight;
 				var setHeight = document.documentElement.clientHeight; //可见区域高度
 				var scrollTop = this.$refs.wrapper.scrollTop; //滚动条距离顶部高度
-				for (var i = this.n; i < this.num; i++) {
-//					this.img[i].offsetTop+=200;
-					if (this.height < setHeight + scrollTop) {
-						if (this.img[i].getAttribute("src") == "") {
-							this.img[i].src = this.img[i].getAttribute("rul");
-							if (this.img[i].clientWidth>this.img[i].clientHeight) {
-								this.img[i].style.height="100%"
-								this.img[i].style.width="auto"
-							}else{
-								this.img[i].style.width="100%"
-								this.img[i].style.height="auto"
-							}
-						}else{
-							return;
-						}
-						this.n = i + 1;
-						this.height+=201;
-					}
+				var x=Math.abs(Math.round(setHeight + scrollTop))
+//				console.log(x)
+//				console.log(scrollHeights)
+				if(x==scrollHeights || scrollHeights-x==1){
+					var tata=this
+					this.topStatus=true;
+					this.tems=setTimeout(function(){
+						tata.pipeiBlock(tata.CanShu);
+					},1000)
 				}
 			},
 			pipeiBlock(CanShu){
-				Indicator.open({spinnerType: 'fading-circle'});
+//				Indicator.open({spinnerType: 'fading-circle'});
 				console.log(CanShu)
 				console.log(this.token)
 				this.CanShu=CanShu
@@ -233,22 +255,38 @@
 				var datas = {
 					token:this.token,		//	token	是	[string]		
 					item_id:this.XiangmuID,		//	项目id	是	[string]		
-					page:1,			//	page	是	[string]		
-					size:20			//	size	是	[string]	
+					page:this.page,			//	page	是	[string]		
+					size:50			//	size	是	[string]	
 				}
 				this.$http.post(URL.path+'finance/investor_list',datas,{emulateJSON:true}).then(function(res){
-					Indicator.close();
-					this.body=res.body.data;
+//					Indicator.close();
+					console.log(this.body);
+//					if(this.data.length==5){//长度大于5从新开始
+//						this.data=[]
+//						this.$refs.wrapper.scrollTop=0;
+//						this.height=0;
+//					}
+					this.topStatus=false;
+					if(res.body.data.length==0){
+						if(this.data.length==0){
+							this.jeiguo="暂无匹配结果"
+						}
+						this.$refs.wrapper.removeEventListener('scroll', this.faxianScroll);
+						this.tishis=true;
+						return;
+					}else{
+						this.data.push(res.body.data);
+					}
+					if(this.n !== 0){
+						clearTimeout(this.tems);
+					}
+					this.page=this.page*1;
+					this.page=this.page+=1;
 					this.$nextTick(function(){
-						this.img = this.$refs.tianjia.getElementsByTagName("img");
-						this.num = this.img.length;
-						this.n = 0; //存储图片加载到的位置，避免每次都从第一张图片开始遍历
-						this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
-  						this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
-  						this.imgs()
-						var length=this.img.length;
+						var img = this.$refs.tianjia.getElementsByTagName("img");
+						var length=img.length;
 						for (var i = 0; i < length; i++) {
-							this.img[i].onload =function(){
+							img[i].onload =function(){
 								if (this.clientWidth>this.clientHeight) {
 									this.style.height="100%"
 									this.style.width="auto"
@@ -258,11 +296,21 @@
 								}
 							}
 						}
-					});
-					console.log(this.body);
+					})
+					if(this.n == 0){
+						this.$nextTick(function(){
+							this.img = this.$refs.tianjia.getElementsByTagName("img");
+							this.parend = this.$refs.tianjia.getElementsByClassName("sousuo-content");
+							this.num = this.img.length;
+							this.n = 0; //存储图片加载到的位置，避免每次都从第一张图片开始遍历
+	//								this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+	  						this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
+	  						this.imgs()
+						});
+					}
 				},function(res){
-					Indicator.close();
-					Toast("系统错误请稍后...")
+//					Indicator.close();
+//					Toast("系统错误请稍后...")
 				    console.log(res.status);
 				})
 			},
@@ -303,13 +351,13 @@
 			play(){							//底部的数量更改动画；
 				var size=this.$refs.size;
 				var z=0;
-				var y=26;
+				var y=24;
 				var run=setInterval(function(){
-					if(z<=28){
-						z+=1
+					if(z<=26){
+						z+=2
 						size.style.fontSize=16+z+"px"
 					}else{
-						size.style.fontSize="26px"
+						size.style.fontSize="24px"
 						stape();
 						clearInterval(run);
 					}
@@ -318,7 +366,7 @@
 				function stape(){
 					var stape=setInterval(function(){
 						if(y>=8){
-							y-=1
+							y-=2
 							size.style.fontSize=y+"px"
 						}else{
 							size.style.fontSize="0.18rem";
@@ -408,19 +456,6 @@
 					Toast("请选择匹配人");
 				}
 			}
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -432,19 +467,8 @@
 //			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
-//			cartcontrol,
-//			ratingselect,
-//			split
 		}
 	}
 </script>
@@ -461,6 +485,18 @@
 	  	/*transform:rotate(360deg);*/
 	  	/*opacity: 0;*/
 	}
+	.fade1-enter-active {
+	  	transition: all .5s ease;
+	}
+	.fade1-leave-active {
+	  	transition: all .5s ease;
+	}
+	.fade1-enter, .fade1-leave-active {
+	  	transform: translateX(4.17rem);
+	  	/*transform:rotate(360deg);*/
+	  	/*opacity: 0;*/
+	}
+	
 	.wenzhang{
 		position:absolute;
 		background:#f5f4f9;
@@ -527,10 +563,11 @@
 			overflow-y:auto;
 			-webkit-overflow-scrolling:touch;  		/*解决ios滑动*/
 			.wenzhang-content{
+				position:relative;
 				width:95%;
-				/*height:auto;*/
+				height:auto;
 				margin:0 auto;
-				padding:0.45rem 0 0.6rem 0;
+				padding:0.45rem 0 0.42rem 0;
 				.fankiu{
 					width:100%;
 					display:flex;
@@ -576,8 +613,8 @@
 							border:none;
 							border:2px solid #e5e4e4;
 							img{
-								width:100%;
-								height:100%;
+								/*width:100%;
+								height:100%;*/
 							}
 						}
 						.names{
@@ -662,6 +699,45 @@
 						}
 					}
 				}
+				.tishi-bottom{
+					position:absolute;
+					left:0;
+					right:0;
+					bottom:0.04rem;
+					width:92.5%;
+					height:0.36rem;
+					margin:0 auto;
+					ul{
+						width:100%;
+						height:100%;
+						display:flex;
+						li{
+							flex:1;
+							height:0.2rem;
+							&.tishi-center{
+								width:0.57rem;
+								line-height:0.36rem;
+								text-align:center;
+								font-size:0.12rem;
+								color:#bcbcbc;
+							}
+						}
+					}
+				}
+			}
+			.loding{
+				position:fixed;
+				bottom:0.56rem;
+				left:0;
+				margin-bottom:0.12rem;
+				width:100%;
+				display: inline-block;
+				text-align:center;
+				display:flex;
+				-webkit-box-pack: center;
+			    justify-content: center;
+			    -webkit-box-align: center;
+			    align-items: center;
 			}
 		}
 		.zhaiyao-food{
@@ -703,6 +779,16 @@
 				color:#fff;
 				background:#ff7a59;
 			}
+		}
+		.zhiDing{
+			position:fixed;
+			bottom:1.6rem;
+			right:0.2rem;
+			background-image:url("../img/top.png");
+			background-size:100% 100%;
+			width:0.5rem;
+			height:0.5rem;
+			/*z-index: 200;*/
 		}
 	}
 </style>

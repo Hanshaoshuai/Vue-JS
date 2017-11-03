@@ -220,13 +220,13 @@
 							tata.onlyContent=false;
 							history.go(-1)
 //							location.replace(document.referrer); 
-						},2000)
+						},1000)
 //						window.location.href="#/wode/RongziBeian/7";
 					}
 					if(res.body.data.id==true){
 						this.firstTop=false
 						this.lastBottom=true
-						this.textcont="您已添加成功"
+//						this.textcont="您已添加成功"
 //						Toast("您已添加成功");
 						setTimeout(function(){
 							this.onlyContent=false;
@@ -490,7 +490,7 @@
 			}
 			.butten{
 				width:100%;
-				background:#f5f4f9;
+				/*background:#f5f4f9;*/
 				padding:0.2rem 0;
 				ul{
 					width:65.8%;

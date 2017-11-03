@@ -7,7 +7,7 @@
 			</div>
 			<div class="box">
 				<div style="width:100%;height:0.45rem;"></div>
-				<div class="logo">
+				<!--<div class="logo">
 					<ul>
 						<li @click.stap="shangChuan()">
 							<mingpian @to-parent="child" class="mingpians" ref="mingpianID"></mingpian>
@@ -15,8 +15,15 @@
 						</li>
 						<span>上传营业执照</span>
 					</ul>
-				</div>
+				</div>-->
 				<div ref="guanzhuLingyu" class="fankiu-content">
+					<div class="zhuying_1">
+						<div class="ferst"><span>*</span>企业简称</div>
+						<div class="last number">
+							<input v-model="textd" placeholder="请填写企业简称" type="text" class="mint-field-core">
+							<!--<span>万元</span>-->
+						</div>
+					</div>
 					<div class="zhuying_1">
 						<div class="ferst"><span>*</span>今年预计营收、净利润</div>
 						<div class="last number last-bottom">
@@ -103,6 +110,7 @@
 				texta:"",
 				textb:"",
 				textc:"",
+				textd:"",
 				texth:"",
 				fankui:"45",
 				genjin:"458",
@@ -174,13 +182,14 @@
 					texta:this.texta,
 					textb:this.textb,
 					textc:this.textc,
+					textd:this.textd,
 					texth:this.texth,
 					typeId:this.typeId
 				}
-				if(this.imgUrl==""){
-					Toast("请上传您的营业执照...");
-					return;
-				}
+//				if(this.imgUrl==""){
+//					Toast("请上传您的营业执照...");
+//					return;
+//				}
 				for(var item in CanShu){		//判断填写信息是否完整Ok=1；标签必选
 					if(CanShu[item]==""){
 						Toast("请填写完整您的信息...");
@@ -195,11 +204,12 @@
 				var params={
 		    		token:this.token,
 					com_name:'',			//	公司全称	是	[string]		
-					com_short:'',			//	公司简称	是	[string]		
+					com_short:this.textd,			//	公司简称	是	[string]		
 					commission:'',				//	佣金协定	是	[string]		
 					total_finance:this.textc,		//	投资总额 单位：万	是	[string]		
-					remark:'',				//	有效投资认定	是	[string]		
-					license:this.$refs.mingpianID.mingpianID,						//	营业执照	是	[string]		
+					remark:'',				//	有效投资认定	是	[string]
+					license:'',
+//					license:this.$refs.mingpianID.mingpianID,						//	营业执照	是	[string]		
 					predict_revenue:this.texta,				//	今年预计营收	是	[string]		
 					predict_profit:this.textb,				//	今年预计净利润	是	[string]		
 					id:'',				//	备案id id为空时创建，不为空时修改	是	[string]
@@ -218,7 +228,7 @@
 							tata.onlyContent=false;
 							history.go(-1)
 //							location.replace(document.referrer); 
-						},2000)
+						},1000)
 //						window.location.href="#/wode/RongziBeian/7";
 					}
 					if(res.body.data.id==true){
@@ -537,7 +547,7 @@
 			}
 			.butten{
 				width:100%;
-				background:#f5f4f9;
+				/*background:#f5f4f9;*/
 				padding:0.2rem 0;
 				ul{
 					width:65.8%;

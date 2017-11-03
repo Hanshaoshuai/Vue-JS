@@ -67,8 +67,8 @@
 								<span>单个投资额</span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
-										<input v-if="single_project_max!=0" readOnly="true" v-model="numberg" placeholder="2000万-5000万" type="text" class="mint-field-core">
-										<input v-if="single_project_max==0" readOnly="true" v-model="numberg1" placeholder="2000万-5000万" type="text" class="mint-field-core">
+										<input v-if="single_project_max!=''" readOnly="true" v-model="numberg[0].title" placeholder="2000万-5000万" type="text" class="mint-field-core">
+										<input v-if="single_project_max==''" readOnly="true" v-model="numberg1" placeholder="2000万-5000万" type="text" class="mint-field-core">
 									</li>
 								</ul>
 								<div v-if="BianJi==1" class="type-conts">
@@ -215,16 +215,17 @@
 	    		uid:this.uid
 	    	}
 			this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
+				console.log(res);
 				Indicator.close();
 				this.data=res.body.data;
 				this.imgs=res.body.data.photo.url;
 				this.single_project_max=res.body.data.info.single_project_max
 				this.numberg=this.data.info.single_project_max+'万-'+this.data.info.single_project_min+'万';
-				this.numberg1=this.data.info.single_project['0'].title
+				this.numberg1=this.data.info.single_project;
 				this.numberh=this.data.info.territory;
-				this.textc=this.data.info.resources;
+				this.textc=res.body.data.info.resources;
 				this.textd=this.data.info.restructuring;
-				var SuozaiHangye=this.data.info.interested;
+				var SuozaiHangye=res.body.data.info.interested;
 				var fund_stage=this.data.info.fund_stage;
 				console.log(SuozaiHangye);
 				var x=[];
@@ -245,7 +246,6 @@
 				this.oDbiaoQianID1=x1.join(',');
 				this.numberd=y1.join('、');
 				console.log(this.oDbiaoQianID1);
-				console.log(res);
 				this.$nextTick(function(){
 					var images = this.$refs.images;
 					if (images.clientWidth>images.clientHeight) {

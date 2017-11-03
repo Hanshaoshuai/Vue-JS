@@ -15,6 +15,7 @@
 				<div ref="yitouAnli" class="sousuo-content border-topbottom">
 					<div class="content-header">
 						<span>已投案例</span>
+						<font>（仅自己可见）</font>
 						<!--<span v-if="bianList" ref="text5" class="lasst" @click.stap="bianji5('5')">编辑</span>
 						<span v-if="!bianList" ref='text5' class="lasst" @click.stap="baocunList()">保存</span>-->
 					</div>
@@ -48,7 +49,8 @@
 						<div class="xiaolv anli">
 							<ul v-if="BianJi2==0" class="first">
 								<li>
-									<textarea readOnly="true" placeholder="请用文字表述您所在机构能给企业带来的产业资源" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+									<textarea v-if="textc!=''" readOnly="true" placeholder="" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+									<textarea v-if="textc==''" readOnly="true" placeholder="暂无" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
 								</li>
 							</ul>
 							<ul v-if="BianJi2==1" class="first">
@@ -66,7 +68,8 @@
 						<div class="xiaolv anli">
 							<ul v-if="BianJi4==0" class="first">
 								<li>
-									<textarea readOnly="true" placeholder="请用文字表述您有意愿进行收购和出售的资产" class="mint-field-core ziyuanChongzu" v-model="textd"></textarea>
+									<textarea v-if="textd!=''" readOnly="true" placeholder="" class="mint-field-core ziyuanChongzu" v-model="textd"></textarea>
+									<textarea v-if="textd==''" readOnly="true" placeholder="暂无" class="mint-field-core ziyuanChongzu" v-model="textd"></textarea>
 								</li>
 							</ul>
 							<ul v-if="BianJi4==1" class="first">

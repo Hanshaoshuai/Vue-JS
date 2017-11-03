@@ -241,7 +241,11 @@
 					this.$http.post(URL.path+'regist/regist2',datas,{emulateJSON:true}).then(function(res){
 						Indicator.close();
 						if(res.body.returnCode=='200'){
-							Toast('系统将在24小时内审核您的注册申请');
+							if(localStorage.getItem("panduanWanshan")=='23'){
+							
+							}else{
+								Toast('系统将在24小时内审核您的注册申请')
+							}
 							console.log(res.body)
 							window.location.href="#/faxian";
 						}else{

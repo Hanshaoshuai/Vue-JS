@@ -75,7 +75,7 @@
 					</div>
 					<div class="fankiu border-bottom dangeDiyu">
 						<div class="content-food">
-							<span>您能提供的年化资金成本范围</span>
+							<span>年化资金成本</span>
 							<ul v-if="BianJi3==0" class="first">
 								<li>
 									<input readOnly="true" :placeholder="numberj" type="text" class="mint-field-core">
@@ -109,7 +109,7 @@
 					</div>
 					<div class="fankiu border-bottom dangeDiyu">
 						<div class="content-food">
-							<span>从接触项目到放款的时间周期不超过</span>
+							<span>从项目尽调至放款不超过</span>
 							<ul v-if="BianJi3==0" class="first">
 								<li>
 									<input readOnly="true" :placeholder="numberg1" type="text" class="mint-field-core">
@@ -126,12 +126,13 @@
 							<span>地域要求</span>
 							<ul v-if="BianJi3==0" class="first">
 								<li>
-									<input readOnly="true" :placeholder="texte" type="text" class="mint-field-core">
+									<input v-if="texte!=''" readOnly="true" :placeholder="texte" type="text" class="mint-field-core">
+									<input v-if="texte==''" readOnly="true" placeholder="暂无" type="text" class="mint-field-core">
 								</li>
 							</ul>
 							<div v-if="BianJi3==1" class="xiaolv anli">
 								<ul>
-									<textarea placeholder="" class="mint-field-core ziyuanChongzu" v-model="textg"></textarea>
+									<textarea placeholder="请填写地域要求如：长三角、珠三角、北京" class="mint-field-core ziyuanChongzu" v-model="textg"></textarea>
 								</ul>
 							</div>
 						</div>
@@ -139,10 +140,11 @@
 					<div style="height:0.06rem;width:100%;background:#f5f4f9"></div>
 					<div class="fankiu border-bottom dangeDiyu">
 						<div class="content-food">
-							<span>借债主题是</span><span ref="text4" class="lasst" @click.stap="bianji4('2')">编辑</span>
+							<span>借债主体是</span><span ref="text4" class="lasst" @click.stap="bianji4('2')">编辑</span>
 							<ul v-if="BianJi4==0" class="first">
 								<li>
-									<input readOnly="true" placeholder="请填写资金出借方的公司全称" v-model="numberh" type="text" class="mint-field-core">
+									<input v-if="numberh!=''" readOnly="true" placeholder="" v-model="numberh" type="text" class="mint-field-core">
+									<input v-if="numberh==''" readOnly="true" placeholder="暂无" v-model="numberh" type="text" class="mint-field-core">
 								</li>
 							</ul>
 							<div v-if="BianJi4==1" class="xiaolv anli">

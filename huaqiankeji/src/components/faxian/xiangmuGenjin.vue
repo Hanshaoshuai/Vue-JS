@@ -102,7 +102,7 @@
 			var token={
 	    		token:localStorage.getItem("token")
 	    	}
-			if(this.shifouZhuce==2){
+			if(this.shifouZhuce=='2'){
 				Indicator.open({spinnerType: 'fading-circle'});
 	//			项目跟进反馈列表（每月提醒一次）
 				this.$http.post(URL.path+'finance/get_feedback',token,{emulateJSON:true}).then(function(res){

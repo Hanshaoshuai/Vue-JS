@@ -7,7 +7,7 @@
 			</div>
 			<div class="box">
 				<div style="width:100%;height:0.45rem;"></div>
-				<div class="logo">
+				<!--<div class="logo">
 					<ul>
 						<li @click.stap="shangChuan()">
 							<mingpian @to-parent="child" class="mingpians" ref="mingpianID"></mingpian>
@@ -15,8 +15,15 @@
 						</li>
 						<span>上传营业执照</span>
 					</ul>
-				</div>
+				</div>-->
 				<div ref="guanzhuLingyu" class="fankiu-content">
+					<div class="zhuying_1">
+						<div class="ferst"><span>*</span>企业简称</div>
+						<div class="last number">
+							<input readOnly="true" v-model="textd" placeholder="请填写企业简称" type="text" class="mint-field-core">
+							<!--<span>万元</span>-->
+						</div>
+					</div>
 					<div class="zhuying_1">
 						<div class="ferst"><span>*</span>今年预计营收、净利润</div>
 						<div class="last number last-bottom">
@@ -68,7 +75,7 @@
 					</ul>
 				</div>
 			</div>
-			<transition name="fades">
+			<!--<transition name="fades">-->
 				<div ref="xianShi" v-show="onlyContent" class="loding" style="position: absolute;z-index: 1600; top: 0;right: 0;bottom: 0;left: 0;background-color: rgba(0,0,0,0.3);display: none;">
 				    <div class="loadEffect" ref="padding">
 						<ul v-show="firstTop">
@@ -80,7 +87,7 @@
 						</ul>
 					</div>	
 				</div>
-			</transition>
+			<!--</transition>-->
 		</div>
 	</transition>
 </template>
@@ -107,6 +114,7 @@
 				texta:"",
 				textb:"",
 				textc:"",
+				textd:"",
 				texth:"",
 				fankui:"45",
 				genjin:"458",
@@ -159,6 +167,7 @@
 				this.texta=this.data.predict_revenue;
 				this.textb=this.data.predict_profit;
 				this.textc=this.data.total_finance;
+				this.textd=this.data.com_short;
 				this.texth=this.data.appraisement;
 				this.typeId=this.data.type;
 				if(res.body.data.id.status!=='1'){
@@ -173,20 +182,20 @@
 					index=5;
 				}
 				span[index].setAttribute("class","one src2");
-				this.$nextTick(function() {
-					var img = this.$refs.tianjia;
-					var num = img.length;
-					if (img.clientWidth>img.clientHeight) {
-						img.style.height="100%"
-						img.style.width="auto"
-					}else{
-						img.style.width="100%"
-						img.style.height="auto"
-					}
-				})
-				if(this.onlyContent==false){
-					this.$refs.tianjia.style.zIndex="100";
-				}
+//				this.$nextTick(function() {
+//					var img = this.$refs.tianjia;
+//					var num = img.length;
+//					if (img.clientWidth>img.clientHeight) {
+//						img.style.height="100%"
+//						img.style.width="auto"
+//					}else{
+//						img.style.width="100%"
+//						img.style.height="auto"
+//					}
+//				})
+//				if(this.onlyContent==false){
+//					this.$refs.tianjia.style.zIndex="100";
+//				}
 				console.log(res);
 			},function(res){
 			    console.log(res);
@@ -198,24 +207,24 @@
 				history.go(-1)
 //				this.tucaoShow=false;
 			},
-			child(MingpianImg){
-				this.imgUrl=MingpianImg
-				if(MingpianImg){
-					this.images=true;
-				}
-				this.$nextTick(function() {
-					var img = this.$refs.tianjia;
-					var num = img.length;
-					if (img.clientWidth>img.clientHeight) {
-						img.style.height="100%"
-						img.style.width="auto"
-					}else{
-						img.style.width="100%"
-						img.style.height="auto"
-					}
-				})
-				console.log(MingpianImg)
-			},
+//			child(MingpianImg){
+//				this.imgUrl=MingpianImg
+//				if(MingpianImg){
+//					this.images=true;
+//				}
+//				this.$nextTick(function() {
+//					var img = this.$refs.tianjia;
+//					var num = img.length;
+//					if (img.clientWidth>img.clientHeight) {
+//						img.style.height="100%"
+//						img.style.width="auto"
+//					}else{
+//						img.style.width="100%"
+//						img.style.height="auto"
+//					}
+//				})
+//				console.log(MingpianImg)
+//			},
 			xuanZe(type,index){
 				if(this.showFlag==false){
 					return;
@@ -229,7 +238,8 @@
 				span[index].setAttribute("class","one src2");
 			},
 			XiuGai(){
-				this.$refs.tianjia.style.zIndex="1";
+//				alert('jfkdsj')
+//				this.$refs.tianjia.style.zIndex="1";
 				var textInputs = this.$refs.guanzhuLingyu.getElementsByClassName("mint-field-core");
 				console.log(textInputs)
 				var length=textInputs.length;
@@ -245,13 +255,14 @@
 					texta:this.texta,
 					textb:this.textb,
 					textc:this.textc,
+					textd:this.textd,
 					texth:this.texth,
 					typeId:this.typeId
 				}
-				if(this.imgUrl==""){
-					Toast("请上传您的营业执照...");
-					return;
-				}
+//				if(this.imgUrl==""){
+//					Toast("请上传您的营业执照...");
+//					return;
+//				}
 				for(var item in CanShu){		//判断填写信息是否完整Ok=1；标签必选
 					if(CanShu[item]==""){
 						Toast("请填写完整您的信息...");
@@ -262,10 +273,11 @@
 			},
 			queding(){
 				//修改备案
+				var tata=this;
 				var params={
 		    		token:this.token,
 					com_name:'',			//	公司全称	是	[string]		
-					com_short:'',			//	公司简称	是	[string]		
+					com_short:this.textd,			//	公司简称	是	[string]		
 					commission:'',			//	佣金协定	是	[string]		
 					total_finance:this.textc,		//	投资总额 单位：万	是	[string]		
 					remark:this.texte,				//	有效投资认定	是	[string]		
@@ -286,7 +298,7 @@
 							tata.onlyContent=false;
 							tata.firstTop=true
 							tata.lastBottom=false
-						},2000)
+						},1000)
 						this.showFlag=true;
 						this.showFlag1=false;
 						var textInputs = this.$refs.guanzhuLingyu.getElementsByClassName("mint-field-core");
@@ -529,6 +541,51 @@
 					}
 					.last-bottom{
 						margin-bottom:0.1rem;
+					}
+					.content-bottom{
+						width:100%;
+						/*display:flex;*/
+						/*align-items:center;
+						align-content:center;
+						justify-content:center;*/
+						overflow: hidden;
+						/*span{
+							&:nth-child(2n){
+								margin-left:0.46rem;
+								margin-right:0.46rem;
+							}
+						}*/
+						.src1{
+		            		display:inline-block;
+		            		float:left;
+		            		width:0.9rem;
+		            		padding:0.06rem 0;
+		            		text-align: center;
+		            		font-size: 0.14rem; 
+		            		line-height: 0.15rem;
+		            		border:1px solid #cfcfcf;
+		            		box-sizing:border-box;
+		            		border-radius:0.04rem;
+		            		color:#b4b4b4;
+		            		margin-bottom:0.1rem;
+		            		margin-right:0.1rem;
+		            	}
+		            	.src2{
+		            		display:inline-block;
+		            		float:left;
+		            		width:0.9rem;
+		            		padding:0.06rem 0;
+		            		text-align: center;
+		            		line-height: 0.15rem;
+		            		font-size: 0.14rem; 
+		            		background:#ff7a59;
+		            		border:1px solid #cfcfcf;
+		            		box-sizing:border-box;
+		            		border-radius:0.04rem;
+		            		color:#fff;
+		            		margin-bottom:0.1rem;
+		            		margin-right:0.1rem;
+		            	}
 					}
 				}
 			}

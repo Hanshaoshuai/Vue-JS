@@ -99,6 +99,24 @@
 			fanhui(){
 				history.go(-1)
 			},
+			tongxunLu(){
+				if(localStorage.getItem("YiyouTongxin")){
+					return;
+				}
+				var params={
+		    		id:localStorage.getItem("userID"),
+		    		phone_list:localStorage.getItem("TongxunLu")
+		    	}
+				this.$http.post(URL.path1+'common/phone_list',params,{emulateJSON:true}).then(function(res){
+					console.log('提交通讯录成功');
+//					console.log(localStorage.getItem("TongxunLu"));
+//					document.write(localStorage.getItem("TongxunLu"))
+					localStorage.setItem("YiyouTongxin",'1');
+					console.log(res);
+				},function(res){
+				    console.log(res);
+				})
+			},
 			denglus(){
 				this.$refs.mima.blur();
 //				cttx.disabled = true
@@ -141,6 +159,7 @@
 					Indicator.open({spinnerType: 'fading-circle'});
 					this.$http.post(URL.path1+'login',datas,{emulateJSON:true}).then(function(res){
 						Indicator.close();
+						console.log(res);
 						if(res.body.returnCode==200){	//本地储存
 							this.XiajiCanshu={
 						        id:res.body.data.id,
@@ -155,7 +174,8 @@
 							localStorage.setItem("name",res.body.data.nickname);		//用户名字
 							localStorage.setItem("photo",res.body.data.photo.id);	//用户头像id
 							localStorage.setItem("photourl",res.body.data.photo.url);	//用户头像URL地址
-							console.log(res.body);
+							console.log(this.XiajiCanshu);
+							this.tongxunLu();
 							if(res.body.data.ctype=='2'){
 								this.qingQiu(res.body.data.token,res.body.data.ctype)
 								return;
@@ -176,23 +196,9 @@
                         
                     },function(res){
                     	Indicator.close();
-                    	Toast('系统繁忙请稍后再试');
+//                  	Toast('系统繁忙请稍后再试');
                         console.log(res);
                     });
-					
-					
-//				  	this.$http.get(url).then(function(response){
-//						console.log("login",response)
-//						if(response.body != "0" && response.body != "2"){
-//							Indicator.close();
-//							localStorage.setItem("userID",userID);
-//							if(confirm("已成功登陆是否进入首页?")){
-//								window.location.href="#/fanxian";
-//							}
-//						}else{
-//							Toast("此账号未注册请您立即注册")
-//						}
-//					})
 				}
 			},
 			qingQiu(token,ctype){
@@ -200,10 +206,12 @@
 					token:token,//	用户id	是	[string]			
 				}
 				this.$http.post(URL.path1+'account/info',datas,{emulateJSON:true}).then(function(res){
+					console.log(res)
 					if(res.body.returnCode=='200'){
 						if(ctype==1){
-							if(res.body.data.info.team=='0'){
+							if(res.body.data.info.industry==''){
 								Toast('请完善您的资料');
+								localStorage.setItem("panduanWanshan",'1');
 								window.location.href="#/denglu/ZhuCe1/"+0+"/type2";
 								return;
 							}else{
@@ -212,8 +220,9 @@
 							}
 						}
 						if(ctype==3){
-							if(res.body.data.info.investment_way=="0"){
+							if(res.body.data.info.investment_way=="0" || res.body.data.board=='0'){
 								Toast('请完善您的资料');
+								localStorage.setItem("panduanWanshan",'3');
 								window.location.href="#/denglu/ZhuCe1/"+0+"/type3";
 								return;
 							}else{
@@ -222,7 +231,8 @@
 							}
 						}
 						if(ctype==4){
-							if(res.body.data.info.team=='0'){
+							if(res.body.data.info.industry==''){
+								localStorage.setItem("panduanWanshan",'4');
 								Toast('请完善您的资料');
 								window.location.href="#/denglu/ZhuCe1/"+0+"/type4";
 								return;
@@ -235,6 +245,7 @@
 //							if(res.body.data.investment_type==1){
 								if(res.body.data.info.investment_type=='0'){
 									Toast('请完善您的资料');
+									localStorage.setItem("panduanWanshan",'20');
 									window.location.href="#/denglu/ZhuCe1/"+0+"/"+'Guquan';
 									return;
 								}else{
@@ -242,28 +253,43 @@
 									window.location.href="#/faxian";
 								}
 //							}
-//							if(res.body.data.investment_type==2){
-//								if(res.body.data.info.industry.interested==''){
-//									Toast('请完善您的资料');
-//									window.location.href="#/zhuce/ZhuCe1/"+localStorage.getItem("token")+"/"+Zaiquan;
-//									return;
-//								}else{
+							if(localStorage.getItem("typeID")=='1'){
+								this.typeID='1'
+								if(res.body.data.info.fund_stage.length==0 || res.body.data.info.interested.length==0){
+									Toast('请完善您的资料');
+									localStorage.setItem("panduanWanshan",'21');
+									window.location.href="#/denglu/ZhuCe1/"+0+"/"+'Guquan';
+									return;
+								}else{
 //									Toast('登录成功');
-//									window.location.href="#/faxian";
-//								}
-//							}
-//							if(res.body.data.investment_type==3){
-//								if(res.body.data.info.industry.interested==''){
-//									Toast('请完善您的资料');
-//									window.location.href="#/zhuce/ZhuCe1/"+localStorage.getItem("token")+"/"+Guzhai;
-//									return;
-//								}else{
+									window.location.href="#/faxian";
+								}
+							}
+							if(localStorage.getItem("typeID")=='2'){
+								this.typeID='2'
+								if(res.body.data.info.investment_way=='' || res.body.data.info.revenue_min=='0'){
+									Toast('请完善您的资料');
+									localStorage.setItem("panduanWanshan",'22');
+									window.location.href="#/zhuce/ZhuCe1/"+localStorage.getItem("token")+"/"+'Zaiquan';
+									return;
+								}else{
 //									Toast('登录成功');
-//									window.location.href="#/faxian";
-//								}
-//							}
+									window.location.href="#/faxian";
+								}
+							}
+							if(localStorage.getItem("typeID")=='3'){
+								this.typeID='3'
+								if(res.body.data.info.fund_stage.length==0 || res.body.data.info.interested.length==0 || res.body.data.info.investment_way=='' || res.body.data.info.revenue_min=='0'){
+									Toast('请完善您的资料');
+									localStorage.setItem("panduanWanshan",'23');
+									window.location.href="#/zhuce/ZhuCe1/"+localStorage.getItem("token")+"/"+'Guzhai';
+									return;
+								}else{
+//									Toast('登录成功');
+									window.location.href="#/faxian";
+								}
+							}
 						}
-						console.log(res)
 					}else{
 						Toast(res.body.msg);
 					}
@@ -309,19 +335,8 @@
 			}else{
 				this.mimas=false;
 			}
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
-//			cartcontrol,
-//			ratingselect,
-//			split
 		}
 	}
 </script>

@@ -8,9 +8,6 @@
 			<div class="box" ref="box">
 				<div style="width:100%;height:0.55rem;"></div>
 				<div v-for="(item,index) in data" v-if="item.uctype=='7'" class="sousuo-content">
-					<!--<li v-if="timestamp" class="beian-first">
-						{{numToTime(item.create_time)}}
-					</li>-->
 					<!--1:未审核 2:已审核 3:进行中 4:已结束 5未通过-->
 					<ul v-if="item.status=='2'" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
 						<li class="beian-last">
@@ -19,9 +16,6 @@
 								<font>已审核</font>
 								<font>{{numToTime(item.create_time)}}</font>
 							</div>
-							<!--<div class="content-bottom">
-								<span>备案时间：{{numToTime(item.create_time)}}</span>
-							</div>-->
 						</li>
 					</ul>
 					<ul v-if="item.status=='1'" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
@@ -31,9 +25,6 @@
 								<font>未审核</font>
 								<font>{{numToTime(item.create_time)}}</font>
 							</div>
-							<!--<div class="content-bottom">
-								<span>备案时间：{{numToTime(item.create_time)}}</span>
-							</div>-->
 						</li>
 					</ul>
 					<ul v-if="item.status=='3'" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
@@ -43,9 +34,6 @@
 								<font>进行中</font>
 								<font>{{numToTime(item.create_time)}}</font>
 							</div>
-							<!--<div class="content-bottom">
-								<span>备案时间：{{numToTime(item.create_time)}}</span>
-							</div>-->
 						</li>
 					</ul>
 					<ul v-if="item.status=='4'" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
@@ -55,9 +43,6 @@
 								<font>已结束</font>
 								<font>{{numToTime(item.create_time)}}</font>
 							</div>
-							<!--<div class="content-bottom">
-								<span>备案时间：{{numToTime(item.create_time)}}</span>
-							</div>-->
 						</li>
 					</ul>
 					<ul v-if="item.status=='5'" ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.status)">
@@ -67,75 +52,59 @@
 								<font>未通过</font>
 								<font>{{numToTime(item.create_time)}}</font>
 							</div>
-							<!--<div class="content-bottom">
-								<span>备案时间：{{numToTime(item.create_time)}}</span>
-							</div>-->
 						</li>
 					</ul>
 					<box style="height:0.06rem;"></box>
 				</div>
 				<div v-for="(item,index) in data" v-if="item.uctype=='1'" class="sousuo-content">
-					<!--<li class="beian-first">
-						{{numToTime(item.create_time)}}
-					</li>-->
 					<ul v-if="item.status=='2'" ref="index1" class="content-header" index="type1"  @click.stap="typeName1(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
-								<span>{{item.com_short}}</span>
+								<span>融资总额</span>
+								<span style="text-align: center;">{{item.total_finance}}万元</span>
 								<font>已审核</font>
 								<font>{{numToTime(item.create_time)}}</font>
 							</div>
-							<!--<div class="content-bottom">
-								<span>{{numToTime(item.create_time)}}</span>
-							</div>-->
 						</li>
 					</ul>
 					<ul v-if="item.status=='1'" ref="index1" class="content-header" index="type1"  @click.stap="typeName1(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
-								<span>{{item.com_short}}</span>
+								<span>融资总额</span>
+								<span style="text-align: center;">{{item.total_finance}}万元</span>
 								<font>未审核</font>
 								<font>{{numToTime(item.create_time)}}</font>
 							</div>
-							<!--<div class="content-bottom">
-								<span>备案时间：{{numToTime(item.create_time)}}</span>
-							</div>-->
 						</li>
 					</ul>
 					<ul v-if="item.status=='3'" ref="index1" class="content-header" index="type1"  @click.stap="typeName1(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
-								<span>{{item.com_short}}</span>
+								<span>融资总额</span>
+								<span style="text-align: center;">{{item.total_finance}}万元</span>
 								<font>进行中</font>
 								<font>{{numToTime(item.create_time)}}</font>
 							</div>
-							<!--<div class="content-bottom">
-								<span>备案时间：{{numToTime(item.create_time)}}</span>
-							</div>-->
 						</li>
 					</ul>
 					<ul v-if="item.status=='4'" ref="index1" class="content-header" index="type1"  @click.stap="typeName1(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
-								<span>{{item.com_short}}</span>
+								<span>融资总额</span>
+								<span style="text-align: center;">{{item.total_finance}}万元</span>
 								<font>已结束</font>
 								<font>{{numToTime(item.create_time)}}</font>
 							</div>
-							<!--<div class="content-bottom">
-								<span>备案时间：{{numToTime(item.create_time)}}</span>
-							</div>-->
 						</li>
 					</ul>
 					<ul v-if="item.status=='5'" ref="index1" class="content-header" index="type1"  @click.stap="typeName1(item.id,item.status)">
 						<li class="beian-last">
 							<div class="content-top">
-								<span>{{item.com_short}}</span>
+								<span>融资总额</span>
+								<span style="text-align: center;">{{item.total_finance}}万元</span>
 								<font>未通过</font>
 								<font>{{numToTime(item.create_time)}}</font>
 							</div>
-							<!--<div class="content-bottom">
-								<span>备案时间：{{numToTime(item.create_time)}}</span>
-							</div>-->
 						</li>
 					</ul>
 					<box style="height:0.06rem;"></box>
@@ -189,14 +158,20 @@
 				beiAnidC:"",
 				numToTime:"",
 				timestamp:'',
-				beianType:""
+				beianType:"",
+				length:0
 			}
 		},
 		mounted() {
 			this.shuaXin();
+			var that=this;
+			window.onhashchange = function() {
+				console.log("222222")
+				that.shuaXin();
+			}
 		},
 		activated(){
-			this.shuaXin();
+			
 		},
 		methods:{
 			shuaXin(){
@@ -213,8 +188,9 @@
 			    	}
 					this.$http.post(URL.path+'finance/record_list',params,{emulateJSON:true}).then(function(res){
 						this.data=res.body.data.id;
-						if(res.body.data.length=='0'){
-							Toast("您暂无备注，请添加备案...")
+						if(res.body.data.length=='0' && this.length==0){
+							this.length+=1;
+//							Toast("您暂无备注，请添加备案...")
 							window.location.href="#/wode/RongziBeian/"+this.token+"/TianQiBeian";
 							return;
 						}
@@ -233,8 +209,9 @@
 					this.$http.post(URL.path+'finance/record_list',params,{emulateJSON:true}).then(function(res){
 						console.log(res);
 						this.data=res.body.data.id;
-						if(res.body.data.length=='0'){
-							Toast("您暂无备案，请添加备案...")
+						if(res.body.data.length=='0' && this.length==0){
+							this.length+=1;
+//							Toast("您暂无备案，请添加备案...")
 							window.location.href="#/wode/RongziBeian/"+this.token+"/XinzengQiye";
 							return;
 						}

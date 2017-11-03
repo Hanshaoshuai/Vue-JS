@@ -11,7 +11,7 @@
 				<div class="tishi-bottom">
 					<div class="border">
 						<ul>
-							<li class="border-bottom"></li>
+							<!--<li class="border-bottom"></li>-->
 							<li class="tishi-center">
 								<div class="content-heder">
 									<span>{{texta}}</span>
@@ -26,7 +26,7 @@
 									<!--<span>&nbsp;{{data.type}}</span>-->
 								</div>
 							</li>
-							<li class="border-bottom"></li>
+							<!--<li class="border-bottom"></li>-->
 						</ul>
 						<!--<div v-if="industry" class="zhuying_1 liangdian_1">
 							<div class="ferst"><span></span>所在行业</div>
@@ -39,6 +39,8 @@
 								<span v-if="BianJi==1" v-for="(item,index) in BiaoQian" @click.stap="xuanze(index)" :id="item.id">{{item.title}}</span>
 							</ul>
 						</div>-->
+					</div>
+					<div class="zhuying_1 border">
 						<div class="zhuying_1">
 							<div class="ferst"><span></span>投资亮点</div>
 							<div class="last">
@@ -466,7 +468,11 @@
 					li{
 						flex:1;
 						height:0.2rem;
-						&:first-child{
+						line-height:0.36rem;
+						text-align:center;
+						font-size:0.2rem;
+						color:#323232;
+						/*&:first-child{
 							max-width:10%;
 						}
 						&:last-child{
@@ -478,7 +484,7 @@
 							text-align:center;
 							font-size:0.2rem;
 							color:#323232;
-						}
+						}*/
 					}
 				}
 				.zhuying_1{

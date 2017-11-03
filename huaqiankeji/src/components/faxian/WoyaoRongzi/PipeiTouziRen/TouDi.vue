@@ -108,7 +108,7 @@
 				if(tata.disnone==false){
 					clearTimeout(times)
 				}
-			},2000)
+			},1000)
 			Indicator.open({spinnerType: 'fading-circle'});
 			console.log(this.$route.params.uID);
 			this.token=this.$route.params.token;

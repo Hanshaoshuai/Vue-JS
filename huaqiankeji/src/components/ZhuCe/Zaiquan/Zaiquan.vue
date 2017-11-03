@@ -208,8 +208,9 @@
 //					XiangmuID:this.XiangmuID
 				}
 				var datas={
-					id:this.XiajiCanshu.id,			//	uid	是	[string]		
-					investment_type:this.typeID,			//投资类型 1:股权投资 2:债权投资 3:股债兼投	是	[string]		
+					id:localStorage.getItem("userID"),
+//					id:this.XiajiCanshu['id'],			//	uid	是	[string]		
+					investment_type:localStorage.getItem("typeID"),			//投资类型 1:股权投资 2:债权投资 3:股债兼投	是	[string]		
 					interested:'',				//感兴趣的行业多个用逗号分割	是	[string]		
 					single_project_max:this.numberf,			//单笔投资最大值	是	[string]		
 					single_project_min:this.numbere,			//单笔投资最小值	是	[string]		
@@ -236,8 +237,13 @@
 					Indicator.open({spinnerType: 'fading-circle'});
 					this.$http.post(URL.path+'regist/regist2',datas,{emulateJSON:true}).then(function(res){
 						Indicator.close();
+						console.log(res);
 						if(res.body.returnCode=='200'){
-							Toast('系统将在24小时内审核您的注册申请');
+							if(localStorage.getItem("panduanWanshan")=='22'){
+							
+							}else{
+								Toast('系统将在24小时内审核您的注册申请')
+							}
 							console.log(res.body)
 							window.location.href="#/faxian";
 						}else{
@@ -246,7 +252,7 @@
 						}
 					},function(res){
 						Indicator.close();
-					    console.log(res.status);
+					    console.log(res);
 					})
 				}else{
 					Toast("请填写完整您的信息！是否已选标签...");

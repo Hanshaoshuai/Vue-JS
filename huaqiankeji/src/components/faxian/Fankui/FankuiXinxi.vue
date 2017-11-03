@@ -12,30 +12,20 @@
 					</div>
 				</div>
 			</div>
-			<!--<div class="yijian-header">
-				<span class="fanhui-butten" @click="yijianHind"><</span>
-				<span>徐小姐</span>
-			</div>-->
 			<div class="content-text" ref="contentTexte">
 				<div class="box" ref="boxTexte" id="box">
-					<!--<p style="width:100%;height:0.5rem;"></p>-->
 					
 				</div>
 			</div>
 			<div class="shuru" ref="shuru">
 				<ul>
 					<li>
-						<!--<div ref="texts" class="test_box" contenteditable="true"></div>--> 
 						<textarea @click.stop="shangyi()" ref="texts" placeholder="请详输入您的问题..." class="mint-field-core" v-model="introduction"></textarea>
 						<div class="fasong" @click.stop="fasong()"><span>发送</span></div>
 					</li>
-					<!--<li class="">
-						<div><span>点击约调研前，屏蔽手机号、微信号、地址信息。</span></div>
-						<div><span @click.stop="fasong()">发送</span></div>
-					</li>-->
 				</ul>
 			</div>
-			<div ref="xianShi" v-show="onlyContent" class="loding" style="position: absolute;z-index: 1600; top: 0;right: 0;bottom: 0;left: 0;background-color: rgba(0,0,0,0.3);display: none;">
+			<!--<div ref="xianShi" v-show="onlyContent" class="loding" style="position: absolute;z-index: 1600; top: 0;right: 0;bottom: 0;left: 0;background-color: rgba(0,0,0,0.3);display: none;">
 				<div class="loadEffect" ref="padding" v-show="idBlock">
 					<span class="firsts" ref="selecteds">
 						<li>请选择投诉原因</li>
@@ -55,7 +45,33 @@
 				        <font @click.stop="fangQi()" class="last">取消</font>
 			        </div>
 				</div>	
-			</div>
+			</div>-->
+			<!--1、买方身份的投诉（企业反馈）：投资机构、合格投资人、做市商、研究咨询-->
+			<transition name="fades">
+				<div @click.stop="xiaoShi()" ref="xianShi" v-show="onlyContent" class="loding" style="position: absolute;z-index: 1600; top: 0;right: 0;bottom: 0;left: 0;background-color: rgba(0,0,0,0.3);display: none;">
+				    <div class="loadEffect" ref="padding">
+						<ul>
+							<li class="border-bottom" @click.stop="BugenYuanyin('拒不安排到项目现场尽调')"><span>拒不安排到项目现场尽调</span></li>
+							<li class="border-bottom" @click.stop="BugenYuanyin('向投资方索要不合理费用')"><span>向投资方索要不合理费用</span></li>
+							<li class="border-bottom" @click.stop="BugenYuanyin('发布项目与实际融资项目不符')"><span>发布项目与实际融资项目不符</span></li>
+							<li @click.stop="BugenYuanyin('其他原因')"><span>其他原因</span></li>
+						</ul>
+					</div>	
+				</div>
+			</transition>
+			<!--2、卖方身份的投诉（投资人反馈）：企业、财务顾问-->
+			<transition name="fades">
+				<div @click.stop="xiaoShi()" ref="xianShi" v-show="onlyContent1" class="loding" style="position: absolute;z-index: 1600; top: 0;right: 0;bottom: 0;left: 0;background-color: rgba(0,0,0,0.3);display: none;">
+				    <div class="loadEffect" ref="padding">
+						<ul>
+							<li class="border-bottom" @click.stop="BugenYuanyin('未现场拜访即索要繁琐材料')"><span>未现场拜访即索要繁琐材料</span></li>
+							<li class="border-bottom" @click.stop="BugenYuanyin('中介机构假冒投资机构')"><span>中介机构假冒投资机构</span></li>
+							<li class="border-bottom" @click.stop="BugenYuanyin('无故爽约，不尊重企业')"><span>无故爽约，不尊重企业</span></li>
+							<li @click.stop="BugenYuanyin('其他原因')"><span>其他原因</span></li>
+						</ul>
+					</div>	
+				</div>
+			</transition>
 			<tishi ref="tishiShow" :xingXi="xingXi" :content="content"></tishi>
 			<router-view :uid="uid"></router-view>
 		</div>
@@ -69,12 +85,6 @@
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
 	import tishi from "../../Tishi.vue";
-//	import BScroll from "better-scroll";
-//	import Vue from "vue";
-//	import {formatDate} from "../../common/js/date.js";
-//	import cartcontrol from "../cartcontrol/cartcontrol.vue";
-//	import ratingselect from "../ratingselect/ratingselect.vue";
-//	import split from "../split/split.vue";
 	
 	
 	export default {
@@ -117,6 +127,7 @@
 				toName:"",
 				to_photo:"",
 				onlyContent:false,
+				onlyContent1:false,
 				tousuContent:"",
 				selected:'',		//投诉ids
 				selectedID:'3',		//投诉id
@@ -126,23 +137,27 @@
 			}
 		},
 		mounted(){
-			this.Qingqiu()
+//			this.Qingqiu()
 		},
 		activated(){
 			this.Qingqiu();
 		},
 		methods:{
+			xiaoShi(){
+				this.onlyContent=false;
+				this.onlyContent1=false;
+			},
 			Qingqiu(){
 				this.prent=this.$refs.boxTexte;
 				var contentTexte=this.$refs.contentTexte;
 				contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
-				if(this.type==this.$route.params.type){
-					return;
-				}else{
+//				if(this.type==this.$route.params.type){
+//					return;
+//				}else{
 					if(this.prent.innerHTML!=""){
 						this.prent.innerHTML=""
 					}
-				}
+//				}
 				Indicator.open({spinnerType: 'fading-circle'});
 				this.numToTime1=numToTime1
 				this.fasong(this.typeName,this.typeCont)		//索要项目或索要名片   进来就执行；
@@ -164,11 +179,12 @@
 					var length=res.length;
 					if(res[0].from_id==this.uid){
 						this.from_photo=res[0]['from_photo'];	//发送方头像
-						this.to_photo=res[0]['to_photo'];	//我的方头像
+//						this.to_photo=res[0]['to_photo'];	//我的方头像
+						this.to_photo=localStorage.getItem("photourl");	//我的方头像
 					}else{
 						this.from_photo=res[0]['to_photo'];	//发送方头像
 //						this.to_photo=res[0]['from_photo'];	//我的方头像
-						this.to_photo=localStorage.getItem("TouxiangImg");	//我的方头像
+						this.to_photo=localStorage.getItem("photourl");	//我的方头像
 					}
 					this.from_id=res[0]['from_id'];		//发送方id
 					this.to_id=res[0]['to_id'];			//我的id
@@ -179,14 +195,10 @@
 					for(var item in res){
 						if(res[item].type==1){		//type=1:评论
 							if(res[item].from_id==this.uid){
-								this.tousuoContent=this.numToTime1(res[item].create_time);
 								this.tousuoGo(this.numToTime1(res[item].create_time));
-								
 								this.You('0',res[item].content)
 							}else{
-								this.tousuoContent=this.numToTime1(res[item].create_time);
 								this.tousuoGo(this.numToTime1(res[item].create_time));
-								
 								this.My('0',res[item].content);
 							}
 						}
@@ -293,17 +305,54 @@
 								}
 							}
 						}
-						if(res[item].type==6){		//type=1:跟进和不跟进
+						if(res[item].type==6){		//type=6:跟进和不跟进
+							var cont=JSON.parse(res[item].content);
+							var follow=cont.follow;
+							var com_short=cont.com_short;
+							var name=cont.from_name;
 							if(res[item].from_id==this.uid){
-								var follow=res[item].follow;
-								var com_short=res[item].com_short;
-								this.tousuoGo(this.numToTime1(res[item].create_time));
-								
 								if(follow==1){//跟进
 									this.tousuoGo(this.numToTime1(res[item].create_time));
-									
-									this.TishiNeirong(localStorage.getItem("name")+'对“'+com_short+'”'+'有投资兴趣，将进一步跟进本次融资安排')		//提示信息函数
+									this.TishiNeirong(name+'对您的“'+com_short+'”'+'项目有投资兴趣，将进一步跟进本次融资安排')
 								}
+							}else{
+								if(follow==1){//跟进
+									this.tousuoGo(this.numToTime1(res[item].create_time));
+									this.TishiNeirong('您对'+'“'+com_short+'”'+'项目有投资兴趣，进一步跟进本次融资安排')
+								}else{
+									this.tousuoGo(this.numToTime1(res[item].create_time));
+									this.TishiNeirong('您放弃了'+'“'+com_short+'”'+'项目的本次融资')
+								}
+							}
+						}
+						if(res[item].type==7){		//type=7:结束项目
+							var cont=JSON.parse(res[item].content);
+							var follow=cont.follow;
+							var com_short=cont.com_short;
+							var to_name=cont.to_name;
+							var from_name=cont.from_name;
+							if(res[item].from_id==this.uid){
+								if(follow==1){//跟进
+									this.tousuoGo(this.numToTime1(res[item].create_time));
+									this.TishiNeirong(from_name+'已放弃跟进您的“'+com_short+'”'+'项目')
+								}else{
+									this.tousuoGo(this.numToTime1(res[item].create_time));
+									this.TishiNeirong('恭喜您，'+from_name+'跟进的您的“'+com_short+'”'+'项目已过会！')
+								}
+							}else{
+								if(follow==1){//跟进
+									this.tousuoGo(this.numToTime1(res[item].create_time));
+									this.TishiNeirong('您放弃跟进'+to_name+'的“'+com_short+'”'+'项目！')
+								}else{
+									this.tousuoGo(this.numToTime1(res[item].create_time));
+									this.TishiNeirong('恭喜您，您跟进的“'+com_short+'”'+'项目已过会！')
+								}
+							}
+						}
+						if(res[item].type==8){		//type=1:评论
+							if(res[item].from_id==this.uid){
+								this.tousuoGo(this.numToTime1(res[item].create_time));
+								this.You('0',res[item].content)
 							}
 						}
 					}
@@ -354,50 +403,30 @@
 				this.onlyContent=false;
 			},
 			tousuBlock(){
-				Indicator.open({spinnerType: 'fading-circle'});
-				var data={
-					token:this.Token,
-					terminalNo: '3'
+				var type=localStorage.getItem("type");
+				if(type=='1' || type=='7'){
+					this.onlyContent1=true;
+				}else{
+					this.onlyContent=true;
 				}
-				this.$http.post(URL.path1+'account/reportCtype',data,{emulateJSON:true}).then(function(res){
-					Indicator.close();
-					console.log(res);
-					if(res.body.returnCode == 200) {
-						this.selected=res.body.data;
-						this.onlyContent=true;
-						this.$nextTick(function(){
-							this.$refs.selecteds.getElementsByTagName("font")[3].setAttribute("class","src2");
-						})
-					}else{
-						if(data.body.returnCode == 401) {
-							Toast(data.msg);
-						}else{
-							Toast(data.msg)
-						}
-					}
-				},function(res){
-					Indicator.close();
-				    console.log(res);
-				})
 			},
-			guoHui(){
-				if(this.tousuContent==''){
-					Toast("请输入您的投诉说明");
-					return;
-				}
-				Indicator.open({spinnerType: 'fading-circle'});
+//			投诉调用
+			BugenYuanyin(texts){
 				var farams={			//发送评论接口
 					token:this.Token,
 //					to_id:this.uid,					//对方id	是	[string]
 					terminalNo: '3',
 					rid: this.uid,
-					content: this.tousuContent,
-					ctype: this.selectedID		//举报原因id
+					content:texts,
+					ctype:6		//举报原因id
+//					ctype: this.selectedID		//举报原因id
 				}
 				console.log(farams)
+				Indicator.open({spinnerType: 'fading-circle'});
 				this.$http.post(URL.path1+'account/report',farams,{emulateJSON:true}).then(function(res){
 					Indicator.close();
-					Toast("提交后我们将在24小时内处理")
+//					Toast("提交后我们将在24小时内处理")
+					Toast("投诉成功")
 					this.onlyContent=false;
 					console.log(res);
 				},function(res){
@@ -405,9 +434,6 @@
 					Toast(data.msg)
 				    console.log(res);
 				})
-			},
-			fangQi(){
-				this.onlyContent=false;
 			},
 			tousuoGo(times){			//提示投诉信息内容按钮
 				var contentTexte=this.$refs.contentTexte;
@@ -761,8 +787,8 @@
 							console.log(res);
 							if(res.body.msg=="操作成功"){
 								this.TishiNeirong("您同意了向对方发送完整项目信息");
+								this.FasongShijian();
 							}
-							this.FasongShijian();
 						},function(res){
 						    console.log(res);
 						})
@@ -867,6 +893,9 @@
 				tiShi.style.padding="0.1rem 0";
 				tiShi.style.textAlign="center";
 			},
+			tongyiYanzheng(){
+				
+			},
 			fasong(typeName,typeCont){		//发送按钮
 				var thata=this;
 //				var DEHeight;
@@ -875,67 +904,273 @@
 				var shuru=this.$refs.shuru;				
 //				var texts=this.$refs.texts.innerText;
 				var texts=this.introduction;		//发送内容
-				
+				var yiyou=0;
 				//验证手机
 		        if(/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/.test(texts)){
-		        	Toast("请不要输入敏感字符")
+//		        	Toast("请不要输入敏感字符")
 		        	this.introduction="";
-		        	return;
+		        	texts="PHONE<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+		        	yiyou=1;
+//		        	return;
+		        }
+		        if(/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]$/.test(texts)){
+//		        	Toast("请不要输入敏感字符")
+					if(yiyou==0){
+			        	this.introduction="";
+			        	texts="PHONE<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+			        	yiyou=1;
+			        }
+//		        	return;
+		        }
+		         if(/^[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.](0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}|[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]$/.test(texts)){
+//		        	Toast("请不要输入敏感字符")
+		        	if(yiyou==0){
+			        	this.introduction="";
+			        	texts="PHONE<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+			        	yiyou=1;
+		        	}
+//		        	return;
 		        }
 		        //验证电话
-		        if(/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,14}$/.test(texts)){
-					Toast('请不要输入敏感字符');
-					this.introduction="";
-					return;
+		        if(/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,8}$/.test(texts)){
+//					Toast('请不要输入敏感字符');
+					if(yiyou==0){
+						this.introduction="";
+						texts="PHONE<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+						yiyou=1;
+					}
+//					return;
 				}
-		        if(/^1[0-9]{4}$/.test(texts)){
-					Toast('请不要输入敏感字符');
-					this.introduction="";
-					return;
+//		        if(/^(\(\d{3,4}\)[-][0-9]{6,8}){8,14}$/.test(texts)){
+////					Toast('请不要输入敏感字符');
+//					this.introduction="";
+//					texts="PHONE<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+////					return;
+//				}
+		        if(/^[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.](\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,8}|[！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]$/.test(texts)){
+//					Toast('请不要输入敏感字符');
+					if(yiyou==0){
+						this.introduction="";
+						texts="PHONE<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+						yiyou=1;
+					}
+//					return;
+				}
+		        if(/^1[0-9]{4}[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]$/.test(texts)){
+//					Toast('请不要输入敏感字符');
+					if(yiyou==0){
+						this.introduction="";
+						texts="PHONE<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+						yiyou=1;
+					}
+//					return;
 				}
 //				//验证qq
 				if(/^[1-9][0-9]{4,9}$/.test(texts)){
-					Toast('请不要输入敏感字符');
-					this.introduction="";
-					return;
+//					Toast('请不要输入敏感字符');
+					if(yiyou==0){
+						this.introduction="";
+						texts="QQ<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+						yiyou=1;
+					}
+//					return;
+				}
+				if(/^[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.][1-9][0-9]{4,9}|[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]$/.test(texts)){
+//					Toast('请不要输入敏感字符');
+					if(yiyou==0){
+						this.introduction="";
+						texts="QQ<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+						yiyou=1;
+					}
+//					return;
+				}
+				if(/^[1-9][0-9]{4,9}[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]$/.test(texts)){
+//					Toast('请不要输入敏感字符');
+					if(yiyou==0){
+						this.introduction="";
+						texts="QQ<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+						yiyou=1;
+					}
+//					return;
 				}
 //				//验证微信号
 				if(/^[a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}$/.test(texts)){
-					Toast('请不要输入敏感字符');
-					this.introduction="";
-					return;
+//					Toast('请不要输入敏感字符');
+					if(yiyou==0){
+						this.introduction="";
+						texts="WEIXIN<a>&nbsp;</a>HIDDEN";
+						yiyou=1;
+					}
+//					return;
+				}
+				//验证微信号
+				if(/^[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.][a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}|[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]$/.test(texts)){
+//					Toast('请不要输入敏感字符');
+					if(yiyou==0){
+						this.introduction="";
+						texts="WEIXIN<a>&nbsp;</a>HIDDEN";
+						yiyou=1;
+					}
+//					return;
+				}
+				//验证微信号
+				if(/^[a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]$/.test(texts)){
+//					Toast('请不要输入敏感字符');
+					if(yiyou==0){
+						this.introduction="";
+						texts="WEIXIN<a>&nbsp;</a>HIDDEN";
+						yiyou=1;
+					}
+//					return;
 				}
 //				//邮箱
 				if(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/.test(texts)){
-					Toast('请不要输入敏感字符');
-					this.introduction="";
-					return;
+//					Toast('请不要输入敏感字符');
+					if(yiyou==0){
+						this.introduction="";
+						texts="E-MAIL<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+						yiyou=1;
+					}
+//					return;
+				}
+				if(/^[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/.test(texts)){
+//					Toast('请不要输入敏感字符');
+					if(yiyou==0){
+						this.introduction="";
+						texts="E-MAIL<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+						yiyou=1;
+					}
+//					return;
 				}
 				if(/@/.test(texts)){
-					Toast('请不要输入敏感字符');
-					this.introduction="";
-					return;
+//					Toast('请不要输入敏感字符');
+					if(yiyou==0){
+						this.introduction="";
+						texts="E-MAIL<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+						yiyou=1;
+					}
+//					return;
 				}
 				//邮编
 				if(/^[1-9][0-9]{5}$/.test(texts)){
-					Toast('请不要输入敏感字符');
-					this.introduction="";
-					return;
+//					Toast('请不要输入敏感字符');
+					if(yiyou==0){
+						this.introduction="";
+						texts="CONTACT<a>&nbsp;</a>WAY！<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+						yiyou=1;
+					}
+//					return;
 				}
-				if(/\w@\w*\.\w/.test(texts)){
-					Toast('请不要输入敏感字符');
-					this.introduction="";
-					return;
+				if(/^[-_a-zA-Z0-9]{4,19}/.test(texts)){
+//					Toast('请不要输入敏感字符');
+					if(yiyou==0){
+						this.introduction="";
+						texts="CONTACT<a>&nbsp;</a>WAY！<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+						yiyou=1;
+					}
+//					return;
 				}
+				if(/^[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.][-_a-zA-Z0-9]{4,19}[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.][@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]/.test(texts)){
+//					Toast('请不要输入敏感字符');
+					if(yiyou=0){
+						this.introduction="";
+						texts="CONTACT<a>&nbsp;</a>WAY！<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+						yiyou=1;
+					}
+//					return;
+				}
+				if(/^[\u4E00-\u9FA5]{1,20}[-_a-zA-Z0-9]{5,19}$/.test(texts)){
+//					Toast('请不要输入敏感字符');
+					if(yiyou==0){
+						this.introduction="";
+						var hanzi='';
+						var reg = /[\u4e00-\u9fa5]/g;   
+	        			hanzi=texts.match(reg).join("");  
+						texts=hanzi+"</br>（MUNBER<a>&nbsp;</a>HIDDEN）";
+						yiyou=1;
+					}
+//					return false;
+				}
+			    if(/^[\u4E00-\u9FA5]{1,20}([@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]|[-_a-zA-Z0-9]){5,19}$/.test(texts)){
+//					Toast('请不要输入敏感字符');
+					if(yiyou==0){
+						this.introduction="";
+						var hanzi='';
+						var reg = /[\u4e00-\u9fa5]/g;   
+	        			hanzi=texts.match(reg).join("");  
+						texts=hanzi+"</br>（MUNBER<a>&nbsp;</a>HIDDEN）";
+						yiyou=1;
+					}
+//					return false;
+				}
+			    if(/^([\u4E00-\u9FA5]|[ ]|[-_a-zA-Z0-9]){1,20}([@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]|[-_a-zA-Z0-9]){5,19}$/.test(texts)){
+//					Toast('请不要输入敏感字符');
+					if(yiyou==0){
+						this.introduction="";
+						var hanzi='';
+						var reg = /[\u4e00-\u9fa5]/g;   
+	        			hanzi=texts.match(reg).join("");  
+						texts=hanzi+"</br>（MUNBER<a>&nbsp;</a>HIDDEN）";
+						yiyou=1;
+					}
+//					return false;
+				}
+			    if(/(^([\u4E00-\u9FA5]|[ ]|[-_a-zA-Z0-9]){1,20}([@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]|[-_a-zA-Z0-9]){5,19}){1,10}$/.test(texts)){
+//					Toast('请不要输入敏感字符');
+					if(yiyou==0){
+						this.introduction="";
+						var hanzi='';
+						var reg = /[\u4e00-\u9fa5]/g;   
+	        			hanzi=texts.match(reg).join("");  
+						texts=hanzi+"</br>（MUNBER<a>&nbsp;</a>HIDDEN）";
+						yiyou=1;
+					}
+//					return false;
+				}
+			    if(/(^([\u4E00-\u9FA5]|[ ]|[-_a-zA-Z0-9]){1,20}([@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.][\u4E00-\u9FA5]|[-_a-zA-Z0-9])){1,11}$/.test(texts)){
+//					Toast('请不要输入敏感字符');
+					if(yiyou==0){
+						this.introduction="";
+						var hanzi='';
+						var reg = /[\u4e00-\u9fa5]/g;   
+	        			hanzi=texts.match(reg).join("");  
+						texts=hanzi+"</br>（MUNBER<a>&nbsp;</a>HIDDEN）";
+						yiyou=1;
+					}
+//					return false;
+				}
+			    if(/(^[\u4E00-\u9FA5]{1,20}|[-_a-zA-Z0-9]){1,20}[-_a-zA-Z0-9]{1,20}[\u4E00-\u9FA5]{1,20}$/.test(texts)){
+//					Toast('请不要输入敏感字符');
+					if(yiyou==0){
+						this.introduction="";
+						var hanzi='';
+						var reg = /[\u4e00-\u9fa5]/g;   
+	        			hanzi=texts.match(reg).join("");  
+						texts=hanzi+"</br>（MUNBER<a>&nbsp;</a>HIDDEN）";
+						yiyou=1;
+					}
+//					return false;
+				}
+//			    if(/(^([\u4E00-\u9FA5|[-_a-zA-Z0-9\s]){1,20}([\u4E00-\u9FA5]|[-_a-zA-Z0-9\s])){1,20}$/.test(texts)){
+////					Toast('请不要输入敏感字符');
+//					if(yiyou==0){
+//						this.introduction="";
+//						var hanzi='';
+//						var reg = /[\u4e00-\u9fa5]/g;   
+//	        			hanzi=texts.match(reg).join("");  
+//						texts=hanzi+"</br>（MUNBER<a>&nbsp;</a>HIDDEN）";
+//						yiyou=1;
+//					}
+////					return false;
+//				}
 				//定义敏感字符
 			    var forbiddenArray =['我微信','微信','我的微信','我微信号是','我的微信号是','我邮箱是','我的邮箱是','我的邮箱是号','邮箱',
 			    '我邮箱是号','我邮箱','我的邮箱','我的qq','我的qq号','我的qq号是','我qq','我的电话','我的手机','我电话是','我的电话号是','我的手机号是',
-			    '邮编','加我','weixin','weinxinhao','@163.com','@qq.com','@','qq','QQ',];
+			    '邮编','加我','weixin','weinxinhao','@163.com','@qq.com','@','qq','QQ','这是我的手机号','我的手机号'];
 			    //定义敏感字符函数
 			    function forbiddenStr(str){
 				//  var destString = trim(str);
 			        var re = '';
-			        
 			        for(var i=0;i<forbiddenArray.length;i++){
 			            if(i==forbiddenArray.length-1)
 			                re+=forbiddenArray[i];
@@ -950,18 +1185,19 @@
 			            return false;
 			        }
 			    }
-//				if(/^[\u4E00-\u9FA5]|[\uFE30-\uFFA0][-_a-zA-Z0-9]{5,19}$/.test(texts)){
-//					Toast('请不要输入敏感字符');
-//					this.introduction="";
-//					return false;
-//				}
-				var go=forbiddenStr(texts);
+			    var go=forbiddenStr(texts);
 				if(go==false){
-					Toast('请不要输入敏感字符');
-					this.introduction="";
-					return;
+//					Toast('请不要输入敏感字符');
+					if(yiyou==0){
+						this.introduction="";
+						var hanzi='';
+						var reg = /[\u4e00-\u9fa5]/g;   
+	        			hanzi=texts.match(reg).join("");  
+						texts=hanzi+"</br>（MUNBER<a>&nbsp;</a>HIDDEN）";
+						yiyou=1;
+					}
+//					return;
 				}
-				this.FasongShijian();	//发送时间
 				if(typeName){			//发送函数
 					if(typeName==2){		//type=2:项目请求
 						this.My('1',typeCont)
@@ -972,15 +1208,9 @@
 				}
 				var Height=shuru.clientHeight		//底部高度
 				console.log(shuru.clientHeight)							//显示框高度
-//				contentTexte.style.height=(DEHeight-93)/100+"rem";
 				var aaa=document.getElementById("box")
-//				if(document.aaa.scrollTop){
-//					console.log(this.prent.offsetHeight)
-//					console.log(this.prent.scrollTop )
-//					console.log(contentTexte.scrollTop )
-//					console.log(contentTexte.scrollHeight )
-//				}
 				if(texts!=""){
+					this.FasongShijian();	//发送时间
 //					var cont="xxx 总经理 申请换取名片"
 //					var type=1					//如果tyoe=1发送的是名片
 //					this.My(type,texts);		//我要发送信息处理函数
@@ -1018,8 +1248,6 @@
 					},function(res){
 					    console.log(res);
 					})
-					
-//					this.FasongShijian();
 					this.introduction="";
 				}else{
 					return;
@@ -1056,6 +1284,18 @@
 	  	/*transform:rotate(360deg);*/
 	  	/*opacity: 0;*/
 	}
+	.fades-enter-active {
+	  	transition: all .5s ease;
+	}
+	.fades-leave-active {
+	  	transition: all .5s ease;
+	}
+	.fades-enter, .fades-leave-active {
+	  	/*transform: translateX(4.17rem);*/
+	  	/*transform:rotate(360deg);*/
+	  	opacity: 0;
+	}
+	
 	.yijian{
 		position:fixed;
 		background:#f5f4f9;
@@ -1297,6 +1537,62 @@
 					line-height:0.16rem;
 					&::-webkit-scrollbar{width:0;height:0}
 				}
+	        }
+	    }
+	    .loding{
+			display:flex;
+			align-content:center;
+			align-items:center;
+			justify-content:center;
+			.loadEffect{
+	            width: 70%;
+	            min-height: 0.40rem;
+	            position: relative;
+	            padding:0.3rem 0;
+	            background: #fff;
+	            border-radius:0.06rem;
+	            .load-butten{
+	            	width:100%;
+	            	height:0.4rem;
+	            	font{
+		            	position:absolute;
+		            	display:inline-block;
+		            	background:#ff7a59;
+		            	padding:0.06rem 0.1rem;
+		            	color:#fff;
+		            	border-radius:0.04rem;
+		            	&.first{
+		            		bottom:0.2rem;
+		            		left:16%;
+		            	}
+		            	&.last{
+		            		bottom:0.2rem;
+		            		right:16%;
+		            	}
+		            }
+	            }
+	        }
+	        .loadEffect span{
+	        	margin:0 auto;
+	            display: block;
+	            text-align:justify;
+	            line-height: 0.22rem;
+	            font-size: 0.16rem;
+	            width: 80%;
+	        }
+	        .loadEffect{
+	        	position:relative;
+	        	ul{
+	            	li{
+	            		span{
+	            			/*text-align:center;*/
+	            			line-height: 0.46rem;
+	            		}
+	            		.last-bottom{
+	            			line-height: 0.36rem;
+	            		}
+	            	}
+	            }
 	        }
 	    }
 	}

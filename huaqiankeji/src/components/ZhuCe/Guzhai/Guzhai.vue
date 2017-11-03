@@ -150,29 +150,33 @@
 			},
 			ToHoom(){
 				var CanShu={				//给下级要传的参数
-					id:this.XiajiCanshu.id,			//	uid	是	[string]
+					id:localStorage.getItem("userID"),
+//					id:this.XiajiCanshu.id,			//	uid	是	[string]
 					fund_stage:'15',			//投资阶段 15债转股 16债权 17 新三板 62PE 63 VC 64 天使投资 75PreIPO	是	[string]
 					texta:this.texta,
 					numbere:this.numbere,
 					numberf:this.numberf,
 					biaoQianid:this.biaoQianid,
 					biaoQianid1:this.biaoQianid1,
-					typeID:this.typeID
+					typeID:localStorage.getItem("typeID")
 				}
 				var CanShu1={				//给下级要传的参数
-					id:this.XiajiCanshu.id,			//	uid	是	[string]
+					id:localStorage.getItem("userID"),
+//					id:this.XiajiCanshu.id,			//	uid	是	[string]
 					fund_stage:'15',			//投资阶段 15债转股 16债权 17 新三板 62PE 63 VC 64 天使投资 75PreIPO	是	[string]
 //					texta:this.texta,
 					numbere:this.numbere,
 					numberf:this.numberf,
 					biaoQianid:this.biaoQianid,
 					biaoQianid1:this.biaoQianid1,
-					typeID:this.typeID
+					typeID:localStorage.getItem("typeID")
 				}
 				this.CanShu=CanShu;
 				var datas={
-					id:this.XiajiCanshu.id,			//	uid	是	[string]		
-					investment_type:this.typeID,			//投资类型 1:股权投资 2:债权投资 3:股债兼投	是	[string]		
+					id:localStorage.getItem("userID"),
+//					id:this.XiajiCanshu.id,			//	uid	是	[string]		
+//					investment_type:this.typeID,			//投资类型 1:股权投资 2:债权投资 3:股债兼投	是	[string]
+					investment_type:localStorage.getItem("typeID"),	
 					interested:this.biaoQianid,				//感兴趣的行业多个用逗号分割	是	[string]		
 					single_project_max:this.numberf,			//单笔投资最大值	是	[string]		
 					single_project_min:this.numbere,			//单笔投资最小值	是	[string]		

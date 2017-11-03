@@ -90,7 +90,7 @@
 				onlyContent:true,
 				index:"0",
 				JigouType:"Guquan",
-				typeID:"1",
+				typeID:"",
 				TouziType:"",
 				imgurl:"",
 				images:false
@@ -154,11 +154,12 @@
 //					com_short:"公司全称",					//公司简称
 					photo:this.$refs.mingpianID.mingpianID,						//名片id
 					actype:this.type,		//身份变更 id
+					investment_type:this.typeID
 //					uname:"",										//姓名
 //					position:""									//职称
 				}
 				if(this.index==0){		//投资机构下一步
-					localStorage.setItem("typeID",this.typeID);
+//					localStorage.setItem("typeID",this.typeID);
 					this.$http.post(URL.path1+'account/identity',data,{emulateJSON:true}).then(function(res){
 	                    console.log(res);
 						if(res.body.returnCode=='200'){
@@ -276,6 +277,8 @@
 				var length=spans.length;
 				this.typeID=id;
 				this.JigouType=type;
+				localStorage.setItem("typeID",id);
+				console.log(localStorage.getItem("typeID"));
 				for(var i=0; i<length; i++){
 					if(spans[i].getAttribute("class")=="bianse"){
 						spans[i].setAttribute("class","");

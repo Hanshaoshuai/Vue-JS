@@ -255,10 +255,11 @@
 				spans[index].setAttribute("class","bianse")
 			},
 			xuanze2(index,type,id){
-//				console.log(this.$refs.biaoqian.getElementsByTagName("span"))
+				console.log(this.$refs.biaoqian.getElementsByTagName("span"))
 				var spans=this.$refs.biaoqian2.getElementsByTagName("span")
 				var length=spans.length;
 				this.typeID=id;
+				localStorage.setItem("typeID",this.typeID);
 				this.JigouType=type;
 				for(var i=0; i<length; i++){
 					if(spans[i].getAttribute("class")=="bianse"){

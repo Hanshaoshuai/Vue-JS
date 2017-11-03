@@ -87,7 +87,7 @@
 					</ul>
 				</div>
 			</div>
-			<transition name="fades">
+			<!--<transition name="fades">-->
 				<div ref="xianShi" v-show="onlyContent" class="loding" style="position: absolute;z-index: 1600; top: 0;right: 0;bottom: 0;left: 0;background-color: rgba(0,0,0,0.3);display: none;">
 				    <div class="loadEffect" ref="padding">
 						<ul v-show="firstTop">
@@ -99,7 +99,7 @@
 						</ul>
 					</div>	
 				</div>
-			</transition>
+			<!--</transition>-->
 		</div>
 	</transition>
 </template>
@@ -271,7 +271,7 @@
 							tata.onlyContent=false;
 							tata.firstTop=true
 							tata.lastBottom=false
-						},2000)
+						},1000)
 						this.showFlag=true;
 						this.showFlag1=false;
 						var textInputs = this.$refs.guanzhuLingyu.getElementsByClassName("mint-field-core");
@@ -288,18 +288,18 @@
 			bianJi(){
 				this.onlyContent=false;
 			},
-			dingzengBlock(){
-				this.tucaoShow=true;
-			},
-			xinxiTo(){
-				this.$refs.xinxiShow.xinxiBlock();
-			},
-			liuYan(){
-				window.location.href="#/fankuixinxi";
-			},
-			baoMing(){
-				this.$refs.youhuiShow.YouhuiBlock();
-			}
+//			dingzengBlock(){
+//				this.tucaoShow=true;
+//			},
+//			xinxiTo(){
+//				this.$refs.xinxiShow.xinxiBlock();
+//			},
+//			liuYan(){
+//				window.location.href="#/fankuixinxi";
+//			},
+//			baoMing(){
+//				this.$refs.youhuiShow.YouhuiBlock();
+//			}
 		},
 		events:{
 			
@@ -539,7 +539,7 @@
 			}
 			.butten{
 				width:100%;
-				background:#f5f4f9;
+				/*background:#f5f4f9;*/
 				padding:0.2rem 0;
 				ul{
 					width:65.8%;

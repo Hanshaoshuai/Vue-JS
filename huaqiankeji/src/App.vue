@@ -42,14 +42,14 @@
 <script>
 	import {URL} from './common/js/path';
 	
-	window.onhashchange = function() {
-//			console.log("sssssss")
-		if(document.getElementById("fanxian") && sessionStorage.getItem("faxianScroll")){
-			var fanxian=document.getElementById("fanxian")
-			console.log(document.getElementById("fanxian").scrollTop)
-			fanxian.scrollTop=sessionStorage.getItem("faxianScroll")
-		}
-	}
+//	window.onhashchange = function() {
+////			console.log("sssssss")
+//		if(document.getElementById("fanxian") && sessionStorage.getItem("faxianScroll")){
+//			var fanxian=document.getElementById("fanxian")
+//			console.log(document.getElementById("fanxian").scrollTop)
+//			fanxian.scrollTop=sessionStorage.getItem("faxianScroll")
+//		}
+//	}
 
 	export default {
 		name: 'app',
@@ -120,6 +120,7 @@
 			display:flex;
 			flex-wrap:wrap;
 			background:#ffffff;
+			/*box-shadow: -0.006rem 0 0.01rem #000000;*/
 			.tab-item{
 				flex:1;
 				margin:0.06rem 0;
@@ -179,7 +180,7 @@
 						background-image:url("./shendu1.png");
 					}
 					.icon-wode{
-						background-image:url("./wode1.png");
+						background-image:url("./wode2.png");
 					}
 				}
 			}

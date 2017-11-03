@@ -12,6 +12,13 @@
 						<span>{{data.position}}</span>
 					</div>
 				</div>
+				<div v-if="shifouZhuce=='6'" class="header-name">
+					<font>{{data.uname}}</font>
+					<div class="header-content">
+						<span>{{data.com_short}}</span>
+						<span>{{data.position}}</span>
+					</div>
+				</div>
 				<!--<div class="jifen"><font></font><span>积分 666</span></div>-->
 			</div>
 			
@@ -113,7 +120,8 @@
 				beianShow:false,
 				completeness:"",
 				yuetan:"",
-				shifouZhuce:""
+				shifouZhuce:"",
+				houtaiTishi:""
 			}
 		},
 		activated(){
@@ -132,7 +140,8 @@
 			});
 		},
 		mounted(){
-			this.shifouZhuce=localStorage.getItem("shifouZhuce")
+			this.shifouZhuce=localStorage.getItem("shifouZhuce");
+			this.houtaiTishi=localStorage.getItem("houtaiTishi");
 			console.log(this.shifouZhuce)
 			this.userContent={
 	  			userID:localStorage.getItem("userID"),			//用户ID
@@ -222,35 +231,56 @@
 						window.location.href="#/wode/Ziliao"+id+"/"+this.userContent["token"];
 					}
 				}else{
-					Toast("您的注册申请尚在审核中！")
+					if(this.shifouZhuce=='6'){
+						Toast(this.houtaiTishi)
+					}else{
+						Toast("您的注册申请尚在审核中")
+					}
 				}
 			},
 			RongziBeian(){
 				if(this.shifouZhuce==2){
 					window.location.href="#/wode/RongziBeian/"+this.token;
 				}else{
-					Toast("您的注册申请尚在审核中")
+					if(this.shifouZhuce=='6'){
+						Toast(this.houtaiTishi)
+					}else{
+						Toast("您的注册申请尚在审核中")
+					}
 				}
 			},
 			jiluGo(){
 				if(this.shifouZhuce==2){
 					window.location.href="#/wode/jilu/0";
 				}else{
-					Toast("您的注册申请尚在审核中")
+					if(this.shifouZhuce=='6'){
+						Toast(this.houtaiTishi)
+					}else{
+						Toast("您的注册申请尚在审核中")
+					}
 				}
 			},
 			baomingGo(){
 				if(this.shifouZhuce==2){
 					window.location.href="#/wode/baoming/0";
 				}else{
-					Toast("您的注册申请尚在审核中")
+					if(this.shifouZhuce=='6'){
+						Toast(this.houtaiTishi)
+					}else{
+						Toast("您的注册申请尚在审核中")
+					}
 				}
 			},
 			gangweiGo(){
 				if(this.shifouZhuce==2){
 					window.location.href="#/wode/gangwei/0";
 				}else{
-					Toast("您的注册申请尚在审核中")
+					if(this.shifouZhuce=='6'){
+						window.location.href="#/wode/gangwei/0";
+//						Toast(this.houtaiTishi)
+					}else{
+						Toast("您的注册申请尚在审核中")
+					}
 				}
 			}
 //			show(){
