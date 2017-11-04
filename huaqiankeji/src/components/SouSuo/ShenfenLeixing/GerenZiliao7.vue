@@ -70,7 +70,7 @@
 					</div>
 				</div>
 				<box></box>
-				<div class="butten">
+				<div v-if="this.data.id!=userID" class="butten">
 					<ul>
 						<li><span @click.stop="liuYan()">留言</span></li>
 					</ul>
@@ -138,10 +138,12 @@
 				biaoQianID:[],		//储存标签id
 				biaoQianID1:[],		//储存标签id
 				biaoQianID2:[],		//储存标签id
-				scrollTop:""
+				scrollTop:"",
+				userID:""
 			}
 		},
 		mounted(){
+			this.userID=localStorage.getItem("userID");
 			Indicator.open({spinnerType: 'fading-circle'});
 			console.log(this.userContent)
 //			个人资料

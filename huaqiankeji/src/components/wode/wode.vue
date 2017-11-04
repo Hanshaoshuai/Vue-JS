@@ -121,7 +121,9 @@
 				completeness:"",
 				yuetan:"",
 				shifouZhuce:"",
-				houtaiTishi:""
+				houtaiTishi:"",
+				diyiCi:false,
+				shengqingZhongtishi:'您的注册申请尚在审核中'
 			}
 		},
 		activated(){
@@ -138,6 +140,9 @@
 					}
 				}
 			});
+//			if(this.diyiCi==false){
+//				this.jiantingTongguo()
+//			}
 		},
 		mounted(){
 			this.shifouZhuce=localStorage.getItem("shifouZhuce");
@@ -169,53 +174,71 @@
 				this.block=false;
 			}
 			console.log(this.investment_type)
-			var params={
-	    		token:this.userContent.token,
-	    		terminalNo:3
-	    	}
-			Indicator.open({spinnerType: 'fading-circle'});
-			this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
-				Indicator.close();
-				this.data=res.body.data;
-				this.yuetan=res.body.data.exchange_card.toFixed(2);
-				this.inof=res.body.data.info.feedback;
-				this.completeness=res.body.data.info.completeness;
-				if(this.userContent["type"]=='2'){
-					localStorage.setItem("typeID",res.body.data.info.investment_type);
-					this.investment_type=res.body.data.info.investment_type;		//用户的投资类型；   是投资机构时才会出现的参数
-				}
-				this.$nextTick(function(){
-					var images = this.$refs.images;
-					images.onload =function(){
-						if (this.clientWidth>this.clientHeight) {
-							this.style.height="100%"
-							this.style.width="auto"
-						}else{
-							this.style.width="100%"
-							this.style.height="auto"
-						}
-					}
-				});
-				console.log("个人资料");
-				console.log(res);
-//				if(this.data.exchange_card==0){
-//					this.numberb="暂无"
-//				}else{
-//					this.numberb=this.data.exchange_card;//约谈率
-//				}
-				
-//				this.numberc=this.data.info.revenue_min;//净利润不低于	将要改变的数据
-//				this.numberTod='营收收入不低于'+this.data.info.profit_min+'亿元';  //要插到页面的
-//				this.numberToc='净利润不低于'+this.data.info.revenue_min+'万元';				//要插到页面的地区
-//				this.textd=this.data.info.profit_min;//原来的数据
-//				this.texte=this.data.info.revenue_min;//原来的数据
-				
-			},function(res){
-				Indicator.close();
-			    console.log(res);
-			})
+			this.gerenZiliao();
 		},
 		methods:{
+//			监听是否通过
+			jiantingTongguo(){
+				var params={
+		    		token:this.userContent["token"],
+		    		terminalNo:3
+		    	}
+				this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
+					console.log('监听个人信息更改通过');
+					console.log(res);
+					this.shifouZhuce=res.body.data.status;
+					localStorage.setItem("shifouZhuce",res.body.data.status)
+					if(res.body.data.status==2){
+						console.log("判断注册通过的首页项目列表成功");
+						this.diyiCi=true;
+						this.gerenZiliao();
+					}else{
+						if(res.body.returnCode=='401'){
+							window.location.href="#/denglu";
+							this.shengqingZhongtishi='1'
+						}else{
+							Toast(this.shengqingZhongtishi)
+						}
+					}
+				},function(res){
+				    console.log(res);
+				})
+			},
+			gerenZiliao(){
+				var params={
+		    		token:this.userContent.token,
+		    		terminalNo:3
+		    	}
+//				Indicator.open({spinnerType: 'fading-circle'});
+				this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
+//					Indicator.close();
+					this.data=res.body.data;
+					this.yuetan=res.body.data.exchange_card.toFixed(2);
+					this.inof=res.body.data.info.feedback;
+					this.completeness=res.body.data.info.completeness;
+					if(this.userContent["type"]=='2'){
+						localStorage.setItem("typeID",res.body.data.info.investment_type);
+						this.investment_type=res.body.data.info.investment_type;		//用户的投资类型；   是投资机构时才会出现的参数
+					}
+					this.$nextTick(function(){
+						var images = this.$refs.images;
+						images.onload =function(){
+							if (this.clientWidth>this.clientHeight) {
+								this.style.height="100%"
+								this.style.width="auto"
+							}else{
+								this.style.width="100%"
+								this.style.height="auto"
+							}
+						}
+					});
+					console.log("个人资料");
+					console.log(res);
+				},function(res){
+//					Indicator.close();
+				    console.log(res);
+				})
+			},
 			gaiBian(){
 				window.location.href="#/touXiang/"+this.userContent["token"];
 			},
@@ -234,7 +257,12 @@
 					if(this.shifouZhuce=='6'){
 						Toast(this.houtaiTishi)
 					}else{
-						Toast("您的注册申请尚在审核中")
+						this.jiantingTongguo()
+						if(this.shengqingZhongtishi=='1'){
+//							window.location.href="#/denglu";
+						}else{
+//							Toast(this.shengqingZhongtishi)
+						}
 					}
 				}
 			},
@@ -245,7 +273,12 @@
 					if(this.shifouZhuce=='6'){
 						Toast(this.houtaiTishi)
 					}else{
-						Toast("您的注册申请尚在审核中")
+						this.jiantingTongguo()
+						if(this.shengqingZhongtishi=='1'){
+//							window.location.href="#/denglu"
+						}else{
+//							Toast(this.shengqingZhongtishi)
+						}
 					}
 				}
 			},
@@ -256,7 +289,12 @@
 					if(this.shifouZhuce=='6'){
 						Toast(this.houtaiTishi)
 					}else{
-						Toast("您的注册申请尚在审核中")
+						this.jiantingTongguo()
+						if(this.shengqingZhongtishi=='1'){
+//							window.location.href="#/denglu"
+						}else{
+//							Toast(this.shengqingZhongtishi)
+						}
 					}
 				}
 			},
@@ -267,7 +305,12 @@
 					if(this.shifouZhuce=='6'){
 						Toast(this.houtaiTishi)
 					}else{
-						Toast("您的注册申请尚在审核中")
+						this.jiantingTongguo()
+						if(this.shengqingZhongtishi=='1'){
+//							window.location.href="#/denglu"
+						}else{
+//							Toast(this.shengqingZhongtishi)
+						}
 					}
 				}
 			},
@@ -279,23 +322,15 @@
 						window.location.href="#/wode/gangwei/0";
 //						Toast(this.houtaiTishi)
 					}else{
-						Toast("您的注册申请尚在审核中")
+						this.jiantingTongguo()
+						if(this.shengqingZhongtishi=='1'){
+//							window.location.href="#/denglu"
+						}else{
+//							Toast(this.shengqingZhongtishi)
+						}
 					}
 				}
 			}
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -311,9 +346,6 @@
 		},
 		components:{
 			box,
-//			jilu
-//			ratingselect,
-//			split
 		}
 	}
 </script>

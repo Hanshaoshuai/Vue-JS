@@ -50,7 +50,7 @@
 										<p>{{item.lightspot}}</p>
 									</div>
 								</div>
-								<div class="jieshu"><font>保密信息，禁止传播</font><span v-if="item.follow=='1' && item.end_follow!=1 && item.end_follow!=2" @click.stop="jieshu(item.id,item.short,item.send_id,item.uid)">结束项目</span></div>
+								<div class="jieshu"><font>保密信息，禁止传播</font><span v-if="item.follow=='1' && item.end_follow!=1 && item.end_follow!=2" @click.stop="jieshu(item.id,item.short,item.send_id,item.uid)">{{jieshuXiangmu}}</span></div>
 								<div class="times border">
 									<span class="text-center">{{numToTime(item.send_time)}}</span>
 									<span>发布</span>
@@ -107,6 +107,7 @@
 		},
 		data () {
 			return {
+				jieshuXiangmu:'结束项目',
 				token:"",
 				data:[],
 				XiangmuID:"",
@@ -143,6 +144,12 @@
 			}
 		},
 		mounted() {
+//			this.$on("c-send",function(msg){
+//				this.data=[];
+//	      		this.LieBiao();
+//				alert(msg);
+//			});
+			var tata=this;
 			this.numToTime=numToTime;
 			this.numToTime3=numToTime3;
 			this.LieBiao()
@@ -159,9 +166,10 @@
 				this.$refs.wrapper.scrollTop=0;
 			},
 	      	child(data){
-	      		if(data){
-	      			this.LieBiao();
-	      		}
+	      		this.data=[];
+	      		this.page=1;
+	      		this.LieBiao();
+//	      		this.jieshuXiangmu=data;
 	      	},
 	      	faxianScroll(){
 				if(this.$refs.wrapper.scrollTop>800){
@@ -206,7 +214,7 @@
 					this.topStatus=false;
 					if(res.body.data.length==0){
 						if(this.data.length==0){
-							this.jeiguo="暂无搜索结果"
+							this.jeiguo="暂无项目"
 						}
 						this.$refs.wrapper.removeEventListener('scroll', this.faxianScroll);
 						this.tishis=true;
@@ -312,6 +320,7 @@
 		created() {
 	    },
 		updated(){
+//			this.LieBiao();
 		},
 		events:{
 			

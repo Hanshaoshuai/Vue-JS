@@ -31,7 +31,7 @@
 							</div>
 							<div class="TypeList-text border-right">
 								<span>新项目</span>
-								<span class="text-coler">智能匹配全国投资机构</span>
+								<span class="text-coler">专属优质项目等您反馈</span>
 							</div>
 						</div>
 						<div v-if="t" class="TypeList" @click.stop="qiyefankuiGo()">
@@ -94,7 +94,13 @@
 							<span class="img-rongzi"></span>
 						</div>
 						<div class="swiper-container">
-							<span class="text">你可以联系的其他正在融资项目</span>
+							<span v-if="type=='2'" class="text">你可以联系的其他正在融资项目</span>
+							<span v-if="type=='3'" class="text">你可以联系的其他正在融资项目</span>
+							<span v-if="type=='4'" class="text">你可以联系的其他正在融资项目</span>
+							<span v-if="type=='5'" class="text">你可以联系的其他正在融资项目</span>
+							<span v-if="type=='6'" class="text">你可以联系的其他正在融资项目</span>
+							<span v-if="type=='1'" class="text">其他正在融资的企业</span>
+							<span v-if="type=='7'" class="text">其他正在融资的企业</span>
 						</div>
 					</div>
 <!--意见反馈-->		
@@ -217,7 +223,9 @@
 		        n:0,
 		        topBlock:false,
 		        weitongguoShiyong:'',
-		        houtaiTishi:''
+		        houtaiTishi:'',
+		        diyiCi:false,
+		        shengqingZhongtishi:'您的注册申请尚在审核中'
 			}
 		},
 		mounted() {	//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商
@@ -271,7 +279,11 @@
 				if(that.shifouZhuce=='2'){
 					that.huoqugeshu();
 					that.qiyeFankui();
+					that.qinQiu();
 				}
+//				if(that.diyiCi==false){
+//					that.jiantingTongguo()
+//				}
 			}
 //	    	if(this.shifouZhuce=='2'){
 //				this.huoqugeshu();
@@ -289,6 +301,33 @@
 			zhiDing(){		//返回顶部；
 				this.$refs.wrapper.scrollTop=0;
 			},
+//			监听是否通过
+			jiantingTongguo(){
+				var params={
+		    		token:this.userContent["token"],
+		    		terminalNo:3
+		    	}
+				this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
+					console.log('监听个人信息更改通过');
+					console.log(res);
+					this.shifouZhuce=res.body.data.status;
+					localStorage.setItem("shifouZhuce",res.body.data.status)
+					if(res.body.data.status==2){
+						console.log("判断注册通过的首页项目列表成功");
+						this.diyiCi=true;
+						this.panDuan();
+					}else{
+						if(res.body.returnCode=='401'){
+							window.location.href="#/denglu";
+							this.shengqingZhongtishi='1'
+						}else{
+							Toast(this.shengqingZhongtishi)
+						}
+					}
+				},function(res){
+				    console.log(res);
+				})
+			},
 //			刚注册判断接口	个人信息
 			panDuan(){
 				var params={
@@ -301,7 +340,8 @@
 					this.shifouZhuce=res.body.data.status;
 					localStorage.setItem("shifouZhuce",res.body.data.status)
 					if(res.body.data.status==2){
-						console.log("判断注册是否未通过的首页项目列表成功");
+						console.log("判断注册通过的首页项目列表成功");
+						this.diyiCi=true;
 			//	    	首页项目列表（非自己收到的项目）接口
 				    	this.qinQiu();
 			//			投资机构收到的新项目数
@@ -346,7 +386,9 @@
 //			注册未通过的首页项目列表成功
 			WeitongGuo(){
 				var post={
-					item:2
+					item:2,
+					page:this.page,			//	page	是	[string]		
+					size:6					//	size	是	[string]
 				}
 				this.$http.post(URL.path+'common/item_list',post,{emulateJSON:true}).then(function(res){
 					console.log(res);
@@ -551,7 +593,12 @@
 					if(this.shifouZhuce=='6'){
 						Toast(this.houtaiTishi)
 					}else{
-						Toast("您的注册申请尚在审核中")
+						this.jiantingTongguo()
+						if(this.shengqingZhongtishi=='1'){
+//							window.location.href="#/denglu"
+						}else{
+//							Toast(this.shengqingZhongtishi)
+						}
 					}
 				}
 			},
@@ -562,7 +609,12 @@
 					if(this.shifouZhuce=='6'){
 						Toast(this.houtaiTishi)
 					}else{
-						Toast("您的注册申请尚在审核中")
+						this.jiantingTongguo()
+						if(this.shengqingZhongtishi=='1'){
+//							window.location.href="#/denglu"
+						}else{
+//							Toast(this.shengqingZhongtishi)
+						}
 					}
 				}
 			},
@@ -574,7 +626,12 @@
 					if(this.shifouZhuce=='6'){
 						Toast(this.houtaiTishi)
 					}else{
-						Toast("您的注册申请尚在审核中")
+						this.jiantingTongguo()
+						if(this.shengqingZhongtishi=='1'){
+//							window.location.href="#/denglu"
+						}else{
+//							Toast(this.shengqingZhongtishi)
+						}
 					}
 				}
 			},
@@ -586,7 +643,12 @@
 					if(this.shifouZhuce=='6'){
 						Toast(this.houtaiTishi)
 					}else{
-						Toast("您的注册申请尚在审核中")
+						this.jiantingTongguo()
+						if(this.shengqingZhongtishi=='1'){
+//							window.location.href="#/denglu"
+						}else{
+//							Toast(this.shengqingZhongtishi)
+						}
 					}
 				}
 			},
@@ -598,7 +660,12 @@
 					if(this.shifouZhuce=='6'){
 						Toast(this.houtaiTishi)
 					}else{
-						Toast("您的注册申请尚在审核中")
+						this.jiantingTongguo()
+						if(this.shengqingZhongtishi=='1'){
+//							window.location.href="#/denglu"
+						}else{
+//							Toast(this.shengqingZhongtishi)
+						}
 					}
 				}
 			},
@@ -613,7 +680,12 @@
 					if(this.shifouZhuce=='6'){
 						Toast(this.houtaiTishi)
 					}else{
-						Toast("您的注册申请尚在审核中")
+						this.jiantingTongguo()
+						if(this.shengqingZhongtishi=='1'){
+//							window.location.href="#/denglu"
+						}else{
+//							Toast(this.shengqingZhongtishi)
+						}
 					}
 				}
 			},

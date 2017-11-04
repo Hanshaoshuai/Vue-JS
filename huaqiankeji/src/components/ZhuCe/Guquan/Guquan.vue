@@ -1,8 +1,9 @@
 <template>
 	<transition name="fade">
 		<div class="type" v-show="showFlag">
-			<div class="xiangmu-header" @click.stap="yijianHind()">
-				<span class="xiangmu-left"><img src="../img/back.png"/></span>
+			<!--<div class="xiangmu-header" @click.stap="yijianHind()">-->
+			<div class="xiangmu-header">
+				<!--<span class="xiangmu-left"><img src="../img/back.png"/></span>-->
 				<span>股权投资</span>
 			</div>
 			<div class="type-content-list">
@@ -123,12 +124,12 @@
 				var data=res.body.data
 				this.BiaoQian=res.body.data
 				this.$nextTick(function() {
-					var typeLi=this.$refs.foods.getElementsByTagName("li");
-					typeLi[0].setAttribute("class","src1");
-					this.biaoQianID.push(typeLi[0].id);
-					var typeLi1=this.$refs.foods1.getElementsByTagName("li");
-					typeLi1[0].setAttribute("class","src1");
-					this.biaoQianID1.push(typeLi1[0].id);
+//					var typeLi=this.$refs.foods.getElementsByTagName("li");
+//					typeLi[0].setAttribute("class","src1");
+//					this.biaoQianID.push(typeLi[0].id);
+//					var typeLi1=this.$refs.foods1.getElementsByTagName("li");
+//					typeLi1[0].setAttribute("class","src1");
+//					this.biaoQianID1.push(typeLi1[0].id);
 				});
 				console.log(this.BiaoQian);
 			},function(res){
@@ -152,12 +153,15 @@
 					texta:this.texta,
 					numbere:this.numbere,
 					numberf:this.numberf,
+					
 //					XiangmuID:this.XiangmuID
 				}
 				var CanShu1={				//给下级要传的参数
 //					texta:this.texta,
 					numbere:this.numbere,
 					numberf:this.numberf,
+					biaoQianid:this.biaoQianid,
+					biaoQianid1:this.biaoQianid1
 //					XiangmuID:this.XiangmuID
 				}
 				var ok=0;

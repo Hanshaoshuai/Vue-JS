@@ -70,7 +70,7 @@
 					</div>
 				</div>
 				<box></box>
-				<div class="butten">
+				<div v-if="this.data.id!=userID" class="butten">
 					<ul>
 						<li><span @click.stop="liuYan()">留言</span></li>
 					</ul>
@@ -135,9 +135,11 @@
 				tucaoShow:true,
 				urlName:"Dingzeng",
 				typeLi:"",
+				userID:""
 			}
 		},
 		mounted(){
+			this.userID=localStorage.getItem("userID");
 			Indicator.open({spinnerType: 'fading-circle'});
 			console.log(this.userContent)
 //			个人资料

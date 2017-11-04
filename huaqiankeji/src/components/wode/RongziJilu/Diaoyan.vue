@@ -51,8 +51,8 @@
 					<div class="zhuying_1 border">
 						<div class="ferst"><span></span>经营业绩</div>
 						<div class="last">
-							<p>上一财年：营收&nbsp;<span>{{numbera}}亿元</span>&nbsp;&nbsp;&nbsp;&nbsp;净利润&nbsp;<span>{{numberb}}万元</span></p>
-							<p>今年预计：营收&nbsp;<span>{{numberc}}亿元</span>&nbsp;&nbsp;&nbsp;&nbsp;净利润&nbsp;<span>{{numberd}}万元</span></p>
+							<p>上一财年：营收&nbsp;<span>{{numbera}}亿元</span>&nbsp;&nbsp;&nbsp;&nbsp;扣非净利润&nbsp;<span>{{numberb}}万元</span></p>
+							<p>今年预计：营收&nbsp;<span>{{numberc}}亿元</span>&nbsp;&nbsp;&nbsp;&nbsp;扣非净利润&nbsp;<span>{{numberd}}万元</span></p>
 						</div>
 					</div>
 					<div class="zhuying_1 border">
@@ -337,6 +337,10 @@
 				console.log(this.y)
 			},
 			xiayibuGo(){
+				if(this.data.audit=='1'){
+					Toast("该项目已被系统强制撤回");
+					return;
+				}
 //				this.butenLeft="butenLeft";
 //				this.butenRight="";
 				var CanShu={				//给下级要传的参数

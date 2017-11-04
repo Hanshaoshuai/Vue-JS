@@ -17,7 +17,7 @@
 					<div class="fankiu">
 						<div class="tubiao"></div>
 						<div class="content-food" style="text-align:center;">
-							<span>已为您匹配{{body.length}}人</span>
+							<span>已为您匹配{{body}}人</span>
 						</div>
 					</div>
 					<div v-for="(cont,index) in data" class="add" :id="index" ref="lisitTop">
@@ -467,6 +467,7 @@
 //			}
 		},
 		updated(){
+			this.body=this.data.length*50;
 		},
 		components:{
 		}

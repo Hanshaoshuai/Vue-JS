@@ -86,7 +86,6 @@
 	import { Toast } from 'mint-ui';
 	import tishi from "../../Tishi.vue";
 	
-	
 	export default {
 		props:{
 //			food:{
@@ -270,38 +269,46 @@
 						if(res[item].type==5){		//type=5:发送名片
 							if(res[item].from_id==this.uid){
 								var MingPian="5";
-								var i=0;
 								var cont=JSON.parse(res[item].content)
 								if(cont.operate==1){
 									cont.card[0];
 									this.tousuoContent=this.numToTime1(res[item].create_time);
 									this.tousuoGo(this.numToTime1(res[item].create_time));
-									
-									this.You('1',cont.card[0],'0','1',MingPian);
-									console.log(JSON.parse(res[item].content).card[0])
+									if(cont.card[0].id==this.uid){
+										this.You('1',cont.card[0],'0','1',MingPian);
+									}else{
+										this.You('1',cont.card[1],'0','1',MingPian);
+									}
 								}
 								if(cont.operate==2){
-	//									cont.card[i];
 									this.tousuoGo(this.numToTime1(res[item].create_time));
-									
 									this.TishiNeirong('对方拒绝了您交换名片的申请')
 								}
-								i++;
+								if(cont.operate==3){
+									this.tousuoGo(this.numToTime1(res[item].create_time));
+									this.TishiNeirong('对方拒绝了您交换名片的申请')
+								}
 							}else{
 								var MingPian="5";
 								var cont=JSON.parse(res[item].content)
 								if(cont.operate==2){
 									this.tousuoGo(this.numToTime1(res[item].create_time));
-									
 									this.TishiNeirong('您拒绝了对方交换名片的申请')		//提示信息函数
 								}else{
 									this.tousuoGo(this.numToTime1(res[item].create_time));
 									
-									this.TishiNeirong('您同意了对方交换名片的申请')		//提示信息函数
+									this.TishiNeirong('您同意了对方交换名片的申请');		//提示信息函数
 									
 									this.tousuoGo(this.numToTime1(res[item].create_time));
-									
-									this.You('1',cont.card[1],'0','1',MingPian);
+									if(cont.card[1].id==this.uid){
+										this.You('1',cont.card[1],'0','1',MingPian);
+									}else{
+										this.You('1',cont.card[0],'0','1',MingPian);
+									}
+								}
+								if(cont.operate==3){
+									this.tousuoGo(this.numToTime1(res[item].create_time));
+									this.TishiNeirong('由于您长时间未反馈，系统默认拒绝名片交换申请');
 								}
 							}
 						}
@@ -428,6 +435,7 @@
 //					Toast("提交后我们将在24小时内处理")
 					Toast("投诉成功")
 					this.onlyContent=false;
+					this.onlyContent1=false;
 					console.log(res);
 				},function(res){
 					Indicator.close();
@@ -786,8 +794,8 @@
 							console.log("处理发送项目同意"+res);
 							console.log(res);
 							if(res.body.msg=="操作成功"){
-								this.TishiNeirong("您同意了向对方发送完整项目信息");
 								this.FasongShijian();
+								this.TishiNeirong("您同意了向对方发送完整项目信息");
 							}
 						},function(res){
 						    console.log(res);
@@ -806,8 +814,8 @@
 							var data=res
 							console.log("处理换名片同意"+res);
 							console.log(res);
-							this.TishiNeirong("您同意了对方名片的申请");
 							this.FasongShijian();
+							this.TishiNeirong("您同意了对方名片的申请");
 						},function(res){
 						    console.log(res);
 						})
@@ -849,8 +857,8 @@
 							var data=res
 							console.log("处理发送项目拒绝");
 							console.log(res);
-							this.TishiNeirong("您拒绝了向对方发送完整项目信息");
 							this.FasongShijian();
+							this.TishiNeirong("您拒绝了向对方发送完整项目信息");
 						},function(res){
 						    console.log(res);
 						})
@@ -868,8 +876,8 @@
 							var data=res
 							console.log("处理换名片拒绝");
 							console.log(res);
-							this.TishiNeirong("您拒绝了对方名片的申请");
 							this.FasongShijian();
+							this.TishiNeirong("您拒绝了对方名片的申请");
 						},function(res){
 						    console.log(res);
 						})
@@ -909,24 +917,24 @@
 		        if(/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}$/.test(texts)){
 //		        	Toast("请不要输入敏感字符")
 		        	this.introduction="";
-		        	texts="PHONE<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+		        	texts="PHONE<a>&nbsp;</a>NUNBER<a>&nbsp;</a>HIDDEN";
 		        	yiyou=1;
 //		        	return;
 		        }
-		        if(/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]$/.test(texts)){
+		        if(/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(texts)){
 //		        	Toast("请不要输入敏感字符")
 					if(yiyou==0){
 			        	this.introduction="";
-			        	texts="PHONE<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+			        	texts="PHONE<a>&nbsp;</a>NUNBER<a>&nbsp;</a>HIDDEN";
 			        	yiyou=1;
 			        }
 //		        	return;
 		        }
-		         if(/^[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.](0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}|[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]$/.test(texts)){
+		         if(/^[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【](0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}|[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(texts)){
 //		        	Toast("请不要输入敏感字符")
 		        	if(yiyou==0){
 			        	this.introduction="";
-			        	texts="PHONE<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+			        	texts="PHONE<a>&nbsp;</a>NUNBER<a>&nbsp;</a>HIDDEN";
 			        	yiyou=1;
 		        	}
 //		        	return;
@@ -936,7 +944,7 @@
 //					Toast('请不要输入敏感字符');
 					if(yiyou==0){
 						this.introduction="";
-						texts="PHONE<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+						texts="PHONE<a>&nbsp;</a>NUNBER<a>&nbsp;</a>HIDDEN";
 						yiyou=1;
 					}
 //					return;
@@ -944,23 +952,23 @@
 //		        if(/^(\(\d{3,4}\)[-][0-9]{6,8}){8,14}$/.test(texts)){
 ////					Toast('请不要输入敏感字符');
 //					this.introduction="";
-//					texts="PHONE<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+//					texts="PHONE<a>&nbsp;</a>NUNBER<a>&nbsp;</a>HIDDEN";
 ////					return;
 //				}
-		        if(/^[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.](\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,8}|[！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]$/.test(texts)){
+		        if(/^[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【](\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,8}|[！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]$/.test(texts)){
 //					Toast('请不要输入敏感字符');
 					if(yiyou==0){
 						this.introduction="";
-						texts="PHONE<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+						texts="PHONE<a>&nbsp;</a>NUNBER<a>&nbsp;</a>HIDDEN";
 						yiyou=1;
 					}
 //					return;
 				}
-		        if(/^1[0-9]{4}[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]$/.test(texts)){
+		        if(/^1[0-9]{4}[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(texts)){
 //					Toast('请不要输入敏感字符');
 					if(yiyou==0){
 						this.introduction="";
-						texts="PHONE<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+						texts="PHONE<a>&nbsp;</a>NUNBER<a>&nbsp;</a>HIDDEN";
 						yiyou=1;
 					}
 //					return;
@@ -970,25 +978,25 @@
 //					Toast('请不要输入敏感字符');
 					if(yiyou==0){
 						this.introduction="";
-						texts="QQ<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+						texts="QQ<a>&nbsp;</a>NUNBER<a>&nbsp;</a>HIDDEN";
 						yiyou=1;
 					}
 //					return;
 				}
-				if(/^[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.][1-9][0-9]{4,9}|[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]$/.test(texts)){
+				if(/^[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【][1-9][0-9]{4,9}|[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(texts)){
 //					Toast('请不要输入敏感字符');
 					if(yiyou==0){
 						this.introduction="";
-						texts="QQ<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+						texts="QQ<a>&nbsp;</a>NUNBER<a>&nbsp;</a>HIDDEN";
 						yiyou=1;
 					}
 //					return;
 				}
-				if(/^[1-9][0-9]{4,9}[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]$/.test(texts)){
+				if(/^[1-9][0-9]{4,9}[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(texts)){
 //					Toast('请不要输入敏感字符');
 					if(yiyou==0){
 						this.introduction="";
-						texts="QQ<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+						texts="QQ<a>&nbsp;</a>NUNBER<a>&nbsp;</a>HIDDEN";
 						yiyou=1;
 					}
 //					return;
@@ -1004,7 +1012,7 @@
 //					return;
 				}
 				//验证微信号
-				if(/^[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.][a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}|[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]$/.test(texts)){
+				if(/^[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【][a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}|[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]$/.test(texts)){
 //					Toast('请不要输入敏感字符');
 					if(yiyou==0){
 						this.introduction="";
@@ -1014,7 +1022,7 @@
 //					return;
 				}
 				//验证微信号
-				if(/^[a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]$/.test(texts)){
+				if(/^[a-zA-Z]{1}[-_a-zA-Z0-9]{5,19}[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(texts)){
 //					Toast('请不要输入敏感字符');
 					if(yiyou==0){
 						this.introduction="";
@@ -1028,16 +1036,16 @@
 //					Toast('请不要输入敏感字符');
 					if(yiyou==0){
 						this.introduction="";
-						texts="E-MAIL<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+						texts="E-MAIL<a>&nbsp;</a>NUNBER<a>&nbsp;</a>HIDDEN";
 						yiyou=1;
 					}
 //					return;
 				}
-				if(/^[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/.test(texts)){
+				if(/^[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/.test(texts)){
 //					Toast('请不要输入敏感字符');
 					if(yiyou==0){
 						this.introduction="";
-						texts="E-MAIL<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+						texts="E-MAIL<a>&nbsp;</a>NUNBER<a>&nbsp;</a>HIDDEN";
 						yiyou=1;
 					}
 //					return;
@@ -1046,7 +1054,7 @@
 //					Toast('请不要输入敏感字符');
 					if(yiyou==0){
 						this.introduction="";
-						texts="E-MAIL<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+						texts="E-MAIL<a>&nbsp;</a>NUNBER<a>&nbsp;</a>HIDDEN";
 						yiyou=1;
 					}
 //					return;
@@ -1056,7 +1064,7 @@
 //					Toast('请不要输入敏感字符');
 					if(yiyou==0){
 						this.introduction="";
-						texts="CONTACT<a>&nbsp;</a>WAY！<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+						texts="CONTACT<a>&nbsp;</a>WAY！<a>&nbsp;</a>NUNBER<a>&nbsp;</a>HIDDEN";
 						yiyou=1;
 					}
 //					return;
@@ -1065,16 +1073,16 @@
 //					Toast('请不要输入敏感字符');
 					if(yiyou==0){
 						this.introduction="";
-						texts="CONTACT<a>&nbsp;</a>WAY！<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+						texts="CONTACT<a>&nbsp;</a>WAY！<a>&nbsp;</a>NUNBER<a>&nbsp;</a>HIDDEN";
 						yiyou=1;
 					}
 //					return;
 				}
-				if(/^[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.][-_a-zA-Z0-9]{4,19}[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.][@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]/.test(texts)){
+				if(/^[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【][-_a-zA-Z0-9]{4,19}[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【][@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]/.test(texts)){
 //					Toast('请不要输入敏感字符');
 					if(yiyou=0){
 						this.introduction="";
-						texts="CONTACT<a>&nbsp;</a>WAY！<a>&nbsp;</a>MUNBER<a>&nbsp;</a>HIDDEN";
+						texts="CONTACT<a>&nbsp;</a>WAY！<a>&nbsp;</a>NUNBER<a>&nbsp;</a>HIDDEN";
 						yiyou=1;
 					}
 //					return;
@@ -1086,67 +1094,102 @@
 						var hanzi='';
 						var reg = /[\u4e00-\u9fa5]/g;   
 	        			hanzi=texts.match(reg).join("");  
-						texts=hanzi+"</br>（MUNBER<a>&nbsp;</a>HIDDEN）";
+						texts=hanzi+"</br>（NUNBER<a>&nbsp;</a>HIDDEN）";
 						yiyou=1;
 					}
 //					return false;
 				}
-			    if(/^[\u4E00-\u9FA5]{1,20}([@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]|[-_a-zA-Z0-9]){5,19}$/.test(texts)){
+			    if(/^[\u4E00-\u9FA5]{1,20}([@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]|[-_a-zA-Z0-9]){5,19}$/.test(texts)){
 //					Toast('请不要输入敏感字符');
 					if(yiyou==0){
 						this.introduction="";
 						var hanzi='';
 						var reg = /[\u4e00-\u9fa5]/g;   
 	        			hanzi=texts.match(reg).join("");  
-						texts=hanzi+"</br>（MUNBER<a>&nbsp;</a>HIDDEN）";
+						texts=hanzi+"</br>（NUNBER<a>&nbsp;</a>HIDDEN）";
 						yiyou=1;
 					}
 //					return false;
 				}
-			    if(/^([\u4E00-\u9FA5]|[ ]|[-_a-zA-Z0-9]){1,20}([@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]|[-_a-zA-Z0-9]){5,19}$/.test(texts)){
+			    if(/^([\u4E00-\u9FA5]|[ ]|[-_a-zA-Z0-9]){1,20}([@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]|[-_a-zA-Z0-9]){5,19}$/.test(texts)){
 //					Toast('请不要输入敏感字符');
 					if(yiyou==0){
 						this.introduction="";
 						var hanzi='';
 						var reg = /[\u4e00-\u9fa5]/g;   
 	        			hanzi=texts.match(reg).join("");  
-						texts=hanzi+"</br>（MUNBER<a>&nbsp;</a>HIDDEN）";
+						texts=hanzi+"</br>（NUNBER<a>&nbsp;</a>HIDDEN）";
 						yiyou=1;
 					}
 //					return false;
 				}
-			    if(/(^([\u4E00-\u9FA5]|[ ]|[-_a-zA-Z0-9]){1,20}([@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]|[-_a-zA-Z0-9]){5,19}){1,10}$/.test(texts)){
+			    if(/(^([\u4E00-\u9FA5]|[ ]|[-_a-zA-Z0-9]){1,20}([@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]|[-_a-zA-Z0-9]){5,19}){1,10}$/.test(texts)){
 //					Toast('请不要输入敏感字符');
 					if(yiyou==0){
 						this.introduction="";
 						var hanzi='';
 						var reg = /[\u4e00-\u9fa5]/g;   
 	        			hanzi=texts.match(reg).join("");  
-						texts=hanzi+"</br>（MUNBER<a>&nbsp;</a>HIDDEN）";
+						texts=hanzi+"</br>（NUNBER<a>&nbsp;</a>HIDDEN）";
 						yiyou=1;
 					}
 //					return false;
 				}
-			    if(/(^([\u4E00-\u9FA5]|[ ]|[-_a-zA-Z0-9]){1,20}([@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.][\u4E00-\u9FA5]|[-_a-zA-Z0-9])){1,11}$/.test(texts)){
+			    if(/(^([\u4E00-\u9FA5]|[ ]|[-_a-zA-Z0-9]){1,20}([@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【][\u4E00-\u9FA5]|[-_a-zA-Z0-9])){1,11}$/.test(texts)){
 //					Toast('请不要输入敏感字符');
 					if(yiyou==0){
 						this.introduction="";
 						var hanzi='';
 						var reg = /[\u4e00-\u9fa5]/g;   
 	        			hanzi=texts.match(reg).join("");  
-						texts=hanzi+"</br>（MUNBER<a>&nbsp;</a>HIDDEN）";
+						texts=hanzi+"</br>（NUNBER<a>&nbsp;</a>HIDDEN）";
 						yiyou=1;
 					}
 //					return false;
 				}
-			    if(/(^[\u4E00-\u9FA5]{1,20}|[-_a-zA-Z0-9]){1,20}[-_a-zA-Z0-9]{1,20}[\u4E00-\u9FA5]{1,20}$/.test(texts)){
+			    if(/(^([\u4E00-\u9FA5]|[ ]|[-_a-zA-Z0-9]|([\u4E00-\u9FA5][ ][-_a-zA-Z0-9])){1,20}([@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【][\u4E00-\u9FA5]|[-_a-zA-Z0-9])){1,11}$/.test(texts)){
 //					Toast('请不要输入敏感字符');
 					if(yiyou==0){
 						this.introduction="";
 						var hanzi='';
 						var reg = /[\u4e00-\u9fa5]/g;   
 	        			hanzi=texts.match(reg).join("");  
-						texts=hanzi+"</br>（MUNBER<a>&nbsp;</a>HIDDEN）";
+						texts=hanzi+"</br>（NUNBER<a>&nbsp;</a>HIDDEN）";
+						yiyou=1;
+					}
+//					return false;
+				}
+			    if(/(^[\u4E00-\u9FA5]{1,20}|[-_a-zA-Z0-9]){5,20}[-_a-zA-Z0-9]{5,20}[\u4E00-\u9FA5]{1,20}$/.test(texts)){
+//					Toast('请不要输入敏感字符');
+					if(yiyou==0){
+						this.introduction="";
+						var hanzi='';
+						var reg = /[\u4e00-\u9fa5]/g;   
+	        			hanzi=texts.match(reg).join("");  
+						texts=hanzi+"</br>（NUNBER<a>&nbsp;</a>HIDDEN）";
+						yiyou=1;
+					}
+//					return false;
+				}
+			    if(/([-_a-zA-Z0-9]{5,20}[@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]){1,20}$/.test(texts)){
+//					Toast('请不要输入敏感字符');
+					if(yiyou==0){
+						this.introduction="";
+						var hanzi='';
+						var reg = /[\u4e00-\u9fa5]/g;   
+	        			hanzi=texts.match(reg).join("");  
+						texts=hanzi+"</br>（NUNBER<a>&nbsp;</a>HIDDEN）";
+						yiyou=1;
+					}
+//					return false;
+				}if(/^[\u4E00-\u9FA5]{1,20}[@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]|[\da-zA-Z!@#$%^&*]$/.test(texts)){
+//					Toast('请不要输入敏感字符');
+					if(yiyou==0){
+						this.introduction="";
+						var hanzi='';
+						var reg = /[\u4e00-\u9fa5]/g;   
+	        			hanzi=texts.match(reg).join("");  
+						texts=hanzi+"</br>（NUNBER<a>&nbsp;</a>HIDDEN）";
 						yiyou=1;
 					}
 //					return false;
@@ -1158,7 +1201,7 @@
 //						var hanzi='';
 //						var reg = /[\u4e00-\u9fa5]/g;   
 //	        			hanzi=texts.match(reg).join("");  
-//						texts=hanzi+"</br>（MUNBER<a>&nbsp;</a>HIDDEN）";
+//						texts=hanzi+"</br>（NUNBER<a>&nbsp;</a>HIDDEN）";
 //						yiyou=1;
 //					}
 ////					return false;
@@ -1166,7 +1209,7 @@
 				//定义敏感字符
 			    var forbiddenArray =['我微信','微信','我的微信','我微信号是','我的微信号是','我邮箱是','我的邮箱是','我的邮箱是号','邮箱',
 			    '我邮箱是号','我邮箱','我的邮箱','我的qq','我的qq号','我的qq号是','我qq','我的电话','我的手机','我电话是','我的电话号是','我的手机号是',
-			    '邮编','加我','weixin','weinxinhao','@163.com','@qq.com','@','qq','QQ','这是我的手机号','我的手机号'];
+			    '邮编','加我','weixin','weinxinhao','@163.com','@qq.com','@','qq','QQ','这是我的手机号','我的手机号','手机号多少'];
 			    //定义敏感字符函数
 			    function forbiddenStr(str){
 				//  var destString = trim(str);
@@ -1193,7 +1236,7 @@
 						var hanzi='';
 						var reg = /[\u4e00-\u9fa5]/g;   
 	        			hanzi=texts.match(reg).join("");  
-						texts=hanzi+"</br>（MUNBER<a>&nbsp;</a>HIDDEN）";
+						texts=hanzi+"</br>（NUNBER<a>&nbsp;</a>HIDDEN）";
 						yiyou=1;
 					}
 //					return;

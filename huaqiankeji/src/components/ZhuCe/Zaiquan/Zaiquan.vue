@@ -1,8 +1,9 @@
 <template>
 	<transition name="fade">
 		<div class="type" v-show="showFlag">
-			<div class="xiangmu-header" @click.stap="yijianHind()">
-				<span class="xiangmu-left"><img src="../img/back.png"/></span>
+			<!--<div class="xiangmu-header" @click.stap="yijianHind()">-->
+			<div class="xiangmu-header">
+				<!--<span class="xiangmu-left"><img src="../img/back.png"/></span>-->
 				<span>债权投资</span>
 			</div>
 			<!--<div class="type-header" @click.stap="fanhui">
@@ -17,7 +18,7 @@
 						</div>
 						<div class="content-touzi"  ref="foods">
 							<ul>
-								<li class="src1" id='4' @click.stap="types('0','4')">
+								<li class="src0" id='4' @click.stap="types('0','4')">
 									<span>融资租赁</span><font class="img1"></font>
 								</li>
 								<li class="src0" id="5" @click.stap="types('1','5')">
@@ -148,7 +149,7 @@
 			return {
 				y:1,			//判断是否选择标签；》=1为选择；
 				biaoQianID:[],		//储存标签id
-				biaoQianid:'4',		//储存标签id字符串
+				biaoQianid:'',		//储存标签id字符串
 				numbera:"",
 				numberb:"",
 				numberc:"",
@@ -167,8 +168,8 @@
 		},
 		mounted(){
 			this.$nextTick(function() {
-				var typeLi=this.$refs.foods.getElementsByTagName("li")[0];
-				this.biaoQianID.push(typeLi.id);
+//				var typeLi=this.$refs.foods.getElementsByTagName("li")[0];
+//				this.biaoQianID.push(typeLi.id);
 			});
 		},
 		methods:{
@@ -205,6 +206,7 @@
 					numbere:this.numbere,
 					numberf:this.numberf,
 					numberg:this.numberg,
+					biaoQianid:this.biaoQianid
 //					XiangmuID:this.XiangmuID
 				}
 				var datas={

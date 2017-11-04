@@ -16,7 +16,7 @@
 						</div>
 						<div class="content-touzi"  ref="foods">
 							<ul>
-								<li class="src1" id='4' @click.stap="types('0','4')">
+								<li class="src0" id='4' @click.stap="types('0','4')">
 									<span>融资租赁</span><font class="img1"></font>
 								</li>
 								<li class="src0" id="5" @click.stap="types('1','5')">
@@ -146,7 +146,7 @@
 			return {
 				y:1,			//判断是否选择标签；》=1为选择；
 				biaoQianID:[],		//储存标签id
-				biaoQianid:'4',		//储存标签id字符串
+				biaoQianid:'',		//储存标签id字符串
 				numbera:"",
 				numberb:"",
 				numberc:"",
@@ -173,7 +173,7 @@
 		methods:{
 			yijianHind(){
 //				this.showFlag=false;
-				history.go(-2)
+				history.go(-1)
 			},
 			Tozhaiquan(){
 				this.showFlag=true;
@@ -204,6 +204,7 @@
 					numbere:this.numbere,
 					numberf:this.numberf,
 					numberg:this.numberg,
+					biaoQianid:this.biaoQianid
 //					XiangmuID:this.XiangmuID
 				}
 				var datas={

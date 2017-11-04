@@ -11,7 +11,7 @@
 					<ul ref="index1" class="content-header border-bottom" index="type1"  @click.stap="typeName(item.id,item.type,item.is_send)">
 						<li>
 							<div class="content-top">
-								<span>{{item.com_name}}&nbsp;({{item.com_code}})</span>
+								<span><!--{{item.com_name}}&nbsp;-->({{item.com_short}})</span>
 								<!--<span>{{item.type}}</span>-->
 								<span v-if="item.type==1" class="texts">定增</span>
 								<span v-if="item.type==2" class="texts">做市</span>

@@ -1,8 +1,9 @@
 <template>
 	<transition name="fade">
 		<div class="type" v-show="showFlag">
-			<div class="xiangmu-header" @click.stap="yijianHind()">
-				<span class="xiangmu-left"><img src="./img/back.png"/></span>
+			<!--<div class="xiangmu-header" @click.stap="yijianHind()">-->
+				<div class="xiangmu-header">
+				<!--<span class="xiangmu-left"><img src="./img/back.png"/></span>-->
 				<span>企 &nbsp;业</span>
 			</div>
 			<div class="type-content-list">
@@ -82,9 +83,9 @@
 				var data=res.body.data
 				this.BiaoQian=res.body.data
 				this.$nextTick(function() {
-					var typeLi=this.$refs.foods.getElementsByTagName("li");
-					typeLi[0].setAttribute("class","src1");
-					this.biaoQianID.push(typeLi[0].id);
+//					var typeLi=this.$refs.foods.getElementsByTagName("li");
+//					typeLi[0].setAttribute("class","src1");
+//					this.biaoQianID.push(typeLi[0].id);
 				});
 				console.log(this.BiaoQian);
 			},function(res){
@@ -104,6 +105,10 @@
 				
 			},
 			ToHoom(){			//企业和研究机构注册第二步
+				if(this.biaoQianID.length==0){
+					Toast("请选择您所在的行业！")
+					return;
+				}
 //				var datas={
 //					id:this.XiajiCanshu.id,//	用户id	是	[string]			
 //					ctype:this.XiajiCanshu.type,//	类型 1企业 4研究机构	是	[string]		
@@ -159,7 +164,7 @@
 						}
 					}
 				}else{
-					if(this.y>2){
+					if(this.y>3){
 						Toast('最多可选三个');
 					}else{
 						typeLi[index].setAttribute("class","src1");

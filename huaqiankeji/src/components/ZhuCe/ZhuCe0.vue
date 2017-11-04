@@ -110,33 +110,19 @@
 					Toast('请输入验证码');
 					return;
 				}
+				if(this.texts.length!=6) {
+					Toast('请输入6位验证码');
+					return;
+				}
 				if(!this.password) {
 					Toast('请输入密码');
 					return;
 				}
+				if(this.password.length<6) {
+					Toast('请输入不少于6位密码');
+					return;
+				}
 				window.location.href="#/zhuce/ZhuCe1/"+this.token;
-//				window.location.href="#/zhuce/ZhuCe1/"+this.token+','+this.phone+','+this.texts+','+this.password;
-//				Indicator.open({spinnerType: 'fading-circle'});
-//				this.$http.post(URL.path+'api/index.php/login/login',{datas},{emulateJSON:true}).then(function(res){
-//                  console.log(res);
-//              },function(res){
-//                  console.log(res);
-//              });
-//			
-//			
-//			  	this.$http.get(url).then(function(response){
-//					console.log("login",response)
-//					if(response.body != "0" && response.body != "2"){
-//						Indicator.close();
-//						localStorage.setItem("userID",userID);
-//						if(confirm("已成功登陆是否进入首页?")){
-//							window.location.href="#/fanxian";
-//						}
-//					}else{
-//						Indicator.close();
-//						Toast("您已注册成功请进一步完善信息")
-//					}
-//				})
 			},
 			dengluGo(){
 				window.location.href="#/denglu";
@@ -220,19 +206,8 @@
 			}else{
 				this.mimas=false;
 			}
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
-//			cartcontrol,
-//			ratingselect,
-//			split
 		}
 	}
 </script>

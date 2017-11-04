@@ -116,6 +116,25 @@
 				history.go(-1)
 //				window.location.href="#/faxian";
 			},
+//			获取通讯录
+			tongxunLu(){
+				if(localStorage.getItem("YiyouTongxin")){
+					return;
+				}
+				var params={
+		    		id:localStorage.getItem("userID"),
+		    		phone_list:localStorage.getItem("TongxunLu")
+		    	}
+				this.$http.post(URL.path1+'common/phone_list',params,{emulateJSON:true}).then(function(res){
+					console.log('提交通讯录成功');
+//					console.log(localStorage.getItem("TongxunLu"));
+//					document.write(localStorage.getItem("TongxunLu"))
+					localStorage.setItem("YiyouTongxin",'1');
+					console.log(res);
+				},function(res){
+				    console.log(res);
+				})
+			},
 			XiaYibu(){
 				console.log(this.$refs.touxiangID.touxiangID);
 				console.log(this.$refs.mingpianID.mingpianID);
@@ -154,6 +173,7 @@
 							localStorage.setItem("token",res.body.data.token);
 							localStorage.setItem("phone",res.body.data.phone);
 							localStorage.setItem("type",this.type);
+							this.tongxunLu();
 							console.log(this.XiajiCanshu)
 //							window.location.href="#/zhuce/ZhuCe1/"+res.body.data.token+','+res.body.data.id+','+this.typeID+"/"+this.JigouType;
 							window.location.href="#/zhuce/ZhuCe1/"+res.body.data.token+"/"+this.JigouType;
@@ -185,6 +205,7 @@
 								localStorage.setItem("token",res.body.data.token);
 								localStorage.setItem("phone",res.body.data.phone);
 								localStorage.setItem("type",this.type);
+								this.tongxunLu();
 								console.log(this.XiajiCanshu)
 								window.location.href="#/faxian"
 							}else{
@@ -215,6 +236,7 @@
 								localStorage.setItem("token",res.body.data.token);
 								localStorage.setItem("phone",res.body.data.phone);
 								localStorage.setItem("type",this.type);
+								this.tongxunLu();
 								console.log(this.XiajiCanshu)
 								window.location.href="#/zhuce/ZhuCe1/"+this.type+"/type"+this.index;
 							}else{

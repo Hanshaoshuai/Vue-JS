@@ -132,7 +132,7 @@
 							if(res.body.returnCode=='200'){
 								Toast("您已完成本次操作")
 								this.yicaozuo=true
-								this.$emit("to-parent",this.data);
+								this.$emit("to-parent",'结束成功');
 								this.onlyContent=false;
 							}
 						},function(res){
@@ -185,7 +185,7 @@
 					this.$http.post(URL.path+'finance/update_feedback',params,{emulateJSON:true}).then(function(res){
 						this.data=res.body.data;
 						this.yicaozuo=true;
-						this.$emit("to-parent",this.data);
+						this.$emit("to-parent",'停止跟进');
 						if(res.body.returnCode=='201'){
 							Toast("亲！您暂无收到新项目哦...")
 						}

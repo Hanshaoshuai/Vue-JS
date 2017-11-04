@@ -84,7 +84,7 @@
 					</div>
 				</div>
 				<box></box>
-				<div class="butten">
+				<div v-if="this.data.id!=userID" class="butten">
 					<ul>
 						<li><span @click.stop="liuYan()">留言</span></li>
 					</ul>
@@ -136,10 +136,12 @@
 				biaoQianID:[],		//储存标签id
 				biaoQianid:'',		//储存标签id字符串
 				oDbiaoQianID:'',		//后台获取的储存标签id
-				scrollTop:""
+				scrollTop:"",
+				userID:""
 			}
 		},
 		mounted(){
+			this.userID=localStorage.getItem("userID");
 			Indicator.open({spinnerType: 'fading-circle'});
 			console.log(this.userContent)
 //			个人资料

@@ -99,6 +99,7 @@
 			fanhui(){
 				history.go(-1)
 			},
+//			获取通讯录
 			tongxunLu(){
 				if(localStorage.getItem("YiyouTongxin")){
 					return;
@@ -231,7 +232,7 @@
 							}
 						}
 						if(ctype==4){
-							if(res.body.data.info.industry==''){
+							if(res.body.data.info.interested.length==0){
 								localStorage.setItem("panduanWanshan",'4');
 								Toast('请完善您的资料');
 								window.location.href="#/denglu/ZhuCe1/"+0+"/type4";

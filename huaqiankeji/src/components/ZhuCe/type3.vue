@@ -1,8 +1,9 @@
 <template>
 	<transition name="fade">
 		<div class="type" v-show="showFlag">
-			<div class="xiangmu-header" @click.stap="yijianHind()">
-				<span class="xiangmu-left"><img src="./img/back.png"/></span>
+			<!--<div class="xiangmu-header" @click.stap="yijianHind()">-->
+			<div class="xiangmu-header">
+				<!--<span class="xiangmu-left"><img src="./img/back.png"/></span>-->
 				<span>合格投资人</span>
 			</div>
 			<div class="type-content-list">
@@ -13,13 +14,12 @@
 						</div>
 						<div class="content-touzi"  ref="foods">
 							<ul>
-								<li class="src1" id='1' @click.stap="types('0','1')">
+								<li class="src0" id='1' @click.stap="types('0','1')">
 									<span>定增</span><font class="img1"></font>
 								</li>
 								<li class="src0" id="2" @click.stap="types('1','2')">
 									<span>接老股</span><font class="img1"></font>
 								</li>
-								
 							</ul>
 						</div>
 					</div>
@@ -46,7 +46,7 @@
 						</div>
 						<div class="content-touzi" ref="foods1">
 							<ul>
-								<li class="src1" id='1' @click.stap="types1('0','1')">
+								<li class="src0" id='1' @click.stap="types1('0','1')">
 									<span>有</span><font class="img1"></font>
 								</li>
 								<li class="src0" id="2" @click.stap="types1('1','2')">
@@ -64,7 +64,7 @@
 						</div>
 						<div class="content-touzi" ref="foods2">
 							<ul>
-								<li class="src1" id='1' @click.stap="types2('0','1')">
+								<li class="src0" id='1' @click.stap="types2('0','1')">
 									<span>了解</span><font class="img1"></font>
 								</li>
 								<li class="src0" id="2" @click.stap="types2('1','2')">
@@ -115,8 +115,8 @@
 				texta:"",
 				textb:"",
 				showFlag:true,
-				board:"1",
-				know_risk:"1"
+				board:"",
+				know_risk:""
 //				onlyContent:true,
 //				times:20177111129
 			}
@@ -131,8 +131,8 @@
 	//		}
 			
 			this.$nextTick(function() {
-				var typeLi=this.$refs.foods.getElementsByTagName("li")[0];
-				this.biaoQianID[0]=typeLi.id;
+//				var typeLi=this.$refs.foods.getElementsByTagName("li")[0];
+//				this.biaoQianID[0]=typeLi.id;
 			});
 		},
 		methods:{
@@ -151,6 +151,9 @@
 				var CanShu={				//给下级要传的参数
 					numbere:this.numbere,
 					numberf:this.numberf,
+					biaoQianID:this.biaoQianID,
+					board:this.board,
+					know_risk:this.know_risk
 				}
 				var datas={
 //					id:this.XiajiCanshu.id,			//	uid	是	[string]

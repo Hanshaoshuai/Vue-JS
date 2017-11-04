@@ -560,8 +560,14 @@
 					this.$http.post(URL.path+'chatcomment/get_card',datas,{emulateJSON:true}).then(function(res){
 						console.log("换名片申请成功");
 						console.log(res);
-						this.xingXi.text="您已申请向对方换取名片，请注意查收..."
-						this.$refs.tishiShow.tishiBlock(this.mingPian,this.token);//CanShu是下级要传的参数
+						if(res.body.returnCode=='200'){
+							Toast("请耐心等待对方的反馈");
+//							this.xingXi.text="请耐心等待对方的反馈"
+//							this.$refs.tishiShow.tishiBlock(this.mingPian,this.token);//CanShu是下级要传的参数
+						}else{
+							Toast("请耐心等待对方的反馈");
+//							Toast("亲，您已跟进可以给对方留言或换名片啦");
+						}
 					},function(res){
 					    console.log(res);
 					    this.xingXi.text="您申请向对方换取名片失败，请稍后再试..."
@@ -576,6 +582,7 @@
 				this.$refs.youhuiShow.YouhuiBlock();
 			},
 			genJin(){
+//				this.$emit("c-send",'1');
 				if(this.data.follow==0){
 					if(this.yigenJin==1){
 						return;
@@ -658,6 +665,7 @@
 				}
 			},
 			buGen(){
+//				this.$emit("c-send",'2');
 //				this.butenRight="butenRight";
 				if(this.data.follow==0){
 					if(this.yigenJin==0){
