@@ -215,7 +215,7 @@
 				if(this.data.type==6){
 					biaoQian='公司调研'
 				}
-				this.fenciangURL='http://test.qironghome.com/bak/web//index.php/app/item-info?id=715'
+				this.fenciangURL='http://test.qironghome.com/bak/web//index.php/app/item-info?id='+this.data.id
 				this.fenxiangBiaoti="* "+this.data.com_short.substr(1, 1)+" *"+this.data.com_code.substr(0, 2)+" **** "+biaoQian
 				this.fenxiangCont=this.data.lightspot;
 				
