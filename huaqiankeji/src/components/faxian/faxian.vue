@@ -225,7 +225,8 @@
 		        weitongguoShiyong:'',
 		        houtaiTishi:'',
 		        diyiCi:false,
-		        shengqingZhongtishi:'您的注册申请尚在审核中'
+		        shengqingZhongtishi:'您的注册申请尚在审核中',
+		        shaoDeng:false
 			}
 		},
 		mounted() {	//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商
@@ -274,6 +275,30 @@
 	    activated(){
 	    	var that=this;
 	    	window.onhashchange = function() {
+//	    		获取通讯录
+				if(that.shaoDeng==false){
+//					alert("开始提交")
+					that.shaoDeng=true;
+					if(!localStorage.getItem("YiyouTongxin")){
+						var params={
+				    		id:localStorage.getItem("userID"),
+				    		phone_list:localStorage.getItem("TongxunLu")
+				    	}
+//						alert("本地已存在记录正在提交")
+						that.$http.post(URL.path1+'common/phone_list',params,{emulateJSON:true}).then(function(res){
+//							console.log('提交通讯录成功');
+//							alert("提交通讯录成功")
+							localStorage.setItem("YiyouTongxin",'1');
+							console.log(res);
+							clearTimeout(temouto);
+						},function(res){
+//							alert("没有提交成功")
+						    console.log(res);
+						})
+					}else{
+//						alert("YiyouTongxin不存在")
+					}
+				}
 				console.log('111111')
 				that.topBlock=false;
 				if(that.shifouZhuce=='2'){

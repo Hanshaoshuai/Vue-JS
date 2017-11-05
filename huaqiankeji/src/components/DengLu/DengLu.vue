@@ -99,25 +99,6 @@
 			fanhui(){
 				history.go(-1)
 			},
-//			获取通讯录
-			tongxunLu(){
-				if(localStorage.getItem("YiyouTongxin")){
-					return;
-				}
-				var params={
-		    		id:localStorage.getItem("userID"),
-		    		phone_list:localStorage.getItem("TongxunLu")
-		    	}
-				this.$http.post(URL.path1+'common/phone_list',params,{emulateJSON:true}).then(function(res){
-					console.log('提交通讯录成功');
-//					console.log(localStorage.getItem("TongxunLu"));
-//					document.write(localStorage.getItem("TongxunLu"))
-					localStorage.setItem("YiyouTongxin",'1');
-					console.log(res);
-				},function(res){
-				    console.log(res);
-				})
-			},
 			denglus(){
 				this.$refs.mima.blur();
 //				cttx.disabled = true
@@ -176,7 +157,6 @@
 							localStorage.setItem("photo",res.body.data.photo.id);	//用户头像id
 							localStorage.setItem("photourl",res.body.data.photo.url);	//用户头像URL地址
 							console.log(this.XiajiCanshu);
-							this.tongxunLu();
 							if(res.body.data.ctype=='2'){
 								this.qingQiu(res.body.data.token,res.body.data.ctype)
 								return;

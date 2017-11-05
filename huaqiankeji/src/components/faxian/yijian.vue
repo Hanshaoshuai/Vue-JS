@@ -135,15 +135,13 @@
 								Indicator.close();
 								if(res.body.returnCode=='200'){
 									Toast("提交成功，感谢您的支持")
+									window.location.href="#/faxian"
 								}
 							},function(res){
 								Indicator.close();
 								Toast("系统繁忙请稍后再试！")
 							    console.log(res);
 							})
-							
-							
-							
 						}else{
 							Toast("上传失败请重新上传");
 						}

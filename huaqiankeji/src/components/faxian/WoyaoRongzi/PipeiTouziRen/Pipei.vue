@@ -215,6 +215,7 @@
 		},
 		methods:{
 			listnone(){
+				Indicator.close();
 //				this.showFlag=false;
 				history.go(-1)
 			},
@@ -283,6 +284,7 @@
 					this.page=this.page*1;
 					this.page=this.page+=1;
 					this.$nextTick(function(){
+						this.body=this.$refs.tianjia.getElementsByClassName("borders").length;
 						var img = this.$refs.tianjia.getElementsByTagName("img");
 						var length=img.length;
 						for (var i = 0; i < length; i++) {
@@ -405,7 +407,9 @@
 						}
 					}
 					borders.setAttribute("class","borders typeA")
-					this.XiaYibu=false;				//判断是否能下一步
+					if(this.ButtenName==0){
+						this.XiaYibu=false;				//判断是否能下一步
+					}
 				}
 				for(var i=0; i<length; i++){
 					if(boxs[i].getAttribute("class")=="borders typeB"){

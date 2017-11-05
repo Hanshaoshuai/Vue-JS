@@ -20,8 +20,9 @@
 								<span v-if="item.type==5" class="texts">融资租赁</span>
 								<span v-if="item.type==6" class="texts">研报支持</span>
 								<span v-if="item.type==7" class="texts">公司调研</span>
-								<font v-if="item.is_send=='1'">已投递</font>
+								<font v-if="item.is_send=='1' && item.audit!='1'">已投递</font>
 								<font v-if="item.is_send=='2'">未投递</font>
+								<font v-if="item.audit=='1'">已撤回</font>
 							</div>
 							<div class="content-bottom">
 								<span>{{numToTime(item.create_time)}}</span>

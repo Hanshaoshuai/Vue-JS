@@ -171,6 +171,13 @@
 	      		this.LieBiao();
 //	      		this.jieshuXiangmu=data;
 	      	},
+//	      	watch: {
+//			    '$route' (to, from) {
+//			    	alert("jfsl")
+//			      // 获取最新的id 调用获取数据方法
+//			      this.LieBiao();
+//			    }
+//			},
 	      	faxianScroll(){
 				if(this.$refs.wrapper.scrollTop>800){
 					this.topBlock=true;

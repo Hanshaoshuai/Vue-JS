@@ -112,8 +112,8 @@
 									<input @blur="Blurs(item.item_id,item.id,index)" :class="Wancent" v-if="!item.investment" readOnly="true" :placeholder="item.investment" type="text" class="mint-field-core">
 									<font>万</font>
 								</span>
-								<span>
-									{{item.create_time}}
+								<span style="text-align: center;">
+									{{numToTime(item.create_time)}}
 									<!--<input readOnly="true" v-model="numberk" placeholder="反徐小平" type="text" class="mint-field-core">-->
 								</span>
 							</div>
@@ -167,6 +167,7 @@
 
 <script type="text/ecmascript">
 	import {URL} from '../../../common/js/path';
+	import {numToTime} from "../../../common/js/date.js";
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
 	import { Indicator } from 'mint-ui';
@@ -241,10 +242,12 @@
 				xx:[],
 				yy:[],
 				xx1:[],
-				yy1:[]
+				yy1:[],
+				numToTime:""
 			}
 		},
 		mounted(){
+			this.numToTime=numToTime;
 			Indicator.open({spinnerType: 'fading-circle'});
 			console.log(this.userContent)
 //			个人资料

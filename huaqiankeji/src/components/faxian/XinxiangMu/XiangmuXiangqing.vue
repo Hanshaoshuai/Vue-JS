@@ -331,6 +331,7 @@
 		},
 		methods:{
 			yijianHind(){
+//				this.$router.go(-1)
 				history.go(-1)
 //				this.tucaoShow=false;
 			},
@@ -587,7 +588,7 @@
 					if(this.yigenJin==1){
 						return;
 					}
-					this.yigenJin=0
+					this.yigenJin=1
 					this.types=1;
 					if(this.wanchengDu=="0"){
 						this.$refs.tishiShow.tishiBlock(this.content);//CanShu是下级要传的参数
@@ -668,7 +669,7 @@
 //				this.$emit("c-send",'2');
 //				this.butenRight="butenRight";
 				if(this.data.follow==0){
-					if(this.yigenJin==0){
+					if(this.yigenJin==1){
 						return;
 					}
 					this.types=0;

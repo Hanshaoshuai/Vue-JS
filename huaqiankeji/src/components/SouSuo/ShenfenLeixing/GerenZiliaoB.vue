@@ -163,7 +163,7 @@
 				</div>
 				<box></box>
 				<div v-if="this.data.id!=userID" class="butten">
-					<ul>
+					<ul v-if="nones!='ok'">
 						<li><span @click.stop="liuYan()">留言</span></li>
 					</ul>
 				</div>
@@ -240,10 +240,12 @@
 				biaoQianID1:[],		//储存标签id
 				biaoQianID2:[],		//储存标签id
 				scrollTop:"",
-				userID:""
+				userID:"",
+				nones:''
 			}
 		},
 		mounted(){
+			this.nones=this.$route.params.type;
 			this.userID=localStorage.getItem("userID");
 			Indicator.open({spinnerType: 'fading-circle'});
 			console.log(this.userContent)

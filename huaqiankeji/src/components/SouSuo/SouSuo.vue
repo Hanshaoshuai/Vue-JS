@@ -4,7 +4,7 @@
 			<div class="searchBox">
 				<span class="xiangmu-left"  @click.stap="yijianHind()"><img src="./img/back.png"/></span>
 				<div class="home-search">
-					<input v-model="texts" placeholder="请输入网址" type="url" class="mint-field-core sousuo">
+					<input v-model="texts" placeholder="请输入公司名或者人名" type="text" class="mint-field-core sousuo">
 				</div>
 				<span class="sousuoGo" @click.stap="sousuoGo()">搜索</span>
 			</div>
@@ -87,9 +87,9 @@
 							</div>
 							<div class="leimu">
 								<div class="zhonglei">
-									<span v-if="item.investment_type==1" class="jieduan"><a style="color:#2abdfc">阶段：</a><a v-for="(item,index) in item.fund_stage">{{item.title}}、</a></span>
+									<span v-if="item.investment_type==1" class="jieduan"><a style="color:#2abdfc">阶段：</a><a v-for="(item,index) in item.fund_stage">{{item.title}}，</a></span>
 									<span v-if="item.investment_type==1" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
-									<span v-if="item.investment_type==1" class="lingyu"><a style="color:#2abdfc">行业：</a><a v-for="(item,index) in item.interested">{{item.title}}、</a></span>
+									<span v-if="item.investment_type==1" class="lingyu"><a style="color:#2abdfc">行业：</a><a v-for="(item,index) in item.interested">{{item.title}}，</a></span>
 									<span v-if="item.investment_type==2" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
 									<span v-if="item.investment_type==2" class="zijin"><a style="color:#2abdfc">资金成本：</a>年化 {{item.fund_min}}%-{{item.fund_max}}%</span>
 									<span v-if="item.investment_type==2" class="fangkuan"><a style="color:#2abdfc">放款速度：</a>不超过{{item.loan_time}}天</span>
@@ -98,12 +98,12 @@
 									<span v-if="item.investment_type==3" class="fangkuan"><a style="color:#2abdfc">放款速度：</a>不超过{{item.loan_time}}天</span>-->
 									
 									
-									<span v-if="item.ctype==1" class="jieduan"><a style="color:#2abdfc">行业：</a><a v-for="(item,index) in item.industry">{{item.title}}、</a></span>
-									<span v-if="item.ctype==2" class="jieduan"><font v-if="item.investment_type==0"><a style="color:#2abdfc">阶段：</a><a v-for="(item,index) in item.fund_stage">{{item.title}}、</a></font></span>
+									<span v-if="item.ctype==1" class="jieduan"><a style="color:#2abdfc">行业：</a><a v-for="(item,index) in item.industry">{{item.title}}，</a></span>
+									<span v-if="item.ctype==2" class="jieduan"><font v-if="item.investment_type==0"><a style="color:#2abdfc">阶段：</a><a v-for="(item,index) in item.fund_stage">{{item.title}}，</a></font></span>
 									<span v-if="item.ctype==2" class="dangbi"><font v-if="item.investment_type==0"><font v-if="item.single_project!=0"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project[0].title}}</font></font></span>
-									<span v-if="item.ctype==2" class="lingyu"><font v-if="item.investment_type==0"><a style="color:#2abdfc">行业：</a><a v-for="(item,index) in item.interested">{{item.title}}、</a></font></span>
+									<span v-if="item.ctype==2" class="lingyu"><font v-if="item.investment_type==0"><a style="color:#2abdfc">行业：</a><a v-for="(item,index) in item.interested">{{item.title}}，</a></font></span>
 									<!--<span v-if="item.ctype==3" class="lingyu"><a style="color:#2abdfc">行业：</a><a v-for="item in item.interested">{{item.title}}、</a></span>-->
-									<span v-if="item.ctype==4" class="lingyu"><a style="color:#2abdfc">行业：</a><a v-for="item in item.interested">{{item.title}}、</a></span>
+									<span v-if="item.ctype==4" class="lingyu"><a style="color:#2abdfc">行业：</a><a v-for="item in item.interested">{{item.title}}，</a></span>
 									<!--<span v-if="item.ctype==3" class="lingyu">领域：<a v-for="(item,index) in item.interested">{{item.title}}、</a></span>
 									<span v-if="item.ctype==4" class="lingyu">领域：<a v-for="(item,index) in item.interested">{{item.title}}、</a></span>-->
 								</div>

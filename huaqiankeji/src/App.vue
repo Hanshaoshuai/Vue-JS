@@ -208,6 +208,10 @@
 	}
 	.mint-indicator-wrapper{
 		z-index:3000;
+		background:none;
+		.mint-spinner-fading-circle-circle::before{
+	    background-color: #77D5FD !important;
+		}
 	}
 	.mint-toast{
 		/*padding:0.1rem 0.16rem !important;*/

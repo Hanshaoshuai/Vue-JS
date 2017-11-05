@@ -178,6 +178,7 @@
 		},
 		methods:{
 			listnone1(){
+				Indicator.close();
 //				this.showFlag=false;
 				history.go(-1)
 			},
