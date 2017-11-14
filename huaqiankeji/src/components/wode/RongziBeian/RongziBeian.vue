@@ -166,7 +166,7 @@
 			this.shuaXin();
 			var that=this;
 			window.onhashchange = function() {
-				console.log("222222")
+//				console.log("222222")
 				that.shuaXin();
 			}
 		},
@@ -178,9 +178,9 @@
 				this.numToTime=numToTime;
 				this.timestamp= (new Date()).valueOf()
 	//			this.formatDate(this.timestamp)
-				console.log(this.formatDate(this.timestamp))
+//				console.log(this.formatDate(this.timestamp))
 				this.beianType=localStorage.getItem("type")
-				console.log(this.beianType=localStorage.getItem("type"));
+//				console.log(this.beianType=localStorage.getItem("type"));
 				if(this.beianType=='1'){
 	//				企业项目备案列表
 					var params={
@@ -194,7 +194,7 @@
 							window.location.href="#/wode/RongziBeian/"+this.token+"/TianQiBeian";
 							return;
 						}
-						console.log(res);
+//						console.log(res);
 					},function(res){
 					    console.log(res);
 					})
@@ -205,9 +205,9 @@
 					var params={
 			    		token:localStorage.getItem("token"),
 			    	}
-					console.log(params)
+//					console.log(params)
 					this.$http.post(URL.path+'finance/record_list',params,{emulateJSON:true}).then(function(res){
-						console.log(res);
+//						console.log(res);
 						this.data=res.body.data.id;
 						if(res.body.data.length=='0' && this.length==0){
 							this.length+=1;
@@ -222,7 +222,7 @@
 				}
 				this.$nextTick(function() {
 					this.boxUl=this.$refs.box.getElementsByTagName("ul");
-					console.log(this.boxUl)
+//					console.log(this.boxUl)
 				})
 			},
 			formatDate(time){
@@ -260,19 +260,6 @@
 				
 				
 			}
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			

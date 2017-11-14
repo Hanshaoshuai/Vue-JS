@@ -164,7 +164,7 @@
 			}
 		},
 		mounted(){
-			console.log(this.CanShu)
+//			console.log(this.CanShu)
 			this.$nextTick(function() {
 				var typeLi=this.$refs.foods.getElementsByTagName("li")[0];
 				this.biaoQianID.push(typeLi.id);
@@ -235,8 +235,8 @@
 						ok+=1;
 					}
 				}
-				console.log(CanShu1)
-				console.log(datas)
+//				console.log(CanShu1)
+//				console.log(datas)
 				if(ok==0){
 					Indicator.open({spinnerType: 'fading-circle'});
 					this.$http.post(URL.path+'regist/regist2',datas,{emulateJSON:true}).then(function(res){
@@ -247,7 +247,7 @@
 							}else{
 								Toast('系统将在24小时内审核您的注册申请')
 							}
-							console.log(res.body)
+//							console.log(res.body)
 							window.location.href="#/faxian";
 						}else{
 							window.location.href="#/denglu"
@@ -277,7 +277,7 @@
 							this.biaoQianID.splice(z,1);
 //							console.log(this.biaoQianID)
 							this.biaoQianid=this.biaoQianID.join()
-							console.log(this.biaoQianid)
+//							console.log(this.biaoQianid)
 							this.y-=1
 							break;
 						}
@@ -293,22 +293,9 @@
 					}
 //					console.log(this.biaoQianID)
 					this.biaoQianid=this.biaoQianID.join()
-					console.log(this.biaoQianid)
+//					console.log(this.biaoQianid)
 				}
 			}
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -320,14 +307,6 @@
 //			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 //			ratingselect,

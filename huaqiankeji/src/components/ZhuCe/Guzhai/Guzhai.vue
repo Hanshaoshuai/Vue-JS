@@ -132,7 +132,7 @@
 //					typeLi1[0].setAttribute("class","src1");
 //					this.biaoQianID1.push(typeLi1[0].id);
 				});
-				console.log(this.BiaoQian);
+//				console.log(this.BiaoQian);
 			},function(res){
 				Indicator.close();
 			    console.log(res.status);
@@ -232,7 +232,7 @@
 							this.biaoQianID.splice(z,1);
 //							console.log(this.biaoQianID)
 							this.biaoQianid=this.biaoQianID.join()
-							console.log(this.biaoQianid)
+//							console.log(this.biaoQianid)
 							this.y-=1
 							break;
 						}
@@ -252,7 +252,7 @@
 					}
 //					console.log(this.biaoQianID)
 					this.biaoQianid=this.biaoQianID.join()
-					console.log(this.biaoQianid)
+//					console.log(this.biaoQianid)
 				}
 			},
 			types1(index,id){
@@ -271,7 +271,7 @@
 							this.biaoQianID1.splice(z,1);
 //							console.log(this.biaoQianID1)
 							this.biaoQianid1=this.biaoQianID1.join()
-							console.log(this.biaoQianid1)
+//							console.log(this.biaoQianid1)
 							this.y1-=1
 							break;
 						}
@@ -287,7 +287,7 @@
 					}
 //					console.log(this.biaoQianID1)
 					this.biaoQianid1=this.biaoQianID1.join()
-					console.log(this.biaoQianid1)
+//					console.log(this.biaoQianid1)
 				}
 			}
 		},

@@ -12,7 +12,6 @@
 					<li  @click.stop="tianJia()"><span>{{xingXi.tianJia}}</span></li>
 					<a class="tel" style="text-decoration:none;color:#666;display:block" :href="tel"></a>
 				</ul>
-				
 			</div>
 			<div v-show="cont1" class="loadEffect">
 				<div class="type-content">
@@ -61,13 +60,13 @@
 			}
 		},
 		mounted(){
-			console.log()
+//			console.log()
 		},
 		methods:{
 			tishiBlock(CanShu,datas,XiangmuID){
 				var thata=this;
-				console.log(CanShu)
-				console.log(XiangmuID)
+//				console.log(CanShu)
+//				console.log(XiangmuID)
 				this.datas=datas;
 				this.tel="tel:"+datas;
 				this.CanShu=CanShu;
@@ -88,9 +87,20 @@
 			xiaoShi(){
 				if(this.XiangmuID){
 					this.onlyContent=false;
+					this.cont=true;
+					this.cont1=false;
 				}
 			},
 			queDing(){
+				if(this.ZiJin==''){
+					Toast("请输入投资金额");
+					return;
+				}
+				if(this.ZiJin.split('')[0]*1==0){
+					Toast("开头不能为0");
+					this.ZiJin='';
+					return;
+				}
 				var params={
 		      		token:this.token,
 		      		item_id:this.XiangmuID,		//	项目id	是	[string]		
@@ -99,8 +109,8 @@
 				Indicator.open({spinnerType: 'fading-circle'});
 	//			投资人更改反馈进度
 				this.$http.post(URL.path+'finance/update_feedback',params,{emulateJSON:true}).then(function(res){
-					console.log("投资人收到的项目列表");
-					console.log(res.body);
+//					console.log("投资人收到的项目列表");
+//					console.log(res.body);
 					Indicator.close();
 					this.data=res.body.data;
 					var thata=this.token;
@@ -128,12 +138,15 @@
 	//			    		item:'[{"item_id":3,"send_id":132,"investment":22},{"item_id":1,"send_id":131,"investment":3}]'
 				    	}
 						this.$http.post(URL.path+'finance/edit_investment',anliParam,{emulateJSON:true}).then(function(res){
-							console.log(res);
+//							console.log(res);
 							if(res.body.returnCode=='200'){
-								Toast("您已完成本次操作")
+								Toast("感谢您的支持")
 								this.yicaozuo=true
 								this.$emit("to-parent",'结束成功');
+								this.ZiJin='';
 								this.onlyContent=false;
+								this.cont=true;
+								this.cont1=false;
 							}
 						},function(res){
 						    console.log(res);
@@ -158,7 +171,7 @@
 					return;
 				}
 				if(this.XiangmuID){ 	//项目已过会接口
-					console.log(this.XiangmuID);
+//					console.log(this.XiangmuID);
 					this.cont=false;
 					this.cont1=true;
 				}
@@ -175,7 +188,7 @@
 					return;
 				}
 				if(this.XiangmuID){		//项目已放弃接口
-					console.log(this.XiangmuID);
+//					console.log(this.XiangmuID);
 					var params={
 			      		token:this.token,
 			      		item_id:this.XiangmuID,		//	项目id	是	[string]		
@@ -185,12 +198,12 @@
 					this.$http.post(URL.path+'finance/update_feedback',params,{emulateJSON:true}).then(function(res){
 						this.data=res.body.data;
 						this.yicaozuo=true;
-						this.$emit("to-parent",'停止跟进');
-						if(res.body.returnCode=='201'){
-							Toast("亲！您暂无收到新项目哦...")
-						}
-						console.log("投资人收到的项目列表");
-						console.log(res.body);
+						this.$emit("to-parent","您本次操作已完成");
+//						if(res.body.returnCode=='201'){
+//							Toast("亲！您暂无收到新项目哦...")
+//						}
+//						console.log("投资人收到的项目列表");
+//						console.log(res.body);
 					},function(res){
 					    console.log(res);
 					})

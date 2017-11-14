@@ -67,8 +67,8 @@
 								<span>单个投资额</span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
-										<input v-if="single_project_max!=''" readOnly="true" v-model="numberg[0].title" placeholder="2000万-5000万" type="text" class="mint-field-core">
-										<input v-if="single_project_max==''" readOnly="true" v-model="numberg1" placeholder="2000万-5000万" type="text" class="mint-field-core">
+										<input v-if="single_project_max!=0" readOnly="true" v-model="numberg" placeholder="" type="text" class="mint-field-core">
+										<a v-if="single_project_max==0" ><input v-if="numberg1" readOnly="true" :placeholder="numberg1['0'].title" type="text" class="mint-field-core"></a>
 									</li>
 								</ul>
 								<div v-if="BianJi==1" class="type-conts">
@@ -212,14 +212,14 @@
 			this.nones=this.$route.params.type;
 			this.userID=localStorage.getItem("userID");
 			Indicator.open({spinnerType: 'fading-circle'});
-			console.log(this.userContent)
+//			console.log(this.userContent)
 //			个人资料
 			var params={
 //	    		token:this.userContent.token,
 	    		uid:this.uid
 	    	}
 			this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
-				console.log(res);
+//				console.log(res);
 				Indicator.close();
 				this.data=res.body.data;
 				this.imgs=res.body.data.photo.url;
@@ -229,9 +229,10 @@
 				this.numberh=this.data.info.territory;
 				this.textc=res.body.data.info.resources;
 				this.textd=this.data.info.restructuring;
-				var SuozaiHangye=res.body.data.info.interested;
+				var SuozaiHangye=this.data.info.interested;
 				var fund_stage=this.data.info.fund_stage;
-				console.log(SuozaiHangye);
+				
+//				console.log(SuozaiHangye);
 				var x=[];
 				var y=[];
 				var x1=[];
@@ -249,7 +250,7 @@
 				
 				this.oDbiaoQianID1=x1.join(',');
 				this.numberd=y1.join('、');
-				console.log(this.oDbiaoQianID1);
+//				console.log(this.oDbiaoQianID1);
 				this.$nextTick(function(){
 					var images = this.$refs.images;
 					if (images.clientWidth>images.clientHeight) {
@@ -273,6 +274,7 @@
 //			  	console.log(sessionStorage.getItem("gerenZiliaoH"))
 			},
 			yijianHind(){
+				Indicator.close();
 				history.go(-1)
 			},
 			baocun(){
@@ -293,19 +295,6 @@
 			baoMing(){
 				this.$refs.youhuiShow.YouhuiBlock();
 			},
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -317,21 +306,9 @@
 //			}
 		},
 		updated(){
-//			this.$refs.box.scrollTop=0;
-//			this.$refs.box.scrollTop=this.scrollTop
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 			box
-//			youhuiquan
-//			fankuixinxi
 		}
 	}
 </script>
@@ -399,6 +376,7 @@
 			    display:flex;
 			    z-index:100;
 			    .home-search {
+			    	position:relative;
 			    	width:0.62rem;
 			    	height:0.62rem;
 				    background: #ffffff;
@@ -406,6 +384,12 @@
 				    border-radius:0.06rem;
 				    overflow:hidden;
 				    img{
+				    	position:absolute;
+				    	top:0;
+				    	right:0;
+				    	left:0;
+				    	bottom:0;
+				    	margin:auto;
 				    	/*width:100%;
 				    	height:100%;*/
 				    }

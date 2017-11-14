@@ -131,7 +131,7 @@
 //					typeLi1[0].setAttribute("class","src1");
 //					this.biaoQianID1.push(typeLi1[0].id);
 				});
-				console.log(this.BiaoQian);
+//				console.log(this.BiaoQian);
 			},function(res){
 				Indicator.close();
 			    console.log(res.status);
@@ -175,12 +175,12 @@
 						single_project_min:this.numbere,			//单笔投资最小值	是	[string]		
 						fund_stage:this.biaoQianid1,			//投资阶段 15债转股 16债权 17 新三板 62PE 63 VC 64 天使投资 75PreIPO	是	[string]		
 						territory:this.texta,			//地域要求	是	[string]		
-						investment_way:'',			//投资方式 1:定增 2:接老股 3:二级市场 4:融资租赁 5:股权质押 6:双创债	是	[string]		
-						revenue_min:'',			//最低营收要求	是	[string]		
-						profit_min:'',			//最低净利润要求	是	[string]		
-						fund_min:'',			//最小年化资金成本范围	是	[string]		
-						fund_max:'',			//最大年化资金成本范围	是	[string]		
-						loan_time:'',			//放款时间	是	[string]		
+						investment_way:0,			//投资方式 1:定增 2:接老股 3:二级市场 4:融资租赁 5:股权质押 6:双创债	是	[string]		
+						revenue_min:0,			//最低营收要求	是	[string]		
+						profit_min:0,			//最低净利润要求	是	[string]		
+						fund_min:0,			//最小年化资金成本范围	是	[string]		
+						fund_max:0,			//最大年化资金成本范围	是	[string]		
+						loan_time:0,			//放款时间	是	[string]		
 						borrow:''				//借债主体	是	[string]
 					}
 				}else{
@@ -193,16 +193,16 @@
 						single_project_min:this.numberf,			//单笔投资最小值	是	[string]		
 						fund_stage:this.biaoQianid1,			//投资阶段 15债转股 16债权 17 新三板 62PE 63 VC 64 天使投资 75PreIPO	是	[string]		
 						territory:this.texta,			//地域要求	是	[string]		
-						investment_way:'',			//投资方式 1:定增 2:接老股 3:二级市场 4:融资租赁 5:股权质押 6:双创债	是	[string]		
-						revenue_min:'',			//最低营收要求	是	[string]		
-						profit_min:'',			//最低净利润要求	是	[string]		
-						fund_min:'',			//最小年化资金成本范围	是	[string]		
-						fund_max:'',			//最大年化资金成本范围	是	[string]		
-						loan_time:'',			//放款时间	是	[string]		
+						investment_way:0,			//投资方式 1:定增 2:接老股 3:二级市场 4:融资租赁 5:股权质押 6:双创债	是	[string]		
+						revenue_min:0,			//最低营收要求	是	[string]		
+						profit_min:0,			//最低净利润要求	是	[string]		
+						fund_min:0,			//最小年化资金成本范围	是	[string]		
+						fund_max:0,			//最大年化资金成本范围	是	[string]		
+						loan_time:0,			//放款时间	是	[string]		
 						borrow:''				//借债主体	是	[string]
 					}
 				}
-				console.log(datas)
+//				console.log(datas)
 				for(var item in CanShu1){		//判断填写信息是否完整Ok=1；标签必选
 					if(!CanShu1[item]=="" && this.y>=1 && this.y1>=1){
 						
@@ -220,7 +220,7 @@
 							}else{
 								Toast('系统将在24小时内审核您的注册申请')
 							}
-							console.log(res.body)
+//							console.log(res.body)
 							window.location.href="#/faxian";
 						}else{
 							window.location.href="#/denglu"
@@ -251,7 +251,7 @@
 							this.biaoQianID.splice(z,1);
 //							console.log(this.biaoQianID)
 							this.biaoQianid=this.biaoQianID.join()
-							console.log(this.biaoQianid)
+//							console.log(this.biaoQianid)
 							this.y-=1
 							break;
 						}
@@ -271,7 +271,7 @@
 					}
 //					console.log(this.biaoQianID)
 					this.biaoQianid=this.biaoQianID.join()
-					console.log(this.biaoQianid)
+//					console.log(this.biaoQianid)
 				}
 			},
 			types1(index,id){
@@ -290,7 +290,7 @@
 							this.biaoQianID1.splice(z,1);
 //							console.log(this.biaoQianID1)
 							this.biaoQianid1=this.biaoQianID1.join()
-							console.log(this.biaoQianid1)
+//							console.log(this.biaoQianid1)
 							this.y1-=1
 							break;
 						}
@@ -304,9 +304,9 @@
 							break;
 						}
 					}
-					console.log(this.biaoQianID1)
+//					console.log(this.biaoQianID1)
 					this.biaoQianid1=this.biaoQianID1.join()
-					console.log(this.biaoQianid1)
+//					console.log(this.biaoQianid1)
 				}
 			}
 		},

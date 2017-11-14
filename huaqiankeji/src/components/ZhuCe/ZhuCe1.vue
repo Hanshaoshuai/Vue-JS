@@ -30,7 +30,7 @@
 					<div class="zhuying_1 liangdian_1 border-top">
 						<div class="ferst">选择您的行业身份<font></font></div>	<!--类型 1:企业 2:投资机构 3:合格投资人 4咨询机构/研究咨询 5:券商研究员/财务顾问 6:新三板做市商-->
 						<ul ref="biaoqian">
-							<span class="bianse" @click.stap="xuanze('0','2')">投资机构</span>
+							<span @click.stap="xuanze('0','2')">投资机构</span>
 							<span @click.stap="xuanze('1','7')">财务顾问</span>
 							<span @click.stap="xuanze('2','1')">企&nbsp;业</span>
 							<span @click.stap="xuanze('3','3')">合格投资人</span>
@@ -43,7 +43,7 @@
 						<div v-show="Leixing" class="zhuying_1 liangdian_1 border-topbottom">
 							<div class="ferst">您是什么类型的投资机构<font></font></div>
 							<ul ref="biaoqian2">
-								<span class="bianse" @click.stap="xuanze2('0','Guquan','1')">股权投资</span>
+								<span @click.stap="xuanze2('0','Guquan','1')">股权投资</span>
 								<span @click.stap="xuanze2('1','Zaiquan','2')">债权投资</span>
 								<span @click.stap="xuanze2('2','Guzhai','3')">股债兼投</span>
 							</ul>
@@ -81,8 +81,8 @@
 				XiajiCanshu:'',
 				token:"DxZGPSUsZsp48LUdWYWpca2HXxwfUDZY1zfFHzyhidbfov0BKWrnwiuKVhpqkFa5",
 				contens:"",
-				type:"2",
-				Leixing:true,
+				type:"",
+				Leixing:false,
 				butten:"下一步",
 				classId:"0",
 				Type:{
@@ -97,8 +97,8 @@
 				showFlag:false,
 				onlyContent:true,
 				index:"0",
-				JigouType:"Guquan",
-				typeID:"1",
+				JigouType:"",
+				typeID:"",
 				TouziType:""
 			}
 		},
@@ -106,25 +106,40 @@
 //			console.log(this.$route.params.token)
 //			this.datas=this.$route.params.token.split(',');
 			
-			console.log(this.datas);//上一级传的参数；
+//			console.log(this.datas);//上一级传的参数；
 									//phone:this.phone,  //手机号
 									//texts:this.texts,	//验证码
 									//pwd: this.pwd, //密码
 		},
 		methods:{
 			yijianHind(){
+				Indicator.close();
 				history.go(-1)
 //				window.location.href="#/faxian";
 			},
 			XiaYibu(){
-				console.log(this.$refs.touxiangID.touxiangID);
-				console.log(this.$refs.mingpianID.mingpianID);
+//				console.log(this.$refs.touxiangID.touxiangID);
+//				console.log(this.$refs.mingpianID.mingpianID);
 				if(this.$refs.touxiangID.touxiangID==''){
 					Toast("请上传头像");
 					return;
 				}
 				if(this.$refs.mingpianID.mingpianID==''){
 					Toast("请上传名片");
+					return;
+				}
+				if(this.type==''){
+					Toast("请选择您的身份");
+					return;
+				}
+				var no=0;
+				if(this.index==0){
+					if(this.typeID==''){
+						Toast("请选择您的投资类型");
+						no=1
+					}
+				}
+				if(no==1){
 					return;
 				}
 				var data={			//财务顾问  做市商直接注册
@@ -141,7 +156,7 @@
 					localStorage.setItem("typeID",this.typeID);
 					this.$http.post(URL.path+'regist/go',data,{emulateJSON:true}).then(function(res){
 						Indicator.close();
-	                    console.log(res);
+//	                    console.log(res);
 						if(res.body.returnCode=='200'){
 //							Toast('注册成功请进行下一步完善信息');
 							this.XiajiCanshu={
@@ -154,7 +169,7 @@
 							localStorage.setItem("token",res.body.data.token);
 							localStorage.setItem("phone",res.body.data.phone);
 							localStorage.setItem("type",this.type);
-							console.log(this.XiajiCanshu)
+//							console.log(this.XiajiCanshu)
 //							window.location.href="#/zhuce/ZhuCe1/"+res.body.data.token+','+res.body.data.id+','+this.typeID+"/"+this.JigouType;
 							window.location.href="#/zhuce/ZhuCe1/"+res.body.data.token+"/"+this.JigouType;
 						}else{
@@ -172,7 +187,7 @@
 						Indicator.open({spinnerType: 'fading-circle'});
 						this.$http.post(URL.path+'regist/go',data,{emulateJSON:true}).then(function(res){
 							Indicator.close();
-		                    console.log(res);
+//		                    console.log(res);
 							if(res.body.returnCode=='200'){
 								Toast('系统将在24小时内审核您的注册申请');
 								this.XiajiCanshu={
@@ -185,7 +200,7 @@
 								localStorage.setItem("token",res.body.data.token);
 								localStorage.setItem("phone",res.body.data.phone);
 								localStorage.setItem("type",this.type);
-								console.log(this.XiajiCanshu)
+//								console.log(this.XiajiCanshu)
 								window.location.href="#/faxian"
 							}else{
 								window.location.href="#/denglu"
@@ -201,7 +216,7 @@
 						Indicator.open({spinnerType: 'fading-circle'});
 						this.$http.post(URL.path+'regist/go',data,{emulateJSON:true}).then(function(res){
 							Indicator.close();
-		                    console.log(res);
+//		                    console.log(res);
 							if(res.body.returnCode=='200'){
 								Toast('注册成功请进行下一步完善信息');
 								this.XiajiCanshu={
@@ -215,7 +230,7 @@
 								localStorage.setItem("token",res.body.data.token);
 								localStorage.setItem("phone",res.body.data.phone);
 								localStorage.setItem("type",this.type);
-								console.log(this.XiajiCanshu)
+//								console.log(this.XiajiCanshu)
 								window.location.href="#/zhuce/ZhuCe1/"+this.type+"/type"+this.index;
 							}else{
 								window.location.href="#/denglu"
@@ -232,7 +247,7 @@
 			},
 			xuanze(index,type){
 				this.type=type;
-				console.log(type)
+//				console.log(type)
 //				console.log(this.$refs.biaoqian.getElementsByTagName("span"))
 				var spans=this.$refs.biaoqian.getElementsByTagName("span")
 				var length=spans.length;
@@ -255,11 +270,11 @@
 				spans[index].setAttribute("class","bianse")
 			},
 			xuanze2(index,type,id){
-				console.log(this.$refs.biaoqian.getElementsByTagName("span"))
+//				console.log(this.$refs.biaoqian.getElementsByTagName("span"))
 				var spans=this.$refs.biaoqian2.getElementsByTagName("span")
 				var length=spans.length;
 				this.typeID=id;
-				localStorage.setItem("typeID",this.typeID);
+				localStorage.setItem("typeID",id);
 				this.JigouType=type;
 				for(var i=0; i<length; i++){
 					if(spans[i].getAttribute("class")=="bianse"){
@@ -303,14 +318,6 @@
 //			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 			mingpian,
@@ -355,7 +362,7 @@
 			top:0;
 			left:0;
 			width:100%;
-			height:0.46rem;
+			height:0.45rem;
 			font-weight:600;
 			background:#ff7a59;
 			font-size:0.2rem;

@@ -182,7 +182,7 @@
 							}else{
 								Toast('系统将在24小时内审核您的注册申请')
 							}
-							console.log(res.body)
+//							console.log(res.body)
 							window.location.href="#/faxian";
 						}else{
 							window.location.href="#/denglu"
@@ -208,7 +208,7 @@
 							this.biaoQianID.splice(z,1);
 //							console.log(this.biaoQianID)
 							this.biaoQianID1=this.biaoQianID.join()
-							console.log(this.biaoQianID1)
+//							console.log(this.biaoQianID1)
 							this.y-=1
 							break;
 						}
@@ -224,14 +224,14 @@
 					}
 //					console.log(this.biaoQianID)
 					this.biaoQianID1=this.biaoQianID.join()
-					console.log(this.biaoQianID1)
+//					console.log(this.biaoQianID1)
 				}
 			},
 			types1(index,id){
 				var typeLi=this.$refs.foods1.getElementsByTagName("li");
 				var length=typeLi.length;
 				this.board=id;
-				console.log(this.board)
+//				console.log(this.board)
 				for(var i=0; i<length; i++){
 					typeLi[i].setAttribute("class","src0");
 				}
@@ -242,26 +242,13 @@
 				var typeLi=this.$refs.foods2.getElementsByTagName("li");
 				var length=typeLi.length;
 				this.know_risk=id;
-				console.log(this.know_risk)
+//				console.log(this.know_risk)
 				for(var i=0; i<length; i++){
 					typeLi[i].setAttribute("class","src0");
 				}
 				typeLi[index].setAttribute("class","src1")
 				
 			}
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -273,14 +260,6 @@
 //			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 //			ratingselect,

@@ -277,7 +277,7 @@
 		mounted(){
 			this.numToTime=numToTime;
 			Indicator.open({spinnerType: 'fading-circle'});
-			console.log(this.userContent)
+//			console.log(this.userContent)
 //			个人资料
 			var params={
 	    		token:this.userContent.token,
@@ -295,13 +295,13 @@
 				
 				this.numberToh=this.data.info.single_project_max;	//原数据
 				this.numberToi=this.data.info.single_project_min;	//原数据
-				this.numbern=this.data.info.single_project_max;	//单笔投资额  将要改变的数据
-				this.numbero=this.data.info.single_project_min;	//单笔投资额  将要改变的数据
+				this.numbern=this.data.info.single_project_min;	//单笔投资额  将要改变的数据
+				this.numbero=this.data.info.single_project_max;	//单笔投资额  将要改变的数据
 				this.numberTog=this.numberToi+'万 - '+this.numberToh+'万';  //要插到页面的
 				
 				this.numbere=this.data.info.fund_min;//原来的数据
 				this.numberf=this.data.info.fund_max;//原来的数据
-				this.numberj=this.numbere+'万 - '+this.numberf+'万'
+				this.numberj=this.numbere+'% - '+this.numberf+'%'
 				this.numberc=this.data.info.fund_min;//您能提供的年化资金成本范围    将要改变的数据
 				this.numberd=this.data.info.fund_max;//您能提供的年化资金成本范围    将要改变的数据
 				
@@ -326,10 +326,10 @@
 						this.z=true;
 					}
 				}
-				console.log(res);
+//				console.log(res);
 			},function(res){
 				Indicator.close();
-			    console.log(res);
+//			    console.log(res);
 			})
 			//已投案例接口   已投项目列表		调用
 			this.YitouLiebiao();
@@ -342,6 +342,7 @@
 //			  	console.log(sessionStorage.getItem("gerenZiliaoH"))
 			},
 			yijianHind(){
+				Indicator.close();
 				history.go(-1)
 			},
 			baocun(){
@@ -371,8 +372,8 @@
 					max_nuwID2=this.numberd;
 					territory=this.textg;
 					loan_time=this.numberg;
-					single_project_min=this.numbero;
-					single_project_max=this.numbern;
+					single_project_min=this.numbern;
+					single_project_max=this.numbero;
 				}
 				if(this.BianJi4=='0'){
 					borrow=this.numberh;
@@ -386,15 +387,15 @@
 				}
 				var datas={
 					id:localStorage.getItem("userID"),				//	uid	是	[string]		
-					investment_type:localStorage.getItem("type"),	//投资类型 1:股权投资 2:债权投资 3:股债兼投	是	[string]		
+					investment_type:localStorage.getItem("typeID"),	//投资类型 1:股权投资 2:债权投资 3:股债兼投	是	[string]		
 					interested:'',					//感兴趣的行业多个用逗号分割	是	[string]		
 					single_project_max:single_project_max,			//单笔投资最大值	是	[string]		
 					single_project_min:single_project_min,			//单笔投资最小值	是	[string]		
 					fund_stage:'',					//投资阶段 15债转股 16债权 17 新三板 62PE 63 VC 64 天使投资 75PreIPO	是	[string]		
 					territory:territory,			//地域要求	是	[string]		
 					investment_way:investment_way,	//投资方式 1:定增 2:接老股 3:二级市场 4:融资租赁 5:股权质押 6:双创债	是	[string]		
-					revenue_min:nuwID,				//最低营收要求	是	[string]		
-					profit_min:nuwID1,				//最低净利润要求	是	[string]		
+					revenue_min:nuwID1,				//最低营收要求	是	[string]		
+					profit_min:nuwID,				//最低净利润要求	是	[string]		
 					fund_min:min_nuwID2,			//最小年化资金成本范围	是	[string]		
 					fund_max:max_nuwID2,			//最大年化资金成本范围	是	[string]		
 					loan_time:loan_time,			//放款时间	是	[string]		
@@ -404,7 +405,7 @@
 				this.$http.post(URL.path+'regist/regist2',datas,{emulateJSON:true}).then(function(res){
 					if(res.body.returnCode=='200'){
 						Toast('您已保存成功');
-						console.log(res.body)
+//						console.log(res.body)
 //						window.location.href="#/faxian";
 					}else{
 //						window.location.href="#/denglu"
@@ -442,7 +443,7 @@
 						investment:this.textInputs[index].value		//	投资额	是	[string]
 			    	}
 					this.$http.post(URL.path+'finance/edit_investment',anliParam,{emulateJSON:true}).then(function(res){
-						console.log(res);
+//						console.log(res);
 						if(res.body.returnCode=='200'){
 							Toast("您已保存成功")
 						}
@@ -473,7 +474,7 @@
 		    		type:'2'			//1:股权 2：债权 3：其他	是	[string]
 		    	}
 				this.$http.post(URL.path+'finance/get_deliver_list',anliParam,{emulateJSON:true}).then(function(res){
-					console.log(res);
+//					console.log(res);
 					if(res.body.returnCode=='200'){
 						this.YitouList=res.body.data;
 					}
@@ -503,7 +504,7 @@
 								this.biaoQianID.push(spans.id);
 								this.biaoQianID1.push(spans.id);
 							});
-							console.log(this.BiaoQian);
+//							console.log(this.BiaoQian);
 						},function(res){
 						    console.log(res.status);
 						})
@@ -516,27 +517,27 @@
 							var textInputs = this.$refs.chanYe.getElementsByClassName("mint-field-core");
 							textInputs[0].removeAttribute("readOnly")		//点击编辑   input去除属性readOnly即可编辑
 							textInputs[0].focus();		//点击编辑   input获取焦点
-							console.log();
+//							console.log();
 						}else{
 							this.$refs.bianji3.innerText="编辑";
 							var textInputs = this.$refs.chanYe.getElementsByClassName("mint-field-core");
 							textInputs[0].setAttribute("readOnly","readOnly")		//点击编辑   input去除属性readOnly即可编辑
 							textInputs[0].focus();		//点击编辑   input获取焦点
-							console.log();
+//							console.log();
 						}
 					}else{
 						if(this.$refs.bianji4.innerText=="编辑"){
 							this.$refs.bianji4.innerText="取消";
 							this.$nextTick(function() {
 								this.$refs.chongGou.focus();	//点击编辑   input获取焦点
-								console.log();
+//								console.log();
 							})
 						}else{
 							this.$refs.bianji4.innerText="编辑";
 							var textInputs = this.$refs.chongGou.getElementsByClassName("mint-field-core");
 							textInputs[0].setAttribute("readOnly","readOnly")		//点击编辑   input去除属性readOnly即可编辑
 							textInputs[0].focus();		//点击编辑   input获取焦点
-							console.log();
+//							console.log();
 						}
 					}
 					
@@ -565,7 +566,7 @@
 						}
 						this.y=this.biaoQianid2.length;
 						this.biaoQianid2=this.biaoQianID2.join();
-						console.log(this.biaoQianid2)
+//						console.log(this.biaoQianid2)
 					})
 				}
 				
@@ -615,7 +616,7 @@
 						}
 					}
 //						textInputs[0].focus();		//点击编辑   input获取焦点
-					console.log();
+//					console.log();
 				}
 			},
 			xuanze(index){
@@ -626,7 +627,7 @@
 					for(var z=0; z<this.y; z++){
 						if(this.biaoQianID[z]==spans[index].id){
 							this.biaoQianID.splice(z,1);
-							console.log(this.biaoQianID)
+//							console.log(this.biaoQianID)
 							this.y-=1
 							break;
 						}
@@ -643,7 +644,7 @@
 								break;
 							}
 						}
-						console.log(this.biaoQianID)
+//						console.log(this.biaoQianID)
 					}
 				}
 			},
@@ -655,7 +656,7 @@
 					for(var z=0; z<this.y; z++){
 						if(this.biaoQianID1[z]==spans[index].id){
 							this.biaoQianID1.splice(z,1);
-							console.log(this.biaoQianID1)
+//							console.log(this.biaoQianID1)
 							this.y-=1
 							break;
 						}
@@ -672,7 +673,7 @@
 								break;
 							}
 						}
-						console.log(this.biaoQianID1)
+//						console.log(this.biaoQianID1)
 //					}
 				}
 			},
@@ -686,7 +687,7 @@
 						if(this.biaoQianID2[z]==typeLi[index].id){
 							this.biaoQianID2.splice(z,1);
 							this.biaoQianid2=this.biaoQianID2.join()
-							console.log(this.biaoQianid2)
+//							console.log(this.biaoQianid2)
 							this.y-=1
 							return;
 						}
@@ -696,7 +697,7 @@
 					this.y+=1;
 					this.biaoQianID2[this.biaoQianID2.length]=typeLi[index].id;
 					this.biaoQianid2=this.biaoQianID2.join()
-					console.log(this.biaoQianid2)
+//					console.log(this.biaoQianid2)
 				}
 			}
 			

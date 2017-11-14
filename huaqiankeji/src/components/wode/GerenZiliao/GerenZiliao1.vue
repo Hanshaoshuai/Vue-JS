@@ -141,7 +141,7 @@
 		},
 		mounted(){
 			Indicator.open({spinnerType: 'fading-circle'});
-			console.log(this.userContent)
+//			console.log(this.userContent)
 //			个人资料
 			var params={
 	    		token:this.userContent.token,
@@ -170,8 +170,8 @@
 				}
 				this.oDbiaoQianID=x.join(',');
 				this.numbera=y.join('、');
-				console.log(this.oDbiaoQianID2);
-				console.log(res);
+//				console.log(this.oDbiaoQianID2);
+//				console.log(res);
 			},function(res){
 				Indicator.close();
 			    console.log(res);
@@ -185,11 +185,12 @@
 //			  	console.log(sessionStorage.getItem("gerenZiliaoH"))
 			},
 			yijianHind(){
+				Indicator.close();
 				history.go(-1)
 			},
 			baocun(){
-				console.log(this.oDbiaoQianID)
-				console.log(this.biaoQianid)
+//				console.log(this.oDbiaoQianID)
+//				console.log(this.biaoQianid)
 				var nuwID;
 				var nuwID1;
 				var max_nuwID2;
@@ -217,14 +218,14 @@
 					ctype:'1',					//	类型 1企业 4研究机构	是	[string]		
 					industry:nuwID,				//	所属行业标签，多个用 逗号分割	是	[string]
 					business:textc1,
-					revenue:min_nuwID2,					//营收收入不低于
-					profit:max_nuwID2						//净利润不低于
+					revenue:max_nuwID2,					//营收收入不低于
+					profit:min_nuwID2						//净利润不低于
 				}
-				console.log(datas)
+//				console.log(datas)
 				this.$http.post(URL.path+'regist/com_regist2',datas,{emulateJSON:true}).then(function(res){
 					if(res.body.returnCode=='200'){
 						Toast('您已保存成功');
-						console.log(res.body)
+//						console.log(res.body)
 //						window.location.href="#/faxian";
 					}else{
 //						window.location.href="#/denglu"
@@ -232,7 +233,7 @@
 					}
 				},function(res){
 					Toast(res.status);
-				    console.log(res.status);
+//				    console.log(res.status);
 				})
 			},
 			zuoshiBlock(){
@@ -255,7 +256,7 @@
 					this.y=1;
 					this.y=this.xx.length;
 					this.y1=this.xx1.length;
-					console.log(this.biaoQianID)
+//					console.log(this.biaoQianID)
 					if(this.BianJi==1){
 						this.BianJi=0;
 						this.$refs.bianji.innerText="编辑";
@@ -297,7 +298,7 @@
 //								this.biaoQianid1=this.biaoQianID1.join()
 								
 							});
-							console.log(this.BiaoQian);
+//							console.log(this.BiaoQian);
 						},function(res){
 						    console.log(res.status);
 						})
@@ -310,7 +311,7 @@
 						textInputs[i].removeAttribute("readOnly")		//点击编辑   input去除属性readOnly即可编辑
 					}
 					textInputs[0].focus();		//点击编辑   input获取焦点
-					console.log();
+//					console.log();
 				}
 				if(id==3 || id==4){
 					if(id==3){
@@ -320,7 +321,7 @@
 							this.$nextTick(function() {
 								this.$refs.chanYe.removeAttribute("readOnly")
 								this.$refs.chanYe.focus();	//点击编辑   input获取焦点
-								console.log();
+//								console.log();
 							})
 						}else{
 							this.$refs.bianji3.innerText="编辑";
@@ -335,7 +336,7 @@
 						textInputs[i].removeAttribute("readOnly")		//点击编辑   input去除属性readOnly即可编辑
 					}
 					textInputs[0].focus();		//点击编辑   input获取焦点
-					console.log();
+//					console.log();
 				}
 			},
 			bianji2(id){
@@ -361,7 +362,7 @@
 						this.$refs.chanYe1.removeAttribute("readOnly")
 						this.$refs.chanYe2.removeAttribute("readOnly")
 						this.$refs.chanYe1.focus();	//点击编辑   input获取焦点
-						console.log();
+//						console.log();
 					})
 				}
 			},
@@ -394,7 +395,7 @@
 						if(this.biaoQianID[z]==spans[index].id){
 							this.biaoQianID.splice(z,1);
 							this.biaoQianid=this.biaoQianID.join()
-							console.log(this.biaoQianid)
+//							console.log(this.biaoQianid)
 							this.y-=1
 							break;
 						}
@@ -407,7 +408,7 @@
 						this.biaoQianID[this.y]=spans[index].id;
 						this.y+=1;
 						this.biaoQianid=this.biaoQianID.join()
-						console.log(this.biaoQianid)
+//						console.log(this.biaoQianid)
 					}
 				}
 			},
@@ -419,7 +420,7 @@
 					for(var z=0; z<this.y; z++){
 						if(this.biaoQianID1[z]==spans[index].id){
 							this.biaoQianID1.splice(z,1);
-							console.log(this.biaoQianID1)
+//							console.log(this.biaoQianID1)
 							this.y-=1
 							break;
 						}
@@ -436,7 +437,7 @@
 								break;
 							}
 						}
-						console.log(this.biaoQianID1)
+//						console.log(this.biaoQianID1)
 					}
 				}
 			},
@@ -449,7 +450,7 @@
 					for(var z=0; z<this.y; z++){
 						if(this.biaoQianID2[z]==typeLi[index].id){
 							this.biaoQianID2.splice(z,1);
-							console.log(this.biaoQianID2)
+//							console.log(this.biaoQianID2)
 							this.y-=1
 							break;
 						}
@@ -463,7 +464,7 @@
 							break;
 						}
 					}
-					console.log(this.biaoQianID2)
+//					console.log(this.biaoQianID2)
 				}
 			}
 			

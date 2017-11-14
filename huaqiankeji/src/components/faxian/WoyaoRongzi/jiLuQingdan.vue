@@ -27,7 +27,7 @@
 			<!--<div v-show="none" style="width:100%;height:0.08rem;background: #f5f4f9;"></div>-->
 			<!--<div v-show="zanWu" style="width:100%;padding:0 12%;font-size:0.16rem;line-height:0.24rem;">暂无融资记录</div>-->
 		</div>
-		<router-view :token="token" :XiangmuID="XiangmuID" :is_send="is_send" :type="type"></router-view>
+		<!--<router-view :token="token" :XiangmuID="XiangmuID" :is_send="is_send" :type="type"></router-view>-->
 	</div>
 </template>
 
@@ -36,7 +36,7 @@
 	import {numToTime} from "../../../common/js/date.js";
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
-	import { Indicator } from 'mint-ui';
+//	import { Indicator } from 'mint-ui';
 	import box from "../../box.vue";
 	
 	export default {
@@ -75,8 +75,8 @@
 		},
 		mounted() {
 			this.numToTime=numToTime;
-			Indicator.open({spinnerType: 'fading-circle'});
-			console.log(this.token)
+//			Indicator.open({spinnerType: 'fading-circle'});
+//			console.log(this.token)
 			//项目列表（自己创建的历史融资记录）	
 			var datas = {
 				token:localStorage.getItem("token"),//	token	是	[string]		
@@ -85,21 +85,21 @@
 			}
 			this.$http.post(URL.path+'finance/creae_list',datas,{emulateJSON:true}).then(function(res){
 				this.data=res.body.data;
-				Indicator.close();
+//				Indicator.close();
 				if(this.data.length==0){
 					this.zanWu=true;
 				}else{
 					this.none=true;
 				}
-				console.log('已投清单');
-				console.log(res.body.data);
+//				console.log('已投清单');
+//				console.log(res.body.data);
 			},function(res){
-				Indicator.close();
+//				Indicator.close();
 			    console.log(res.status);
 			})
 			this.$nextTick(function() {
 				this.boxUl=this.$refs.box.getElementsByTagName("ul");
-				console.log(this.boxUl)
+//				console.log(this.boxUl)
 			})
 		},
 		methods:{
@@ -111,45 +111,13 @@
 				var Uls=this.boxUl[type]
 				this.XiangmuID=id;
 				this.is_send=is_send;		//是否投递过
-				this.type=type;
+				this.type1=type;
 				this.types['type'+type]
-				console.log(this.types['type'+type])
+//				console.log(this.types['type'+type])
 //				window.location.href="#/wode/jilu/0/"+this.types['type'+type];
 				window.location.href="#/"+this.types['type'+type]+'/'+type+'/'+id+'/'+is_send;
 //				this.$refs.dingzengzuoshiShow.zuoshiBlock();
 			},
-//			dingzengGo(){
-//				this.$refs.dingzengzuoshiShow.dingzengBlock();
-//			},
-//			zhiyaGo(){
-//				this.$refs.zhiyaShow.zhiyaBlock();
-//			},
-//			zhuangguGo(){
-//				this.$refs.zhuanlaoguShow.zhuanlaoguBlock();
-//			},
-//			zulinGo(){
-//				this.$refs.zulinShow.zulinBlock();
-//			},
-//			diaoyanGo(){
-//				this.$refs.diaoyanShow.diaoyanBlock();
-//			},
-//			shuangchuangGo(){
-//				this.$refs.shuangchuangShow.shuangchuangBlock();
-//			}
-			
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -161,23 +129,9 @@
 //			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 			box,
-//			dingzengzuoshi,
-//			zhuanlaogu,
-//			diaoyan,
-//			shuangchuang,
-//			zhiya,
-//			zulin
 		}
 	}
 </script>
@@ -195,19 +149,11 @@
 	  	/*opacity: 0;*/
 	}
 	.xiangmu-child{
-		/*width:100%;
-		height:100%;*/
-		/*.box::-webkit-scrollbar{width:0px}*/
 		.box{
 			width:100%;
-			/*height:100%;*/
-			/*-webkit-overflow-scrolling: touch;*/	/*解决苹果滑动流畅*/
 			.sousuo-content{
 				width:100%;
 				background:#fff;
-				/*margin:0.05rem 0;*/
-				/*display:flex;*/
-				/*flex-direction:column;*/
 				.content-header{
 					width:96%;
 					margin:0 auto;

@@ -2,7 +2,7 @@
 	<!--<transition name="fade">-->
 		<div v-show="showFlag" class="wenzhang">
 			<div class="xiangmu-header" @click.stop="listnone1()">
-				<span class="xiangmu-left"><img src="../img/back.png"/></span>
+				<!--<span class="xiangmu-left"><img src="../img/back.png"/></span>-->
 				<span>一键投递</span>
 			</div>
 			<div class="wenzhang-list">
@@ -110,21 +110,21 @@
 				}
 			},1000)
 			Indicator.open({spinnerType: 'fading-circle'});
-			console.log(this.$route.params.uID);
+//			console.log(this.$route.params.uID);
 			this.token=this.$route.params.token;
 			this.XiangmuID=this.$route.params.XiangmuID;
 			this.type=this.$route.params.type;
 			this.uID=this.$route.params.uID;
 			var x=this.uID.split(";").length;
-			console.log(x.length)
+//			console.log(x.length)
 			//发送项目	
 			var datas = {
 				token:this.token,		//	token	是	[string]		
 				item_id:this.XiangmuID,	//项目id	是	[string]		
 				type:this.type,			//类型 1:项目 2:活动	是	[string]		
 				to_id:this.uID,			//接受者id	是	[string]		
-				status:"",			//状态 1:已发送 2:未发送 3:拒绝		[string]		
-				demand:""		//	是否索要 1:非索要 2:索要		[string]
+				status:1,			//状态 1:已发送 2:未发送 3:拒绝		[string]		
+				demand:2		//	是否索要 1:非索要 2:索要		[string]
 			}
 			this.$http.post(URL.path+'finance/send_item',datas,{emulateJSON:true}).then(function(res){
 				var tata=this;
@@ -169,7 +169,7 @@
 						}
 					}
 				})
-				console.log(res);
+//				console.log(res);
 			},function(res){
 				Indicator.close();
 				Toast("系统错误")

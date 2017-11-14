@@ -96,7 +96,7 @@
 					password:this.xinmima2,
 					password_re:this.xinmima3,
 				}
-				console.log(datas)
+//				console.log(datas)
 				if(!xinmima1.test(this.xinmima1)) {
 					Toast('密码格式错误');
 					return;
@@ -126,9 +126,18 @@
 					Indicator.close();
 					if(res.body.returnCode=='200'){
 						Toast(res.body.msg);
-						window.location.href="#/denglu"
+						localStorage.removeItem("userID");		//用户ID
+						localStorage.removeItem("token");		//用户token
+						localStorage.removeItem("phone");		//用户电话
+						localStorage.removeItem("type");		//用户类型
+						localStorage.removeItem("name");
+						localStorage.removeItem("photo");		//用户头像id
+						localStorage.removeItem("photourl");	//用户头像URL地址
+						setTimeout(function(){
+							location.replace(document.referrer); 
+						},600)
 					}
-                    console.log(res);
+//                  console.log(res);
                 },function(res){
                 	Indicator.close();
                 	Toast("系统错误，请稍后再试！");
@@ -162,7 +171,7 @@
 					phone:this.phone
 				}
 				this.$http.post(URL.path+'regist/smsCode',data,{emulateJSON:true}).then(function(res){
-                    console.log(res.body);
+//                  console.log(res.body);
                     if(res.body.returnCode=='0011'){
 						Toast(res.body.msg);
 					}else{
@@ -186,7 +195,7 @@
 			}
 		},
 		mounted(){
-			console.log(URL.path)
+//			console.log(URL.path)
 		},
 		events:{
 			
@@ -290,9 +299,9 @@
 				align-items:center;
 				margin-top:-1.8rem;
 				ul>li{
-					width:1.25rem;
-					height:1.5rem;
-					background-image:url("../../DengLu/img/app.png");
+					width:1.492rem;
+					height:1.321rem;
+					background-image:url("../../DengLu/img/denglu2.png");
 					background-size:100% 100%;
 				}
 			}

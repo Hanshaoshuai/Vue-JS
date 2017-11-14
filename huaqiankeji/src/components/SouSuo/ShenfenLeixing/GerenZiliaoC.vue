@@ -64,7 +64,7 @@
 						</div>
 						<div class="fankiu border-bottom dangeDiyu">
 							<div class="content-food">
-								<span>单个投资额</span>
+								<span>单笔投资额</span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
 										<input readOnly="true" v-model="numberg" placeholder="" type="text" class="mint-field-core">
@@ -368,7 +368,7 @@
 			this.nones=this.$route.params.type;
 			this.userID=localStorage.getItem("userID");
 			Indicator.open({spinnerType: 'fading-circle'});
-			console.log(this.userContent)
+//			console.log(this.userContent)
 //			个人资料
 			var params={
 //	    		token:this.userContent.token,
@@ -378,7 +378,7 @@
 				Indicator.close();
 				this.data=res.body.data;
 				this.imgs=res.body.data.photo.url;
-				this.numberg=this.data.info.single_project_max+'万-'+this.data.info.single_project_min+'万';
+				this.numberg=this.data.info.single_project_min+'万-'+this.data.info.single_project_max+'万';
 				this.numberh=this.data.info.territory;
 				this.textc=this.data.info.resources;
 				this.textd=this.data.info.restructuring;
@@ -390,8 +390,8 @@
 				this.numberf=this.data.info.fund_max;//原来的数据
 				this.numberj=this.numbere+'% - '+this.numberf+'%'
 				
-				this.numberToh=this.data.info.single_project_max;	//原数据
-				this.numberToi=this.data.info.single_project_min;	//原数据
+				this.numberToh=this.data.info.single_project_max2;	//原数据
+				this.numberToi=this.data.info.single_project_min2;	//原数据
 				this.numberTog=this.numberToi+'万 - '+this.numberToh+'万';  //要插到页面的
 				
 				this.numberq=this.data.info.loan_time+'天';
@@ -402,7 +402,7 @@
 				
 				var SuozaiHangye1=this.data.info.interested;
 				var fund_stage=this.data.info.fund_stage;
-				console.log(SuozaiHangye1);
+//				console.log(SuozaiHangye1);
 				var x=[];
 				var y=[];
 				var x1=[];
@@ -420,7 +420,7 @@
 				
 				this.oDbiaoQianID1=x1.join(',');
 				this.numberd=y1.join('、');
-				console.log(this.oDbiaoQianID1);
+//				console.log(this.oDbiaoQianID1);
 				
 				
 				var SuozaiHangye=this.data.info.investment_way;		//投资方式		原来的数据字符串
@@ -443,7 +443,7 @@
 						images.style.height="auto"
 					}
 				});
-				console.log(res);
+//				console.log(res);
 			},function(res){
 				Indicator.close();
 			    console.log(res);
@@ -457,6 +457,7 @@
 //			  	console.log(sessionStorage.getItem("gerenZiliaoH"))
 			},
 			yijianHind(){
+				Indicator.close();
 				history.go(-1)
 			},
 			baocun(){
@@ -477,19 +478,6 @@
 			baoMing(){
 				this.$refs.youhuiShow.YouhuiBlock();
 			},
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -501,21 +489,9 @@
 //			}
 		},
 		updated(){
-//			this.$refs.box.scrollTop=0;
-//			this.$refs.box.scrollTop=this.scrollTop
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 			box
-//			youhuiquan
-//			fankuixinxi
 		}
 	}
 </script>
@@ -583,6 +559,7 @@
 			    display:flex;
 			    z-index:100;
 			    .home-search {
+			    	position:relative;
 			    	width:0.62rem;
 			    	height:0.62rem;
 				    background: #ffffff;
@@ -590,6 +567,12 @@
 				    border-radius:0.06rem;
 				    overflow:hidden;
 				    img{
+				    	position:absolute;
+				    	top:0;
+				    	right:0;
+				    	left:0;
+				    	bottom:0;
+				    	margin:auto;
 				    	/*width:100%;
 				    	height:100%;*/
 				    }

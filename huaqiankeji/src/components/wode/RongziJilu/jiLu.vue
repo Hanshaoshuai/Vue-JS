@@ -5,34 +5,51 @@
 				<span class="xiangmu-left"><img src="../img/back.png"/></span>
 				<span>历史融资记录</span>
 			</div>
-			<div class="box" ref="box">
+			<div class="box" ref="wrapper">
 				<div style="width:100%;height:0.55rem;"></div>
-				<div v-for="(item,index) in data" class="sousuo-content border-topbottom">
-					<ul ref="index1" class="content-header border-bottom" index="type1"  @click.stap="typeName(item.id,item.type,item.is_send)">
-						<li>
-							<div class="content-top">
-								<span><!--{{item.com_name}}&nbsp;-->({{item.com_short}})</span>
-								<!--<span>{{item.type}}</span>-->
-								<span v-if="item.type==1" class="texts">定增</span>
-								<span v-if="item.type==2" class="texts">做市</span>
-								<span v-if="item.type==3" class="texts">转老股</span>
-								<span v-if="item.type==4" class="texts">股权质押</span>
-								<span v-if="item.type==5" class="texts">融资租赁</span>
-								<span v-if="item.type==6" class="texts">研报支持</span>
-								<span v-if="item.type==7" class="texts">公司调研</span>
-								<font v-if="item.is_send=='1' && item.audit!='1'">已投递</font>
-								<font v-if="item.is_send=='2'">未投递</font>
-								<font v-if="item.audit=='1'">已撤回</font>
-							</div>
-							<div class="content-bottom">
-								<span>{{numToTime(item.create_time)}}</span>
-							</div>
-						</li>
-					</ul>
+				<div class="contents">
+					<div v-for="(cont,index) in data" class="add" ref="lisitTop">
+						<div v-for="(item,index) in cont" class="sousuo-content border-topbottom">
+							<ul ref="index1" class="content-header border-bottom" index="type1"  @click.stap="typeName(item.id,item.type,item.is_send)">
+								<li>
+									<div class="content-top">
+										<span><!--{{item.com_name}}&nbsp;-->{{item.com_short}}&nbsp;</span>
+										<span>（{{item.com_code}}）</span>
+										<span v-if="item.type==1" class="texts">定增</span>
+										<span v-if="item.type==2" class="texts">做市</span>
+										<span v-if="item.type==3" class="texts">转老股</span>
+										<span v-if="item.type==4" class="texts">股权质押</span>
+										<span v-if="item.type==5" class="texts">融资租赁</span>
+										<span v-if="item.type==6" class="texts">研报支持</span>
+										<span v-if="item.type==7" class="texts">公司调研</span>
+										<font v-if="item.is_send=='1' && item.audit!='1'">已投递</font>
+										<font v-if="item.audit=='2'">未投递</font>
+										<font v-if="item.audit=='1'">已撤回</font>
+									</div>
+									<div class="content-bottom">
+										<span>{{numToTime(item.create_time)}}</span>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div v-show="tishis" class="tishi-bottom">
+						<div class="tishis">
+							<ul>
+								<li class="border-bottom"></li>
+								<li class="tishi-center">{{jeiguo}}</li>
+								<li class="border-bottom"></li>
+							</ul>
+						</div>
+					</div>
 				</div>
-				<box></box>
-				<div style="width:100%;height:0.5rem;"></div>
 			</div>
+			<span class="loding" v-show="topStatus">
+            	<mt-spinner :type="3" color="#26a2ff" :size="30"></mt-spinner>
+          	</span>
+			<transition name="fade1">
+				<div v-show="topBlock" @click.stop="zhiDing()" class="zhiDing"></div>
+			</transition>
 			<router-view :token="token" :XiangmuID="XiangmuID" :is_send="is_send"></router-view>
 			<!--<dingzengzuoshi ref="dingzengzuoshiShow"></dingzengzuoshi>-->
 			<!--<zhuanlaogu ref="zhuanlaoguShow"></zhuanlaogu>-->
@@ -66,7 +83,7 @@
 		},
 		data () {
 			return {
-				data:'',
+				data:[],
 				x:'1',
 				urlName:"DingzengZuoshi",
 				fankui:"45",
@@ -86,82 +103,145 @@
 				},
 				XiangmuID:"",
 				is_send:"",
-				numToTime:""
+				numToTime:"",
+				
+				
+				num:"",
+				n:"",		//存储图片加载到的位置，避免每次都从第一张图片开始遍历
+				height:0,
+				topBlock:false,
+				page:1,
+				tishis:false,
+				jeiguo:"亲已经到底了",
+				topStatus:false,
+				tems:'',
+				listlenght:-1
 			}
 		},
 		mounted() {
 			this.numToTime=numToTime;
-			Indicator.open({spinnerType: 'fading-circle'});
-			console.log(this.token)
+			this.pipeiBlock()
+//			Indicator.open({spinnerType: 'fading-circle'});
+//			console.log(this.token)
 			//项目列表（自己创建的历史融资记录）	
-			var datas = {
-				token:this.token,//	token	是	[string]		
-				page:"",	//page	是	[string]		
-				size:""	//size	是	[string]
-			}
-			this.$http.post(URL.path+'finance/creae_list',datas,{emulateJSON:true}).then(function(res){
-				this.data=res.body.data;
-				Indicator.close();
-				if(this.data.length==0){
-					Toast("暂无融资记录")
-				}
-				console.log(res.body.data);
-			},function(res){
-				Indicator.close();
-			    console.log(res.status);
-			})
-			this.$nextTick(function() {
-				this.boxUl=this.$refs.box.getElementsByTagName("ul");
-				console.log(this.boxUl)
-			})
+//			var datas = {
+//				token:this.token,//	token	是	[string]		
+//				page:"",	//page	是	[string]		
+//				size:""	//size	是	[string]
+//			}
+//			this.$http.post(URL.path+'finance/creae_list',datas,{emulateJSON:true}).then(function(res){
+//				this.data=res.body.data;
+//				Indicator.close();
+//				if(this.data.length==0){
+//					Toast("暂无融资记录")
+//				}
+//				console.log(res.body.data);
+//			},function(res){
+//				Indicator.close();
+//			    console.log(res.status);
+//			})
+//			this.$nextTick(function() {
+//				this.boxUl=this.$refs.box.getElementsByTagName("ul");
+//				console.log(this.boxUl)
+//			})
 		},
 		methods:{
 			yijianHind(){
+//				Indicator.close();
 				history.go(-1)
 //				this.tucaoShow=false;
 			},
+			zhiDing(){		//返回顶部；
+				this.$refs.wrapper.scrollTop=0;
+			},
+			handleScroll(){
+				if(this.$refs.wrapper.scrollTop>600){
+					this.topBlock=true;
+				}else{
+					this.topBlock=false;
+				}
+			},
+			faxianScroll(){
+				if(this.$refs.wrapper.scrollTop>600){
+					this.topBlock=true;
+				}else{
+					this.topBlock=false;
+				}
+				this.imgs()
+	//				console.log(this.img[6].offsetTop)
+			},
+			imgs(){
+				var scrollHeights=this.$refs.wrapper.scrollHeight;
+				var setHeight = document.documentElement.clientHeight; //可见区域高度
+				var scrollTop = this.$refs.wrapper.scrollTop; //滚动条距离顶部高度
+				var x=Math.abs(Math.round(setHeight + scrollTop))
+	//				console.log(x)
+	//				console.log(scrollHeights)
+				if(x==scrollHeights || scrollHeights-x==1){
+					var tata=this
+					this.topStatus=true;
+					this.tems=setTimeout(function(){
+						tata.pipeiBlock();
+					},1000)
+				}
+			},
+			pipeiBlock(){
+//				console.log(this.token)
+				//项目列表（自己创建的历史融资记录）	
+				var datas = {
+					token:localStorage.getItem("token"),//	token	是	[string]		
+					page:this.page,	//page	是	[string]		
+					size:20	//size	是	[string]
+				}
+				Indicator.open({spinnerType: 'fading-circle'});
+				this.$http.post(URL.path+'finance/creae_list',datas,{emulateJSON:true}).then(function(res){
+					Indicator.close();
+//					console.log('已投清单');
+//					console.log(res.body.data);
+	//					if(this.data.length==5){//长度大于5从新开始
+	//						this.data=[]
+	//						this.$refs.wrapper.scrollTop=0;
+	//						this.height=0;
+	//					}
+					this.topStatus=false;
+					if(res.body.data.length==0){
+						if(this.data.length==0){
+							this.jeiguo="暂无匹配结果"
+						}
+						this.$refs.wrapper.removeEventListener('scroll', this.faxianScroll);
+						this.$refs.wrapper.addEventListener('scroll', this.handleScroll)
+						this.tishis=true;
+						return;
+					}else{
+						this.data.push(res.body.data);
+					}
+					if(this.n !== 0){
+						clearTimeout(this.tems);
+					}
+					this.page=this.page*1;
+					this.page=this.page+=1;
+					if(this.n == 0){
+						this.$nextTick(function(){
+							this.n = 0; //存储图片加载到的位置，避免每次都从第一张图片开始遍历
+	  						this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
+	  						this.imgs()
+						});
+					}
+				},function(res){
+					Indicator.close();
+				    console.log(res.status);
+				})
+			},
 			typeName(id,type,is_send){
-				var Uls=this.boxUl[type]
+//				var Uls=this.boxUl[type]
 				this.XiangmuID=id;
 				this.is_send=is_send;		//是否投递过
 				this.types['type'+type]
-				console.log(this.types['type'+type])
+//				console.log(this.types['type'+type])
 //				window.location.href="#/wode/jilu/0/"+this.types['type'+type];
 				window.location.href="#/"+this.types['type'+type]+'/'+type+'/'+id+'/'+is_send;
 //				this.$refs.dingzengzuoshiShow.zuoshiBlock();
 			},
-//			dingzengGo(){
-//				this.$refs.dingzengzuoshiShow.dingzengBlock();
-//			},
-//			zhiyaGo(){
-//				this.$refs.zhiyaShow.zhiyaBlock();
-//			},
-//			zhuangguGo(){
-//				this.$refs.zhuanlaoguShow.zhuanlaoguBlock();
-//			},
-//			zulinGo(){
-//				this.$refs.zulinShow.zulinBlock();
-//			},
-//			diaoyanGo(){
-//				this.$refs.diaoyanShow.diaoyanBlock();
-//			},
-//			shuangchuangGo(){
-//				this.$refs.shuangchuangShow.shuangchuangBlock();
-//			}
-			
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -173,23 +253,9 @@
 //			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 			box,
-//			dingzengzuoshi,
-//			zhuanlaogu,
-//			diaoyan,
-//			shuangchuang,
-//			zhiya,
-//			zulin
 		}
 	}
 </script>
@@ -202,6 +268,17 @@
 	  	transition: all .5s ease;
 	}
 	.fade-enter, .fade-leave-active {
+	  	transform: translateX(4.17rem);
+	  	/*transform:rotate(360deg);*/
+	  	/*opacity: 0;*/
+	}
+	.fade1-enter-active {
+	  	transition: all .5s ease;
+	}
+	.fade1-leave-active {
+	  	transition: all .5s ease;
+	}
+	.fade1-enter, .fade1-leave-active {
 	  	transform: translateX(4.17rem);
 	  	/*transform:rotate(360deg);*/
 	  	/*opacity: 0;*/
@@ -245,69 +322,115 @@
 			width:100%;
 			height:100%;
 			-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
-			.sousuo-content{
-				width:100%;
-				background:#fff;
-				/*margin:0.05rem 0;*/
-				/*display:flex;*/
-				/*flex-direction:column;*/
-				.content-header{
-					width:96%;
-					margin:0 auto;
-					padding:0.16rem 0;
-					font-size:0.16rem;
-					li{
-						width:91.7%;
+			.contents{
+				position:relative;
+				padding-bottom:0.52rem;
+				.sousuo-content{
+					width:100%;
+					background:#fff;
+					/*margin:0.05rem 0;*/
+					/*display:flex;*/
+					/*flex-direction:column;*/
+					.content-header{
+						width:96%;
 						margin:0 auto;
-						color:#8c8c8c;
-						.content-top{
-							width:100%;
-							height:0.22rem;
-							display:flex;
-							span{
-								display:inline-block;
-								width:0.97rem;
-								&:first-child{
-									color:#323232;
-									font-size:0.18rem;
-									flex:1;
+						padding:0.16rem 0;
+						font-size:0.16rem;
+						li{
+							width:91.7%;
+							margin:0 auto;
+							color:#8c8c8c;
+							.content-top{
+								width:100%;
+								height:0.22rem;
+								display:flex;
+								span{
+									display:inline-block;
+									width:0.97rem;
+									&:first-child{
+										color:#323232;
+										font-size:0.18rem;
+										flex:1;
+									}
+								}
+								font{
+									display:inline-block;
+									width:0.58rem;
+									font-size:0.12rem;
+									color:#717070;
+									line-height:0.18rem;
+								}
+								.texts{
+									text-align:center;
 								}
 							}
-							font{
-								display:inline-block;
-								width:0.58rem;
-								font-size:0.12rem;
-								color:#717070;
-								line-height:0.18rem;
+							.content-bottom{
+								span{
+									font-size:0.12rem;
+									color:#cfcfcf;
+								}
 							}
 						}
-						.content-bottom{
-							span{
+					}
+				}
+				.times{
+					width:100%;
+					height:0.3rem;
+					background:#fff;
+					line-height:0.3rem;
+					.times_1{
+						display:inline-block;
+						padding-left:0.2rem;
+					}
+					.text-center{
+						display:inline-block;
+						padding:0 0.08rem;
+					}
+					.times-name{
+						float:right;
+						margin-right:0.1rem;
+					}
+				}
+				.tishi-bottom{
+					position:absolute;
+					left:0;
+					right:0;
+					bottom:0.04rem;
+					width:92.5%;
+					height:0.36rem;
+					margin:0 auto;
+					ul{
+						width:100%;
+						height:100%;
+						display:flex;
+						li{
+							flex:1;
+							height:0.2rem;
+							&.tishi-center{
+								width:0.57rem;
+								line-height:0.36rem;
+								text-align:center;
 								font-size:0.12rem;
-								color:#cfcfcf;
+								color:#bcbcbc;
 							}
 						}
 					}
 				}
 			}
-			.times{
-				width:100%;
-				height:0.3rem;
-				background:#fff;
-				line-height:0.3rem;
-				.times_1{
-					display:inline-block;
-					padding-left:0.2rem;
-				}
-				.text-center{
-					display:inline-block;
-					padding:0 0.08rem;
-				}
-				.times-name{
-					float:right;
-					margin-right:0.1rem;
-				}
-			}
+		}
+		.loding{
+			position:fixed;
+			bottom:0.0rem;
+			left:0;
+			margin-bottom:0.12rem;
+			width:100%;
+			display: inline-block;
+			text-align:center;
+			display:flex;
+			-webkit-box-pack: center;
+		    justify-content: center;
+		    -webkit-box-align: center;
+		    align-items: center;
 		}
 	}
 </style>

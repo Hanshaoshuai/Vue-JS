@@ -51,8 +51,8 @@
 					<div class="zhuying_1 border">
 						<div class="ferst"><span></span>经营业绩</div>
 						<div class="last">
-							<p>上一财年：营收&nbsp;<span>{{numbera}}亿元</span>&nbsp;&nbsp;&nbsp;&nbsp;扣非净利润&nbsp;<span>{{numberb}}万元</span></p>
-							<p>今年预计：营收&nbsp;<span>{{numberc}}亿元</span>&nbsp;&nbsp;&nbsp;&nbsp;扣非净利润&nbsp;<span>{{numberd}}万元</span></p>
+							<p>上一财年：营收&nbsp;<span>{{numbera}}亿</span>&nbsp;&nbsp;&nbsp;&nbsp;扣非净利润&nbsp;<span>{{numberb}}万</span></p>
+							<p>今年预计：营收&nbsp;<span>{{numberc}}亿</span>&nbsp;&nbsp;&nbsp;&nbsp;扣非净利润&nbsp;<span>{{numberd}}万</span></p>
 						</div>
 					</div>
 					<div class="zhuying_1 border">
@@ -250,6 +250,7 @@
 		},
 		methods:{
 			yijianHind(){
+				Indicator.close();
 				history.go(-1)
 //				this.tucaoShow=false;
 			},
@@ -268,7 +269,7 @@
 					item_id:this.XiangmuID,			//	项目id
 				}
 				this.datas=datas;
-				console.log(this.token)
+//				console.log(datas)
 				//获取标签
 				this.$http.post(URL.path1+'login/three',this.datas,{emulateJSON:true}).then(function(res){
 					this.BiaoQian=res.body.data[0]
@@ -302,7 +303,7 @@
 //							}
 //						}
 						
-						console.log(this.data);
+//						console.log(this.data);
 					},function(res){
 						Indicator.close();
 					    console.log(res.status);
@@ -325,12 +326,16 @@
 						this.y+=1;
 					}
 				}
-				console.log(this.y)
+//				console.log(this.y)
 			},
 			genJin(){
 				window.location.href='#/DingzengZuoshi/'+this.XiangmuID+'/'+this.XiangmuID+'/1/YitouQingdan';
 			},
 			xiayibuGo(){
+				if(this.data.audit=='1'){
+					Toast("该项目已被系统强制撤回");
+					return;
+				}
 //				this.butenLeft="butenLeft";
 //				this.butenRight="";
 				var CanShu={				//给下级要传的参数
@@ -381,7 +386,7 @@
 							spans.setAttribute("class","bianse")
 						});
 						this.BiaoQian=res.body.data[0]
-						console.log(this.BiaoQian);
+//						console.log(this.BiaoQian);
 					},function(res){
 					    console.log(res.status);
 					})

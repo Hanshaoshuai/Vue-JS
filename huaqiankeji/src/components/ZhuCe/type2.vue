@@ -71,7 +71,7 @@
 	//	        nickname:res.body.data.nickname,
 	//	        token:用户token；
 	//		}
-			console.log(this.XiajiCanshu)
+//			console.log(this.XiajiCanshu)
 //			var datas = {
 //				token:this.XiajiCanshu.token//	token	是	[string]	URL获取的参数
 //			}
@@ -87,7 +87,7 @@
 //					typeLi[0].setAttribute("class","src1");
 //					this.biaoQianID.push(typeLi[0].id);
 				});
-				console.log(this.BiaoQian);
+//				console.log(this.BiaoQian);
 			},function(res){
 				Indicator.close();
 			    console.log(res.status);
@@ -132,7 +132,7 @@
 						}else{
 							Toast('系统将在24小时内审核您的注册申请')
 						}
-						console.log(res.body)
+//						console.log(res.body)
 						window.location.href="#/faxian";
 					}else{
 						window.location.href="#/denglu"
@@ -156,9 +156,9 @@
 					for(var z=0; z<this.y; z++){
 						if(this.biaoQianID[z]==typeLi[index].id){
 							this.biaoQianID.splice(z,1);
-							console.log(this.biaoQianID)
+//							console.log(this.biaoQianID)
 							this.biaoQianID1=this.biaoQianID.join()
-							console.log(this.biaoQianID1)
+//							console.log(this.biaoQianID1)
 							this.y-=1
 							break;
 						}
@@ -175,25 +175,12 @@
 								break;
 							}
 						}
-						console.log(this.biaoQianID)
+//						console.log(this.biaoQianID)
 						this.biaoQianID1=this.biaoQianID.join()
-						console.log(this.biaoQianID1)
+//						console.log(this.biaoQianID1)
 					}
 				}
 			}
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -205,14 +192,6 @@
 //			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 //			ratingselect,

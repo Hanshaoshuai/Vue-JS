@@ -170,7 +170,7 @@
 			</div>
 			<tishi ref="tishiShow" :xingXi="xingXi" :content="content"></tishi>
 			<transition name="fades">
-				<div ref="xianShi" v-show="onlyContent" class="loding" style="position: absolute;z-index: 1600; top: 0;right: 0;bottom: 0;left: 0;background-color: rgba(0,0,0,0.3);display: none;">
+				<div @click.stop="xiaoShi1()" ref="xianShi" v-show="onlyContent" class="loding" style="position: absolute;z-index: 1600; top: 0;right: 0;bottom: 0;left: 0;background-color: rgba(0,0,0,0.3);display: none;">
 				    <div class="loadEffect" ref="padding">
 						<ul v-show="firstTop">
 							<li class="border-bottom" @click.stop="BugenYuanyin('营收和净利润规模偏小')"><span>营收和净利润规模偏小</span></li>
@@ -188,8 +188,16 @@
 						<ul>
 							<li class="border-bottom" @click.stop="BugenYuanyin1('项目业绩涉嫌严重造假')"><span>项目业绩涉嫌严重造假</span></li>
 							<li class="" @click.stop="BugenYuanyin1('其他原因')"><span>其他原因</span></li>
-							<!--<li class="border-bottom" @click.stop="BugenYuanyin1('发布项目与实际融资项目不符')"><span>发布项目与实际融资项目不符</span></li>
-							<li @click.stop="BugenYuanyin1('其他原因')"><span>其他原因</span></li>-->
+						</ul>
+					</div>	
+				</div>
+			</transition>
+			<transition name="fades2">
+				<div @click.stop="xiaoShi2()" ref="xianShi" v-show="onlyContent2" class="loding" style="position: absolute;z-index: 1600; top: 0;right: 0;bottom: 0;left: 0;background-color: rgba(0,0,0,0.3);display: none;">
+				    <div class="loadEffect" ref="padding">
+						<ul>
+							<li class="border-bottom" @click.stop="BugenYuanyin2('1')"><span>确定申请</span></li>
+							<li class="" @click.stop="BugenYuanyin2('0')"><span>取消</span></li>
 						</ul>
 					</div>	
 				</div>
@@ -252,6 +260,7 @@
 				yigenJin:0,
 				onlyContent:false,
 				onlyContent1:false,
+				onlyContent2:false,
 				firstTop:true,
 				lastBottom:false,
 				textcont:"备案申请成功，请等待审核",
@@ -280,10 +289,10 @@
 				token:this.userContent.token,
 				item_id:this.$route.params.XiangmuID			//	项目id
 			}
-			console.log(this.data)
+//			console.log(this.data)
 			this.$http.post(URL.path+'finance/item_detail',data,{emulateJSON:true}).then(function(res){
 				Indicator.close();
-				console.log(res);
+//				console.log(res);
 				this.data=res.body.data[0]
 				this.srcgo=res.body.data[0].plan;//BP
 				this.jihuaShu=res.body.data[0].report;
@@ -331,6 +340,7 @@
 		},
 		methods:{
 			yijianHind(){
+				Indicator.close();
 //				this.$router.go(-1)
 				history.go(-1)
 //				this.tucaoShow=false;
@@ -338,6 +348,12 @@
 //			退出投诉
 			xiaoShi(){
 				this.onlyContent1=false;
+			},
+			xiaoShi1(){
+				this.onlyContent=false;
+			},
+			xiaoShi2(){
+				this.onlyContent2=false;
 			},
 //			投诉显示调用
 			tousuBlock(){
@@ -354,24 +370,58 @@
 					token:this.userContent.token,
 //					to_id:this.uid,					//对方id	是	[string]
 					terminalNo: '3',
-					rid: this.data.com_short,
-					content:texts,
+					rid: this.data.uid,
+					content:'投诉“'+this.data.com_short+'”项目的原因：'+texts,
 					ctype:6		//举报原因id
 //					ctype: this.selectedID		//举报原因id
 				}
-				console.log(farams)
+//				console.log(farams)
 				Indicator.open({spinnerType: 'fading-circle'});
 				this.$http.post(URL.path1+'account/report',farams,{emulateJSON:true}).then(function(res){
 					Indicator.close();
 					Toast("投诉成功")
 //					Toast("提交后我们将在24小时内处理")
 					this.onlyContent1=false;
-					console.log(res);
+//					console.log(res);
 				},function(res){
 					Indicator.close();
 					Toast(data.msg)
 				    console.log(res);
 				})
+			},
+			BugenYuanyin2(texts){
+				if(texts=='1'){
+					if(this.types==1){
+						var datas={								//换取名片申请提示
+							token:this.$route.params.token,		//换名片接口
+							to_id:this.data.uid,				//接收方id
+							item_id:this.XiangmuID				//项目id
+						}
+//						console.log(datas)
+						this.$http.post(URL.path+'chatcomment/get_card',datas,{emulateJSON:true}).then(function(res){
+//							console.log("换名片申请成功");
+//							console.log(res);
+							if(res.body.returnCode=='200'){
+								Toast("请耐心等待对方的反馈");
+								this.onlyContent2=false;
+	//							this.xingXi.text="请耐心等待对方的反馈"
+	//							this.$refs.tishiShow.tishiBlock(this.mingPian,this.token);//CanShu是下级要传的参数
+							}else{
+								Toast("请耐心等待对方的反馈");
+								this.onlyContent2=false;
+	//							Toast("亲，您已跟进可以给对方留言或换名片啦");
+							}
+						},function(res){
+						    console.log(res);
+						    this.xingXi.text="您申请向对方换取名片失败，请稍后再试..."
+							this.$refs.tishiShow.tishiBlock(this.mingPian,this.token);//CanShu是下级要传的参数
+						})
+					}else{
+						Toast("亲，你还没有跟进是不可以向对方换取名片的");
+					}
+				}else{
+					this.onlyContent2=false;
+				}
 			},
 			createDownloadTask(){//下载BP
 //				var yes=1;
@@ -531,59 +581,52 @@
 //				this.liuYans="liuYan";
 			},
 			BugenYuanyin(texts){
-				//向对方发送不跟进消息记录
-				var data = {
-					token:this.$route.params.token,
-					content:'您好，由于贵公司'+texts+'，我暂不跟进“'+this.data.com_short+'”本次融资安排',					//评论内容
-					type:'8',
-					to_id:this.data.uid
-//					uid:this.data.uid
-				}
-				console.log(data)
-				this.$http.post(URL.path+'chatcomment/send_msg',data,{emulateJSON:true}).then(function(res){
-					if(res.body.msg=="操作成功"){
-						
+				this.types=0;
+				this.yigenJin=1
+				this.butenLeft="";
+				this.liuYans="";
+				this.jiaoHuans="";
+				var params={
+		      		token:this.$route.params.token,
+		      		item_id:this.XiangmuID,		//	项目id	是	[string]		
+					follow:"2"			//	跟进状态 1:跟进 2:不跟进	是	[string]
+		      	}
+	//			投资人更改反馈进度
+				this.$http.post(URL.path+'finance/item_follow',params,{emulateJSON:true}).then(function(res){
+					this.$emit("c-send",'2');
+					this.yigenJin=1;
+					//向对方发送不跟进消息记录
+					var data = {
+						token:this.$route.params.token,
+						content:'您好，由于贵公司'+texts+'，我暂不跟进“'+this.data.com_short+'”本次融资安排',					//评论内容
+						type:'8',
+						to_id:this.data.uid
+	//					uid:this.data.uid
 					}
-					this.onlyContent=false;
-					console.log(res);
+//					console.log(data)
+					this.$http.post(URL.path+'chatcomment/send_msg',data,{emulateJSON:true}).then(function(res){
+						if(res.body.msg=="操作成功"){
+							
+						}
+						this.onlyContent=false;
+//						console.log(res);
+					},function(res){
+					    console.log(res);
+					})
+//					console.log("跟进");
+//					console.log(res.body);
 				},function(res){
 				    console.log(res);
 				})
 			},
 			jiaoHuanTo(){
-				if(this.types==1){
-					var datas={								//换取名片申请提示
-						token:this.$route.params.token,		//换名片接口
-						to_id:this.data.uid,				//接收方id
-						item_id:this.XiangmuID				//项目id
-					}
-					console.log(datas)
-					this.$http.post(URL.path+'chatcomment/get_card',datas,{emulateJSON:true}).then(function(res){
-						console.log("换名片申请成功");
-						console.log(res);
-						if(res.body.returnCode=='200'){
-							Toast("请耐心等待对方的反馈");
-//							this.xingXi.text="请耐心等待对方的反馈"
-//							this.$refs.tishiShow.tishiBlock(this.mingPian,this.token);//CanShu是下级要传的参数
-						}else{
-							Toast("请耐心等待对方的反馈");
-//							Toast("亲，您已跟进可以给对方留言或换名片啦");
-						}
-					},function(res){
-					    console.log(res);
-					    this.xingXi.text="您申请向对方换取名片失败，请稍后再试..."
-						this.$refs.tishiShow.tishiBlock(this.mingPian,this.token);//CanShu是下级要传的参数
-					})
-				}else{
-					Toast("亲，你还没有跟进是不可以给对方换取名片的");
-				}
+				this.onlyContent2=true;
 //				this.jiaoHuans="jiaoHuan";
 			},
 			baoMing(){
 				this.$refs.youhuiShow.YouhuiBlock();
 			},
 			genJin(){
-//				this.$emit("c-send",'1');
 				if(this.data.follow==0){
 					if(this.yigenJin==1){
 						return;
@@ -615,12 +658,13 @@
 								type:'6',
 								uid:this.data.uid
 							}
-							console.log(data)
+//							console.log(data)
 							this.$http.post(URL.path+'finance/demand_item',data,{emulateJSON:true}).then(function(res){
+								this.$emit("c-send",'1');
 								if(res.body.msg=="操作成功"){
 									
 								}
-								console.log(res);
+//								console.log(res);
 								Toast("亲，您已跟进可以给对方留言或换名片啦");
 							},function(res){
 							    console.log(res.status);
@@ -628,8 +672,8 @@
 							this.genjins="跟进中"
 							this.yigenJin=1;
 //							this.bugen="停止跟进"
-							console.log("跟进");
-							console.log(res.body);
+//							console.log("跟进");
+//							console.log(res.body);
 						},function(res){
 						    console.log(res);
 						})
@@ -666,39 +710,15 @@
 				}
 			},
 			buGen(){
-//				this.$emit("c-send",'2');
-//				this.butenRight="butenRight";
 				if(this.data.follow==0){
 					if(this.yigenJin==1){
 						return;
 					}
-					this.types=0;
-					this.yigenJin=1
-					this.butenLeft="";
-					this.liuYans="";
-					this.jiaoHuans="";
-					var params={
-			      		token:this.$route.params.token,
-			      		item_id:this.XiangmuID,		//	项目id	是	[string]		
-						follow:"2"			//	跟进状态 1:跟进 2:不跟进	是	[string]
-			      	}
-		//			投资人更改反馈进度
-					this.$http.post(URL.path+'finance/item_follow',params,{emulateJSON:true}).then(function(res){
-	//					this.data=res.body.data;
-						if(res.body.returnCode=='201'){
-							
-						}
-						Toast("亲，不跟进是不可以给对方留言或换名片");
-						this.onlyContent=true;
-						this.yigenJin=1;
-						console.log("跟进");
-						console.log(res.body);
-					},function(res){
-					    console.log(res);
-					})
+					this.onlyContent=true;
 				}else{
 					
 				}
+//				this.butenRight="butenRight";
 //				if(this.data.follow==6){
 //					var params={
 //			      		token:this.$route.params.token,
@@ -776,6 +796,17 @@
 	  	transition: all .5s ease;
 	}
 	.fades1-enter, .fades1-leave-active {
+	  	/*transform: translateX(4.17rem);*/
+	  	/*transform:rotate(360deg);*/
+	  	opacity: 0;
+	}
+	.fades2-enter-active {
+	  	transition: all .5s ease;
+	}
+	.fades2-leave-active {
+	  	transition: all .5s ease;
+	}
+	.fades2-enter, .fades2-leave-active {
 	  	/*transform: translateX(4.17rem);*/
 	  	/*transform:rotate(360deg);*/
 	  	opacity: 0;
@@ -966,7 +997,7 @@
 					/*width:0.2rem;*/
 					height:0.2rem;
 					margin-top:0.06rem;
-					margin-right:0.02rem;
+					margin-right:0.0;
 					color: #4cb6ff;
 					font-size:0.13rem;
 					/*background-image:url("./img/jiantou.png");
@@ -1009,7 +1040,7 @@
 				.tousu{
 					float:right;
 					width:1.28rem;
-					height:0.15rem;
+					height:0.16rem;
 					font-size:0.12rem;
 					color:#b8b8b8;
 					padding-top:0.01rem;
@@ -1023,7 +1054,7 @@
 				ul{
 					display:flex;
 					width:100%;
-					height:0.40rem;
+					height:0.50rem;
 					margin-top:0.22rem;
 					li{
 						flex:1;
@@ -1036,8 +1067,8 @@
 						&:first-child{
 							span{
 								display:inline-block;
-								width:0.22rem;
-								height:0.24rem;
+								width:0.3rem;
+								height:0.3rem;
 								background-image:url("./img/liuyan.png");
 								background-size:100% 100%;
 							}
@@ -1049,8 +1080,8 @@
 						&:last-child{
 							span{
 								display:inline-block;
-								width:0.22rem;
-								height:0.24rem;
+								width:0.3rem;
+								height:0.3rem;
 								background-image:url("./img/huan.png");
 								background-size:100% 100%;
 							}

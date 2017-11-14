@@ -49,7 +49,7 @@
 					<div class="xiaolv anli">
 						<ul class="first">
 							<li>
-								<textarea readOnly="true" placeholder="请填写主营业务、投资亮点等" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
+								<textarea readOnly="true" placeholder="暂无填写" class="mint-field-core ziyuanChongzu" v-model="textc"></textarea>
 							</li>
 						</ul>
 					</div>
@@ -145,7 +145,7 @@
 			this.nones=this.$route.params.type;
 			this.userID=localStorage.getItem("userID");
 			Indicator.open({spinnerType: 'fading-circle'});
-			console.log(this.userContent)
+//			console.log(this.userContent)
 //			个人资料
 			var params={
 //	    		token:this.userContent.token,
@@ -170,8 +170,9 @@
 				}
 				this.oDbiaoQianID=x.join(',');
 				this.numbera=y.join('、');
-				console.log(this.oDbiaoQianID2);
-				console.log(res);
+//				console.log(this.oDbiaoQianID2);
+//				console.log("个人资料");
+//				console.log(res);
 				this.$nextTick(function(){
 					var images = this.$refs.images;
 					if (images.clientWidth>images.clientHeight) {
@@ -184,7 +185,7 @@
 				});
 			},function(res){
 				Indicator.close();
-			    console.log(res);
+//			    console.log(res);
 			})
 //			this.$refs.box.addEventListener('scroll', this.handleScroll)	//做一个scroll监听
 		},
@@ -195,6 +196,7 @@
 //			  	console.log(sessionStorage.getItem("gerenZiliaoH"))
 			},
 			yijianHind(){
+				Indicator.close();
 				history.go(-1)
 			},
 			baocun(){
@@ -215,45 +217,16 @@
 			baoMing(){
 				this.$refs.youhuiShow.YouhuiBlock();
 			},
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
 		},
 		filters:{
-//			formatDate(time){
-//				let date = new Date(time);
-//				return formatDate(date,'yyyy-MM-dd hh:mm');
-//			}
 		},
 		updated(){
-//			this.$refs.box.scrollTop=0;
-//			this.$refs.box.scrollTop=this.scrollTop
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 			box
-//			youhuiquan
-//			fankuixinxi
 		}
 	}
 </script>
@@ -322,6 +295,7 @@
 			    display:flex;
 			    z-index:100;
 			    .home-search {
+			    	position:relative;
 			    	width:0.62rem;
 			    	height:0.62rem;
 				    background: #ffffff;
@@ -329,6 +303,12 @@
 				    border-radius:0.06rem;
 				    overflow:hidden;
 				    img{
+				    	position:absolute;
+				    	top:0;
+				    	right:0;
+				    	left:0;
+				    	bottom:0;
+				    	margin:auto;
 				    	/*width:100%;
 				    	height:100%;*/
 				    }

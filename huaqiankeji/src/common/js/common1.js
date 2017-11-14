@@ -108,6 +108,7 @@
 			sb.s.authorize(function(){
 				shareMessage(msg,sb.s);
 			}, function(e){
+				console.log("认证授权失败");
 				outLine('认证授权失败：'+e.code+' - '+e.message);
 			});
 		}

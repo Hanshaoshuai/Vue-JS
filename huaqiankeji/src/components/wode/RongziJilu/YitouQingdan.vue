@@ -161,7 +161,7 @@
 						}
 					}
 				})
-				console.log(res);
+//				console.log(res);
 			},function(res){
 				Indicator.close();
 				Toast("系统错误")
@@ -170,6 +170,7 @@
 		},
 		methods:{
 			listnone1(){
+				Indicator.close();
 //				this.showFlag=false;
 				history.go(-1)
 			},

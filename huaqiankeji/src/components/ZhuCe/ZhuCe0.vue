@@ -42,7 +42,7 @@
 					</ul>
 				</div>
 				<div class="denglu-list denglu-bottom">
-					合作热线：400 235648
+					合作热线：15652960318
 				</div>
 			</div>
 			<router-view :datas="datas"></router-view>
@@ -101,7 +101,7 @@
 					pwd: this.password, //密码
 //					version: this.type,//版本号
 				}
-				console.log(this.datas)
+//				console.log(this.datas)
 				if(!phone.test(this.phone)) {
 					Toast('输入手机号有误');
 					return;
@@ -141,7 +141,7 @@
 				Indicator.open({spinnerType: 'fading-circle'});
 				this.$http.post(URL.path+'regist/smsCode',data,{emulateJSON:true}).then(function(res){
 					Indicator.close();
-                    console.log(res.body);
+//                  console.log(res.body);
                     if(res.body.returnCode=='0011'){
 						Toast(res.body.msg);
 					}else{
@@ -184,7 +184,7 @@
 			}
 		},
 		mounted(){
-			console.log(URL.path)
+//			console.log(URL.path)
 		},
 		events:{
 			
@@ -235,7 +235,7 @@
 			top:0;
 			left:0;
 			width:100%;
-			height:0.46rem;
+			height:0.45rem;
 			font-weight:600;
 			background:#ff7a59;
 			font-size:0.2rem;
@@ -270,9 +270,9 @@
 				align-items:center;
 				margin-top:-1.8rem;
 				ul>li{
-					width:1.25rem;
-					height:1.5rem;
-					background-image:url("../DengLu/img/app.png");
+					width:1.492rem;
+					height:1.321rem;
+					background-image:url("../DengLu/img/denglu2.png");
 					background-size:100% 100%;
 				}
 			}

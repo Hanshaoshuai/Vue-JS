@@ -86,6 +86,10 @@
 					localStorage.removeItem("name");
 					localStorage.removeItem("photo");		//用户头像id
 					localStorage.removeItem("photourl");	//用户头像URL地址
+					localStorage.removeItem("panduanWanshan");
+					if(localStorage.getItem("typeID")){
+						localStorage.removeItem("typeID");
+					}
 					Toast('退出成功');
 					setTimeout(function(){
 //						window.location.href="#/denglu"
@@ -96,19 +100,6 @@
 				});
 			}
 			
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			

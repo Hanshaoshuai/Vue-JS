@@ -132,7 +132,9 @@
 				selectedID:'3',		//投诉id
 				tousuId:"",
 				idBlock:true,
-				contBlock:false
+				contBlock:false,
+				Myimg:'./dist/my.png',
+				Youimg:"./dist/you.png"
 			}
 		},
 		mounted(){
@@ -168,11 +170,11 @@
 					token:this.Token,
 					to_id:this.uid			//对方id
 				}
-				console.log(this.type)						//评论详情接口   随时更新信息
+//				console.log(this.type)						//评论详情接口   随时更新信息
 				thate.$http.post(URL.path+'chatcomment/comment_detail',thate.datas,{emulateJSON:true}).then(function(res){
 					Indicator.close();
 					this.toName=[0]['item_id']
-					console.log(res);
+//					console.log(res);
 					var cont="xxx 总经理 申请换取名片"
 					var res=res.body.data;
 					var length=res.length;
@@ -189,7 +191,7 @@
 					this.to_id=res[0]['to_id'];			//我的id
 					this.id=res[0]['id'];					//发送方名片id	
 					this.item_id=res[0]['item_id'];				//发送方项目id
-					console.log(res);
+//					console.log(res);
 					res=res.reverse();
 					for(var item in res){
 						if(res[item].type==1){		//type=1:评论
@@ -211,12 +213,12 @@
 								this.tousuoGo(this.numToTime1(res[item].create_time));
 								
 								this.You('1',name,cont.to_id,cont.item_id,MingPian,DianJi,res[item].id,cont.com_short)
-								console.log(res[item].id)
-								console.log(DianJi)
+//								console.log(res[item].id)
+//								console.log(DianJi)
 							}else{
 								this.tousuoGo(this.numToTime1(res[item].create_time));
 								
-								this.TishiNeirong('您已成功向对方索要完整项目')
+								this.TishiNeirong('您已成功向对方索要完整项目信息')
 							}
 						}
 						if(res[item].type==4){		//type=4:发送项目
@@ -225,24 +227,24 @@
 								if(cont.operate==1){
 									this.tousuoGo(this.numToTime1(res[item].create_time));
 									
-									this.TishiNeirong('对方已将完整项目发送给你')		//提示信息函数
+									this.TishiNeirong('对方已将完整项目信息发送给你')		//提示信息函数
 								}
 								if(cont.operate==2){
 									this.tousuoGo(this.numToTime1(res[item].create_time));
 									
-									this.TishiNeirong('对方拒绝了您索要申请完整项目')
+									this.TishiNeirong('对方拒绝了您索要“'+cont.com_short+'”项目的完整信息')
 								}
 							}else{
 								var cont=JSON.parse(res[item].content);
 								if(cont.operate==1){
 									this.tousuoGo(this.numToTime1(res[item].create_time));
 									
-									this.TishiNeirong('您同意了向对方发送完整项目')		//提示信息函数
+									this.TishiNeirong('您同意了向对方发送完整项目信息')		//提示信息函数
 								}
 								if(cont.operate==2){
 									this.tousuoGo(this.numToTime1(res[item].create_time));
 									
-									this.TishiNeirong('您拒绝了向对方发送完整项目')
+									this.TishiNeirong('您拒绝了向对方发送完整项目信息')
 								}
 							}
 						}
@@ -252,13 +254,17 @@
 								var DianJi=res[item].agree
 								var i=0;
 								var cont=JSON.parse(res[item].content);
-								var name=cont.card[1]
+								if(cont.card[0].id==this.uid){
+									var name=cont.card[0]
+								}else{
+									var name=cont.card[1]
+								}
 								this.tousuoContent=this.numToTime1(res[item].create_time);
 								this.tousuoGo(this.numToTime1(res[item].create_time));
 								
 								this.You('1',name,cont.id,cont.item_id,MingPian,DianJi,res[item].id)
-								console.log(JSON.parse(res[item].content))
-								console.log(DianJi)
+//								console.log(JSON.parse(res[item].content))
+//								console.log(DianJi)
 								i++;
 							}else{
 								this.tousuoGo(this.numToTime1(res[item].create_time));
@@ -294,7 +300,8 @@
 								if(cont.operate==2){
 									this.tousuoGo(this.numToTime1(res[item].create_time));
 									this.TishiNeirong('您拒绝了对方交换名片的申请')		//提示信息函数
-								}else{
+								}
+								if(cont.operate==1){
 									this.tousuoGo(this.numToTime1(res[item].create_time));
 									
 									this.TishiNeirong('您同意了对方交换名片的申请');		//提示信息函数
@@ -391,6 +398,7 @@
 				})
 			},
 			yijianHind(){
+				Indicator.close();
 				history.go(-1);
 			},
 			xuanZe(index,id){
@@ -428,7 +436,7 @@
 					ctype:6		//举报原因id
 //					ctype: this.selectedID		//举报原因id
 				}
-				console.log(farams)
+//				console.log(farams)
 				Indicator.open({spinnerType: 'fading-circle'});
 				this.$http.post(URL.path1+'account/report',farams,{emulateJSON:true}).then(function(res){
 					Indicator.close();
@@ -436,7 +444,7 @@
 					Toast("投诉成功")
 					this.onlyContent=false;
 					this.onlyContent1=false;
-					console.log(res);
+//					console.log(res);
 				},function(res){
 					Indicator.close();
 					Toast(data.msg)
@@ -476,13 +484,16 @@
 				myMonth=myMonth+1;				//当前的月份；
 				var myDate=times.getDate();      //当前的日期；
 				var myHours=times.getHours();   //当前的小时；
+				if(myHours<10){
+					myHours='0'+myHours.toString();
+				}
 				if(times.getMinutes()<10){
 					var myMinutes='0'+times.getMinutes().toString()   //当前的分钟；
 				}else{
 					var myMinutes=times.getMinutes();   //当前的分钟；
 				}
 				return myHours+":"+myMinutes;
-				console.log(myMinutes)
+//				console.log(myMinutes)
 			},
 			FasongShijian(){	//发送时间显示函数
 				var contentTexte=this.$refs.contentTexte;
@@ -514,7 +525,8 @@
 				you.setAttribute("class","fankiu-you");			//添加属性
 				neiRong.setAttribute("class","fankiu-text clearbox");
 				touXiang.setAttribute("class","fankiu-img");
-//					imgs.style.backgroundImage="url('./dist/you.png')";
+					imgs.style.backgroundImage="url("+'"'+this.Youimg+'"'+")";
+					imgs.style.backgroundSize="100% 100%";
 //				img.setAttribute("class","border");
 //					span.appendChild(imgs);
 				neiRong.appendChild(span);
@@ -542,14 +554,14 @@
 				span.style.maxWidth="77%";
 				span.style.borderRadius="0.04rem";
 				span.style.fontSize="0.16rem";
-				span.style.border="1px solid #d4d2d2";
+				span.style.border="0.006rem solid #e7e6e9";
 				span.style.wordWrap="break-word";
 				touXiang.style.width="14%";
 				touXiang.style.float="left";
 				touXiang.style.overflow="hidden";
 				imaF.style.width="0.38rem";
 				imaF.style.height="0.38rem";
-				imaF.style.border="1px solid #d4d2d2";
+				imaF.style.border="0.006rem solid #e7e6e9";
 				imaF.style.boxSizing="border-box";
 				imaF.style.float="right";
 				imaF.style.overflow="hidden";
@@ -561,20 +573,20 @@
 				img.style.borderRadius="0.02rem";
 				img.src=this.to_photo;
 				imgs.style.position="absolute";
-				imgs.style.background="#ff7a59";
-				imgs.style.borderRight="0.008rem solid #d4d2d2";
-				imgs.style.borderTop="0.008rem solid #d4d2d2";
-//					imgs.style.border="0.008rem solid #d4d2d2";
-//					imgs.style.transform="skew(50deg,0deg)";
-				imgs.style.transform="rotate(45deg)";
+//				imgs.style.background="#ff7a59";
+//				imgs.style.borderRight="0.008rem solid #d4d2d2";
+//				imgs.style.borderTop="0.008rem solid #d4d2d2";
+////					imgs.style.border="0.008rem solid #d4d2d2";
+////					imgs.style.transform="skew(50deg,0deg)";
+//				imgs.style.transform="rotate(45deg)";
 				imgs.style.width="0.08rem";
-				imgs.style.height="0.08rem";
+				imgs.style.height="0.11rem";
 				imgs.style.top="0.13rem";
-				imgs.style.right="-0.04rem";
-				imgs.style.Zindex=100;
+				imgs.style.right="-0.065rem";
+//				imgs.style.Zindex=100;
 				if(type==1){			//发送的是名片
 					span.style.background="#fff";
-					imgs.style.background="#fff";
+//					imgs.style.background="#fff";
 					span.appendChild(this.MingpianTishi(cont));
 				}else{
 					span.innerHTML=cont;							//对应插入
@@ -596,6 +608,8 @@
 				my.setAttribute("class","fankiu-my");			//添加属性
 				neiRong.setAttribute("class","fankiu-text");
 				touXiang.setAttribute("class","fankiu-img");
+				imgs.style.backgroundImage="url("+'"'+this.Myimg+'"'+")";
+				imgs.style.backgroundSize="100% 100%";
 //				img.setAttribute("class","border");
 //						span.innerText=texts;							//对应插入
 				neiRong.appendChild(span);
@@ -620,13 +634,13 @@
 				span.style.maxWidth="77%"
 				span.style.borderRadius="0.04rem";
 				span.style.fontSize="0.16rem";
-				span.style.border="1px solid #d4d2d2";
+				span.style.border="0.006rem solid #e7e6e9";
 				span.style.wordWrap="break-word";
 				touXiang.style.width="14%";
 //					touXiang.style.float="left";
 				imaF.style.width="0.38rem";
 				imaF.style.height="0.38rem";
-				imaF.style.border="1px solid #d4d2d2";
+				imaF.style.border="0.006rem solid #e7e6e9";
 				imaF.style.boxSizing="border-box";
 				imaF.style.overflow="hidden";
 				imaF.style.borderRadius="0.02rem";
@@ -654,7 +668,7 @@
 						}
 						
 						
-						console.log(res);
+//						console.log(res);
 					},function(res){
 					    console.log(res);
 					})
@@ -666,18 +680,18 @@
 				img.style.float="left";
 				img.src=this.from_photo;
 				imgs.style.position="absolute";
-				imgs.style.background="#fff";
+//				imgs.style.background="#fff";
 				imgs.style.width="0.08rem";
-				imgs.style.height="0.08rem";
-				imgs.style.borderLeft="0.008rem solid #d4d2d2";
-				imgs.style.borderTop="0.008rem solid #d4d2d2";
-				imgs.style.transform="rotate(-45deg)";
+				imgs.style.height="0.11rem";
+//				imgs.style.borderLeft="0.008rem solid #d4d2d2";
+//				imgs.style.borderTop="0.008rem solid #d4d2d2";
+//				imgs.style.transform="rotate(-45deg)";
 				imgs.style.top="0.13rem";
-				imgs.style.left="-0.04rem";
+				imgs.style.left="-0.065rem";
 				imgs.style.Zindex=100;
 				if(type==1){			
 					span.style.background="#fff";
-					imgs.style.background="#fff";
+//					imgs.style.background="#fff";
 					if(MingPian=="5"){
 						span.appendChild(this.MingpianTishi(cont,id,item_id));
 					}else{
@@ -778,7 +792,7 @@
 						return;
 					}
 					i++;
-					console.log(i)
+//					console.log(i)
 					if(MingPian=='2'){
 						thata.datasB={							//处理发送项目同意
 							token:thata.$route.params.token,
@@ -788,11 +802,11 @@
 							operate:'1'		//1同意2拒绝	
 //							demand:"2"		//是否索要 1:非索要 2:索要
 						}
-						console.log(thata.datasB)				//处理发送项目同意接口
+//						console.log(thata.datasB)				//处理发送项目同意接口
 						thata.$http.post(URL.path+'finance/send_demand_item',thata.datasB,{emulateJSON:true}).then(function(res){
 							var data=res
-							console.log("处理发送项目同意"+res);
-							console.log(res);
+//							console.log("处理发送项目同意"+res);
+//							console.log(res);
 							if(res.body.msg=="操作成功"){
 								this.FasongShijian();
 								this.TishiNeirong("您同意了向对方发送完整项目信息");
@@ -809,11 +823,11 @@
 							operate:"1",		//操作 1:同意 2:拒绝
 							chat_id:chat_id		//评论id
 						}
-						console.log(thata.datasB)				//处理换名片同意接口
+//						console.log(thata.datasB)				//处理换名片同意接口
 						thata.$http.post(URL.path+'chatcomment/card_operate',thata.datasB,{emulateJSON:true}).then(function(res){
 							var data=res
-							console.log("处理换名片同意"+res);
-							console.log(res);
+//							console.log("处理换名片同意"+res);
+//							console.log(res);
 							this.FasongShijian();
 							this.TishiNeirong("您同意了对方名片的申请");
 						},function(res){
@@ -852,11 +866,11 @@
 							operate:'2'		//1同意2拒绝	
 //							demand:"2"		//是否索要 1:非索要 2:索要
 						}
-						console.log(thata.datasB)			//处理发送项目拒绝接口
+//						console.log(thata.datasB)			//处理发送项目拒绝接口
 						thata.$http.post(URL.path+'finance/send_demand_item',thata.datasB,{emulateJSON:true}).then(function(res){
 							var data=res
-							console.log("处理发送项目拒绝");
-							console.log(res);
+//							console.log("处理发送项目拒绝");
+//							console.log(res);
 							this.FasongShijian();
 							this.TishiNeirong("您拒绝了向对方发送完整项目信息");
 						},function(res){
@@ -871,11 +885,11 @@
 							operate:"2",		//操作 1:同意 2:拒绝
 							chat_id:chat_id		//评论id
 						}
-						console.log(thata.datasB)			//处理换名片拒绝接口
+//						console.log(thata.datasB)			//处理换名片拒绝接口
 						thata.$http.post(URL.path+'chatcomment/card_operate',thata.datasB,{emulateJSON:true}).then(function(res){
 							var data=res
-							console.log("处理换名片拒绝");
-							console.log(res);
+//							console.log("处理换名片拒绝");
+//							console.log(res);
 							this.FasongShijian();
 							this.TishiNeirong("您拒绝了对方名片的申请");
 						},function(res){
@@ -920,33 +934,33 @@
 //		        	var hanzi='';
 //						var reg = /[\u4e00-\u9fa5]/g;   
 //	        			hanzi=texts.match(reg).join("");  
-						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
+						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
 						yiyou=1;
 		        }
-		        if(/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}[\s|~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(texts)){
-//		        	Toast("请不要输入敏感字符")
-					if(yiyou==0){
-			        	this.introduction="";
-//			        	var hanzi='';
-//						var reg = /[\u4e00-\u9fa5]/g;   
-//	        			hanzi=texts.match(reg).join("");  
-						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
-						yiyou=1;
-			        }
-//		        	return;
-		        }
-		         if(/^[\s|~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【](0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}|[\s|~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(texts)){
-//		        	Toast("请不要输入敏感字符")
-		        	if(yiyou==0){
-			        	this.introduction="";
-			        	var hanzi='';
-//						var reg = /[\u4e00-\u9fa5]/g;   
-//	        			hanzi=texts.match(reg).join("");  
-						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
-						yiyou=1;
-		        	}
-//		        	return;
-		        }
+//		        if(/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(texts)){
+////		        	Toast("请不要输入敏感字符")
+//					if(yiyou==0){
+//			        	this.introduction="";
+////			        	var hanzi='';
+////						var reg = /[\u4e00-\u9fa5]/g;   
+////	        			hanzi=texts.match(reg).join("");  
+//						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
+//						yiyou=1;
+//			        }
+////		        	return;
+//		        }
+//		         if(/^[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【](0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}|[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(texts)){
+////		        	Toast("请不要输入敏感字符")
+//		        	if(yiyou==0){
+//			        	this.introduction="";
+////			        	var hanzi='';
+////						var reg = /[\u4e00-\u9fa5]/g;   
+////	        			hanzi=texts.match(reg).join("");  
+//						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
+//						yiyou=1;
+//		        	}
+////		        	return;
+//		        }
 		        //验证电话
 		        if(/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,8}$/.test(texts)){
 //					Toast('请不要输入敏感字符');
@@ -955,47 +969,47 @@
 //						var hanzi='';
 //						var reg = /[\u4e00-\u9fa5]/g;   
 //	        			hanzi=texts.match(reg).join("");  
-						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
+						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
 						yiyou=1;
 					}
 //					return;
 				}
-		        if(/^[\s|~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【](\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,8}|[\s|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]$/.test(texts)){
-//					Toast('请不要输入敏感字符');
-					if(yiyou==0){
-						this.introduction="";
-//						var hanzi='';
-//						var reg = /[\u4e00-\u9fa5]/g;   
-//	        			hanzi=texts.match(reg).join("");  
-						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
-						yiyou=1;
-					}
-//					return;
-				}
-		        if(/^1[0-9]{7,12}[\s|~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(texts)){
-//					Toast('请不要输入敏感字符');
-					if(yiyou==0){
-						this.introduction="";
-//						var hanzi='';
-//						var reg = /[\u4e00-\u9fa5]/g;   
-//	        			hanzi=texts.match(reg).join("");  
-						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>'+hanzi;
-						yiyou=1;
-					}
-//					return;
-				}
-		        if(/^1[0-9]{7,12}[\s|~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(texts)){
-//					Toast('请不要输入敏感字符');
-					if(yiyou==0){
-						this.introduction="";
-//						var hanzi='';
-//						var reg = /[\u4e00-\u9fa5]/g;   
-//	        			hanzi=texts.match(reg).join("");  
-						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
-						yiyou=1;
-					}
-//					return;
-				}
+//		        if(/^[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【](\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,8}|[！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]$/.test(texts)){
+////					Toast('请不要输入敏感字符');
+//					if(yiyou==0){
+//						this.introduction="";
+////						var hanzi='';
+////						var reg = /[\u4e00-\u9fa5]/g;   
+////	        			hanzi=texts.match(reg).join("");  
+//						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
+//						yiyou=1;
+//					}
+////					return;
+//				}
+//		        if(/^1[0-9]{7,12}[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(texts)){
+////					Toast('请不要输入敏感字符');
+//					if(yiyou==0){
+//						this.introduction="";
+////						var hanzi='';
+////						var reg = /[\u4e00-\u9fa5]/g;   
+////	        			hanzi=texts.match(reg).join("");  
+//						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>'+hanzi;
+//						yiyou=1;
+//					}
+////					return;
+//				}
+//		        if(/^1[0-9]{7,12}[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(texts)){
+////					Toast('请不要输入敏感字符');
+//					if(yiyou==0){
+//						this.introduction="";
+////						var hanzi='';
+////						var reg = /[\u4e00-\u9fa5]/g;   
+////	        			hanzi=texts.match(reg).join("");  
+//						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
+//						yiyou=1;
+//					}
+////					return;
+//				}
 //				//验证qq
 				if(/^[1-9][0-9]{7,12}$/.test(texts)){
 //					Toast('请不要输入敏感字符');
@@ -1004,13 +1018,14 @@
 //						var hanzi='';
 //						var reg = /[\u4e00-\u9fa5]/g;   
 //	        			hanzi=texts.match(reg).join("");  
-						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
+						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
 						yiyou=1;
 					}
 //					return;
 				}
 				//最新匹配
-				if(/[0-9a-fA-F]{1,7}[ ]/g.test(texts)){
+				if(/([0-9a-fA-F]{7,20}[\s\S]){7,20}/g.test(texts)){
+//	alert("1019")
 					if(yiyou==0){
 						var obj=texts.split('');
 						var length=obj.length;
@@ -1020,7 +1035,7 @@
 						for(var i=0; i<length; i++){
 							if(reg.test(obj[i]) || obj[i]==''){
 								if(x==1){
-									content+='<a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
+									content+='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
 									x=2;
 								}
 							}else{
@@ -1036,7 +1051,8 @@
 					}
 				}
 				//最新匹配
-				if(/[0-9a-fA-F]{7,12}/g.test(texts)){
+				if(/([0-9a-fA-F]{7,20}[\s\S]{1,6}){7,20}/g.test(texts)){
+//	alert("1019")
 					if(yiyou==0){
 						var obj=texts.split('');
 						var length=obj.length;
@@ -1046,7 +1062,7 @@
 						for(var i=0; i<length; i++){
 							if(reg.test(obj[i]) || obj[i]==''){
 								if(x==1){
-									content+='<a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
+									content+='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
 									x=2;
 								}
 							}else{
@@ -1061,65 +1077,125 @@
 						yiyou=1;
 					}
 				}
-				if(/^[\s|~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【][1-9][0-9]{7,9}|[\s|~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(texts)){
+				//最新匹配
+				if(/[0-9a-fA-F]{2,7}[\s\S]{1,6}[0-9a-fA-F]{5,20}/g.test(texts)){
+//	alert("1073")
+					if(yiyou==0){
+						var obj=texts.split('');
+						var length=obj.length;
+						var reg = /\d/;
+						var content='';
+						var x=1;
+						for(var i=0; i<length; i++){
+							if(reg.test(obj[i]) || obj[i]==''){
+								if(x==1){
+									content+='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
+									x=2;
+								}
+							}else{
+								if(/[、|、|。|，|；|、|：|~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(obj[i])){
+									
+								}else{
+									content+=obj[i];
+								}
+							}
+						}
+						texts=content;
+						yiyou=1;
+					}
+				}
+				//最新匹配
+				if(/([0-9a-fA-F][\s\S]){7,12}/g.test(texts)){
+//	alert("1045")
+					if(yiyou==0){
+						var obj=texts.split('');
+						var length=obj.length;
+						var reg = /\d/;
+						var content='';
+						var x=1;
+						for(var i=0; i<length; i++){
+							if(reg.test(obj[i]) || obj[i]==''){
+								if(x==1){
+									content+='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
+									x=2;
+								}
+							}else{
+								if(/[、|、|。|，|；|、|：|~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(obj[i])){
+									
+								}else{
+									content+=obj[i];
+								}
+							}
+						}
+						texts=content;
+						yiyou=1;
+					}
+				}
+				
+				if(/^[a-zA-Z]([a-zA-Z0-9-\S]){7,19}$/.test(texts)){
+//	alert("1073")
 //					Toast('请不要输入敏感字符');
 					if(yiyou==0){
 						this.introduction="";
-						var hanzi='';
-						var reg = /[\u4e00-\u9fa5]/g;   
-	        			hanzi=texts.match(reg).join("");  
-						texts=hanzi+'<a>&nbsp;</a><a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
+//						var hanzi='';
+//						var reg = /[\u4e00-\u9fa5]/g;   
+//	        			hanzi=texts.match(reg).join("");  
+						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
 						yiyou=1;
 					}
 //					return;
 				}
-				if(/^[1-9][0-9]{7,12}[\s|~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(texts)){
+				if(/^([a-zA-Z0-9]{7,20}[\s\S]){7,20}$/.test(texts)){
+//					alert("1086")
 //					Toast('请不要输入敏感字符');
 					if(yiyou==0){
 						this.introduction="";
-						var hanzi='';
-						var reg = /[\u4e00-\u9fa5]/g;   
-	        			hanzi=texts.match(reg).join("");  
-						texts=hanzi+'<a>&nbsp;</a><a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
+//						var hanzi='';
+//						var reg = /[\u4e00-\u9fa5]/g;   
+//	        			hanzi=texts.match(reg).join("");  
+						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
+						yiyou=1;
+					}
+//					return;
+				}
+				
+				
+				if(/^[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【][0-9a-fA-F]{7,20}$/.test(texts)){
+//					Toast('请不要输入敏感字符');
+//alert("1102")
+					if(yiyou==0){
+						this.introduction="";
+//						var hanzi='';
+//						var reg = /[\u4e00-\u9fa5]/g;   
+//	        			hanzi=texts.match(reg).join("");  
+						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
+						yiyou=1;
+					}
+//					return;
+				}
+				if(/[0-9a-fA-F][~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]{7,20}$/.test(texts)){
+//					Toast('请不要输入敏感字符')
+//alert("1115")
+					if(yiyou==0){
+						this.introduction="";
+//						var hanzi='';
+//						var reg = /[\u4e00-\u9fa5]/g;   
+//	        			hanzi=texts.match(reg).join("");  
+						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
 						yiyou=1;
 					}
 //					return;
 				}
 //				//验证微信号
 				if(/^[a-zA-Z]{1}[-_a-zA-Z0-9]{7,19}$/.test(texts)){
+//	alert("1140")
 //					Toast('请不要输入敏感字符');
 					if(yiyou==0){
 						this.introduction="";
-						var hanzi='';
-						var reg = /[\u4e00-\u9fa5]/g;   
-	        			hanzi=texts.match(reg).join("");  
-						texts=hanzi+'<a>&nbsp;</a><a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
-						yiyou=1;
-					}
-//					return;
-				}
-				//验证微信号
-				if(/^[\s|~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【][a-zA-Z]{1}[-_a-zA-Z0-9]{7,19}|[\s|~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]$/.test(texts)){
-//					Toast('请不要输入敏感字符');
-					if(yiyou==0){
-						this.introduction="";
-						var hanzi='';
-						var reg = /[\u4e00-\u9fa5]/g;   
-	        			hanzi=texts.match(reg).join("");  
-						texts=hanzi+'<a>&nbsp;</a><a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
-						yiyou=1;
-					}
-//					return;
-				}
-				//验证微信号
-				if(/^[a-zA-Z]{1}[-_a-zA-Z0-9]{7,19}[\s|~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(texts)){
-//					Toast('请不要输入敏感字符');
-					if(yiyou==0){
-						this.introduction="";
-						var hanzi='';
-						var reg = /[\u4e00-\u9fa5]/g;   
-	        			hanzi=texts.match(reg).join("");  
-						texts=hanzi+'<a>&nbsp;</a><a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
+//						var hanzi='';
+//						var reg = /[\u4e00-\u9fa5]/g;   
+//	        			hanzi=texts.match(reg).join("");  
+						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
 						yiyou=1;
 					}
 //					return;
@@ -1127,24 +1203,13 @@
 //				//邮箱
 				if(/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/.test(texts)){
 //					Toast('请不要输入敏感字符');
+//alert("1181")
 					if(yiyou==0){
 						this.introduction="";
-						var hanzi='';
-						var reg = /[\u4e00-\u9fa5]/g;   
-	        			hanzi=texts.match(reg).join("");  
-						texts=hanzi+'<a>&nbsp;</a><a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
-						yiyou=1;
-					}
-//					return;
-				}
-				if(/^[\s|~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/.test(texts)){
-//					Toast('请不要输入敏感字符');
-					if(yiyou==0){
-						this.introduction="";
-						var hanzi='';
-						var reg = /[\u4e00-\u9fa5]/g;   
-	        			hanzi=texts.match(reg).join("");  
-						texts=hanzi+'<a>&nbsp;</a><a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
+//						var hanzi='';
+//						var reg = /[\u4e00-\u9fa5]/g;   
+//	        			hanzi=texts.match(reg).join("");  
+						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
 						yiyou=1;
 					}
 //					return;
@@ -1153,10 +1218,10 @@
 //					Toast('请不要输入敏感字符');
 					if(yiyou==0){
 						this.introduction="";
-						var hanzi='';
-						var reg = /[\u4e00-\u9fa5]/g;   
-	        			hanzi=texts.match(reg).join("");  
-						texts=hanzi+'<a>&nbsp;</a><a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
+//						var hanzi='';
+//						var reg = /[\u4e00-\u9fa5]/g;   
+//	        			hanzi=texts.match(reg).join("");  
+						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
 						yiyou=1;
 					}
 //					return;
@@ -1166,106 +1231,161 @@
 //					Toast('请不要输入敏感字符');
 					if(yiyou==0){
 						this.introduction="";
-						var hanzi='';
-						var reg = /[\u4e00-\u9fa5]/g;   
-	        			hanzi=texts.match(reg).join("");  
-						texts=hanzi+'<a>&nbsp;</a><a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
-						yiyou=1;
-					}
-//					return;
-				}
-				if(/^[-_a-zA-Z0-9]{7,19}/.test(texts)){
-//					Toast('请不要输入敏感字符');
-					if(yiyou==0){
-						this.introduction="";
-						var hanzi='';
+//						var hanzi='';
 //						var reg = /[\u4e00-\u9fa5]/g;   
 //	        			hanzi=texts.match(reg).join("");  
-						texts='<a>&nbsp;</a><a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
+						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
 						yiyou=1;
 					}
 //					return;
 				}
-				if(/^[\s|~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【][-_a-zA-Z0-9]{4,19}[\s|~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【][@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]/.test(texts)){
+				if(/[-_a-zA-Z0-9]{2,19}/.test(texts)){
+//alert("1243")
 //					Toast('请不要输入敏感字符');
-					if(yiyou=0){
-						this.introduction="";
-						var hanzi='';
-						var reg = /[\u4e00-\u9fa5]/g;   
-	        			hanzi=texts.match(reg).join("");  
-						texts=hanzi+'<a>&nbsp;</a><a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
+					if(yiyou==0){
+						var obj=texts.split('');
+						var length=obj.length;
+						var reg = /\d|[A-Za-z]/;
+						var content='';
+						var x=1;
+						for(var i=0; i<length; i++){
+							if(reg.test(obj[i]) || obj[i]==''){
+								if(x==1){
+									content+='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
+									x=2;
+								}
+							}else{
+								if(/[、|、|。|，|；|、|：|~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(obj[i])){
+									
+								}else{
+									content+=obj[i];
+								}
+							}
+						}
+						texts=content;
+						yiyou=1;
+					}
+//					return;
+				}
+				if(/([-_a-zA-Z0-9]{1,20}[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|。|“”|‘’|’|-|——|+|=|（）|()|.|】|【]){2,20}/g.test(texts)){
+//					Toast('请不要输入敏感字符');
+//alert("1243")
+					if(yiyou==0){
+						var obj=texts.split('');
+						var length=obj.length;
+						var reg = /\d/;
+						var content='';
+						var x=1;
+						for(var i=0; i<length; i++){
+							if(reg.test(obj[i]) || obj[i]==''){
+								if(x==1){
+									content+='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
+									x=2;
+								}
+							}else{
+								if(/[、|、|。|，|；|、|：|~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(obj[i])){
+									
+								}else{
+									content+=obj[i];
+								}
+							}
+						}
+						texts=content;
 						yiyou=1;
 					}
 //					return;
 				}
 				if(/^[\u4E00-\u9FA5]{1,20}[-_a-zA-Z0-9]{7,19}$/.test(texts)){
 //					Toast('请不要输入敏感字符');
+//alert("1256")
 					if(yiyou==0){
-						this.introduction="";
-						var hanzi='';
-						var reg = /[\u4e00-\u9fa5]/g;   
-	        			hanzi=texts.match(reg).join("");  
-						texts=hanzi+'<a>&nbsp;</a><a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
+						var obj=texts.split('');
+						var length=obj.length;
+						var reg = /\d/;
+						var content='';
+						var x=1;
+						for(var i=0; i<length; i++){
+							if(reg.test(obj[i]) || obj[i]==''){
+								if(x==1){
+									content+='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
+									x=2;
+								}
+							}else{
+								if(/[、|、|。|，|；|、|：|~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(obj[i])){
+									
+								}else{
+									content+=obj[i];
+								}
+							}
+						}
+						texts=content;
 						yiyou=1;
 					}
 //					return false;
 				}
-			    if(/^[\u4E00-\u9FA5]{1,20}([\s|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]|[-_a-zA-Z0-9]){7,19}$/.test(texts)){
+			    if(/^[\u4E00-\u9FA5]{1,20}([@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]|[-_a-zA-Z0-9]){8,19}$/.test(texts)){
 //					Toast('请不要输入敏感字符');
+//alert("1269")
 					if(yiyou==0){
-						this.introduction="";
-						var hanzi='';
-						var reg = /[\u4e00-\u9fa5]/g;   
-	        			hanzi=texts.match(reg).join("");  
-						texts=hanzi+'<a>&nbsp;</a><a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
+						var obj=texts.split('');
+						var length=obj.length;
+						var reg = /\d/;
+						var content='';
+						var x=1;
+						for(var i=0; i<length; i++){
+							if(reg.test(obj[i]) || obj[i]==''){
+								if(x==1){
+									content+='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
+									x=2;
+								}
+							}else{
+								if(/[、|、|。|，|；|、|：|~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(obj[i])){
+									
+								}else{
+									content+=obj[i];
+								}
+							}
+						}
+						texts=content;
 						yiyou=1;
 					}
 //					return false;
 				}
-			    if(/^([\u4E00-\u9FA5]|[ ]|[-_a-zA-Z0-9]){1,20}([\s|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]|[-_a-zA-Z0-9]){7,19}$/.test(texts)){
+			    if(/(^([\u4E00-\u9FA5]|[ ]|[-_a-zA-Z0-9]){1,20}([@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【][\u4E00-\u9FA5]|[-_a-zA-Z0-9])){7,11}$/.test(texts)){
 //					Toast('请不要输入敏感字符');
+//alert("1295")
 					if(yiyou==0){
 						this.introduction="";
-						var hanzi='';
-						var reg = /[\u4e00-\u9fa5]/g;   
-	        			hanzi=texts.match(reg).join("");  
-						texts=hanzi+'<a>&nbsp;</a><a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
-						yiyou=1;
-					}
-//					return false;
-				}
-			    if(/(^([\u4E00-\u9FA5]|[ ]|[-_a-zA-Z0-9]){1,20}([\s|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【][\u4E00-\u9FA5]|[-_a-zA-Z0-9])){7,11}$/.test(texts)){
-//					Toast('请不要输入敏感字符');
-					if(yiyou==0){
-						this.introduction="";
-						var hanzi='';
-						var reg = /[\u4e00-\u9fa5]/g;   
-	        			hanzi=texts.match(reg).join("");  
-						texts=hanzi+'<a>&nbsp;</a><a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
+//						var hanzi='';
+//						var reg = /[\u4e00-\u9fa5]/g;   
+//	        			hanzi=texts.match(reg).join("");  
+						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
 						yiyou=1;
 					}
 //					return false;
 				}
 			    if(/(^[\u4E00-\u9FA5]{1,20}|[-_a-zA-Z0-9]){5,20}[-_a-zA-Z0-9]{7,20}[\u4E00-\u9FA5]{1,20}$/.test(texts)){
 //					Toast('请不要输入敏感字符');
+//alert("1308")
 					if(yiyou==0){
 						this.introduction="";
-						var hanzi='';
-						var reg = /[\u4e00-\u9fa5]/g;   
-	        			hanzi=texts.match(reg).join("");  
-						texts=hanzi+'<a>&nbsp;</a><a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
+//						var hanzi='';
+//						var reg = /[\u4e00-\u9fa5]/g;   
+//	        			hanzi=texts.match(reg).join("");  
+						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
 						yiyou=1;
 					}
 //					return false;
 				}
-			    if(/([-_a-zA-Z0-9]{7,20}[\s|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]){1,20}$/.test(texts)){
+			    if(/([-_a-zA-Z0-9]{7,20}[@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]){1,20}$/.test(texts)){
 //					Toast('请不要输入敏感字符');
+//alert("1321")
 					if(yiyou==0){
 						this.introduction="";
-						var hanzi='';
-						var reg = /[\u4e00-\u9fa5]/g;   
-	        			hanzi=texts.match(reg).join("");  
-						texts=hanzi+'<a>&nbsp;</a><a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
+//						var hanzi='';
+//						var reg = /[\u4e00-\u9fa5]/g;   
+//	        			hanzi=texts.match(reg).join("");  
+						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
 						yiyou=1;
 					}
 //					return false;
@@ -1300,7 +1420,7 @@
 						var hanzi='';
 						var reg = /[\u4e00-\u9fa5]/g;   
 	        			hanzi=texts.match(reg).join("");  
-						texts=hanzi+'<a>&nbsp;</a><a style='+'"'+'color:#2abdfc'+'"'+'>[疑似联系方式已屏蔽，如需联系请投资方申请交换名片]</a>';
+						texts=hanzi+'<a>&nbsp;</a><a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
 						yiyou=1;
 					}
 //					return;
@@ -1314,7 +1434,7 @@
 					}
 				}
 				var Height=shuru.clientHeight		//底部高度
-				console.log(shuru.clientHeight)							//显示框高度
+//				console.log(shuru.clientHeight)							//显示框高度
 				var aaa=document.getElementById("box")
 				if(texts!=""){
 					this.FasongShijian();	//发送时间
@@ -1328,11 +1448,11 @@
 						content:texts,					//评论内容
 						type:'1'
 					}
-					console.log(this.datasA)			//发送评论接口
+//					console.log(this.datasA)			//发送评论接口
 					this.$http.post(URL.path+'chatcomment/send_msg',this.datasA,{emulateJSON:true}).then(function(res){
 						var cont=texts;
 						var type=0
-						console.log("发送评论成功"+res);
+//						console.log("发送评论成功"+res);
 						this.My(type,cont);		//调用发送评论函数
 //						this.You(type,cont)
 						this.$nextTick(function(){

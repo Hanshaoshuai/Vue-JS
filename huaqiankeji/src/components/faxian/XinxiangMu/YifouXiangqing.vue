@@ -255,7 +255,7 @@
 				item_id:this.$route.params.XiangmuID			//	项目id
 			}
 			Indicator.open({spinnerType: 'fading-circle'});
-			console.log(this.data)
+//			console.log(this.data)
 			this.$http.post(URL.path+'finance/item_detail',data,{emulateJSON:true}).then(function(res){
 				Indicator.close();
 				this.data=res.body.data[0];
@@ -271,7 +271,7 @@
 						}
 					})
 				}
-				console.log(res);
+//				console.log(res);
 			},function(res){
 				Indicator.close();
 			    console.log(res.status);
@@ -285,6 +285,7 @@
 		},
 		methods:{
 			yijianHind(){
+				Indicator.close();
 				history.go(-1)
 //				this.tucaoShow=false;
 			},
@@ -307,23 +308,23 @@
 					token:this.userContent.token,
 //					to_id:this.uid,					//对方id	是	[string]
 					terminalNo: '3',
-					rid: this.data.com_short,
-					content:texts,
+					rid: this.data.uid,
+					content:'投诉“'+this.data.com_short+'”项目的原因：'+texts,
 					ctype:6		//举报原因id
 //					ctype: this.selectedID		//举报原因id
 				}
-				console.log(farams)
+//				console.log(farams)
 				Indicator.open({spinnerType: 'fading-circle'});
 				this.$http.post(URL.path1+'account/report',farams,{emulateJSON:true}).then(function(res){
 					Indicator.close();
 					Toast("投诉成功")
 //					Toast("提交后我们将在24小时内处理")
 					this.onlyContent1=false;
-					console.log(res);
+//					console.log(res);
 				},function(res){
 					Indicator.close();
 					Toast(data.msg)
-				    console.log(res);
+//				    console.log(res);
 				})
 			},
 			createDownloadTask(){
@@ -488,14 +489,14 @@
 						to_id:this.data.uid,				//接收方id
 						item_id:this.XiangmuID				//项目id
 					}
-					console.log(datas)
+//					console.log(datas)
 					this.$http.post(URL.path+'chatcomment/get_card',datas,{emulateJSON:true}).then(function(res){
-						console.log("换名片申请成功");
-						console.log(res);
+//						console.log("换名片申请成功");
+//						console.log(res);
 						this.xingXi.text="您已申请向对方换取名片，请注意查收..."
 						this.$refs.tishiShow.tishiBlock(this.mingPian,this.token);//CanShu是下级要传的参数
 					},function(res){
-					    console.log(res);
+//					    console.log(res);
 					    this.xingXi.text="您申请向对方换取名片失败，请稍后再试..."
 						this.$refs.tishiShow.tishiBlock(this.mingPian,this.token);//CanShu是下级要传的参数
 					})

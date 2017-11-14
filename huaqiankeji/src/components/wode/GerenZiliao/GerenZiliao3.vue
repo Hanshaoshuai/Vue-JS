@@ -219,7 +219,7 @@
 		mounted(){
 			this.numToTime=numToTime;
 			Indicator.open({spinnerType: 'fading-circle'});
-			console.log(this.userContent)
+//			console.log(this.userContent)
 //			个人资料
 			var params={
 	    		token:this.userContent.token,
@@ -250,8 +250,8 @@
 						this.z=true;
 					}
 				}
-				console.log("个人资料");
-				console.log(res);
+//				console.log("个人资料");
+//				console.log(res);
 			},function(res){
 				Indicator.close();
 			    console.log(res);
@@ -267,6 +267,7 @@
 //			  	console.log(sessionStorage.getItem("gerenZiliaoH"))
 			},
 			yijianHind(){
+				Indicator.close();
 				history.go(-1)
 			},
 			baocun(){
@@ -303,16 +304,16 @@
 					investment_way:investment_way,			//	投资方式	是	[string]		
 					single_project_max:max_nuwID2,		//	单笔投资最大值	是	[string]		
 					single_project_min:min_nuwID2,		//	单笔投资最小值	是	[string]		
-					board:"",					//	是否有新三板账户 1有 2 没有	是	[string]		
-					know_risk:"",				//	是否了解新三板风险 1 了解， 2 不了解	是	[string]
+//					board:"",					//	是否有新三板账户 1有 2 没有	是	[string]		
+//					know_risk:"",				//	是否了解新三板风险 1 了解， 2 不了解	是	[string]
 					resources:textc1,
 					restructuring:textd1
 				}
-				console.log(datas)
+//				console.log(datas)
 				this.$http.post(URL.path+'regist/personal',datas,{emulateJSON:true}).then(function(res){
 					if(res.body.returnCode=='200'){
 						Toast('您已保存成功');
-						console.log(res.body)
+//						console.log(res.body)
 //						window.location.href="#/faxian";
 					}else{
 //						window.location.href="#/denglu"
@@ -362,7 +363,7 @@
 		    		type:'1'			//1:股权 2：债权 3：其他	是	[string]
 		    	}
 				this.$http.post(URL.path+'finance/get_deliver_list',anliParam,{emulateJSON:true}).then(function(res){
-					console.log(res);
+//					console.log(res);
 					if(res.body.returnCode=='200'){
 						this.YitouList=res.body.data;
 					}
@@ -378,7 +379,7 @@
 							this.BianJi5=1;
 							this.$nextTick(function() {
 								this.$refs.chanYe.focus();	//点击编辑   input获取焦点
-								console.log();
+//								console.log();
 							})
 						}else{
 							this.$refs.bianji3.innerText="编辑";
@@ -390,7 +391,7 @@
 							this.BianJi4=1;
 							this.$nextTick(function() {
 								this.$refs.chongGou.focus();	//点击编辑   input获取焦点
-								console.log();
+//								console.log();
 							})
 						}else{
 							this.$refs.bianji4.innerText="编辑";
@@ -423,7 +424,7 @@
 						}
 						this.y=this.biaoQianid2.length;
 						this.biaoQianid2=this.biaoQianID2.join();
-						console.log(this.biaoQianid2)
+//						console.log(this.biaoQianid2)
 					})
 				}
 				
@@ -470,7 +471,7 @@
 						}
 					}
 //						textInputs[0].focus();		//点击编辑   input获取焦点
-					console.log();
+//					console.log();
 				}
 				if(i==0){
 					Toast("亲，暂无可编辑数据！");
@@ -485,7 +486,7 @@
 					for(var z=0; z<this.y; z++){
 						if(this.biaoQianID[z]==spans[index].id){
 							this.biaoQianID.splice(z,1);
-							console.log(this.biaoQianID)
+//							console.log(this.biaoQianID)
 							this.y-=1
 							break;
 						}
@@ -502,7 +503,7 @@
 								break;
 							}
 						}
-						console.log(this.biaoQianID)
+//						console.log(this.biaoQianID)
 					}
 				}
 			},
@@ -514,7 +515,7 @@
 					for(var z=0; z<this.y; z++){
 						if(this.biaoQianID1[z]==spans[index].id){
 							this.biaoQianID1.splice(z,1);
-							console.log(this.biaoQianID1)
+//							console.log(this.biaoQianID1)
 							this.y-=1
 							break;
 						}
@@ -531,7 +532,7 @@
 								break;
 							}
 						}
-						console.log(this.biaoQianID1)
+//						console.log(this.biaoQianID1)
 					}
 				}
 			},
@@ -545,7 +546,7 @@
 						if(this.biaoQianID2[z]==typeLi[index].id){
 							this.biaoQianID2.splice(z,1);
 							this.biaoQianid2=this.biaoQianID2.join()
-							console.log(this.biaoQianid2)
+//							console.log(this.biaoQianid2)
 							this.y-=1
 							return;
 						}
@@ -555,23 +556,10 @@
 					this.y+=1;
 					this.biaoQianID2[this.biaoQianID2.length]=typeLi[index].id;
 					this.biaoQianid2=this.biaoQianID2.join()
-					console.log(this.biaoQianid2)
+//					console.log(this.biaoQianid2)
 				}
 			}
 			
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			

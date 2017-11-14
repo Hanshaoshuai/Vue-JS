@@ -156,7 +156,7 @@
 				token:this.$route.params.token,
 				item_id:this.$route.params.XiangmuID			//	项目id
 			}
-			console.log(this.data)
+//			console.log(data)
 			this.$http.post(URL.path+'finance/item_detail',data,{emulateJSON:true}).then(function(res){
 				this.data=res.body.data[0];
 				if(localStorage.getItem("type")=='1' || localStorage.getItem("type")=='7'){
@@ -168,7 +168,7 @@
 					this.output=this.$refs.output
 					this.dcontent=this.$refs.dcontent;
 				});
-				console.log(res);
+//				console.log(res);
 			},function(res){
 			    console.log(res.status);
 			})
@@ -190,15 +190,21 @@
 					biaoQian='转老股'
 				}
 				if(this.data.type==4){
-					biaoQian='融资租赁'
+					biaoQian='股权质押'
 				}
 				if(this.data.type==5){
-					biaoQian='研报支持'
+					biaoQian='融资租赁'
 				}
 				if(this.data.type==6){
+					biaoQian='研报支持'
+				}
+				if(this.data.type==7){
 					biaoQian='公司调研'
 				}
-				this.fenciangURL='http://test.qironghome.com/bak/web//index.php/app/item-info?id='+this.data.id
+//				this.fenciangURL='http://www.qironghome.com/index.php/app/item-info?id=18&uid=228'
+				
+				this.fenciangURL='http://www.qironghome.com/index.php/app/item-info?id='+this.data.id+'&uid='+this.data.uid;
+//				console.log(this.fenciangURL)
 				this.fenxiangBiaoti="* "+this.data.com_short.substr(1, 1)+" *"+this.data.com_code.substr(0, 2)+" **** "+biaoQian
 				this.fenxiangCont=this.data.lightspot;
 				
@@ -209,7 +215,7 @@
 				this.sharehrefTitle=this.$refs.sharehrefTitle;
 				this.sharehrefDes=this.$refs.sharehrefDes;
 				this.output=this.$refs.output;
-				console.log(this.sharehref.value)
+//				console.log(this.sharehref.value)
 //				common(this.output,this.dcontent,window);
 				common1(this.dcontent,this.sharecontent,this.pic,this.sharehref,this.sharehrefTitle,this.sharehrefDes,this.output);
 			},
@@ -226,9 +232,9 @@
 						type:'1',
 						uid:this.data.uid
 					}
-					console.log(this.data)
+//					console.log(this.data)
 					this.$http.post(URL.path+'finance/demand_item',data,{emulateJSON:true}).then(function(res){
-						console.log(res);
+//						console.log(res);
 						if(res.body.returnCode==202){
 							this.yisuoYao=true;
 							Toast("您已经索要过该项目信息，请您等待反馈")
@@ -256,14 +262,6 @@
 //			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 //			cartcontrol,

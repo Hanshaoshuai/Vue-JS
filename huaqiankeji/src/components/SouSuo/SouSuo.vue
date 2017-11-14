@@ -12,7 +12,7 @@
 				<div class="wenzhang-content" ref="tianjia">
 					<!--<div v-for="(item,index) in data" class="sousuo-content border-topbottom" @click.stop="xiangQing('7','3',item.id)">-->
 					<div v-for="(cont,index) in data" class="add" :id="index" ref="lisitTop">
-	<!--循环遍历-->		<div v-for="(item,index) in cont" class="sousuo-content border-topbottom" @click.stop="xiangQing(item.ctype,item.investment_type,item.uid)">
+	<!--循环遍历-->		<div v-for="(item,index) in cont" class="sousuo-content border-topbottom" @click.stop="xiangQing(item.cctype,item.investment_type,item.uid)">
 							<div class="content-header">
 								<!--<font><img src="" :rul="item.photo"/></font>-->
 								<font><img :src="item.photo"/></font>
@@ -22,7 +22,7 @@
 									<span>{{item.position}}</span>
 								</div>
 							</div>
-							<div v-if="item.ctype=='2'" class="xiaolv border-topbottom">
+							<div v-if="item.cctype=='2'" class="xiaolv border-topbottom">
 								<div class="border-right">
 									<li>
 										<font v-if="item.itemnumberes!=0">{{item.itemnumberes}}</font>
@@ -43,7 +43,7 @@
 									<span>约谈率</span>
 								</div>
 							</div>
-							<div v-if="item.ctype=='3'" class="xiaolv border-topbottom">
+							<div v-if="item.cctype=='3'" class="xiaolv border-topbottom">
 								<div class="border-right">
 									<li>
 										<font v-if="item.itemnumberes!=0">{{item.itemnumberes}}</font>
@@ -64,7 +64,7 @@
 									<span>约谈率</span>
 								</div>
 							</div>
-							<div v-if="item.ctype=='6'" class="xiaolv border-topbottom">
+							<div v-if="item.cctype=='6'" class="xiaolv border-topbottom">
 								<div class="border-right">
 									<li>
 										<font v-if="item.itemnumberes!=0">{{item.itemnumberes}}</font>
@@ -87,9 +87,9 @@
 							</div>
 							<div class="leimu">
 								<div class="zhonglei">
-									<span v-if="item.investment_type==1" class="jieduan"><a style="color:#2abdfc">阶段：</a><a v-for="(item,index) in item.fund_stage">{{item.title}}，</a></span>
+									<span v-if="item.investment_type==1" class="jieduan"><a style="color:#2abdfc">阶段：</a><a v-for="(item,index) in item.fund_stage">{{item.title}}&nbsp;&nbsp;</a></span>
 									<span v-if="item.investment_type==1" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
-									<span v-if="item.investment_type==1" class="lingyu"><a style="color:#2abdfc">行业：</a><a v-for="(item,index) in item.interested">{{item.title}}，</a></span>
+									<span v-if="item.investment_type==1" class="lingyu"><a style="color:#2abdfc">行业：</a><a v-for="(item,index) in item.interested">{{item.title}}&nbsp;&nbsp;</a></span>
 									<span v-if="item.investment_type==2" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
 									<span v-if="item.investment_type==2" class="zijin"><a style="color:#2abdfc">资金成本：</a>年化 {{item.fund_min}}%-{{item.fund_max}}%</span>
 									<span v-if="item.investment_type==2" class="fangkuan"><a style="color:#2abdfc">放款速度：</a>不超过{{item.loan_time}}天</span>
@@ -98,12 +98,12 @@
 									<span v-if="item.investment_type==3" class="fangkuan"><a style="color:#2abdfc">放款速度：</a>不超过{{item.loan_time}}天</span>-->
 									
 									
-									<span v-if="item.ctype==1" class="jieduan"><a style="color:#2abdfc">行业：</a><a v-for="(item,index) in item.industry">{{item.title}}，</a></span>
-									<span v-if="item.ctype==2" class="jieduan"><font v-if="item.investment_type==0"><a style="color:#2abdfc">阶段：</a><a v-for="(item,index) in item.fund_stage">{{item.title}}，</a></font></span>
-									<span v-if="item.ctype==2" class="dangbi"><font v-if="item.investment_type==0"><font v-if="item.single_project!=0"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project[0].title}}</font></font></span>
-									<span v-if="item.ctype==2" class="lingyu"><font v-if="item.investment_type==0"><a style="color:#2abdfc">行业：</a><a v-for="(item,index) in item.interested">{{item.title}}，</a></font></span>
+									<span v-if="item.cctype==1" class="lingyu"><font><a style="color:#2abdfc">行业：</a><a v-for="(item,index) in item.industry">{{item.title}}&nbsp;&nbsp;</a></font></span>
+									<span v-if="item.cctype==2" class="jieduan"><font v-if="item.investment_type==0"><a style="color:#2abdfc">阶段：</a><a v-for="(item,index) in item.fund_stage">{{item.title}}&nbsp;&nbsp;</a></font></span>
+									<span v-if="item.cctype==2" class="dangbi"><font v-if="item.investment_type==0"><font v-if="item.single_project!=0"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project[0].title}}</font></font></span>
+									<span v-if="item.cctype==2" class="lingyu"><font v-if="item.investment_type==0"><a style="color:#2abdfc">行业：</a><a v-for="(item,index) in item.interested">{{item.title}}&nbsp;&nbsp;</a></font></span>
 									<!--<span v-if="item.ctype==3" class="lingyu"><a style="color:#2abdfc">行业：</a><a v-for="item in item.interested">{{item.title}}、</a></span>-->
-									<span v-if="item.ctype==4" class="lingyu"><a style="color:#2abdfc">行业：</a><a v-for="item in item.interested">{{item.title}}，</a></span>
+									<span v-if="item.cctype==4" class="lingyu"><font v-if="item.investment_type==0"<a style="color:#2abdfc">行业：</a><a v-for="item in item.interested">{{item.title}}&nbsp;&nbsp;</a></font></span>
 									<!--<span v-if="item.ctype==3" class="lingyu">领域：<a v-for="(item,index) in item.interested">{{item.title}}、</a></span>
 									<span v-if="item.ctype==4" class="lingyu">领域：<a v-for="(item,index) in item.interested">{{item.title}}、</a></span>-->
 								</div>
@@ -172,10 +172,11 @@
 			}
 		},
 		mounted(){
-			console.log()
+//			console.log()
 		},
 		methods:{
 			yijianHind(){
+				this.topStatus=false;
 				history.go(-1)
 			},
 			zhiDing(){		//返回顶部；
@@ -184,7 +185,7 @@
 			xiangQing(id,Tid,uid){		//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构/研究咨询 5:券商研究员 6:新三板做市商 7:财务顾问
 //				window.location.href="#/faxian/sousuo/"+this.$route.params.token+'/'+"SousuoLeixing";
 				this.uid=uid;
-				console.log(Tid)
+//				console.log(id)
 				if(id=='2'){
 					if(Tid=='0'){
 						window.location.href="#/faxian/sousuo/ZiliaoT1"+"/"+this.userContent["token"];//1:股权投资   2:债权投资   3:股债兼投
@@ -194,6 +195,13 @@
 					
 				}else{
 					window.location.href="#/faxian/sousuo/Ziliao"+id+"/"+this.userContent["token"];
+				}
+			},
+			handleScroll(){
+				if(this.$refs.wrapper.scrollTop>800){
+					this.topBlock=true;
+				}else{
+					this.topBlock=false;
 				}
 			},
 			faxianScroll(){
@@ -221,7 +229,7 @@
 				}
 			},
 			sousuoGo(newVal){
-				console.log("开始搜索")
+//				console.log("开始搜索")
 				var thata=this;
 				this.tishis=false;
 				if(this.texts!==""){
@@ -231,7 +239,7 @@
 				}
 			},
 			qingqiu(){
-//				Indicator.open({spinnerType: 'fading-circle'});
+				Indicator.open({spinnerType: 'fading-circle'});
 				var thata=this;
 				var params={
 		    		terminalNo:3,
@@ -242,10 +250,10 @@
 					kw:this.texts,					//关键词搜索
 					page:this.page
 		    	}
-				console.log(params)
+//				console.log(params)
 				this.$http.post(URL.path1+'welcome',params,{emulateJSON:true}).then(function(res){
-					console.log(res);
-//					Indicator.close();
+//					console.log(res);
+					Indicator.close();
 //					if(this.data.length==5){//长度大于5从新开始
 //						this.data=[]
 //						this.$refs.wrapper.scrollTop=0;
@@ -257,6 +265,7 @@
 							this.jeiguo="暂无搜索结果"
 						}
 						this.$refs.wrapper.removeEventListener('scroll', this.faxianScroll);
+						this.$refs.wrapper.addEventListener('scroll', this.handleScroll)
 						this.tishis=true;
 						return;
 					}else{
@@ -294,7 +303,7 @@
 						});
 					}
 				},function(res){
-//					Indicator.close();
+					Indicator.close();
 				    console.log(res);
 				})
 			}
@@ -441,6 +450,7 @@
 						display:flex;
 						align-items:center;
 						font{
+							position:relative;
 							display:inline-block;
 							width:0.43rem;
 							height:0.43rem;
@@ -449,6 +459,12 @@
 							border:2px solid #e5e4e4;
 							overflow:hidden;
 							img{
+								position:absolute;
+						    	top:0;
+						    	right:0;
+						    	left:0;
+						    	bottom:0;
+						    	margin:auto;
 								/*width:100%;
 								height:100%;*/
 							}

@@ -144,13 +144,13 @@
 				onlyContent:false,
 				firstTop:true,
 				lastBottom:false,
-				textcont:"重新申请成功，请等待审核",
+				textcont:"申请成功，请等待审核",
 				typeId:""
 			}
 		},
 		mounted(){
-			console.log(this.$route.params.type)
-			console.log(this.token)
+//			console.log(this.$route.params.type)
+//			console.log(this.token)
 			this.type=this.$route.params.type
 			this.$nextTick(function() {
 				
@@ -190,7 +190,7 @@
 					}
 				}
 				this.onlyContent=true;
-				console.log(CanShu)
+//				console.log(CanShu)
 			},
 			queding(){
 				var tata=this;
@@ -208,7 +208,7 @@
 					type:this.typeId,						//	融资类型，参见创建项目接口type值	是	[string]
 					appraisement:this.texth			//	投前估值	是	[string]
 		    	}
-				console.log(params)
+//				console.log(params)
 				this.$http.post(URL.path+'finance/record',params,{emulateJSON:true}).then(function(res){
 					this.type=res.body.data.id
 					var tata=this;
@@ -234,7 +234,7 @@
 //							location.replace(document.referrer); 
 						},2000)
 					}
-					console.log(res);
+//					console.log(res);
 				},function(res){
 				    console.log(res.status);
 				})

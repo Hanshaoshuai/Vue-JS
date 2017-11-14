@@ -27,13 +27,13 @@
 			}
 		},
 		mounted(){
-			console.log(this.imgurl)
+//			console.log(this.imgurl)
 		},
 		methods:{
 			previewImage(){
 				var file=this.$refs.file
 				var thata=this;
-				console.log(event);
+//				console.log(event);
 //				console.log(file.files[0])
 	          	var div = document.getElementById('preview');
 	          	if(file.files && file.files[0]){
@@ -65,7 +65,7 @@
 						var zipFormData = new FormData();			//把要传的内容和参数放到   formdata中
 						zipFormData.append('upload_file', file.files[0]);
 						zipFormData.append('terminalNo', 3);
-						console.log(zipFormData)
+//						console.log(zipFormData)
 	              		thata.shangchuan(zipFormData,img)
 	              	}
 	              	reader.readAsDataURL(file.files[0]);
@@ -79,13 +79,13 @@
 	        },
 			shangchuan(urlfrom,img){
 				Indicator.open({spinnerType: 'fading-circle'});
-				console.log(urlfrom)
+//				console.log(urlfrom)
 //				var data={
 //					upload_file:urlfrom,
 //					terminalNo:3
 //				}
 				this.$http.post(URL.path1+'upload/photo',urlfrom,{emulateJSON:true}).then(function(res){
-                    console.log(res);
+//                  console.log(res);
                     Indicator.close();
 					if(res.body.returnCode=='200'){
 						var data=res.body.data
@@ -95,11 +95,13 @@
 //						this.imgurl=localStorage.getItem("MingpianImg");
 						this.$emit("to-parent",res.body.data.url);
 					}else{
+						this.$refs.file.value=''
 						Toast("上传失败请重新上传");
 					}
                 },function(res){
                 	Indicator.close();
-                	Toast("系统正忙请稍后！");
+                	this.$refs.file.value=''
+					Toast("上传失败请重新上传");
                     console.log(res);
                 });
 			}

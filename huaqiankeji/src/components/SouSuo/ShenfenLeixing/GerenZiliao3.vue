@@ -181,7 +181,7 @@
 			this.nones=this.$route.params.type;
 			this.userID=localStorage.getItem("userID");
 			Indicator.open({spinnerType: 'fading-circle'});
-			console.log(this.userContent)
+//			console.log(this.userContent)
 //			个人资料
 			var params={
 //	    		token:this.userContent.token,
@@ -220,7 +220,7 @@
 						images.style.height="auto"
 					}
 				});
-				 console.log(res);
+//				 console.log(res);
 			},function(res){
 				Indicator.close();
 			    console.log(res);
@@ -234,6 +234,7 @@
 //			  	console.log(sessionStorage.getItem("gerenZiliaoH"))
 			},
 			yijianHind(){
+				Indicator.close();
 				history.go(-1)
 			},
 			baocun(){
@@ -254,19 +255,6 @@
 			baoMing(){
 				this.$refs.youhuiShow.YouhuiBlock();
 			},
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -278,21 +266,9 @@
 //			}
 		},
 		updated(){
-//			this.$refs.box.scrollTop=0;
-//			this.$refs.box.scrollTop=this.scrollTop
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 			box
-//			youhuiquan
-//			fankuixinxi
 		}
 	}
 </script>
@@ -360,6 +336,7 @@
 			    display:flex;
 			    z-index:100;
 			    .home-search {
+			    	position:relative;
 			    	width:0.62rem;
 			    	height:0.62rem;
 				    background: #ffffff;
@@ -367,6 +344,12 @@
 				    border-radius:0.06rem;
 				    overflow:hidden;
 				    img{
+				    	position:absolute;
+				    	top:0;
+				    	right:0;
+				    	left:0;
+				    	bottom:0;
+				    	margin:auto;
 				    	/*width:100%;
 				    	height:100%;*/
 				    }

@@ -99,7 +99,7 @@
 							<span v-if="!bianList" ref='text5' class="lasst" @click.stap="baocunList()">保存</span>-->
 						</div>
 						<div class="xiaolv anli">
-							<div v-if="!YitouList" class="anli-list border-top">
+							<div v-show="block" class="anli-list border-top">
 								<span>暂无案例</span>
 							</div>
 							<div v-for="(item,index) in YitouList" class="anli-list border-top">
@@ -115,6 +115,21 @@
 								<span style="text-align: center;">
 									{{numToTime(item.create_time)}}
 									<!--<input readOnly="true" v-model="" placeholder="反徐小平" type="text" class="mint-field-core">-->
+								</span>
+							</div>
+							<div v-for="(item,index) in YitouList1" class="anli-list border-top">
+								<span>
+									{{item.com_short}}
+									<!--<input readOnly="true" v-model="numberi" placeholder="天立泰" type="text" class="mint-field-core">-->
+								</span>
+								<span class="center">
+									<input v-if="item.investment" readOnly="true" :placeholder="item.investment" type="text" class="mint-field-core">
+									<input @blur="Blurs1(item.item_id,item.id,index)" :class="Wancent" v-if="!item.investment" readOnly="true" :placeholder="item.investment" type="text" class="mint-field-core">
+									<font>万</font>
+								</span>
+								<span style="text-align: center;">
+									{{numToTime(item.create_time)}}
+									<!--<input readOnly="true" v-model="numberk" placeholder="反徐小平" type="text" class="mint-field-core">-->
 								</span>
 							</div>
 						</div>
@@ -304,8 +319,8 @@
 						</div>
 					</div>
 				</div>
-				<div style="height:0.06rem;width:100%;background:#f5f4f9"></div>
-				<div ref="yitouAnli" class="sousuo-content border-topbottom">
+				<div style="display:none;height:0.06rem;width:100%;background:#f5f4f9"></div>
+				<div v-show="aaaa" ref="yitouAnli" class="sousuo-content border-topbottom">
 					<div class="content-header">
 						<span>已投案例</span>
 						<font>（仅自己可见）</font>
@@ -359,6 +374,7 @@
 		},
 		data () {
 			return {
+				aaaa:false,
 				data:"",
 				L:0,
 				x:false,
@@ -450,12 +466,13 @@
 				xx1:[],
 				yy1:[],
 				SuozaiHangye:'',
-				numToTime:""
+				numToTime:"",
+				block:true
 			}
 		},
 		mounted(){
 			this.numToTime=numToTime;
-			console.log(this.userContent)
+//			console.log(this.userContent)
 //			个人资料
 			var params={
 	    		token:this.userContent.token,
@@ -466,9 +483,9 @@
 				//股权
 				this.numberToa=this.data.info.single_project_max;			
 				this.numberTob=this.data.info.single_project_min;
-				this.numbere=this.data.info.single_project_max;
-				this.numberf=this.data.info.single_project_min;
-				this.numberTod=this.numberToa+'万 - '+this.numberTob+'万';  //要插到页面的
+				this.numbere=this.data.info.single_project_min;
+				this.numberf=this.data.info.single_project_max;
+				this.numberTod=this.numberTob+'万 - '+this.numberToa+'万';  //要插到页面的
 				this.numberToc=this.data.info.territory;				//要插到页面的地区
 				this.texta=this.data.info.territory;		//要插到页面的地区
 				
@@ -476,15 +493,15 @@
 				this.SuozaiHangye=this.data.info.interested;
 				var fund_stage=this.data.info.fund_stage;
 				var fund_stage=this.data.info.fund_stage;
-				console.log(SuozaiHangye);
+//				console.log(SuozaiHangye);
 				
 				//债权	
-				this.numberg=this.data.info.profit_min;//营业收入不低于    将要改变的数据
-				this.numberh=this.data.info.revenue_min;//净利润不低于	将要改变的数据
-				this.numberToe='营收收入不低于'+this.data.info.profit_min+'亿元';  //要插到页面的
-				this.numberTof='净利润不低于'+this.data.info.revenue_min+'万元';				//要插到页面的地区
-				this.textc1=this.data.info.profit_min;//原来的数据
-				this.textd1=this.data.info.revenue_min;//原来的数据
+				this.numberg=this.data.info.revenue_min;//营业收入不低于    将要改变的数据
+				this.numberh=this.data.info.profit_min;//净利润不低于	将要改变的数据
+				this.numberToe='营收收入不低于'+this.data.info.revenue_min+'亿元';  //要插到页面的
+				this.numberTof='净利润不低于'+this.data.info.profit_min+'万元';				//要插到页面的地区
+				this.textc1=this.data.info.revenue_min;//原来的数据
+				this.textd1=this.data.info.profit_min;//原来的数据
 				
 				this.numberToh=this.data.info.single_project_max2;	//原数据
 				this.numberToi=this.data.info.single_project_min2;	//原数据
@@ -499,7 +516,7 @@
 				
 				this.numbere1=this.data.info.fund_min;//原来的数据
 				this.numberf1=this.data.info.fund_max;//原来的数据
-				this.numberi=this.numbere1+'万 - '+this.numberf1+'万'
+				this.numberi=this.numbere1+'% - '+this.numberf1+'%'
 				this.numberj=this.data.info.fund_min;//您能提供的年化资金成本范围    将要改变的数据
 				this.numberk=this.data.info.fund_max;//您能提供的年化资金成本范围    将要改变的数据
 				
@@ -556,8 +573,8 @@
 				
 				this.oDbiaoQianID2=x2.join(',');
 				this.numberd=y2.join('、');
-				console.log(this.oDbiaoQianID2);
-				console.log(res);
+//				console.log(this.oDbiaoQianID2);
+//				console.log(res);
 			},function(res){
 			    console.log(res);
 			})
@@ -567,7 +584,7 @@
 //	    		type:'1'			//1:股权 2：债权	是	[string]
 	    	}
 			this.$http.post(URL.path+'finance/get_deliver_list',anliParam,{emulateJSON:true}).then(function(res){
-				console.log(res);
+//				console.log(res);
 			},function(res){
 			    console.log(res);
 			})
@@ -615,8 +632,8 @@
 				}else{						
 					GQnuwID=this.biaoQianid;		//股权改后数据
 					GQnuwID1=this.biaoQianid1;
-					GQmax_nuwID2=this.numbere;
-					GQmin_nuwID2=this.numberf;
+					GQmax_nuwID2=this.numberf;
+					GQmin_nuwID2=this.numbere;
 					GQterritory=this.texta;
 				}
 				if(this.BianJi4=='0'){				//原来数据
@@ -657,7 +674,7 @@
 				}
 				var datas={
 					id:localStorage.getItem("userID"),				//	uid	是	[string]	
-					investment_type:localStorage.getItem("type"),		//投资类型 1:股权投资 2:债权投资 3:股债兼投	是	[string]		
+					investment_type:localStorage.getItem("typeID"),		//投资类型 1:股权投资 2:债权投资 3:股债兼投	是	[string]		
 					interested:GQnuwID,		//感兴趣的行业多个用逗号分割	是	[string]		
 					single_project_max:GQmax_nuwID2,		//单笔投资最大值	是	[string]		
 					single_project_min:GQmin_nuwID2,		//单笔投资最小值	是	[string]		
@@ -677,11 +694,11 @@
 					borrow:ZQborrow,						//借债主体	是	[string]
 					territory2:ZQterritory			//地域要求	是	[string]
 				}
-				console.log(datas)
+//				console.log(datas)
 				this.$http.post(URL.path+'regist/regist2',datas,{emulateJSON:true}).then(function(res){
 					if(res.body.returnCode=='200'){
 						Toast('您已保存成功');
-						console.log(res.body)
+//						console.log(res.body)
 //						window.location.href="#/faxian";
 					}else{
 //						window.location.href="#/denglu"
@@ -736,7 +753,7 @@
 						investment:this.textInputs[index].value		//	投资额	是	[string]
 			    	}
 					this.$http.post(URL.path+'finance/edit_investment',anliParam,{emulateJSON:true}).then(function(res){
-						console.log(res);
+//						console.log(res);
 						if(res.body.returnCode=='200'){
 							Toast("您已保存成功")
 						}
@@ -755,7 +772,7 @@
 						investment:this.textInputs[index].value		//	投资额	是	[string]
 			    	}
 					this.$http.post(URL.path+'finance/edit_investment',anliParam,{emulateJSON:true}).then(function(res){
-						console.log(res);
+//						console.log(res);
 						if(res.body.returnCode=='200'){
 							Toast("您已保存成功")
 						}
@@ -786,28 +803,32 @@
 		    		type:'1'			//1:股权 2：债权	是	[string]
 		    	}
 				this.$http.post(URL.path+'finance/get_deliver_list',anliParam,{emulateJSON:true}).then(function(res){
-					console.log(res);
+//					console.log(res);
 					if(res.body.returnCode=='200'){
 						this.YitouList=res.body.data;
 					}
+					//				已投案例接口   已投项目列表
+					var anliParam={
+			    		token:this.userContent.token,
+			    		type:'2'			//1:股权 2：债权	是	[string]
+			    	}
+					this.$http.post(URL.path+'finance/get_deliver_list',anliParam,{emulateJSON:true}).then(function(res){
+//						console.log(res);
+						if(res.body.returnCode=='200'){
+							this.YitouList1=res.body.data;
+						}
+						if(this.YitouList.length!=0 || this.YitouList1.length!=0){
+							this.block=false;
+						}
+					},function(res){
+					    console.log(res);
+					})
 				},function(res){
 				    console.log(res);
 				})
 			},
 			YitouLiebiao1(){
-//				已投案例接口   已投项目列表
-				var anliParam={
-		    		token:this.userContent.token,
-		    		type:'2'			//1:股权 2：债权	是	[string]
-		    	}
-				this.$http.post(URL.path+'finance/get_deliver_list',anliParam,{emulateJSON:true}).then(function(res){
-					console.log(res);
-					if(res.body.returnCode=='200'){
-						this.YitouList1=res.body.data;
-					}
-				},function(res){
-				    console.log(res);
-				})
+				
 			},
 			bianji(id){
 				if(id==1){
@@ -863,7 +884,7 @@
 //								this.biaoQianID1.push(spans1.id);
 								
 							});
-							console.log(this.BiaoQian);
+//							console.log(this.BiaoQian);
 						},function(res){
 						    console.log(res.status);
 						})
@@ -895,7 +916,7 @@
 							}
 						}
 //						textInputs[0].focus();		//点击编辑   input获取焦点
-						console.log();
+//						console.log();
 					}
 				}
 				if(id==3 || id==4){
@@ -905,7 +926,7 @@
 							this.BianJi2=1;
 							this.$nextTick(function() {
 								this.$refs.chanYe.focus();	//点击编辑   input获取焦点
-								console.log();
+//								console.log();
 							})
 						}else{
 							this.$refs.bianji3.innerText="编辑";
@@ -917,7 +938,7 @@
 							this.BianJi4=1;
 							this.$nextTick(function() {
 								this.$refs.chongGou.focus();	//点击编辑   input获取焦点
-								console.log();
+//								console.log();
 							})
 						}else{
 							this.$refs.bianji4.innerText="编辑";
@@ -950,7 +971,7 @@
 						}
 						this.y=this.biaoQianid2.length;
 						this.biaoQianid2=this.biaoQianID2.join();
-						console.log(this.biaoQianid2)
+//						console.log(this.biaoQianid2)
 					})
 				}
 				
@@ -972,7 +993,7 @@
 					this.BianJi5=1;
 					this.$nextTick(function() {
 						this.$refs.chongGou1.focus();	//点击编辑   input获取焦点
-						console.log();
+//						console.log();
 					})
 				}else{
 					this.$refs.BianJi5.innerText="编辑";
@@ -1012,7 +1033,7 @@
 						}
 					}
 //						textInputs[0].focus();		//点击编辑   input获取焦点
-					console.log();
+//					console.log();
 				}
 			},
 			xuanze(index){
@@ -1024,7 +1045,7 @@
 						if(this.biaoQianID[z]==spans[index].id){
 							this.biaoQianID.splice(z,1);
 							this.biaoQianid=this.biaoQianID.join()
-							console.log(this.biaoQianid)
+//							console.log(this.biaoQianid)
 							this.y-=1
 							break;
 						}
@@ -1038,7 +1059,7 @@
 						this.biaoQianID[this.y]=spans[index].id;
 						this.y+=1;
 						this.biaoQianid=this.biaoQianID.join()
-						console.log(this.biaoQianid)
+//						console.log(this.biaoQianid)
 //					}
 				}
 			},
@@ -1051,7 +1072,7 @@
 						if(this.biaoQianID1[z]==spans[index].id){
 							this.biaoQianID1.splice(z,1);
 							this.biaoQianid1=this.biaoQianID1.join()
-							console.log(this.biaoQianid1)
+//							console.log(this.biaoQianid1)
 							this.y1-=1
 							break;
 						}
@@ -1064,7 +1085,7 @@
 						this.biaoQianID1[this.y1]=spans[index].id;
 						this.y1+=1;
 						this.biaoQianid1=this.biaoQianID1.join()
-						console.log(this.biaoQianid1)
+//						console.log(this.biaoQianid1)
 //					}
 				}
 			},
@@ -1078,7 +1099,7 @@
 						if(this.biaoQianID2[z]==typeLi[index].id){
 							this.biaoQianID2.splice(z,1);
 							this.biaoQianid2=this.biaoQianID2.join()
-							console.log(this.biaoQianid2)
+//							console.log(this.biaoQianid2)
 							this.y-=1
 							break;
 						}
@@ -1088,7 +1109,7 @@
 					this.y+=1;
 					this.biaoQianID2[this.biaoQianID2.length]=typeLi[index].id;
 					this.biaoQianid2=this.biaoQianID2.join()
-					console.log(this.biaoQianid2)
+//					console.log(this.biaoQianid2)
 				}
 			}
 		},

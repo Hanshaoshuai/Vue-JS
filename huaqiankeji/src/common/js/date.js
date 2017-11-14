@@ -68,6 +68,7 @@ export function numToTime1(num){
       h,
       m,
       newTime = new Date(newNum).toLocaleString();
+      console.log(time)
     time = time.replace(/\d+[\/\-]/, function(text){
       year = text.match(/\d+/)[0];
       return '';
@@ -90,11 +91,12 @@ export function numToTime1(num){
     });
     num = (newNum - num) / 1000;
 //  console.log(new Date().getDate())
-//  console.log(day)
+//  console.log(time)
 //  if(num < 3600){
 //    fenzhong = parseInt(num / 60);
 //  }
 	if(day==new Date().getDate()){
+		
 //		time.replace(/(上午|下午)\d+/, function(text){
 //			if(/上午/.test(text)){
 //				console.log(text)
@@ -110,13 +112,21 @@ export function numToTime1(num){
 			if(h<10){
 				return '0'+h.toString() + ':'+ m;
 			}else{
-				return h + ':'+ m;
+				if(h==12){
+					return '00' + ':'+ m;
+				}else{
+					return h + ':'+ m;
+				}
 			}
 		} else {
 			if(h<12){
 				return (12+h*1) + ':'+ m;
 			}else{
-				return h + ':'+ m;
+//				if(h==12){
+//					return '00' + ':'+ m;
+//				}else{
+					return h + ':'+ m;
+//				}
 			}
 		}
 	}

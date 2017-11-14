@@ -190,7 +190,7 @@
 		mounted(){
 			this.numToTime=numToTime;
 			Indicator.open({spinnerType: 'fading-circle'});
-			console.log(this.userContent)
+//			console.log(this.userContent)
 //			个人资料
 			var params={
 	    		token:this.userContent.token,
@@ -199,8 +199,8 @@
 			this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
 				Indicator.close();
 				this.data=res.body.data;
-				console.log("个人资料");
-				console.log(res);
+//				console.log("个人资料");
+//				console.log(res);
 				
 				this.numberb=this.data.info.profit_min;//营业收入不低于    将要改变的数据
 				this.numberc=this.data.info.revenue_min;//净利润不低于	将要改变的数据
@@ -226,7 +226,7 @@
 				}
 				this.oDbiaoQianID=x.join(',');
 				this.numbera=y.join('、');
-				console.log(this.oDbiaoQianID);
+//				console.log(this.oDbiaoQianID);
 			},function(res){
 				Indicator.close();
 			    console.log(res);
@@ -242,11 +242,12 @@
 //			  	console.log(sessionStorage.getItem("gerenZiliaoH"))
 			},
 			yijianHind(){
+				Indicator.close();
 				history.go(-1)
 			},
 			baocun(){
-				console.log(this.oDbiaoQianID)
-				console.log(this.biaoQianid)
+//				console.log(this.oDbiaoQianID)
+//				console.log(this.biaoQianid)
 				var nuwID;
 				var nuwID1;
 				var max_nuwID2;
@@ -282,11 +283,11 @@
 					resources:textc1,
 					restructuring:textd1
 				}
-				console.log(datas)
+//				console.log(datas)
 				this.$http.post(URL.path+'regist/com_regist2',datas,{emulateJSON:true}).then(function(res){
 					if(res.body.returnCode=='200'){
 						Toast('您已保存成功');
-						console.log(res.body)
+//						console.log(res.body)
 //						window.location.href="#/faxian";
 					}else{
 //						window.location.href="#/denglu"
@@ -336,7 +337,7 @@
 		    		type:'1'			//1:股权 2：债权 3：其他	是	[string]
 		    	}
 				this.$http.post(URL.path+'finance/get_deliver_list',anliParam,{emulateJSON:true}).then(function(res){
-					console.log(res);
+//					console.log(res);
 					if(res.body.returnCode=='200'){
 						this.YitouList=res.body.data;
 					}
@@ -386,7 +387,7 @@
 						textInputs[i].removeAttribute("readOnly")		//点击编辑   input去除属性readOnly即可编辑
 					}
 					textInputs[0].focus();		//点击编辑   input获取焦点
-					console.log();
+//					console.log();
 				}
 				if(id==3 || id==4){
 					if(id==3){
@@ -395,7 +396,7 @@
 							this.BianJi2=1;
 							this.$nextTick(function() {
 								this.$refs.chanYe.focus();	//点击编辑   input获取焦点
-								console.log();
+//								console.log();
 							})
 						}else{
 							this.$refs.bianji3.innerText="编辑";
@@ -407,7 +408,7 @@
 							this.BianJi4=1;
 							this.$nextTick(function() {
 								this.$refs.chongGou.focus();	//点击编辑   input获取焦点
-								console.log();
+//								console.log();
 							})
 						}else{
 							this.$refs.bianji4.innerText="编辑";
@@ -474,7 +475,7 @@
 						this.bianList=true;
 					}
 //						textInputs[0].focus();		//点击编辑   input获取焦点
-					console.log();
+//					console.log();
 				}
 			},
 			xuanze(index){
@@ -486,7 +487,7 @@
 						if(this.biaoQianID[z]==spans[index].id){
 							this.biaoQianID.splice(z,1);
 							this.biaoQianid=this.biaoQianID.join()
-							console.log(this.biaoQianid)
+//							console.log(this.biaoQianid)
 							this.y-=1
 							break;
 						}
@@ -500,7 +501,7 @@
 						this.biaoQianID[this.y]=spans[index].id;
 						this.y+=1;
 						this.biaoQianid=this.biaoQianID.join()
-						console.log(this.biaoQianid)
+//						console.log(this.biaoQianid)
 //					}
 				}
 			},
@@ -512,7 +513,7 @@
 					for(var z=0; z<this.y; z++){
 						if(this.biaoQianID1[z]==spans[index].id){
 							this.biaoQianID1.splice(z,1);
-							console.log(this.biaoQianID1)
+//							console.log(this.biaoQianID1)
 							this.y-=1
 							break;
 						}
@@ -529,7 +530,7 @@
 								break;
 							}
 						}
-						console.log(this.biaoQianID1)
+//						console.log(this.biaoQianID1)
 					}
 				}
 			},
@@ -542,7 +543,7 @@
 					for(var z=0; z<this.y; z++){
 						if(this.biaoQianID2[z]==typeLi[index].id){
 							this.biaoQianID2.splice(z,1);
-							console.log(this.biaoQianID2)
+//							console.log(this.biaoQianID2)
 							this.y-=1
 							break;
 						}
@@ -556,23 +557,10 @@
 							break;
 						}
 					}
-					console.log(this.biaoQianID2)
+//					console.log(this.biaoQianID2)
 				}
 			}
 			
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -584,21 +572,9 @@
 //			}
 		},
 		updated(){
-//			this.$refs.box.scrollTop=0;
-//			this.$refs.box.scrollTop=this.scrollTop
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 			box
-//			youhuiquan
-//			fankuixinxi
 		}
 	}
 </script>

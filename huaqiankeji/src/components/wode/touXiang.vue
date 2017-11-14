@@ -50,6 +50,7 @@
 		},
 		methods:{
 			yijianHind(){
+				Indicator.close();
 				history.go(-1);
 			},
 			child(TouxiangImg){
@@ -61,15 +62,15 @@
 					terminalNo:'3',
 					photo:this.$refs.touxiangID.touxiangID
 		    	}
-				console.log(params)
+//				console.log(params)
 				this.$http.post(URL.path1+'account/editPhoto',params,{emulateJSON:true}).then(function(res){
-					console.log(res);
+//					console.log(res);
 					Indicator.close("更换成功");
 				},function(res){
 					Indicator.close("系统错误");
 				    console.log(res);
 				})
-				console.log(TouxiangImg)
+//				console.log(TouxiangImg)
 			},
 		},
 		events:{

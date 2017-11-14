@@ -137,14 +137,14 @@
 				onlyContent:false,
 				firstTop:true,
 				lastBottom:false,
-				textcont:"备案申请成功，请等待审核",
+				textcont:"重新申请成功，请等待审核",
 				typeId:"",
 				license:""
 			}
 		},
 		mounted(){				//<!--1:未审核 2:已审核 3:进行中 4:已结束 5未通过-->
-			console.log(this.$route.params.type)
-			console.log(this.token)
+//			console.log(this.$route.params.type)
+//			console.log(this.token)
 			if(this.$route.params.type=='2'){
 				this.showFlag=false;
 			}
@@ -196,7 +196,7 @@
 //				if(this.onlyContent==false){
 //					this.$refs.tianjia.style.zIndex="100";
 //				}
-				console.log(res);
+//				console.log(res);
 			},function(res){
 			    console.log(res);
 			})
@@ -226,7 +226,7 @@
 //				console.log(MingpianImg)
 //			},
 			xuanZe(type,index){
-				if(this.showFlag==false){
+				if(this.showFlag1==false){
 					return;
 				}
 				this.typeId=type;
@@ -241,7 +241,7 @@
 //				alert('jfkdsj')
 //				this.$refs.tianjia.style.zIndex="1";
 				var textInputs = this.$refs.guanzhuLingyu.getElementsByClassName("mint-field-core");
-				console.log(textInputs)
+//				console.log(textInputs)
 				var length=textInputs.length;
 				this.showFlag=false;
 				this.showFlag1=true;
@@ -289,7 +289,7 @@
 					appraisement:this.texth			//	投前估值	是	[string]
 		    	}
 				this.$http.post(URL.path+'finance/record',params,{emulateJSON:true}).then(function(res){
-					console.log(res);
+//					console.log(res);
 					if(res.body.data.id==true){
 //						Toast("您已修改成功");
 						this.firstTop=false
@@ -302,7 +302,7 @@
 						this.showFlag=true;
 						this.showFlag1=false;
 						var textInputs = this.$refs.guanzhuLingyu.getElementsByClassName("mint-field-core");
-						console.log(textInputs)
+//						console.log(textInputs)
 						var length=textInputs.length;
 						for(var i=0; i<length; i++){
 							textInputs[i].setAttribute("readOnly",true)		//点击编辑   input去除属性readOnly即可编辑

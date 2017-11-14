@@ -177,7 +177,7 @@
 		mounted(){
 			this.numToTime=numToTime;
 			Indicator.open({spinnerType: 'fading-circle'});
-			console.log(this.userContent)
+//			console.log(this.userContent)
 //			个人资料
 			var params={
 	    		token:this.$route.params.token,
@@ -185,7 +185,7 @@
 	    	}
 			this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
 				Indicator.close();
-				console.log(res);
+//				console.log(res);
 				this.data=res.body.data;
 				
 				this.textb=this.data.info.team;		//原数据
@@ -195,8 +195,8 @@
 				this.textc1=this.data.info.resources;		//将要改变的数据
 				this.textd1=this.data.info.restructuring;	//将要改变的数据
 				
-				console.log("个人资料");
-				console.log(res);
+//				console.log("个人资料");
+//				console.log(res);
 			},function(res){
 				Indicator.close();
 			    console.log(res);
@@ -212,6 +212,7 @@
 //			  	console.log(sessionStorage.getItem("gerenZiliaoH"))
 			},
 			yijianHind(){
+				Indicator.close();
 				history.go(-1)
 			},
 			baocun(){
@@ -245,7 +246,7 @@
 //					ctype:				//	类型 1企业 4研究机构 6做市商 7财务顾问	是	[string]		
 //					business:			//	直营业务（企业）
 				}
-				console.log(datas)
+//				console.log(datas)
 				this.$http.post(URL.path+'regist/com_regist2',datas,{emulateJSON:true}).then(function(res){
 					if(res.body.returnCode=='200'){
 						Toast('您已保存成功');
@@ -254,7 +255,7 @@
 //						window.location.href="#/denglu"
 						Toast(res.body.msg);
 					}
-					console.log(res.body)
+//					console.log(res.body)
 				},function(res){
 					Toast(res.status);
 				    console.log(res.status);
@@ -270,7 +271,7 @@
 						investment:this.textInputs[index].value		//	投资额	是	[string]
 			    	}
 					this.$http.post(URL.path+'finance/edit_investment',anliParam,{emulateJSON:true}).then(function(res){
-						console.log(res);
+//						console.log(res);
 						if(res.body.returnCode=='200'){
 							Toast("您已保存成功")
 						}
@@ -318,12 +319,12 @@
 		    		type:'3'			//1:股权 2：债权  3：其他	是	[string]
 		    	}
 				this.$http.post(URL.path+'finance/get_deliver_list',anliParam,{emulateJSON:true}).then(function(res){
-					console.log(res);
+//					console.log(res);
 					if(res.body.returnCode=='200'){
 						this.YitouList=res.body.data;
-						console.log(res.body.data.com_short)
+//						console.log(res.body.data.com_short)
 					}
-					console.log(res)
+//					console.log(res)
 				},function(res){
 				    console.log(res);
 				})
@@ -335,7 +336,7 @@
 							this.BianJi3=1;
 							this.$nextTick(function() {
 								this.$refs.first.focus();	//点击编辑   input获取焦点
-								console.log();
+//								console.log();
 							})
 						}else{
 							this.$refs.bianji2.innerText="编辑";
@@ -349,7 +350,7 @@
 							this.BianJi2=1;
 							this.$nextTick(function() {
 								this.$refs.chanYe.focus();	//点击编辑   input获取焦点
-								console.log();
+//								console.log();
 							})
 						}else{
 							this.$refs.bianji3.innerText="编辑";
@@ -361,7 +362,7 @@
 							this.BianJi4=1;
 							this.$nextTick(function() {
 								this.$refs.chongGou.focus();	//点击编辑   input获取焦点
-								console.log();
+//								console.log();
 							})
 						}else{
 							this.$refs.bianji4.innerText="编辑";
@@ -402,19 +403,6 @@
 //					console.log();
 //				}
 //			},
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -426,21 +414,9 @@
 //			}
 		},
 		updated(){
-//			this.$refs.box.scrollTop=0;
-//			this.$refs.box.scrollTop=this.scrollTop
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 			box
-//			youhuiquan
-//			fankuixinxi
 		}
 	}
 </script>

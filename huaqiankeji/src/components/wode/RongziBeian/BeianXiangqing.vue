@@ -150,13 +150,13 @@
 				onlyContent:false,
 				firstTop:true,
 				lastBottom:false,
-				textcont:"备案申请成功，请等待审核",
+				textcont:"重新申请成功，请等待审核",
 				typeId:""
 			}
 		},
 		mounted(){		//<!--1:未审核 2:已审核 3:进行中 4:已结束 5未通过-->
-			console.log(this.$route.params.type)
-			console.log(this.token)
+//			console.log(this.$route.params.type)
+//			console.log(this.token)
 			this.type=this.$route.params.type
 			this.$nextTick(function() {
 				
@@ -167,7 +167,7 @@
 	    		id:this.beiAnidC		//	备案id
 	    	}
 			this.$http.post(URL.path+'finance/record_detail',params,{emulateJSON:true}).then(function(res){
-				console.log(res);
+//				console.log(res);
 				this.data=res.body.data.id;
 				this.texta=this.data.com_name;
 				this.textb=this.data.com_short;
@@ -201,7 +201,7 @@
 //				this.tucaoShow=false;
 			},
 			xuanZe(type,index){
-				if(this.showFlag==false){
+				if(this.showFlag1==false){
 					return;
 				}
 				this.typeId=type;
@@ -214,7 +214,7 @@
 			},
 			XiuGai(){
 				var textInputs = this.$refs.guanzhuLingyu.getElementsByClassName("mint-field-core");
-				console.log(textInputs)
+//				console.log(textInputs)
 				var length=textInputs.length;
 				this.showFlag=false;
 				this.showFlag1=true;
@@ -262,7 +262,7 @@
 					appraisement:this.texth			//	投前估值	是	[string]
 		    	}
 				this.$http.post(URL.path+'finance/record',params,{emulateJSON:true}).then(function(res){
-					console.log(res);
+//					console.log(res);
 					if(res.body.data.id==true){
 //						Toast("您已修改成功");
 						this.firstTop=false
@@ -275,7 +275,7 @@
 						this.showFlag=true;
 						this.showFlag1=false;
 						var textInputs = this.$refs.guanzhuLingyu.getElementsByClassName("mint-field-core");
-						console.log(textInputs)
+//						console.log(textInputs)
 						var length=textInputs.length;
 						for(var i=0; i<length; i++){
 							textInputs[i].setAttribute("readOnly",true)		//点击编辑   input去除属性readOnly即可编辑

@@ -29,7 +29,7 @@
 									<span>{{item.com_short}}</span>&nbsp;
 									<span>{{item.position}}</span>
 								</div>
-								<div class="borders typeA" :id="item.id"  @click.stop="xuanZe(index,item.id)"></div>
+								<div class="borders typeA" :id="item.id"  @click.stop="xuanZe($event,index,item.id)"></div>
 							</div>
 							<div v-if="item.ctype=='2'" class="xiaolv border-topbottom">
 								<div class="border-right">
@@ -42,7 +42,7 @@
 								<div class="border-right">
 									<li>
 										<font v-if="item.feedback==''" class="center">0&nbsp;%</font>
-										<font v-if="item.feedback!=''" v-else class="center">{{item.feedback}}</font>
+										<font v-if="item.feedback!=''" class="center">{{item.feedback}}</font>
 									</li>
 									<span class="center">反馈率</span>
 								</div>
@@ -65,7 +65,7 @@
 								<div class="border-right">
 									<li>
 										<font v-if="item.feedback==''" class="center">0&nbsp;%</font>
-										<font v-if="item.feedback!=''" v-else class="center">{{item.feedback}}</font>
+										<font v-if="item.feedback!=''" class="center">{{item.feedback}}</font>
 									</li>
 									<span class="center">反馈率</span>
 								</div>
@@ -88,7 +88,7 @@
 								<div class="border-right">
 									<li>
 										<font v-if="item.feedback==''" class="center">0&nbsp;%</font>
-										<font v-if="item.feedback!=''" v-else class="center">{{item.feedback}}</font>
+										<font v-if="item.feedback!=''" class="center">{{item.feedback}}</font>
 									</li>
 									<span class="center">反馈率</span>
 								</div>
@@ -165,12 +165,6 @@
 	import {URL} from '../../../../common/js/path';
 	import { Toast } from 'mint-ui';
 	import { MessageBox } from 'mint-ui';
-//	import BScroll from "better-scroll";
-//	import Vue from "vue";
-//	import {formatDate} from "../../common/js/date.js";
-//	import cartcontrol from "../cartcontrol/cartcontrol.vue";
-//	import ratingselect from "../ratingselect/ratingselect.vue";
-//	import split from "../split/split.vue";
 	
 	
 	export default {
@@ -207,7 +201,8 @@
 				tishis:false,
 				jeiguo:"亲已经到底了",
 				topStatus:false,
-				tems:''
+				tems:'',
+				listlenght:-1
 			}
 		},
 		mounted(){
@@ -221,6 +216,13 @@
 			},
 			zhiDing(){		//返回顶部；
 				this.$refs.wrapper.scrollTop=0;
+			},
+			handleScroll(){
+				if(this.$refs.wrapper.scrollTop>600){
+					this.topBlock=true;
+				}else{
+					this.topBlock=false;
+				}
 			},
 			faxianScroll(){
 				if(this.$refs.wrapper.scrollTop>600){
@@ -247,9 +249,9 @@
 				}
 			},
 			pipeiBlock(CanShu){
-//				Indicator.open({spinnerType: 'fading-circle'});
-				console.log(CanShu)
-				console.log(this.token)
+				Indicator.open({spinnerType: 'fading-circle'});
+//				console.log(CanShu)
+//				console.log(this.token)
 				this.CanShu=CanShu
 //				this.showFlag=true;
 				//匹配投资人列表		
@@ -260,8 +262,8 @@
 					size:50			//	size	是	[string]	
 				}
 				this.$http.post(URL.path+'finance/investor_list',datas,{emulateJSON:true}).then(function(res){
-//					Indicator.close();
-					console.log(this.body);
+					Indicator.close();
+//					console.log(this.body);
 //					if(this.data.length==5){//长度大于5从新开始
 //						this.data=[]
 //						this.$refs.wrapper.scrollTop=0;
@@ -273,6 +275,7 @@
 							this.jeiguo="暂无匹配结果"
 						}
 						this.$refs.wrapper.removeEventListener('scroll', this.faxianScroll);
+						this.$refs.wrapper.addEventListener('scroll', this.handleScroll)
 						this.tishis=true;
 						return;
 					}else{
@@ -311,7 +314,7 @@
 						});
 					}
 				},function(res){
-//					Indicator.close();
+					Indicator.close();
 //					Toast("系统错误请稍后...")
 				    console.log(res.status);
 				})
@@ -332,7 +335,7 @@
 					this.length=this.uID.length;
 //					console.log(this.uID)
 					this.uID1=this.uID.join(';')
-					console.log(this.uID1)
+//					console.log(this.uID1)
 				}else{
 					this.wuxuan=false;
 					this.xuanze=true;
@@ -346,7 +349,7 @@
 					this.length=this.uID.length;
 //					console.log(this.uID)
 					this.uID1=this.uID.join(';')
-					console.log(this.uID1)
+//					console.log(this.uID1)
 				}
 				this.play();		//调用底部的数量更改动画；
 			},
@@ -378,21 +381,22 @@
 					},0.5)
 				}
 			},
-			xuanZe(index,id){
-				console.log(id)
+			xuanZe(event,index,id){
+//				console.log(event)
+				var target=event.target
 				var boxs=this.$refs.tianjia.getElementsByClassName("borders");
 				var length = boxs.length;
 				var x=0;
 				var borders=this.$refs.tianjia.getElementsByClassName("borders")[index];
 //				console.log(borders.getAttribute("class","typeA"))
-				if(borders.getAttribute("class")=="borders typeA"){
+				if(target.getAttribute("class")=="borders typeA"){
 					this.y+=1;
 					this.uID.push(id)				//保存项目id
 					this.length=this.uID.length;
 //					console.log(this.uID)
 					this.uID1=this.uID.join(';')
-					console.log(this.uID1)
-					borders.setAttribute("class","borders typeB")
+//					console.log(this.uID1)
+					target.setAttribute("class","borders typeB")
 					this.XiaYibu=true;				//判断是否能下一步
 				}else{
 					for(var z=0; z<this.y; z++){
@@ -406,10 +410,7 @@
 							break;
 						}
 					}
-					borders.setAttribute("class","borders typeA")
-					if(this.ButtenName==0){
-						this.XiaYibu=false;				//判断是否能下一步
-					}
+					target.setAttribute("class","borders typeA")
 				}
 				for(var i=0; i<length; i++){
 					if(boxs[i].getAttribute("class")=="borders typeB"){
@@ -424,6 +425,9 @@
 					this.wuxuan=true;
 					this.xuanze=false;
 				}
+				if(this.ButtenName==0){
+					this.XiaYibu=false;				//判断是否能下一步
+				}
 				this.play();			//调用底部的数量更改动画；
 			},
 			butten(){
@@ -437,9 +441,9 @@
 					}
 					this.$http.post(URL.path+'finance/is_white',datas,{emulateJSON:true}).then(function(res){
 						Indicator.close();
-						if(res.body.returnCode==200){
-							yes=res.body.data;
-//							window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.CanShu['type']+'/'+this.CanShu.XiangmuID+'/'+this.length+"/TouDi";
+//						console.log(res);
+						if(localStorage.getItem("type")=='7'){
+	//						window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.CanShu['type']+'/'+this.CanShu.XiangmuID+'/'+this.length+"/TouDi";
 							window.location.href="#/Xeiyi/"+this.token+'/'+this.uID1+"/"+this.type+'/'+this.XiangmuID+'/'+this.length+"/TouDi";
 						}else{
 							yes=res.body.data;
@@ -450,7 +454,11 @@
 								Toast("请选择匹配人");
 							}
 						}
-						console.log(res);
+//						if(res.body.returnCode==200){
+//							yes=res.body.data;
+//						}else{
+//							
+//						}
 					},function(res){
 						Indicator.close();
 						Toast("系统错误请稍后...")
@@ -471,9 +479,10 @@
 //			}
 		},
 		updated(){
-			this.body=this.data.length*50;
+//			this.body=this.data.length*50;
 		},
 		components:{
+			
 		}
 	}
 </script>
@@ -609,6 +618,7 @@
 						display:flex;
 						align-items:center;
 						font{
+							position:relative;
 							display:inline-block;
 							width:0.43rem;
 							height:0.43rem;
@@ -618,6 +628,12 @@
 							border:none;
 							border:2px solid #e5e4e4;
 							img{
+								position:absolute;
+						    	top:0;
+						    	right:0;
+						    	left:0;
+						    	bottom:0;
+						    	margin:auto;
 								/*width:100%;
 								height:100%;*/
 							}

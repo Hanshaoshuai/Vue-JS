@@ -75,6 +75,7 @@
 		},
 		methods:{
 			yijianHind(){
+				Indicator.close();
 				history.go(-1)
 //				this.tucaoShow=false;
 			},
@@ -125,8 +126,8 @@
 								}
 							}
 						})
-						console.log("取到评论反馈列表");
-						console.log(res);
+//						console.log("取到评论反馈列表");
+//						console.log(res);
 					},function(res){
 						Indicator.close();
 					    console.log(res);
@@ -134,8 +135,8 @@
 //				}
 			},
 			xinxiTo(to_id,uname){///Xeiyi/:token/:uID/:type/:XiangmuID
-				console.log(to_id)
-				console.log(this.datas);
+//				console.log(to_id)
+//				console.log(this.datas);
 				//标记已读反馈
 				var farams={
 		      		token:this.$route.params.token,		//	token	是	[string]		
@@ -145,8 +146,8 @@
 		      		token:this.$route.params.token,		//	token	是	[string]		
 		      	}
 				this.$http.post(URL.path+'chatcomment/read_chat',farams,{emulateJSON:true}).then(function(res){
-					console.log("反馈已读");
-					console.log(res.body);
+//					console.log("反馈已读");
+//					console.log(res.body);
 //					this.$http.post(URL.path+'chatcomment/get_feedback_num',farams1,{emulateJSON:true}).then(function(res){
 //						var FankuiShu=res.body.data[0].feedback_num;
 //						this.FankuiShu=FankuiShu

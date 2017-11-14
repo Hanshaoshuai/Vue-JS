@@ -17,6 +17,7 @@
 					<div style="width:100%;height:0.55rem;"></div>
 					<div v-for="(cont,index) in data" class="add" :id="index" ref="lisitTop">
 						<div v-for="(item,index) in cont" class="tishi-bottom" @click.stop="xiangqing(item.id,numToTime(item.send_time),item.end_time.day,item.end_time.hour)">
+							<div v-if="item.is_read==2" class="tubiao"></div>
 							<div class="borders">
 								<ul>
 									<li class="tishi-center">
@@ -50,7 +51,7 @@
 										<p>{{item.lightspot}}</p>
 									</div>
 								</div>
-								<div class="jieshu"><font>保密信息，禁止传播</font><span v-if="item.follow=='1' && item.end_follow!=1 && item.end_follow!=2" @click.stop="jieshu(item.id,item.short,item.send_id,item.uid)">{{jieshuXiangmu}}</span></div>
+								<div class="jieshu"><font>保密信息，禁止传播</font><span v-if="item.follow=='1' && item.end_follow!=1 && item.end_follow!=2" @click.stop="jieshu(item.id,item.com_short,item.send_id,item.uid)">{{jieshuXiangmu}}</span></div>
 								<div class="times border">
 									<span class="text-center">{{numToTime(item.send_time)}}</span>
 									<span>发布</span>
@@ -144,19 +145,18 @@
 			}
 		},
 		mounted() {
-//			this.$on("c-send",function(msg){
-//				this.data=[];
-//	      		this.LieBiao();
-//				alert(msg);
-//			});
+			this.$on("c-send",function(msg){
+				this.data=[];
+	      		this.LieBiao();
+	      		Toast(msg);
+			}.bind(this));
 			var tata=this;
 			this.numToTime=numToTime;
 			this.numToTime3=numToTime3;
 			this.LieBiao()
-	    	console.log("计算高度")
+//	    	console.log("计算高度")
 	      	this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
-	      	this.$refs.wrapper.addEventListener('scroll', this.handleScroll)	//做一个scroll监听
-	      	console.log(this.userContent)
+//	      	console.log(this.userContent)
 	    },
 	    activated(){
 			this.LieBiao();
@@ -179,7 +179,7 @@
 //			    }
 //			},
 	      	faxianScroll(){
-				if(this.$refs.wrapper.scrollTop>800){
+	      		if(this.$refs.wrapper.scrollTop>600){
 					this.topBlock=true;
 				}else{
 					this.topBlock=false;
@@ -224,6 +224,7 @@
 							this.jeiguo="暂无项目"
 						}
 						this.$refs.wrapper.removeEventListener('scroll', this.faxianScroll);
+						this.$refs.wrapper.addEventListener('scroll', this.handleScroll)	//做一个scroll监听
 						this.tishis=true;
 						return;
 					}else{
@@ -260,8 +261,8 @@
 	  						this.imgs()
 						});
 					}
-					console.log("投资人收到的项目列表");
-					console.log(res.body);
+//					console.log("投资人收到的项目列表");
+//					console.log(res.body);
 				},function(res){
 //						Indicator.close();
 				    console.log(res);
@@ -273,9 +274,10 @@
 //				})
 			},
 			yijianHind(){
+				Indicator.close();
 				history.go(-1)
 //				this.tucaoShow=false;
-				this.$refs.wrapper.scrollTop=sessionStorage.getItem("scrollTop")
+//				this.$refs.wrapper.scrollTop=sessionStorage.getItem("scrollTop")
 			},
 			xiangmuBlock(x,datas){
 				
@@ -285,7 +287,7 @@
 //				this.$refs.yifouShou.yifouBlock();
 			},
 			xiangqing(XiangmuID,send_time,day,hour){
-				console.log(XiangmuID)
+//				console.log(XiangmuID)
 				this.XiangmuID=XiangmuID
 				this.left=send_time;
 				this.right=day+'天'+hour+'小时'
@@ -295,8 +297,8 @@
 					item_id:XiangmuID		//	项目id
 		      	}
 				this.$http.post(URL.path+'finance/read_item',farams,{emulateJSON:true}).then(function(res){
-					console.log("已标记");
-					console.log(res.body);
+//					console.log("已标记");
+//					console.log(res.body);
 				},function(res){
 				    console.log(res);
 				})
@@ -305,16 +307,16 @@
 			},
 			jieshu(XiangmuID,xianmuMing,send_id,uid){
 //				var yicaozuo=
-				if(this.$refs.tishiShow.yicaozuo==true){
-					Toast("亲！您已经结束该项目")
-					return;
-				}
+//				if(this.$refs.tishiShow.yicaozuo==true){
+//					Toast("亲！您已经结束该项目")
+//					return;
+//				}
 				this.send_id=send_id;
 				this.texts['text']="您要结束“"+xianmuMing+"”项目的原因是？"
 				this.$refs.tishiShow.tishiBlock(uid,this.LieBiao,XiangmuID);
 			},
 			handleScroll () {
-				if(this.$refs.wrapper.scrollTop>800){
+				if(this.$refs.wrapper.scrollTop>600){
 					this.topBlock=true;
 				}else{
 					this.topBlock=false;

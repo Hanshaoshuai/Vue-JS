@@ -171,7 +171,7 @@
 			var datas = {
 				token:this.$route.params.token//	token	是	[string]	URL获取的参数
 			}
-			console.log(this.data)
+//			console.log(data)
 			this.$http.post(URL.path+'finance/item_detail',data,{emulateJSON:true}).then(function(res){
 				this.data=res.body.data['0']
 //				this.fenciangURL=
@@ -181,7 +181,7 @@
 					this.blockName=true;
 				}
 				this.biaoqianId=res.body.data['0'].industry
-				console.log(res);
+//				console.log(res);
 				this.$nextTick(function(){
 					this.output=this.$refs.output
 					this.dcontent=this.$refs.dcontent;
@@ -207,15 +207,20 @@
 					biaoQian='转老股'
 				}
 				if(this.data.type==4){
-					biaoQian='融资租赁'
+					biaoQian='股权质押'
 				}
 				if(this.data.type==5){
-					biaoQian='研报支持'
+					biaoQian='融资租赁'
 				}
 				if(this.data.type==6){
+					biaoQian='研报支持'
+				}
+				if(this.data.type==7){
 					biaoQian='公司调研'
 				}
-				this.fenciangURL='http://test.qironghome.com/bak/web//index.php/app/item-info?id='+this.data.id
+//				this.fenciangURL='http://www.qironghome.com/index.php/app/item-info?id=18&uid=228'
+				this.fenciangURL='http://www.qironghome.com/index.php/app/item-info?id='+this.data.id+'&uid='+this.data.uid;
+//				console.log(this.fenciangURL)
 				this.fenxiangBiaoti="* "+this.data.com_short.substr(1, 1)+" *"+this.data.com_code.substr(0, 2)+" **** "+biaoQian
 				this.fenxiangCont=this.data.lightspot;
 				
@@ -226,7 +231,7 @@
 				this.sharehrefTitle=this.$refs.sharehrefTitle;
 				this.sharehrefDes=this.$refs.sharehrefDes;
 				this.output=this.$refs.output;
-				console.log(this.sharehref.value)
+//				console.log(this.sharehref.value)
 //				common(this.output,this.dcontent,window);
 				common1(this.dcontent,this.sharecontent,this.pic,this.sharehref,this.sharehrefTitle,this.sharehrefDes,this.output);
 			},
@@ -243,9 +248,9 @@
 						type:'1',
 						uid:this.data.uid
 					}
-					console.log(this.data)
+//					console.log(this.data)
 					this.$http.post(URL.path+'finance/demand_item',data,{emulateJSON:true}).then(function(res){
-						console.log(res);
+//						console.log(res);
 						if(res.body.returnCode==202){
 							this.yisuoYao=true;
 							Toast("您已经索要过该项目信息，请您等待反馈")
@@ -294,101 +299,6 @@
 	
 	
 	
-	.shareBtn {
-      border: dotted 1px #ddd;
-      display: block;
-      width: 100px;
-      text-align: center;
-      margin: 20px auto 0 auto;
-      cursor: pointer;
-      height: 40px;
-      line-height: 40px;
-    }
-
-    .am-share {
-      font-size: 14px;
-      border-radius: 0;
-      bottom: 0;
-      left: 0;
-      position: fixed;
-      -webkit-transform: translateY(100%);
-      -ms-transform: translateY(100%);
-      transform: translateY(100%);
-      -webkit-transition: -webkit-transform 300ms;
-      transition: transform 300ms;
-      width: 100%;
-      z-index: 1110;
-    }
-
-    .am-modal-active {
-      transform: translateY(0px);
-      -webkit-transform: translateY(0);
-      -ms-transform: translateY(0);
-      transform: translateY(0);
-    }
-
-    .am-modal-out {
-      z-index: 1109;
-      -webkit-transform: translateY(100%);
-      -ms-transform: translateY(100%);
-      transform: translateY(100%)
-    }
-
-    .am-share-footer .share_btn {
-      color: #555;
-      display: block;
-      width: 100%;
-      background-color: #fff;
-      border: 1px solid #fff;
-      border-radius: 0;
-      cursor: pointer;
-      font-size: 16px;
-      font-weight: 400;
-      line-height: 1.2;
-      padding: 0.625em 0;
-      text-align: center;
-      transition: background-color 300ms ease-out 0s, border-color 300ms ease-out 0s;
-      vertical-align: middle;
-      white-space: nowrap;
-      font-family: "微软雅黑";
-    }
-
-    .am-share-sns {
-      background-color: #fff;
-      padding-top: 20px;
-      height: auto;
-      zoom: 1;
-      overflow: auto;
-    }
-
-    .am-share-sns a {
-      color: #555;
-      display: block;
-      text-decoration: none;
-    }
-
-    .am-share-sns span {
-      display: block;
-    }
-
-    .sharebg {
-      background-color: rgba(0, 0, 0, 0.6);
-      bottom: 0;
-      height: 100%;
-      left: 0;
-      opacity: 0;
-      position: fixed;
-      right: 0;
-      top: 0;
-      width: 100%;
-      z-index: 1100;
-      display: none;
-    }
-
-    .sharebg-active {
-      opacity: 1;
-      display: block;
-    }
 
 	.zhaiyao{
 		position:fixed;

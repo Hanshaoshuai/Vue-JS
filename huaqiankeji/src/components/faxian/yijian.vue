@@ -12,12 +12,12 @@
 					</div>
 				</div>
 				<div class="yijian-content">
-					<div class="content-text">
+					<div class="content-text border-topbottom">
 						<textarea placeholder="请详细描述您的问题，建议添加相关截图..." rows="4" class="mint-field-core border" v-model="introduction"></textarea>
 					</div>
-					<div class="last number">
-						<!--<input v-model="tel" placeholder="请留下准确的联系电话，便于我们及时联系" type="number" class="mint-field-core">-->
-					</div>
+					<!--<div class="last number">
+						<input v-model="tel" placeholder="请留下准确的联系电话，便于我们及时联系" type="number" class="mint-field-core">
+					</div>-->
 					<!--<div class="my-line bb mt20 mb20"><input type="tel" class="my-input feedback-tel" id="tel" placeholder="请留下准确的联系电话，便于我们及时联系"/></div>-->
 				</div>
 				<div class="yijian-img clearbox">
@@ -70,26 +70,27 @@
 		},
 		mounted(){
 			this.formData = new FormData();			//把要传的内容和参数放到   formdata中
-			console.log(this.$route.params.token)
+//			console.log(this.$route.params.token)
 			
 		},
 		methods:{
 			yijianHind(){
-				history.go(-1)
+				Indicator.close();
+				history.go(-1);
 //				this.tucaoShow=false;
 			},
 			child(tuPian){
 				this.formData1="";
 				this.formData1=tuPian;
-				console.log(tuPian)
-				console.log(this.formData)
+//				console.log(tuPian)
+//				console.log(this.formData)
 			},
 			tijiao(){
 				var length=this.formData1.length;
 				for(var i=1; i<=length; i++){
 					if(this.formData1[i]!=""){
 						this.formData.append('upload_file'+i,this.formData1[i-1]);
-						console.log('upload_file'+i)
+//						console.log('upload_file'+i)
 					}
 				}
 //				this.formData.append('terminalNo', 3);
@@ -108,7 +109,7 @@
 				}else{
 					Indicator.open({spinnerType: 'fading-circle'});
 					this.$http.post(URL.path1+'upload/photos',this.formData,{emulateJSON:true}).then(function(res){
-	                    console.log(res);
+//	                    console.log(res);
 	                    Indicator.close();
 						if(res.body.returnCode=='200'){
 //							Toast("上传成功");
@@ -121,7 +122,7 @@
 		                    	x+=1;
 		                    }
 							obj=obj.join(',');
-							console.log(obj)
+//							console.log(obj)
 							var data={
 								token:this.$route.params.token,
 								content: this.introduction,
@@ -131,7 +132,7 @@
 							}
 		//					反馈数接口
 							this.$http.post(URL.path1+'other/feedback',data,{emulateJSON:true}).then(function(res){
-								console.log(res);
+//								console.log(res);
 								Indicator.close();
 								if(res.body.returnCode=='200'){
 									Toast("提交成功，感谢您的支持")
@@ -140,7 +141,7 @@
 							},function(res){
 								Indicator.close();
 								Toast("系统繁忙请稍后再试！")
-							    console.log(res);
+//							    console.log(res);
 							})
 						}else{
 							Toast("上传失败请重新上传");
@@ -152,19 +153,6 @@
 	                });
 				}
 			}
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -176,14 +164,6 @@
 //			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 			fankuiimg
@@ -258,7 +238,8 @@
 		}
 		.yijian-content{
 			width:100%;
-			height:2.6rem;
+			height:2.4rem;
+			padding-bottom:0.2rem;
 			position:relative;
 			display:flex;
 			background:#fff;

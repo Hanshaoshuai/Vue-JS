@@ -37,7 +37,7 @@
 					Toast("亲，最多可上传三张图片！");
 					return;
 				}
-				console.log(file.files)
+//				console.log(file.files)
 				var divs=document.createElement("div");
 				var imgs=document.createElement("img");
 				var spans=document.createElement("span");
@@ -60,7 +60,7 @@
 	              	var img = document.getElementById('imghead');
 	              	this.index=this.index*1
 	              	this.images[this.index]=file.files[0];             //文件存储起来
-	              	console.log(this.images)
+//	              	console.log(this.images)
 	              	img.onload = function(){
 	              		this.style.width="0.8rem";
 //	              		console.log(this.clientWidth)
@@ -75,7 +75,7 @@
 	              		imgs.src = evt.target.result;
 	              		imgs.onload=function(){
 	              			var imgsWidth=document.getElementById('png').clientWidth+"px";
-			              	console.log(imgsWidth)
+//			              	console.log(imgsWidth)
 							divs.style.width=imgsWidth;
 							divs.style.position="relative";
 							spans.style.position="absolute";
@@ -85,7 +85,7 @@
 								that.index=that.index*1
 //								var length=that.images.length;
 								that.images[this.id]="";
-								console.log(that.images)
+//								console.log(that.images)
 								if ( e && e.stopPropagation ){ 
 								    //因此它支持W3C的stopPropagation()方法 
 								    e.stopPropagation(); 
@@ -95,8 +95,8 @@
 								}
 								this.remove(this);
 								file.value="";
-								console.log(file)
-								console.log(that.images)
+//								console.log(file)
+//								console.log(that.images)
 								that.index-=1
 								that.$emit("to-parent",that.images);//广播出存的内容
 							}

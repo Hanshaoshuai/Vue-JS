@@ -137,8 +137,8 @@
 			}
 		},
 		mounted(){
-			console.log(this.$route.params.type)
-			console.log(this.token)
+//			console.log(this.$route.params.type)
+//			console.log(this.token)
 			this.type=this.$route.params.type
 			this.$nextTick(function() {
 				
@@ -166,7 +166,7 @@
 						img.style.height="auto"
 					}
 				})
-				console.log(MingpianImg)
+//				console.log(MingpianImg)
 			},
 			xuanZe(type,index){
 				this.typeId=type;
@@ -197,7 +197,7 @@
 					}
 				}
 				this.onlyContent=true;
-					console.log(CanShu)
+//					console.log(CanShu)
 			},
 			queding(){
 				//添加企业备案
@@ -216,7 +216,7 @@
 					type:this.typeId,						//	融资类型，参见创建项目接口type值	是	[string]
 					appraisement:this.texth			//	投前估值	是	[string]
 		    	}
-				console.log(params)
+//				console.log(params)
 				this.$http.post(URL.path+'finance/record',params,{emulateJSON:true}).then(function(res){
 					this.type=res.body.data.id
 					var tata=this;
@@ -242,7 +242,7 @@
 //							location.replace(document.referrer); 
 						},2000)
 					}
-					console.log(res);
+//					console.log(res);
 				},function(res){
 				    console.log(res.status);
 				})
@@ -263,19 +263,6 @@
 				this.$refs.youhuiShow.YouhuiBlock();
 			}
 			
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -287,14 +274,6 @@
 //			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 			box,

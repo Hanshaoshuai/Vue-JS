@@ -27,7 +27,7 @@
 		methods:{
 			previewImage(){
 				var file=this.$refs.file
-				console.log(file.files)
+//				console.log(file.files)
 	          	var div = document.getElementById('preview');
 	          	if(file.files && file.files[0]){
 	              	var img = document.getElementById('imghead');

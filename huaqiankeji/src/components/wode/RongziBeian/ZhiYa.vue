@@ -138,8 +138,8 @@
 			}
 		},
 		mounted(){
-			console.log(this.$route.params.type)
-			console.log(this.token)
+//			console.log(this.$route.params.type)
+//			console.log(this.token)
 			this.type=this.$route.params.type
 			this.$nextTick(function() {
 				
@@ -205,7 +205,7 @@
 						CanShu.XiangmuID=res.body.data
 						this.content=this.$refs.pipeiShow;
 						this.$refs.tishiShow.tishiBlock(CanShu);//CanShu是下级要传的参数
-						console.log(res);
+//						console.log(res);
 					},function(res){
 					    console.log(res.status);
 					})
@@ -227,20 +227,6 @@
 			baoMing(){
 				this.$refs.youhuiShow.YouhuiBlock();
 			}
-			
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -252,21 +238,11 @@
 //			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 			box,
 			pipei,
 			tishi
-//			youhuiquan
-//			fankuixinxi
 		}
 	}
 </script>

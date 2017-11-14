@@ -21,16 +21,16 @@ import Faxian from "../components/faxian/faxian.vue"
 		import jihuaShu from "../components/faxian/XinxiangMu/jihuaShu.vue"
 	
 	import WoyaoRongzi from "../components/faxian/WoyaoRongzi/WoyaoRongzi.vue"
-		import Diaoyan from "../components/faxian/WoyaoRongzi/RongziLeixing/Diaoyan.vue"
-		import Dingzeng from "../components/faxian/WoyaoRongzi/RongziLeixing/Dingzeng.vue"
-		import Zuoshi from "../components/faxian/WoyaoRongzi/RongziLeixing/Zuoshi.vue"
-		import ShuangChuang from "../components/faxian/WoyaoRongzi/RongziLeixing/ShuangChuang.vue"
-		import ZhiYa from "../components/faxian/WoyaoRongzi/RongziLeixing/ZhiYa.vue"
-		import ZhuanlaoGu from "../components/faxian/WoyaoRongzi/RongziLeixing/ZhuanlaoGu.vue"
-		import ZuLin from "../components/faxian/WoyaoRongzi/RongziLeixing/ZuLin.vue"
-		import YanBao from "../components/faxian/WoyaoRongzi/RongziLeixing/YanBao.vue"
-		import DiaoyanShili from "../components/Faxian/YanbaoShili/gengduo.vue"
-			import YanbaoXiangqing from "../components/Faxian/YanbaoShili/wenzhang.vue"
+//		import Diaoyan from "../components/faxian/WoyaoRongzi/RongziLeixing/Diaoyan.vue"
+//		import Dingzeng from "../components/faxian/WoyaoRongzi/RongziLeixing/Dingzeng.vue"
+//		import Zuoshi from "../components/faxian/WoyaoRongzi/RongziLeixing/Zuoshi.vue"
+//		import ShuangChuang from "../components/faxian/WoyaoRongzi/RongziLeixing/ShuangChuang.vue"
+//		import ZhiYa from "../components/faxian/WoyaoRongzi/RongziLeixing/ZhiYa.vue"
+//		import ZhuanlaoGu from "../components/faxian/WoyaoRongzi/RongziLeixing/ZhuanlaoGu.vue"
+//		import ZuLin from "../components/faxian/WoyaoRongzi/RongziLeixing/ZuLin.vue"
+//		import YanBao from "../components/faxian/WoyaoRongzi/RongziLeixing/YanBao.vue"
+//		import DiaoyanShili from "../components/Faxian/YanbaoShili/gengduo.vue"
+//			import YanbaoXiangqing from "../components/Faxian/YanbaoShili/wenzhang.vue"
 
 
 //import Shendu from "../components/shendu/shendu.vue"//暂不使用
@@ -112,16 +112,16 @@ export default ({
 		    	]
 		   	},
 			{path:"WoyaoRongzi/:type",component:WoyaoRongzi,
-				children:[
-					{path:"Diaoyan",component:Diaoyan},
-					{path:"Dingzeng",component:Dingzeng},
-					{path:"Zuoshi",component:Zuoshi},
-					{path:"ShuangChuang",component:ShuangChuang},
-					{path:"ZhiYa",component:ZhiYa},
-					{path:"ZhuanlaoGu",component:ZhuanlaoGu},
-					{path:"ZuLin",component:ZuLin},
-					{path:"YanBao",component:YanBao}
-				]
+//				children:[
+//					{path:"Diaoyan",component:Diaoyan},
+//					{path:"Dingzeng",component:Dingzeng},
+//					{path:"Zuoshi",component:Zuoshi},
+//					{path:"ShuangChuang",component:ShuangChuang},
+//					{path:"ZhiYa",component:ZhiYa},
+//					{path:"ZhuanlaoGu",component:ZhuanlaoGu},
+//					{path:"ZuLin",component:ZuLin},
+//					{path:"YanBao",component:YanBao}
+//				]
 			},
 			{path:"XinxiangMu/:token",component:XinxiangMu,
 				children:[
@@ -146,11 +146,11 @@ export default ({
 			},
 			{path:"Yijian/:token",component: Yijian
 			},
-			{path:"DiaoyanShili",component:DiaoyanShili,
-				children:[
-					{path:"YanbaoXiangqing",component:YanbaoXiangqing}
-				]
-			}
+//			{path:"DiaoyanShili",component:DiaoyanShili,
+//				children:[
+//					{path:"YanbaoXiangqing",component:YanbaoXiangqing}
+//				]
+//			}
 		]
     },
 //  {path: '/shendu',component: Shendu,//暂不使用

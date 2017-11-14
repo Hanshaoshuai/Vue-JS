@@ -51,8 +51,8 @@
 					<div class="zhuying_1 border">
 						<div class="ferst"><span></span>经营业绩</div>
 						<div class="last">
-							<p>上一财年：营收&nbsp;<span>{{numbera}}亿元</span>&nbsp;&nbsp;&nbsp;&nbsp;扣非净利润&nbsp;<span>{{numberb}}万元</span></p>
-							<p>今年预计：营收&nbsp;<span>{{numberc}}亿元</span>&nbsp;&nbsp;&nbsp;&nbsp;扣非净利润&nbsp;<span>{{numberd}}万元</span></p>
+							<p>上一财年：营收&nbsp;<span>{{numbera}}亿</span>&nbsp;&nbsp;&nbsp;&nbsp;扣非净利润&nbsp;<span>{{numberb}}万</span></p>
+							<p>今年预计：营收&nbsp;<span>{{numberc}}亿</span>&nbsp;&nbsp;&nbsp;&nbsp;扣非净利润&nbsp;<span>{{numberd}}万</span></p>
 						</div>
 					</div>
 					<div class="zhuying_1 border">
@@ -264,76 +264,83 @@
 				biaoQianid:'',		//储存标签id字符串
 			}
 		},
+		activated(){
+			this.shuaxin();
+		},
 		mounted(){
-			this.token=localStorage.getItem("token");
-			this.XiangmuID=this.$route.params.XiangmuID;
-			this.Xiangmutype=this.$route.params.type;
-			this.is_send=this.$route.params.is_send;
-			if(this.is_send=='1'){
-				this.none=false;
-				this.toudi='继续投递';
-			}
-			Indicator.open({spinnerType: 'fading-circle'});
-			var datas = {
-				token:this.token,
-				item_id:this.XiangmuID,			//	项目id
-			}
-			this.datas=datas;
-			console.log(this.token)
-			//获取标签
-			this.$http.post(URL.path1+'login/three',this.datas,{emulateJSON:true}).then(function(res){
-				this.BiaoQian=res.body.data[0]
-				this.z=res.body.data[0].length;
-				console.log(this.BiaoQian);
-				//历史项目详情
-				this.$http.post(URL.path+'finance/item_detail',datas,{emulateJSON:true}).then(function(res){
-					var shifou;
-					Indicator.close();
-					if(this.data.share_price=="1"){
-						shifou='是'
-					}else{
-						shifou='否'
-					}
-					this.data=res.body.data[0]
-					this.texta=this.data.com_short
-					this.textb=this.data.com_code
-					this.textc=this.data.lightspot
-					this.numbera=this.data.last_year_revenue
-					this.numberb=this.data.last_year_profit
-					this.numberc=this.data.predict_revenue
-					this.numberd=this.data.predict_profit
-					this.numbere=this.data.transfe_share
-					this.numberf=this.data.share_price
-					this.numberg=this.data.is_hold
-					this.numberh=this.data.city
-					this.numberi=this.data.appraisement
-					this.industry=this.data.industry
-					this.type=this.data.type
-					
-//					this.industry=this.industry.split(",")
-//					for(var i=0; i<this.z; i++){
-//						for(var item in this.BiaoQian){
-////							console.log(this.BiaoQian)
-//							if(this.BiaoQian[item]['id']==this.industry[i]){
-//								this.industry1.push(this.BiaoQian[item]['title'])
-//							}
-//						}
-//						
-//					}
-					console.log(this.data);
+			this.shuaxin();
+		},
+		methods:{
+			yijianHind(){
+				Indicator.close();
+				history.go(-1)
+//				this.tucaoShow=false;
+			},
+			shuaxin(){
+				this.token=localStorage.getItem("token");
+				this.XiangmuID=this.$route.params.XiangmuID;
+				this.Xiangmutype=this.$route.params.type;
+				this.is_send=this.$route.params.is_send;
+				if(this.is_send=='1'){
+					this.none=false;
+					this.toudi='继续投递';
+				}
+				Indicator.open({spinnerType: 'fading-circle'});
+				var datas = {
+					token:this.token,
+					item_id:this.XiangmuID,			//	项目id
+				}
+				this.datas=datas;
+//				console.log(this.token)
+				//获取标签
+				this.$http.post(URL.path1+'login/three',this.datas,{emulateJSON:true}).then(function(res){
+					this.BiaoQian=res.body.data[0]
+					this.z=res.body.data[0].length;
+//					console.log(this.BiaoQian);
+					//历史项目详情
+					this.$http.post(URL.path+'finance/item_detail',datas,{emulateJSON:true}).then(function(res){
+						var shifou;
+						Indicator.close();
+						if(this.data.share_price=="1"){
+							shifou='是'
+						}else{
+							shifou='否'
+						}
+						this.data=res.body.data[0]
+						this.texta=this.data.com_short
+						this.textb=this.data.com_code
+						this.textc=this.data.lightspot
+						this.numbera=this.data.last_year_revenue
+						this.numberb=this.data.last_year_profit
+						this.numberc=this.data.predict_revenue
+						this.numberd=this.data.predict_profit
+						this.numbere=this.data.transfe_share
+						this.numberf=this.data.share_price
+						this.numberg=this.data.is_hold
+						this.numberh=this.data.city
+						this.numberi=this.data.appraisement
+						this.industry=this.data.industry
+						this.type=this.data.type
+						
+	//					this.industry=this.industry.split(",")
+	//					for(var i=0; i<this.z; i++){
+	//						for(var item in this.BiaoQian){
+	////							console.log(this.BiaoQian)
+	//							if(this.BiaoQian[item]['id']==this.industry[i]){
+	//								this.industry1.push(this.BiaoQian[item]['title'])
+	//							}
+	//						}
+	//						
+	//					}
+//						console.log(this.data);
+					},function(res){
+						Indicator.close();
+					    console.log(res.status);
+					})
 				},function(res){
 					Indicator.close();
 				    console.log(res.status);
 				})
-			},function(res){
-				Indicator.close();
-			    console.log(res.status);
-			})
-		},
-		methods:{
-			yijianHind(){
-				history.go(-1)
-//				this.tucaoShow=false;
 			},
 			genJin(){
 				window.location.href='#/ZhuanlaoGu1/1/'+this.XiangmuID+'/1/YitouQingdan';
@@ -347,7 +354,7 @@
 							this.biaoQianID.splice(z,1);
 //							console.log(this.biaoQianID)
 							this.biaoQianid=this.biaoQianID.join()
-							console.log(this.biaoQianid)
+//							console.log(this.biaoQianid)
 							this.y-=1
 							break;
 						}
@@ -366,13 +373,17 @@
 						}
 //						console.log(this.biaoQianID)
 						this.biaoQianid=this.biaoQianID.join()
-						console.log(this.biaoQianid)
+//						console.log(this.biaoQianid)
 					}
 				}
 //				console.log(this.y)
 			},
 			xiayibuGo(){
 				var yes;
+				if(this.data.audit=='1'){
+					Toast("该项目已被系统强制撤回");
+					return;
+				}
 //				if(this.numberg=='是'){
 //					this.yes='1'
 //				}else{

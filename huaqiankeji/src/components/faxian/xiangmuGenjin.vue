@@ -120,11 +120,11 @@
 						this.$nextTick(function(){
 							this.right1DOM=this.$refs.donghuaGo.getElementsByClassName("one")
 							this.right2DOM=this.$refs.donghuaGo.getElementsByClassName("tue")
-							console.log(this.right1DOM)
+//							console.log(this.right1DOM)
 						})
 					}
-					console.log("每月提醒一次");
-					console.log(res);
+//					console.log("每月提醒一次");
+//					console.log(res);
 				},function(res){
 					Indicator.close();
 				    console.log(res);
@@ -154,11 +154,11 @@
 					this.inputBlock=true;
 					this.$nextTick(function(){
 						if(inputNont.getAttribute("class")=="type-content inputNont"){
-							console.log(inputNont.getAttribute("class"))
+//							console.log(inputNont.getAttribute("class"))
 							value.onblur=function(){
 								if(this.value!=""){
 									that.content[that.p]={"item_id":item_id,"send_id":send_id,"investment":this.value}
-									console.log(that.content[that.p])
+//									console.log(that.content[that.p])
 									queren.setAttribute("class",'right1')
 								}
 								this.p+=1
@@ -185,9 +185,10 @@
 				this.index=index
 				this.xiangmuMing=name;
 				this.onlyContent=true;
-				console.log(right1)
+//				console.log(right1)
 			},
 			listnone1(){
+				Indicator.close();
 				this.showFlag=false;
 			},
 			genjinJiekou(item_id,follow){//投资人更改反馈进度
@@ -200,7 +201,7 @@
 					if(res.body.returnCode=='201'){
 						
 					}
-					console.log(res.body);
+//					console.log(res.body);
 				},function(res){
 				    console.log(res);
 				})
@@ -248,8 +249,8 @@
 						return;
 					}
 					if(chang!=length){
-						console.log(chang)
-						console.log(length)
+//						console.log(chang)
+//						console.log(length)
 						Toast("您还有没确认的或未填写金额！")
 						return;
 					}
@@ -273,7 +274,7 @@
 							content2+=content[x]
 						}
 						lastcont+="{"+content2+"},"
-						console.log(content2);
+//						console.log(content2);
 					}
 					for(var o=0; o<lastcont.length-1; o++){
 						lastcont2+=lastcont[o]
@@ -286,7 +287,7 @@
 //			    		item:'[{"item_id":3,"send_id":132,"investment":22},{"item_id":1,"send_id":131,"investment":3}]'
 			    	}
 					this.$http.post(URL.path+'finance/edit_investment',anliParam,{emulateJSON:true}).then(function(res){
-						console.log(res);
+//						console.log(res);
 						if(res.body.returnCode=='200'){
 							Toast("您已保存成功")
 							this.fanhui=true;

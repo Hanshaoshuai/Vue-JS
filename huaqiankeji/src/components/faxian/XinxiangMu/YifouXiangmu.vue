@@ -127,13 +127,13 @@
 			}
 		},
 		mounted(){
-			this.$refs.wrapper.addEventListener('scroll', this.handleScroll)	//做一个scroll监听
 //			Indicator.open({spinnerType: 'fading-circle'});
 			this.numToTime=numToTime;
 			this.LieBiao();
 		},
 		methods:{
 			yijianHind(){
+				Indicator.close();
 				history.go(-1)
 //				this.tucaoShow=false;
 			},
@@ -141,14 +141,14 @@
 				this.$refs.wrapper.scrollTop=0;
 			},
 			handleScroll(){
-				if(this.$refs.wrapper.scrollTop>800){
+				if(this.$refs.wrapper.scrollTop>600){
 					this.topBlock=true;
 				}else{
 					this.topBlock=false;
 				}
 			},
 			faxianScroll(){
-				if(this.$refs.wrapper.scrollTop>800){
+				if(this.$refs.wrapper.scrollTop>600){
 					this.topBlock=true;
 				}else{
 					this.topBlock=false;
@@ -178,12 +178,12 @@
 					size:10,			//size	是	[string]		
 					follow:"2"			//2 已结束 其他表示所有收到的项目	是	[string]	
 				}
-				console.log(this.userContent)
+//				console.log(this.userContent)
 	//			已否项目列表（）
 //				if(this.data==""){
 					this.$http.post(URL.path+'finance/received_item_list',this.userContent,{emulateJSON:true}).then(function(res){
-						console.log("已否项目列表");
-						console.log(res.body);
+//						console.log("已否项目列表");
+//						console.log(res.body);
 //						if(this.data.length==5){//长度大于5从新开始
 	//						this.data=[]
 	//						this.$refs.wrapper.scrollTop=0;
@@ -192,9 +192,10 @@
 						this.topStatus=false;
 						if(res.body.data.length==0){
 							if(this.data.length==0){
-								this.jeiguo="暂无搜索结果"
+								this.jeiguo="暂无否决项目"
 							}
 							this.$refs.wrapper.removeEventListener('scroll', this.faxianScroll);
+							this.$refs.wrapper.addEventListener('scroll', this.handleScroll)	//做一个scroll监听
 							this.tishis=true;
 							return;
 						}else{
@@ -233,7 +234,7 @@
 						}
 					},function(res){
 	//					Indicator.close();
-					    console.log(res);
+//					    console.log(res);
 					})
 //				}
 			},

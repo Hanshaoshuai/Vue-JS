@@ -58,6 +58,7 @@
 	import {URL} from '../../../common/js/path';
 	import { Toast } from 'mint-ui';
 	import { Field } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 	import mingpian from "../../ShangchuanMingpian.vue";
 	import touxiang from "../../ShangchuanTouxiang.vue";
 	
@@ -90,30 +91,17 @@
 				onlyContent:true,
 				index:"0",
 				JigouType:"Guquan",
-				typeID:"",
+				typeID:"1",
 				TouziType:"",
 				imgurl:"",
 				images:false
 			}
 		},
 		mounted(){
-//			var that=this;
-//			this.$on("to-parent",function(msg){
-////					alert(msg);
-//				that.imgurl = msg;
-//				console.log(msg)
-//				
-//			})
-//			console.log(this.$route.params.token)
-//			this.datas=this.$route.params.token.split(',');
-			
-//			console.log(this.datas[1]);//上一级传的参数；
-									//phone:this.phone,  //手机号
-									//texts:this.texts,	//验证码
-									//pwd: this.pwd, //密码
 		},
 		methods:{
 			yijianHind(){
+				Indicator.close();
 				history.go(-1)
 //				window.location.href="#/faxian";
 			},
@@ -133,11 +121,12 @@
 						img.style.height="auto"
 					}
 				})
-				console.log(MingpianImg)
+//				console.log(MingpianImg)
 			},
 			XiaYibu(){
+				localStorage.setItem("shenfenYibiangeng",'ok');
 //				console.log(this.$refs.touxiangID.touxiangID);
-				console.log(this.$refs.mingpianID.mingpianID);
+//				console.log(this.$refs.mingpianID.mingpianID);
 //				if(this.$refs.touxiangID.touxiangID==''){
 //					Toast("请上传头像");
 //					return;
@@ -145,6 +134,9 @@
 				if(this.$refs.mingpianID.mingpianID==''){
 					Toast("请上传名片");
 					return;
+				}
+				if(this.index!=0){
+					this.typeID='0'
 				}
 				var data={			//财务顾问  做市商直接注册
 					token:localStorage.getItem("token"),						//	手机号	是	[string]	
@@ -158,10 +150,12 @@
 //					uname:"",										//姓名
 //					position:""									//职称
 				}
+//				console.log(this.typeID)
 				if(this.index==0){		//投资机构下一步
+					localStorage.setItem("typeID1",this.typeID);
 //					localStorage.setItem("typeID",this.typeID);
 					this.$http.post(URL.path1+'account/identity',data,{emulateJSON:true}).then(function(res){
-	                    console.log(res);
+//	                    console.log(res);
 						if(res.body.returnCode=='200'){
 							Toast('你已申请成功我们会为您尽快审核');
 							this.XiajiCanshu={
@@ -173,8 +167,8 @@
 //							localStorage.setItem("userID",res.body.data.id);
 //							localStorage.setItem("token",res.body.data.token);
 //							localStorage.setItem("phone",res.body.data.phone);
-//							localStorage.setItem("type",this.type);
-							console.log(this.XiajiCanshu)
+//							localStorage.setItem("type1",this.type);
+//							console.log(this.XiajiCanshu)
 							window.location.href="#/faxian"
 //							window.location.href="#/zhuce/ZhuCe1/"+res.body.data.token+','+res.body.data.id+','+this.typeID+"/"+this.JigouType;
 //							window.location.href="#/zhuce/ZhuCe1/"+res.body.data.token+"/"+this.JigouType;
@@ -190,7 +184,8 @@
 				}else{
 					if(this.index==1 || this.index==5){
 						this.$http.post(URL.path1+'account/identity',data,{emulateJSON:true}).then(function(res){
-		                    console.log(res);
+							localStorage.removeItem("typeID1");	
+//		                    console.log(res);
 							if(res.body.returnCode=='200'){
 								Toast('你已申请成功我们会为您尽快审核');
 								this.XiajiCanshu={
@@ -202,8 +197,8 @@
 //								localStorage.setItem("userID",res.body.data.id);
 //								localStorage.setItem("token",res.body.data.token);
 //								localStorage.setItem("phone",res.body.data.phone);
-//								localStorage.setItem("type",this.type);
-								console.log(this.XiajiCanshu)
+								localStorage.setItem("type1",this.type);
+//								console.log(this.XiajiCanshu)
 								window.location.href="#/faxian"
 							}else{
 //								window.location.href="#/denglu"
@@ -216,7 +211,8 @@
 		                });
 					}else{
 						this.$http.post(URL.path1+'account/identity',data,{emulateJSON:true}).then(function(res){
-		                    console.log(res);
+							localStorage.removeItem("typeID1");	
+//		                    console.log(res);
 							if(res.body.returnCode=='200'){
 								Toast('你已申请成功我们会为您尽快审核');
 //								Toast('注册成功请进行下一步完善信息');
@@ -229,8 +225,8 @@
 							    }
 //								localStorage.setItem("userID",res.body.data.id);
 //								localStorage.setItem("token",res.body.data.token);
-//								localStorage.setItem("type",this.type);
-								console.log(this.XiajiCanshu)
+								localStorage.setItem("type1",this.type);
+//								console.log(this.XiajiCanshu)
 								window.location.href="#/faxian"
 //								window.location.href="#/zhuce/ZhuCe1/"+this.type+"/type"+this.index;
 							}else{
@@ -249,7 +245,7 @@
 			},
 			xuanze(index,type){
 				this.type=type;
-				console.log(index)
+//				console.log(type)
 //				console.log(this.$refs.biaoqian.getElementsByTagName("span"))
 				var spans=this.$refs.biaoqian.getElementsByTagName("span")
 				var length=spans.length;
@@ -278,7 +274,7 @@
 				this.typeID=id;
 				this.JigouType=type;
 				localStorage.setItem("typeID",id);
-				console.log(localStorage.getItem("typeID"));
+//				console.log(localStorage.getItem("typeID"));
 				for(var i=0; i<length; i++){
 					if(spans[i].getAttribute("class")=="bianse"){
 						spans[i].setAttribute("class","");
@@ -289,27 +285,6 @@
 			yanZheng(){
 				
 			},
-//			xuanze(id,classId){
-//				console.log(id)
-////				var type=document.getElementById(id);
-////				type.TypeShow()
-////				console.log(type)
-////				this.$refs.show+this.classId.TypeShow();
-//				window.location.href="#/zhuce/zhuce1/12/type"+id+"/"+classId;
-//			}
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -321,14 +296,6 @@
 //			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 			mingpian,

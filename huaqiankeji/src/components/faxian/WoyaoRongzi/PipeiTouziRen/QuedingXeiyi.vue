@@ -68,9 +68,9 @@
 			}
 		},
 		mounted(){
-			console.log(this.$route.params.token)
-			console.log(this.$route.params.XiangmuID)
-			console.log(this.$route.params.uID)
+//			console.log(this.$route.params.token)
+//			console.log(this.$route.params.XiangmuID)
+//			console.log(this.$route.params.uID)
 			Indicator.open({spinnerType: 'fading-circle'});
 //				获取收费协议
 			var params={
@@ -81,7 +81,7 @@
 				this.data=res.body.data;
 				Indicator.close();
 				this.$refs.profile.innerHTML=res.body.data.profile
-				console.log(res);
+//				console.log(res);
 			},function(res){
 				Indicator.close();
 			    console.log(res);
@@ -89,6 +89,7 @@
 		},
 		methods:{
 			listnone(){
+				Indicator.close();
 //				this.showFlag=false;
 				history.go(-1)
 				this.go=0

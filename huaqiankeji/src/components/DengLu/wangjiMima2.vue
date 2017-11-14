@@ -251,9 +251,9 @@
 				margin-top:-1.8rem;
 				z-index:33;
 				ul>li{
-					width:1.25rem;
-					height:1.5rem;
-					background-image:url("../DengLu/img/app.png");
+					width:1.492rem;
+					height:1.321rem;
+					background-image:url("./img/denglu2.png");
 					background-size:100% 100%;
 				}
 			}

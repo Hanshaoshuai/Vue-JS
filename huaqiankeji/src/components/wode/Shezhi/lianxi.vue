@@ -46,11 +46,11 @@
 	    		token:this.$route.params.token,
 				ctype:2	//1关于我们2联系我们
 	    	}
-			console.log(params)
+//			console.log(params)
 			this.$http.post(URL.path1+'common/page_detail',params,{emulateJSON:true}).then(function(res){
 				Indicator.close();
 				this.$refs.content.innerHTML=res.body.data.content
-				console.log(res);
+//				console.log(res);
 			},function(res){
 				Indicator.close("系统错误");
 			    console.log(res);

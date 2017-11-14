@@ -84,7 +84,7 @@
 //					typeLi[0].setAttribute("class","src1");
 //					this.biaoQianID.push(typeLi[0].id);
 				});
-				console.log(this.BiaoQian);
+//				console.log(this.BiaoQian);
 			},function(res){
 				Indicator.close();
 			    console.log(res.status);
@@ -112,10 +112,12 @@
 					id:localStorage.getItem("userID"),//	用户id	是	[string]			
 					ctype:localStorage.getItem("type"),//	类型 1企业 4研究机构	是	[string]	
 					industry:this.biaoQianID1,	//	所属行业标签，多个用 逗号分割	是	[string]
+					resources:"",
+					restructuring:""
 				}
-				console.log(datas)
+//				console.log(datas)
 				if(this.y>=1){
-					window.location.href="#/faxian";
+//					window.location.href="#/faxian";
 				}else{
 					Toast("请填写完整您的信息！是否已选标签...");
 					return;
@@ -127,7 +129,7 @@
 						}else{
 							Toast('系统将在24小时内审核您的注册申请')
 						}
-						console.log(res.body)
+//						console.log(res.body)
 						window.location.href="#/faxian";
 					}else{
 						window.location.href="#/denglu"
@@ -153,7 +155,7 @@
 							this.biaoQianID.splice(z,1);
 //							console.log(this.biaoQianID)
 							this.biaoQianID1=this.biaoQianID.join()
-							console.log(this.biaoQianID1)
+//							console.log(this.biaoQianID1)
 							this.y-=1
 							break;
 						}
@@ -169,22 +171,9 @@
 					}
 //					console.log(this.biaoQianID)
 					this.biaoQianID1=this.biaoQianID.join()
-					console.log(this.biaoQianID1)
+//					console.log(this.biaoQianID1)
 				}
 			}
-//			show(){
-////				dom更新后在执行使用$refs
-//				this.$nextTick(function() {
-//					if(!this.betterscroll){
-//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//							click:true
-//						});
-//					}else{
-//						//重新计算高度  
-//						this.betterscroll.refresh();
-//					}
-//				});
-//			}
 		},
 		events:{
 			
@@ -196,14 +185,6 @@
 //			}
 		},
 		updated(){
-//			if(!this.betterscroll){
-//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
-//					click:true
-//				});
-//			}else{
-//				//重新计算高度  
-//				this.betterscroll.refresh();
-//			}
 		},
 		components:{
 //			ratingselect,

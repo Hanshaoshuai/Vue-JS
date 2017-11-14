@@ -5,9 +5,9 @@
 				<div class="home-search">
 					<span>登录</span>
 					<div class="fanhui-right">
-						<div @click.stop="quanXuan()">
+						<!--<div @click.stop="quanXuan()">
 							<font  @click.stop="zhuche()">注册</font>
-						</div>
+						</div>-->
 					</div>
 				</div>
 			</div>
@@ -43,7 +43,7 @@
 					</ul>
 				</div>
 				<div class="denglu-list denglu-bottom">
-					合作热线：400 235648
+					合作热线：15652960318
 				</div>
 			</div>
 			<router-view :XiajiCanshu="XiajiCanshu" :typeID="typeID"></router-view>
@@ -82,7 +82,7 @@
 				showFlag:true,
 				onlyContent:false,
 				tishi:"",
-				type:"1.2.5",
+				type:"",
 				shoujis:false,
 				mimas:false
 			}
@@ -115,9 +115,11 @@
 				var datas = {
 					phone: this.phone,  //手机号
 					pwd: this.password,   //密码
-					version: this.type,//版本号
+					version: localStorage.getItem("version"),//版本号
+//					version: '1.2.5',//版本号
 					terminalNo: 'terminalNo'
 				}
+				console.log(datas['version'])
 				if(!phone.test(this.phone)) {
 					Toast('输入手机号有误');
 					return;
@@ -141,7 +143,7 @@
 					Indicator.open({spinnerType: 'fading-circle'});
 					this.$http.post(URL.path1+'login',datas,{emulateJSON:true}).then(function(res){
 						Indicator.close();
-						console.log(res);
+//						console.log(res);
 						if(res.body.returnCode==200){	//本地储存
 							this.XiajiCanshu={
 						        id:res.body.data.id,
@@ -156,7 +158,7 @@
 							localStorage.setItem("name",res.body.data.nickname);		//用户名字
 							localStorage.setItem("photo",res.body.data.photo.id);	//用户头像id
 							localStorage.setItem("photourl",res.body.data.photo.url);	//用户头像URL地址
-							console.log(this.XiajiCanshu);
+//							console.log(this.XiajiCanshu);
 							if(res.body.data.ctype=='2'){
 								this.qingQiu(res.body.data.token,res.body.data.ctype)
 								return;
@@ -187,25 +189,27 @@
 					token:token,//	用户id	是	[string]			
 				}
 				this.$http.post(URL.path1+'account/info',datas,{emulateJSON:true}).then(function(res){
-					console.log(res)
+//					console.log("登录成功的个人资料")
+//					console.log(res)
 					if(res.body.returnCode=='200'){
 						if(ctype==1){
 							if(res.body.data.info.industry==''){
 								Toast('请完善您的资料');
 								localStorage.setItem("panduanWanshan",'1');
 								window.location.href="#/denglu/ZhuCe1/"+0+"/type2";
-								return;
+//								return;
 							}else{
 //								Toast('登录成功');
 								window.location.href="#/faxian";
 							}
+							return;
 						}
 						if(ctype==3){
 							if(res.body.data.info.investment_way=="0" || res.body.data.board=='0'){
 								Toast('请完善您的资料');
 								localStorage.setItem("panduanWanshan",'3');
 								window.location.href="#/denglu/ZhuCe1/"+0+"/type3";
-								return;
+//								return;
 							}else{
 //								Toast('登录成功');
 								window.location.href="#/faxian";
@@ -216,59 +220,69 @@
 								localStorage.setItem("panduanWanshan",'4');
 								Toast('请完善您的资料');
 								window.location.href="#/denglu/ZhuCe1/"+0+"/type4";
-								return;
+//								return;
 							}else{
 //								Toast('登录成功');
 								window.location.href="#/faxian";
 							}
+							return;
 						}
 						if(ctype==2){
-//							if(res.body.data.investment_type==1){
-								if(res.body.data.info.investment_type=='0'){
-									Toast('请完善您的资料');
-									localStorage.setItem("panduanWanshan",'20');
-									window.location.href="#/denglu/ZhuCe1/"+0+"/"+'Guquan';
-									return;
-								}else{
-//									Toast('登录成功');
-									window.location.href="#/faxian";
-								}
-//							}
-							if(localStorage.getItem("typeID")=='1'){
+//							console.log(localStorage.getItem("typeID"))
+							if(res.body.data.info.investment_type=='0'){
+//								if(localStorage.getItem("typeID")=='0'){
+								Toast('请完善您的资料');
+								localStorage.setItem("panduanWanshan",'20');
+								localStorage.setItem("typeID",'1');
+								window.location.href="#/denglu/ZhuCe1/"+0+"/"+'Guquan';
+//								}else{
+								return;
+//								}
+							}else{
+//								Toast('登录成功');
+//								window.location.href="#/faxian";
+							}
+							if(localStorage.getItem("typeID")=='1' || res.body.data.info.investment_type=='1'){
 								this.typeID='1'
 								if(res.body.data.info.fund_stage.length==0 || res.body.data.info.interested.length==0){
 									Toast('请完善您的资料');
 									localStorage.setItem("panduanWanshan",'21');
+									localStorage.setItem("typeID",'1');
 									window.location.href="#/denglu/ZhuCe1/"+0+"/"+'Guquan';
 									return;
 								}else{
 //									Toast('登录成功');
 									window.location.href="#/faxian";
 								}
+								return;
 							}
-							if(localStorage.getItem("typeID")=='2'){
+							if(localStorage.getItem("typeID")=='2' || res.body.data.info.investment_type=='2'){
 								this.typeID='2'
 								if(res.body.data.info.investment_way=='' || res.body.data.info.revenue_min=='0'){
 									Toast('请完善您的资料');
 									localStorage.setItem("panduanWanshan",'22');
+									localStorage.setItem("typeID",'2');
 									window.location.href="#/zhuce/ZhuCe1/"+localStorage.getItem("token")+"/"+'Zaiquan';
 									return;
 								}else{
 //									Toast('登录成功');
 									window.location.href="#/faxian";
 								}
+								return;
 							}
-							if(localStorage.getItem("typeID")=='3'){
+							if(localStorage.getItem("typeID")=='3' || res.body.data.info.investment_type=='3'){
 								this.typeID='3'
 								if(res.body.data.info.fund_stage.length==0 || res.body.data.info.interested.length==0 || res.body.data.info.investment_way=='' || res.body.data.info.revenue_min=='0'){
 									Toast('请完善您的资料');
 									localStorage.setItem("panduanWanshan",'23');
+									localStorage.setItem("typeID",'3');
 									window.location.href="#/zhuce/ZhuCe1/"+localStorage.getItem("token")+"/"+'Guzhai';
 									return;
 								}else{
 //									Toast('登录成功');
 									window.location.href="#/faxian";
 								}
+								return;
 							}
 						}
 					}else{
@@ -294,7 +308,7 @@
 			}
 		},
 		mounted(){
-			console.log(URL.path)
+//			console.log(URL.path)
 		},
 		events:{
 			
@@ -400,9 +414,15 @@
 				margin-top:-1.8rem;
 				z-index:26;
 				ul>li{
-					width:1.25rem;
-					height:1.5rem;
-					background-image:url("./img/app.png");
+					width:1.492rem;
+					height:1.321rem;
+					background-image:url("./img/denglu2.png");
+					/*width:1.573rem;
+					height:1.28rem;
+					background-image:url("./img/denglu2.png");*/
+					/*width:1.507rem;
+					height:1.521rem;
+					background-image:url("./img/denglu3.png");*/
 					background-size:100% 100%;
 				}
 			}

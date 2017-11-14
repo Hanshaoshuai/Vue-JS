@@ -177,7 +177,6 @@
 	import { Toast } from 'mint-ui';
 	import xiangmugenjin from "./xiangmuGenjin.vue";
 	
-	
 	export default {
 		props:{
 			
@@ -185,7 +184,7 @@
 		data () {
 			return {
 				yici:'0',
-				imgSrc:"/dist/hongbao.png",
+				imgSrc:"./dist/hongbao.png",
 				dongTai:"",
 				userContent:"",
 				token:"",
@@ -232,14 +231,14 @@
 		mounted() {	//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商
 			var that=this;
 	    	window.onhashchange = function() {
-				console.log('111111')
+//				console.log('111111')
 				if(that.shifouZhuce=='2'){
 					that.huoqugeshu();
 					that.qiyeFankui();
 				}
 				if(localStorage.getItem("shifouZhuce")!='2'){
 					that.panDuan();
-					console.log(localStorage.getItem("shifouZhuce"))
+//					console.log(localStorage.getItem("shifouZhuce"))
 				}
 			}
 			var faxian=window.location.href
@@ -255,7 +254,7 @@
 	  		}
 			this.type=this.userContent['type'];
 			this.userType(this.type)
-			console.log(this.userContent)
+//			console.log(this.userContent)
 	    	var datas = {		//相应参数
 				token:"N8KCEuwCyhOSviBLwm9PhbrZEQ1aUJBhHMkL7XNv5cEqBF2xs1DQSupWBgxWpz5w",//	token	是	[string]		
 				page:"",		
@@ -275,6 +274,20 @@
 	    activated(){
 	    	var that=this;
 	    	window.onhashchange = function() {
+	    		//判断类型是否了
+	    		var params={
+		    		token:localStorage.getItem("token"),
+		    		terminalNo:3
+		    	}
+				that.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
+//					console.log('个人信息判断类型是否了');
+//					console.log(res);
+					if(localStorage.getItem("type")!=res.body.data.ctype){
+//						localStorage.setItem("type",res.body.data.ctype)
+					}
+				},function(res){
+				    console.log(res);
+				})
 //	    		获取通讯录
 				if(that.shaoDeng==false){
 //					alert("开始提交")
@@ -289,8 +302,9 @@
 //							console.log('提交通讯录成功');
 //							alert("提交通讯录成功")
 							localStorage.setItem("YiyouTongxin",'1');
-							console.log(res);
-							clearTimeout(temouto);
+							localStorage.setItem("TongxunLu",'');
+//							console.log(res);
+//							clearTimeout(temouto);
 						},function(res){
 //							alert("没有提交成功")
 						    console.log(res);
@@ -329,22 +343,23 @@
 //			监听是否通过
 			jiantingTongguo(){
 				var params={
-		    		token:this.userContent["token"],
+		    		token:localStorage.getItem("token"),
 		    		terminalNo:3
 		    	}
 				this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
-					console.log('监听个人信息更改通过');
-					console.log(res);
+//					console.log('监听个人信息更改通过');
+//					alert("监听个人信息更改通过")
+//					console.log(res);
 					this.shifouZhuce=res.body.data.status;
 					localStorage.setItem("shifouZhuce",res.body.data.status)
 					if(res.body.data.status==2){
-						console.log("判断注册通过的首页项目列表成功");
+//						console.log("判断注册通过的首页项目列表成功");
 						this.diyiCi=true;
 						this.panDuan();
 					}else{
 						if(res.body.returnCode=='401'){
 							window.location.href="#/denglu";
-							this.shengqingZhongtishi='1'
+//							this.shengqingZhongtishi='1'
 						}else{
 							Toast(this.shengqingZhongtishi)
 						}
@@ -356,16 +371,16 @@
 //			刚注册判断接口	个人信息
 			panDuan(){
 				var params={
-		    		token:this.userContent["token"],
+		    		token:localStorage.getItem("token"),
 		    		terminalNo:3
 		    	}
 				this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
-					console.log('个人信息');
-					console.log(res);
+//					console.log('个人信息');
+//					console.log(res);
 					this.shifouZhuce=res.body.data.status;
 					localStorage.setItem("shifouZhuce",res.body.data.status)
 					if(res.body.data.status==2){
-						console.log("判断注册通过的首页项目列表成功");
+//						console.log("判断注册通过的首页项目列表成功");
 						this.diyiCi=true;
 			//	    	首页项目列表（非自己收到的项目）接口
 				    	this.qinQiu();
@@ -378,7 +393,7 @@
 						this.WeitongGuo();
 					}
 				},function(res){
-				    console.log(res);
+//				    console.log(res);
 				})
 			},
 			faxianScroll(){
@@ -416,8 +431,8 @@
 					size:6					//	size	是	[string]
 				}
 				this.$http.post(URL.path+'common/item_list',post,{emulateJSON:true}).then(function(res){
-					console.log(res);
-					console.log("注册未通过的首页项目列表成功");
+//					console.log(res);
+//					console.log("注册未通过的首页项目列表成功");
 					this.topStatus=false;
 					if(res.body.data.length==0){
 						if(this.data.length==0){
@@ -460,15 +475,15 @@
 			qinQiu(){		//类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报
 //	    	首页项目列表（非自己收到的项目）接口
 				var token={
-		    		token:this.userContent.token,
+		    		token:localStorage.getItem("token"),
 		    		page:this.page,			//	page	是	[string]		
 					size:6					//	size	是	[string]
 		    	}
-				console.log(token)
+//				console.log(token)
 				this.$http.post(URL.path+'finance/get_item_list',token,{emulateJSON:true}).then(function(res){
 //					//判断是否注册通过审核；
-					console.log("首页项目列表成功");
-					console.log(res)
+//					console.log("首页项目列表成功");
+//					console.log(res)
 					if(res.body.returnCode!=200 && res.body.returnCode!=201){
 						Toast(res.body.msg)
 						this.shifouZhuce=6;
@@ -501,6 +516,13 @@
 						}else{
 							this.botent="暂无数据"
 						}
+						this.$nextTick(function(){
+							if(this.data[0][0].length<2 || this.data[0][0].length>1){
+								var box=document.getElementsByClassName('ContentText');
+								box[0].getElementsByClassName('li')[0].style.display="none";
+								box[0].getElementsByClassName('ol')[0].style.display="none";
+							}
+						})
 					}
 					if(this.n !== 0){
 						clearTimeout(this.tems);
@@ -509,12 +531,17 @@
 					this.page=this.page+=1;
 					if(this.n == 0){
 						this.$nextTick(function(){
+//							if(this.data[0].length<2 || this.data[0].length>1){
+//								var box=document.getElementsByClassName('ContentText');
+//								box[0].getElementsByClassName('li')[0].style.display="none";
+//								box[0].getElementsByClassName('ol')[0].style.display="none";
+//							}
 							this.n = 0; //存储图片加载到的位置，避免每次都从第一张图片开始遍历
 	  						this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
 	  						this.imgs()
 						});
 					}
-					console.log(this.data);
+//					console.log(this.data);
 				},function(res){
 					this.topStatus=false;
 				    console.log(res);
@@ -530,29 +557,33 @@
 				var that=this;
 				var box=document.getElementsByClassName('ContentText');
 				var child=document.getElementsByClassName('Content')[1];
-				console.log(child)
+//				console.log(child)
 				var div=document.createElement("div");
 				var img=document.createElement("img");
 				div.style.width="100%";
 				div.style.height="1rem";
+//				div.style.background="#00A0DC";
 				div.style.background="#00A0DC";
 				div.style.margin='0.13rem 0 0.13rem 0';
 				div.style.overflow="hidden";
 				img.style.width='100%';
 				img.style.height='100%';
     			img.style.float='left';
+    			img.setAttribute("id",'imgSrc');
 				div.appendChild(img);
 				child.appendChild(div);
 				div.onclick=function(){
 					that.yijianFankui();
 				}
-				img.src=this.imgSrc;
 				for(var i=0; i<4; i++){
 					if(i==0 || i==2){
 						box[i].getElementsByClassName('li')[0].style.display="none";
 						box[i].getElementsByClassName('ol')[0].style.display="none";
 					}
 				}
+				this.$nextTick(function(){
+					document.getElementById('imgSrc').src=this.imgSrc;
+				});
 			},
 			dongtaiShuju(){
 				var token={
@@ -561,9 +592,9 @@
 //				获取企融直通车动态数据
 				this.$http.post(URL.path+'common/dynamic',token,{emulateJSON:true}).then(function(res){
 					this.dongTai=res.body.data
-					console.log("获取企融直通车动态数据");
-					console.log(this.dongTai[0].content);
-					console.log(res);
+//					console.log("获取企融直通车动态数据");
+//					console.log(this.dongTai[0].content);
+//					console.log(res);
 				},function(res){
 				    console.log(res);
 				})
@@ -587,8 +618,8 @@
 		    		token:this.userContent.token
 		    	}
 				this.$http.post(URL.path+'chatcomment/get_feedback_num',token,{emulateJSON:true}).then(function(res){
-					console.log('企业获取反馈数');
-					console.log(res);
+//					console.log('企业获取反馈数');
+//					console.log(res);
 					if(res.body.returnCode==200){
 						this.FankuiShu=res.body.data[0].feedback_num;
 					}else{
@@ -632,6 +663,7 @@
 					window.location.href="#/faxian/WoyaoRongzi/"+this.userContent["token"];
 				}else{
 					if(this.shifouZhuce=='6'){
+//						window.location.href="#/faxian/WoyaoRongzi/"+this.userContent["token"];
 						Toast(this.houtaiTishi)
 					}else{
 						this.jiantingTongguo()
@@ -645,10 +677,11 @@
 			},
 			touzifankuiGo(){
 				if(this.shifouZhuce==2){
-					console.log(this.userContent)
+//					console.log(this.userContent)
 					window.location.href="#/faxian/Fankui/"+this.userContent["token"];
 				}else{
 					if(this.shifouZhuce=='6'){
+//						window.location.href="#/faxian/Fankui/"+this.userContent["token"];
 						Toast(this.houtaiTishi)
 					}else{
 						this.jiantingTongguo()
@@ -666,6 +699,7 @@
 					this.scrollTop=sessionStorage.getItem("scrollTop")
 				}else{
 					if(this.shifouZhuce=='6'){
+//						window.location.href="#/faxian/XinxiangMu/"+this.userContent["token"];
 						Toast(this.houtaiTishi)
 					}else{
 						this.jiantingTongguo()
@@ -679,10 +713,11 @@
 			},
 			qiyefankuiGo(){
 				if(this.shifouZhuce==2){
-					console.log(this.userContent)
+//					console.log(this.userContent)
 					window.location.href="#/faxian/Fankui/"+this.userContent["token"];
 				}else{
 					if(this.shifouZhuce=='6'){
+//						window.location.href="#/faxian/Fankui/"+this.userContent["token"];
 						Toast(this.houtaiTishi)
 					}else{
 						this.jiantingTongguo()
@@ -703,6 +738,11 @@
 					}
 				}else{
 					if(this.shifouZhuce=='6'){
+						if(type==1 || type==2 ||type==3 || type==7){
+//							window.location.href="#/faxian/DingzengZhaiyao/"+this.userContent["token"]+'/'+id;
+						}else{
+//							window.location.href="#/faxian/GuquanZhaiyao/"+this.userContent["token"]+'/'+id;
+						}
 						Toast(this.houtaiTishi)
 					}else{
 						this.jiantingTongguo()
