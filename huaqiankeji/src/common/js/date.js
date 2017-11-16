@@ -68,7 +68,7 @@ export function numToTime1(num){
       h,
       m,
       newTime = new Date(newNum).toLocaleString();
-      console.log(time)
+//    console.log(time)
     time = time.replace(/\d+[\/\-]/, function(text){
       year = text.match(/\d+/)[0];
       return '';

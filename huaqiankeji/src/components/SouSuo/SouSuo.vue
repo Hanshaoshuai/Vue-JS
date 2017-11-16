@@ -177,6 +177,7 @@
 		methods:{
 			yijianHind(){
 				this.topStatus=false;
+				Indicator.close();
 				history.go(-1)
 			},
 			zhiDing(){		//返回顶部；

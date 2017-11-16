@@ -28,7 +28,8 @@
 								<span ref="bianji" class="lasst"></span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
-										<input readOnly="true" v-model="numbera" placeholder="暂无填写" type="text" class="mint-field-core">
+										<p class="mint-field-core">{{numbera}}</p>
+										<!--<input readOnly="true" v-model="numbera" placeholder="暂无填写" type="text" class="mint-field-core">-->
 									</li>
 									<!--<li>
 										<input readOnly="true" v-model="numberb" placeholder="食品" type="text" class="mint-field-core">
@@ -374,12 +375,12 @@
 					}
 					.first{
 						padding-top:0.14rem;
-						height:0.31rem;
+						/*height:0.31rem;*/
 						display:flex;
 						justify-content:space-between;
 						li{
 							width:100%;
-							height:0.31rem;
+							/*height:0.31rem;*/
 							float:left;
 							font-size:0.16rem;
 							display:inline-block;
@@ -387,7 +388,8 @@
 							}
 							.mint-field-core{
 								width:100%;
-								height:100%;
+								color: #787777;
+								/*height:100%;*/
 								line-height:0.3rem;
 								color:#787777
 							}

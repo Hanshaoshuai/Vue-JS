@@ -206,7 +206,7 @@
 					this.topStatus=false;
 					if(res.body.data.length==0){
 						if(this.data.length==0){
-							this.jeiguo="暂无匹配结果"
+							this.jeiguo="暂无记录"
 						}
 						this.$refs.wrapper.removeEventListener('scroll', this.faxianScroll);
 						this.$refs.wrapper.addEventListener('scroll', this.handleScroll)

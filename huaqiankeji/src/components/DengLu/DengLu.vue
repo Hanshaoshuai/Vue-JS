@@ -165,6 +165,7 @@
 							}
 							if(res.body.data.ctype=='6' || res.body.data.ctype=='7'){
 								window.location.href="#/faxian";
+//								location.reload();
 								return;
 							}
 							if(res.body.data.ctype=='1' || res.body.data.ctype=='3' || res.body.data.ctype=='4'){
@@ -201,6 +202,7 @@
 							}else{
 //								Toast('登录成功');
 								window.location.href="#/faxian";
+//								location.reload();
 							}
 							return;
 						}
@@ -213,6 +215,7 @@
 							}else{
 //								Toast('登录成功');
 								window.location.href="#/faxian";
+//								location.reload();
 							}
 						}
 						if(ctype==4){
@@ -224,6 +227,7 @@
 							}else{
 //								Toast('登录成功');
 								window.location.href="#/faxian";
+//								location.reload();
 							}
 							return;
 						}
@@ -253,6 +257,7 @@
 								}else{
 //									Toast('登录成功');
 									window.location.href="#/faxian";
+//									location.reload();
 								}
 								return;
 							}
@@ -267,6 +272,7 @@
 								}else{
 //									Toast('登录成功');
 									window.location.href="#/faxian";
+//									location.reload();
 								}
 								return;
 							}
@@ -281,6 +287,7 @@
 								}else{
 //									Toast('登录成功');
 									window.location.href="#/faxian";
+//									location.reload();
 								}
 								return;
 							}
