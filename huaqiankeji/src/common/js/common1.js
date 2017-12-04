@@ -1,4 +1,9 @@
 ﻿export function common1(dcontent,sharecontent,pic,sharehref,sharehrefTitle,sharehrefDes,output){
+	console.log(sharecontent.value)
+	console.log(pic.src)
+	console.log(sharehref)
+	console.log(sharehrefTitle)
+	console.log(sharehrefDes)
 	var shares=null;
 	// H5 plus事件处理
 	function plusReady(){
@@ -85,15 +90,15 @@
 //		thumbs: ['http://www.qironghome.com/static/app/img/120.png'],
 		var msg={content:sharecontent.value,extra:{scene:sb.x}};
 		if(bh){
-			msg.href=sharehref.value;
-			if(sharehrefTitle&&sharehrefTitle.value!=''){
-				msg.title=sharehrefTitle.value;
+			msg.href=sharehref;
+			if(sharehrefTitle&&sharehrefTitle!=''){
+				msg.title=sharehrefTitle;
 			}
-			if(sharehrefDes&&sharehrefDes.value!=''){
-				msg.content=sharehrefDes.value;
+			if(sharehrefDes&&sharehrefDes!=''){
+				msg.content=sharehrefDes;
 			}
 			msg.thumbs=['http://www.qironghome.com/static/app/img/120.png'];
-			msg.pictures=['./logo.png'];
+			msg.pictures=['http://www.qironghome.com/static/app/img/120.png'];
 		}else{
 			if(pic&&pic.realUrl){
 				msg.pictures=[pic.realUrl];
@@ -102,13 +107,14 @@
 		// 发送分享
 		if(sb.s.authenticated){
 			outLine('---已授权---');
+			console.log("成功！1");
 			shareMessage(msg, sb.s);
 		}else{
 			outLine('---未授权---');
 			sb.s.authorize(function(){
 				shareMessage(msg,sb.s);
 			}, function(e){
-				console.log("认证授权失败");
+				console.log("认证授权失败1");
 				outLine('认证授权失败：'+e.code+' - '+e.message);
 			});
 		}
@@ -120,9 +126,14 @@
 	   */
 	function shareMessage(msg, s){
 		outLine(JSON.stringify(msg));
+		console.log(JSON.stringify(msg))
 		s.send(msg, function(){
+			console.log("成功！2");
 			outLine('分享到"'+s.description+'"成功！');
 		}, function(e){
+			console.log("认证授权失败2");
+			console.log(s.description)
+			console.log(JSON.stringify(e))
 			outLine('分享到"'+s.description+'"失败: '+JSON.stringify(e));
 		});
 	}

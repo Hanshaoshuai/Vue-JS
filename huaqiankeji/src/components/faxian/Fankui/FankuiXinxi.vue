@@ -262,7 +262,7 @@
 								this.tousuoContent=this.numToTime1(res[item].create_time);
 								this.tousuoGo(this.numToTime1(res[item].create_time));
 								
-								this.You('1',name,cont.id,cont.item_id,MingPian,DianJi,res[item].id)
+								this.You('1',name,cont.id,cont.item_id,MingPian,DianJi,res[item].id,res[item].from_id)
 //								console.log(JSON.parse(res[item].content))
 //								console.log(DianJi)
 								i++;
@@ -737,7 +737,7 @@
 				}
 				return mingPianTishi;
 			},
-			HuanquSenqing(cont,id,item_id,MingPian,DianJi,chat_id,com_short){			//换名片和发送项目申请提示处理函数
+			HuanquSenqing(cont,id,item_id,MingPian,DianJi,chat_id,com_short,from_id){			//换名片和发送项目申请提示处理函数
 				var thata=this;
 				var mingPian=document.createElement("div");			//换名片申请提示	  是否确定换名片  创建DOM元素    在对方对话框内显示
 				var	mingText=document.createElement("p");
@@ -817,17 +817,17 @@
 					}else{
 						thata.datasB={							//处理换名片同意
 							token:thata.$route.params.token,
-							from_id:thata.from_id,	//发送方id	是	[string]		
+							from_id:com_short,	//发送方id	是	[string]		
 							id:id,				//名片id	是	[string]		
 							item_id:item_id,	//项目id	是	[string]		
 							operate:"1",		//操作 1:同意 2:拒绝
 							chat_id:chat_id		//评论id
 						}
-//						console.log(thata.datasB)				//处理换名片同意接口
+						console.log(thata.datasB)				//处理换名片同意接口
 						thata.$http.post(URL.path+'chatcomment/card_operate',thata.datasB,{emulateJSON:true}).then(function(res){
 							var data=res
 //							console.log("处理换名片同意"+res);
-//							console.log(res);
+							console.log(res);
 							this.FasongShijian();
 							this.TishiNeirong("您同意了对方名片的申请");
 						},function(res){
@@ -879,7 +879,7 @@
 					}else{
 						thata.datasB={						//处理换名片拒绝
 							token:thata.$route.params.token,
-							from_id:thata.from_id,	//发送方id	是	[string]		
+							from_id:com_short,	//发送方id	是	[string]		
 							id:id,				//名片id	是	[string]		
 							item_id:item_id,	//项目id	是	[string]		
 							operate:"2",		//操作 1:同意 2:拒绝

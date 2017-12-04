@@ -85,7 +85,9 @@
 								<span>地域要求</span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
-										<input readOnly="true" v-model="numberh" placeholder="暂无填写" type="text" class="mint-field-core">
+										<p v-if="numberh" class="mint-field-core">{{numberh}}</p>
+										<p v-if="!numberh" class="mint-field-core">暂无填写</p>
+										<!--<input readOnly="true" v-model="numberh" placeholder="暂无填写" type="text" class="mint-field-core">-->
 									</li>
 								</ul>
 								<div v-if="BianJi==1" class="xiaolv">
@@ -248,7 +250,9 @@
 							<span>地域要求</span>
 							<ul v-if="BianJi3==0" class="first">
 								<li>
-									<input readOnly="true" v-model="numberb" placeholder="暂无填写" type="text" class="mint-field-core">
+									<p v-if="numberb" class="mint-field-core">{{numberb}}</p>
+									<p v-if="!numberb" class="mint-field-core">暂无填写</p>
+									<!--<input readOnly="true" v-model="numberb" placeholder="暂无填写" type="text" class="mint-field-core">-->
 								</li>
 							</ul>
 							<div v-if="BianJi3==1" class="xiaolv anli">

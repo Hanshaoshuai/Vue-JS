@@ -155,6 +155,7 @@
 	    	}
 			this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
 				Indicator.close();
+//				console.log(res);
 				this.data=res.body.data;
 				this.imgs=res.body.data.photo.url;
 				
@@ -173,7 +174,6 @@
 				this.oDbiaoQianID=x.join(',');
 				this.numbera=y.join('、');
 //				console.log(this.oDbiaoQianID2);
-//				console.log(res);
 				this.$nextTick(function(){
 					var images = this.$refs.images;
 					if (images.clientWidth>images.clientHeight) {

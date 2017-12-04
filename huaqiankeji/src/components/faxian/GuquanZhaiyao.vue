@@ -47,8 +47,8 @@
 								<!--<li class="border-bottom"></li>-->
 								<li class="tishi-center">
 									<div class="content-heder">
-										<span>* {{data.com_short.substr(1, 1)}} *</span>
-										<span class="text-center">（{{data.com_code.substr(0, 2)}} **** ）</span>
+										<span>* {{shorts}} *</span>
+										<span class="text-center">（{{codes}} **** ）</span>
 										<span v-if="data.type==1" class="texts">&nbsp;定增</span>
 										<span v-if="data.type==2" class="texts">&nbsp;做市</span>
 										<span v-if="data.type==3" class="texts">&nbsp;转老股</span>
@@ -70,9 +70,9 @@
 						</div>
 						<div class="zhuying_1 border">
 							<div class="ferst"><span></span>经营业绩</div>
-							<div class="last">
-								<p>上一财年：营收&nbsp;<span>{{data.last_year_revenue}}亿</span>&nbsp;&nbsp;扣非净利润&nbsp;<span>{{data.last_year_profit}}万</span></p>
-								<p>今年预计：营收&nbsp;<span>{{data.predict_revenue}}亿</span>&nbsp;&nbsp;扣非净利润&nbsp;<span>{{data.predict_profit}}万</span></p>
+							<div class="last lasts">
+								<p>上一财年:&nbsp;营收<span style="margin-left:0.01rem;">{{data.last_year_revenue}}亿</span>&nbsp;扣非净利润<span style="margin-left:0.01rem;">{{data.last_year_profit}}万</span></p>
+								<p>今年预计:&nbsp;营收<span style="margin-left:0.01rem;">{{data.predict_revenue}}亿</span>&nbsp;扣非净利润<span style="margin-left:0.01rem;">{{data.predict_profit}}万</span></p>
 							</div>
 						</div>
 						<div class="zhuying_1 border" style="margin-bottom:0;">
@@ -89,7 +89,7 @@
 						<!--<span class="text-center">{{data.position}}</span>-->
 						<span v-if="data.ctype==1" class="text-center">企业</span>
 						<span v-if="data.ctype==7" class="text-center">财务顾问</span>
-						<span class="text-center">{{numToTime(data.create_time)}}</span>
+						<span class="text-center">{{times}}</span>
 						<span>发布</span>
 					</div>
 				</div>
@@ -145,12 +145,16 @@
 				fenciangURL:"",
 				fenxiangBiaoti:"",
 				fenxiangCont:"",
-				yisuoYao:false
+				yisuoYao:false,
+				
+				times:'',
+				shorts:'',
+				codes:""
 //				onlyContent:true
 			}
 		},
 		mounted(){
-			this.numToTime=numToTime;
+//			this.numToTime=numToTime;
 			//项目详情
 			var data = {
 				token:this.$route.params.token,
@@ -159,10 +163,18 @@
 //			console.log(data)
 			this.$http.post(URL.path+'finance/item_detail',data,{emulateJSON:true}).then(function(res){
 				this.data=res.body.data[0];
-				if(localStorage.getItem("type")=='1' || localStorage.getItem("type")=='7'){
-					this.buttenBlock=false;
-				}else{
+				this.shorts=this.data.com_short.substr(1,1);
+				this.codes=this.data.com_code.substr(0,2);
+				this.times=numToTime(this.data.create_time)
+//				if(localStorage.getItem("type")=='1' || localStorage.getItem("type")=='7'){
+//					this.buttenBlock=false;
+//				}else{
+//					this.buttenBlock=true;
+//				};
+				if(localStorage.getItem("type")=='2' || localStorage.getItem("type")=='3' || localStorage.getItem("type")=='4' || localStorage.getItem("type")=='5' || localStorage.getItem("type")=='6'){
 					this.buttenBlock=true;
+				}else{
+					this.buttenBlock=false;
 				};
 				this.$nextTick(function(){
 					this.output=this.$refs.output
@@ -204,7 +216,6 @@
 //				this.fenciangURL='http://www.qironghome.com/index.php/app/item-info?id=18&uid=228'
 				
 				this.fenciangURL='http://www.qironghome.com/index.php/app/item-info?id='+this.data.id+'&uid='+this.data.uid;
-//				console.log(this.fenciangURL)
 				this.fenxiangBiaoti="* "+this.data.com_short.substr(1, 1)+" *"+this.data.com_code.substr(0, 2)+" **** "+biaoQian
 				this.fenxiangCont=this.data.lightspot;
 				
@@ -217,7 +228,7 @@
 				this.output=this.$refs.output;
 //				console.log(this.sharehref.value)
 //				common(this.output,this.dcontent,window);
-				common1(this.dcontent,this.sharecontent,this.pic,this.sharehref,this.sharehrefTitle,this.sharehrefDes,this.output);
+				common1(this.dcontent,this.sharecontent,this.pic,this.fenciangURL,this.fenxiangBiaoti,this.fenxiangCont,this.output);
 			},
 			butten(){
 				if(this.yisuoYao==true){
@@ -512,7 +523,7 @@
 			z-index:310;
 			-webkit-overflow-scrolling:touch;/*解决苹果滑动流畅*/
 			.zhaiyao-content{
-				width: 94%;
+				width: 98%;
 				height:auto;
 				margin:0 auto;
 				margin-top:0.45rem;
@@ -580,6 +591,9 @@
 							padding:0rem 0.14rem 0.18rem 0.14rem;
 							line-height:0.26rem;
 							/*box-shadow: 0 0.02rem 0.04rem #dedde1;*/
+						}
+						.lasts{
+							padding-right:0rem;
 						}
 					}
 				}

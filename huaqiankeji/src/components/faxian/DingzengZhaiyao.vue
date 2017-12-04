@@ -31,6 +31,15 @@
 								<div class="button" @click.stop="shareHref()">分享</div>
 								<p style="display:none;" class="des">如果需要解除分享中绑定的用户信息，请点击解除授权：</p>
 								<div style="display:none;" class="button" onclick="cancelAuth()">解除授权</div>
+								
+								
+								
+								<p ref="info" id="info" style="display:none; padding: 0 1em;text-align:left;">支付通道信息：</p>
+								<div style="display:none; padding: 0.5em 1em;"><hr color="#EEE"/></div>
+								<p style="display:none; padding: 0 1em;text-align:left;">为DCloud提供的免费软件进行赞助吧。</p>
+								<div style="display:none; padding: 0 1em;text-align:left">
+									捐赠金额：<input ref="total" id="total" type="number" value="1"/> 元
+								</div>
 							</div>
 							<div ref="output" id="output" style="display:none;">
 								Share模块管理客户端的社交分享功能，提供调用终端社交软件的分享能力。通过plus.share可获取社交分享管理对象。
@@ -47,8 +56,8 @@
 								<!--<li class="border-bottom"></li>-->
 								<li class="tishi-center">
 									<div class="content-heder">
-										<span>* {{data.com_short.substr(1,1)}} *</span>
-										<span class="text-center">（{{data.com_code.substr(0,2)}} **** ）<!--{{data.com_code}}--></span>
+										<span>* {{shorts}} *</span>
+										<span class="text-center">（{{codes}} **** ）</span>
 										<span v-if="data.type==1" class="texts">&nbsp;定增</span>
 										<span v-if="data.type==2" class="texts">&nbsp;做市</span>
 										<span v-if="data.type==3" class="texts">&nbsp;转老股</span>
@@ -80,9 +89,9 @@
 						</div>
 						<div class="zhuying_1 border">
 							<div class="ferst"><span></span>经营业绩</div>
-							<div class="last">
-								<p>上一财年：营收&nbsp;<span>{{data.last_year_revenue}}亿</span>&nbsp;&nbsp;扣非净利润&nbsp;<span>{{data.last_year_profit}}万</span></p>
-								<p>今年预计：营收&nbsp;<span>{{data.predict_revenue}}亿</span>&nbsp;&nbsp;扣非净利润&nbsp;<span>{{data.predict_profit}}万</span></p>
+							<div class="last lasts">
+								<p>上一财年:&nbsp;营收<span style="margin-left:0.01rem;">{{data.last_year_revenue}}亿</span>&nbsp;扣非净利润<span style="margin-left:0.01rem;">{{data.last_year_profit}}万</span></p>
+								<p>今年预计:&nbsp;营收<span style="margin-left:0.01rem;">{{data.predict_revenue}}亿</span>&nbsp;扣非净利润<span style="margin-left:0.01rem;">{{data.predict_profit}}万</span></p>
 							</div>
 						</div>
 						<div class="zhuying_1 border" style="margin-bottom:0;">
@@ -103,7 +112,7 @@
 						<div class="times border-topbottom">
 							<span v-if="data.ctype==1" class="text-center">企业</span>
 							<span v-if="data.ctype==7" class="text-center">财务顾问</span>
-							<span class="text-center">{{numToTime(data.create_time)}}</span>
+							<span class="text-center">{{times}}</span>
 							<span>发布</span>
 						</div>
 					</div>
@@ -116,8 +125,9 @@
 
 <script type="text/ecmascript">
 	import {numToTime} from "../../common/js/date.js";
-	import {common} from "../../common/js/common.js";
-	import {common1} from "../../common/js/common1.js";
+	import {common} from "../../common/js/common.js";	//原生模块
+	import {common1} from "../../common/js/common1.js";	//分享模块
+//	import {zhifu} from "../../common/js/ZhiFu.js";	//支付模块
 	import { Toast } from 'mint-ui';
 	import { MessageBox } from 'mint-ui';
 	import {URL} from '../../common/js/path';
@@ -137,7 +147,7 @@
 				showFlag:true,
 				fankui:13,
 				genjin:50,
-				utype:true,
+				utype:false,
 				sharecontent:"",
 				pic:"",
 				sharehref:'',
@@ -152,16 +162,25 @@
 				fenciangURL:"",
 				fenxiangBiaoti:"",
 				fenxiangCont:"",
-				yisuoYao:false
+				yisuoYao:false,
+				
+				times:'',
+				shorts:'',
+				codes:""
 //				onlyContent:true
 			}
 		},
 		mounted(){
-			this.numToTime=numToTime;
-			if(localStorage.getItem("type")=='1' || localStorage.getItem("type")=='7'){
-				this.utype=false;
-			}else{
+//			this.numToTime=numToTime;
+//			if(localStorage.getItem("type")=='1' || localStorage.getItem("type")=='7'){
+//				this.utype=false;
+//			}else{
+//				this.utype=true;
+//			};
+			if(localStorage.getItem("type")=='2' || localStorage.getItem("type")=='3' || localStorage.getItem("type")=='4' || localStorage.getItem("type")=='5' || localStorage.getItem("type")=='6'){
 				this.utype=true;
+			}else{
+				this.utype=false;
 			};
 			//项目详情
 			var data = {
@@ -173,7 +192,10 @@
 			}
 //			console.log(data)
 			this.$http.post(URL.path+'finance/item_detail',data,{emulateJSON:true}).then(function(res){
-				this.data=res.body.data['0']
+				this.data=res.body.data['0'];
+				this.shorts=this.data.com_short.substr(1,1);
+				this.codes=this.data.com_code.substr(0,2);
+				this.times=numToTime(this.data.create_time)
 //				this.fenciangURL=
 //				this.fenxiangBiaoti=
 //				this.fenxiangCont=
@@ -185,6 +207,7 @@
 				this.$nextTick(function(){
 					this.output=this.$refs.output
 					this.dcontent=this.$refs.dcontent;
+//					zhifu(this.dcontent,this.$refs.info,this.$refs.total);	//支付模块
 				});
 			},function(res){
 			    console.log(res.status);
@@ -220,7 +243,6 @@
 				}
 //				this.fenciangURL='http://www.qironghome.com/index.php/app/item-info?id=18&uid=228'
 				this.fenciangURL='http://www.qironghome.com/index.php/app/item-info?id='+this.data.id+'&uid='+this.data.uid;
-//				console.log(this.fenciangURL)
 				this.fenxiangBiaoti="* "+this.data.com_short.substr(1, 1)+" *"+this.data.com_code.substr(0, 2)+" **** "+biaoQian
 				this.fenxiangCont=this.data.lightspot;
 				
@@ -232,8 +254,7 @@
 				this.sharehrefDes=this.$refs.sharehrefDes;
 				this.output=this.$refs.output;
 //				console.log(this.sharehref.value)
-//				common(this.output,this.dcontent,window);
-				common1(this.dcontent,this.sharecontent,this.pic,this.sharehref,this.sharehrefTitle,this.sharehrefDes,this.output);
+				common1(this.dcontent,this.sharecontent,this.pic,this.fenciangURL,this.fenxiangBiaoti,this.fenxiangCont,this.output);
 			},
 			butten(){
 				if(this.yisuoYao==true){
@@ -296,8 +317,6 @@
 	  	/*transform:rotate(360deg);*/
 	  	/*opacity: 0;*/
 	}
-	
-	
 	
 
 	.zhaiyao{
@@ -375,7 +394,7 @@
 			z-index:310;
 			-webkit-overflow-scrolling:touch;/*解决苹果滑动流畅*/
 			.zhaiyao-content{
-				width: 94%;
+				width: 98%;
 				height:auto;
 				margin:0 auto;
 				margin-top:0.45rem;
@@ -451,6 +470,9 @@
 							}
 							/*box-shadow: 0 0.02rem 0.04rem #dedde1;*/
 						}
+						.lasts{
+							padding-right:0rem;
+						}
 					}
 					.zhuying_1{
 						width:100%;
@@ -482,6 +504,9 @@
 							padding:0rem 0.14rem 0.18rem 0.14rem;
 							line-height:0.26rem;
 							/*box-shadow: 0 0.02rem 0.04rem #dedde1;*/
+						}
+						.lasts{
+							padding-right:0rem;
 						}
 					}
 					.TypeList{

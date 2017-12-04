@@ -86,7 +86,9 @@
 								<span>地域要求</span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
-										<input readOnly="true" v-model="numberh" placeholder="暂无填写" type="text" class="mint-field-core">
+										<p v-if="numberh" class="mint-field-core">{{numberh}}</p>
+										<p v-if="!numberh" class="mint-field-core">暂无填写</p>
+										<!--<input readOnly="true" v-model="numberh" placeholder="暂无填写" type="text" class="mint-field-core">-->
 									</li>
 								</ul>
 								<div v-if="BianJi==1" class="xiaolv">
@@ -224,7 +226,7 @@
 				this.data=res.body.data;
 				this.imgs=res.body.data.photo.url;
 				this.single_project_max=res.body.data.info.single_project_max
-				this.numberg=this.data.info.single_project_max+'万-'+this.data.info.single_project_min+'万';
+				this.numberg=this.data.info.single_project_min+'万-'+this.data.info.single_project_max+'万';
 				this.numberg1=this.data.info.single_project;
 				this.numberh=this.data.info.territory;
 				this.textc=res.body.data.info.resources;

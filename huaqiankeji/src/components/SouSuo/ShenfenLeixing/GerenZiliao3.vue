@@ -188,6 +188,7 @@
 	    		uid:this.uid
 	    	}
 			this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
+				console.log(res);
 				Indicator.close();
 				this.data=res.body.data;
 				this.imgs=res.body.data.photo.url;
@@ -220,7 +221,6 @@
 						images.style.height="auto"
 					}
 				});
-//				 console.log(res);
 			},function(res){
 				Indicator.close();
 			    console.log(res);

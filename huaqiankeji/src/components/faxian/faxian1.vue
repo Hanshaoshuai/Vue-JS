@@ -8,16 +8,8 @@
 				</div>
 			</div>
 			<div ref="wrapper" class="box" id="top">
-				<div class="FadeContent" ref="tianjia">
-					<span class="lodingTop" v-show="topStatusTop">
-		            	<mt-spinner :type="3" color="#26a2ff" :size="30"></mt-spinner>
-		          	</span>
-		          	<span class="lodingTop1" v-show="topStatusTop1">
-		            	放开刷新
-		          	</span>
-		          	<span class="lodingTop2" v-show="topStatusTop2">
-		            	下拉刷新
-		          	</span>
+				<div style="width:100%;height:0.48rem;"></div>
+				<div class="FadeContent">
 					<div class="banner">
 						<img src="./img/bg.jpg"/>
 						<div class="gaikuang">
@@ -70,6 +62,33 @@
 							</div>
 						</div>
 					</div>
+					<!--<div class="bannerlist">
+						<div class="swiper-img">
+							<span></span>
+						</div>
+						<div class="swiper-container">
+							<div class="swiper-wrapper">
+								<div class="swiper-slide">
+									<span>张摆上</span>
+									<span>同创伟业</span>
+									<span>合伙</span>
+									<span>入住了</span>
+								</div>
+								<div class="swiper-slide">
+									<span>张sa摆上</span>
+									<span>同创伟业</span>
+									<span>合dds伙</span>
+									<span>入住了</span>
+								</div>
+								<div class="swiper-slide">
+									<span>张aaa摆上</span>
+									<span>同s创伟业</span>
+									<span>合伙</span>
+									<span>入住fd了</span>
+								</div>
+							</div>
+						</div>
+					</div>-->
 					<div class="ContentList ">
 						<div class="swiper-img">
 							<span class="img-rongzi"></span>
@@ -84,6 +103,11 @@
 							<span v-if="type=='7'" class="text">其他正在融资的企业</span>
 						</div>
 					</div>
+<!--意见反馈-->		
+					<!--<div class="tucao" @click.stop="yijianFankui()">
+						<img src="./img/hongbao.png" alt="" />
+					</div>-->
+					
 <!--循环遍历data-->	<div v-for="(cont,index) in data" class="add" :id="index" ref="lisitTop">
 						<div v-for="(item,index) in cont" class="Content" >
 							<div class="ContentText" :id="index" @click.stop="contblock(item.id,item.type)">
@@ -147,7 +171,6 @@
 </template>
 
 <script type="text/ecmascript">
-	import BScroll from "better-scroll";
 	import {numToTime} from "../../common/js/date.js";
 	import { Indicator } from 'mint-ui';
 	import {URL} from '../../common/js/path';
@@ -185,9 +208,6 @@
 		        bottomStatus: '',
 		        wrapperHeight: 0,
 		        topStatus:false,
-		        topStatusTop:false,
-		        topStatusTop1:false,
-		        topStatusTop2:true,
 		        tishis:false,
 		        scrollTop:"",
 		        XiangmuShu:"",
@@ -205,23 +225,10 @@
 		        houtaiTishi:'',
 		        diyiCi:false,
 		        shengqingZhongtishi:'您的注册申请尚在审核中',
-		        shaoDeng:false,
-		        tems:'',
-		        
-		        scrollY:'',
-		        scrollYTop:"",
-				scrollHeight:"",
-				clientHeight:"",
-				top:0,
-				qingzhiShuaxin:0,
-				qiangZhi:0
+		        shaoDeng:false
 			}
 		},
 		mounted() {	//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商
-//			if(!localStorage.getItem("qiangZhi")){
-//				localStorage.setItem("qiangZhi",'1')
-//				location.reload();
-//			}
 			var that=this;
 	    	window.onhashchange = function() {
 //				console.log('111111')
@@ -266,21 +273,7 @@
 	    },
 	    activated(){
 	    	var that=this;
-	    	that.$nextTick(function(){
-				if (this.betterscroll) {
-					this.scrollHeight=this.$refs.tianjia.scrollHeight;		//总高度
-					this.betterscroll.refresh();
-					this.top=0;
-//					console.log(this.scrollHeight)
-//					console.log(this.clientHeight)
-//					console.log(this.clientHeight+this.scrollY)
-				}
-			});
 	    	window.onhashchange = function() {
-//	    		if(localStorage.getItem("qiangZhi")){
-//					localStorage.removeItem("qiangZhi");
-//					console.log(localStorage.getItem("qiangZhi"))
-//				}
 	    		//判断类型是否了
 	    		var params={
 		    		token:localStorage.getItem("token"),
@@ -345,7 +338,7 @@
 				}
 			},
 			zhiDing(){		//返回顶部；
-				this.betterscroll.scrollToElement(this.$refs.tianjia,300);
+				this.$refs.wrapper.scrollTop=0;
 			},
 //			监听是否通过
 			jiantingTongguo(){
@@ -403,71 +396,31 @@
 //				    console.log(res);
 				})
 			},
-			initScroll(){
-				this.scrollHeight=this.$refs.tianjia.scrollHeight;		//总高度
-				this.clientHeight=this.$refs.wrapper.clientHeight;	//可视区高度
-				this.betterscroll=new BScroll(this.$refs.wrapper,{
-					click:true,probeType:3//probeType：3相当于实时监听高度位置
-				});
-				//通过betterscroll对象监听一个scroll事件，当scroll滚动时能够暴露出来，参数pos就是位置
-				this.betterscroll.on("scroll",(pos)=>{
-					this.scrollY=Math.abs(Math.round(pos.y));
-					this.scrollYTop=Math.round(pos.y)*-1;
-//					console.log(this.scrollYTop);
-					if(this.scrollY>600){
-						this.topBlock=true;
-					}else{
-						this.topBlock=false;
-					}
-//					console.log(this.clientHeight+this.scrollY)
-					if(this.clientHeight+this.scrollY==this.scrollHeight){
-						if(this.top=='0'){
-//							console.log("fksjdk")
-							this.top=1;
-							var tata=this;
-							this.topStatus=true;
-							this.tems=setTimeout(function(){
-								if(tata.weitongguoShiyong=='0'){
-									tata.WeitongGuo();
-								}else{
-									tata.qinQiu();
-								}
-							},400)
+			faxianScroll(){
+				if(this.$refs.wrapper.scrollTop>600){
+					this.topBlock=true;
+				}else{
+					this.topBlock=false;
+				}
+				this.imgs()
+			},
+			imgs(){
+				var scrollHeights=this.$refs.wrapper.scrollHeight;
+				var setHeight = document.documentElement.clientHeight; //可见区域高度
+				var scrollTop = this.$refs.wrapper.scrollTop; //滚动条距离顶部高度
+				var x=Math.abs(Math.round(setHeight + scrollTop))
+//				console.log(x)
+//				console.log(scrollHeights)
+				if(x==scrollHeights || scrollHeights-x==1){
+					var tata=this
+					this.topStatus=true;
+					this.tems=setTimeout(function(){
+						if(tata.weitongguoShiyong=='0'){
+							tata.WeitongGuo();
+						}else{
+							tata.qinQiu();
 						}
-					}
-					if(this.scrollYTop<-46){
-						if(this.top=='0'){
-							this.qingzhiShuaxin=1;
-							this.topStatusTop2=false;
-							this.topStatusTop1=true;
-						}
-					}
-					if(this.scrollYTop==-0){
-						if(this.qingzhiShuaxin==1){
-							this.qingzhiShuaxin=0;
-							this.topStatusTop1=false;
-							this.topStatusTop2=true;
-//							console.log("fksjdk")
-							this.top=1;
-							var tata=this;
-							this.topStatusTop=true;
-							this.tems=setTimeout(function(){
-								tata.page=1;
-								tata.data=[];
-								tata.yici=0;
-								tata.tishis=false;
-								tata.qingzhiShuaxin=0;
-								if(tata.weitongguoShiyong=='0'){
-									tata.WeitongGuo();
-								}else{
-									tata.qinQiu();
-								}
-							},600)
-						}
-					}
-				});
-				if(this.scrollHeight<600){
-					this.tishis=true;
+					},400)
 				}
 			},
 //			注册未通过的首页项目列表成功
@@ -478,15 +431,15 @@
 					size:6					//	size	是	[string]
 				}
 				this.$http.post(URL.path+'common/item_list',post,{emulateJSON:true}).then(function(res){
-					this.top=0;
 //					console.log(res);
 //					console.log("注册未通过的首页项目列表成功");
 					this.topStatus=false;
-					this.topStatusTop=false;
 					if(res.body.data.length==0){
 						if(this.data.length==0){
 							this.botent="亲已经到底了"
 						}
+						this.$refs.wrapper.removeEventListener('scroll', this.faxianScroll);
+						this.$refs.wrapper.addEventListener('scroll', this.topGo)
 						this.tishis=true;
 						return;
 					}else{
@@ -507,26 +460,20 @@
 					}
 					this.page=this.page*1;
 					this.page=this.page+=1;
-					this.$nextTick(function(){
-						if (!this.betterscroll) {
-							this.initScroll();
-						}else{
-							this.scrollHeight=this.$refs.tianjia.scrollHeight;		//总高度
-							this.betterscroll.refresh();
-//							console.log(this.scrollHeight)
-//							console.log(this.clientHeight)
-//							console.log(this.clientHeight+this.scrollY)
-						}
-					});
+					if(this.n == 0){
+						this.$nextTick(function(){
+							this.n = 0; //存储图片加载到的位置，避免每次都从第一张图片开始遍历
+	  						this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
+	  						this.imgs()
+						});
+					}
 				},function(res){
 					this.topStatus=false;
-					this.topStatusTop=false;
 				    console.log(res);
 				})
 			},
 			qinQiu(){		//类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报
-				Indicator.open({spinnerType: 'fading-circle'});
-//	    		首页项目列表（非自己收到的项目）接口
+//	    	首页项目列表（非自己收到的项目）接口
 				var token={
 		    		token:localStorage.getItem("token"),
 		    		page:this.page,			//	page	是	[string]		
@@ -534,8 +481,6 @@
 		    	}
 //				console.log(token)
 				this.$http.post(URL.path+'finance/get_item_list',token,{emulateJSON:true}).then(function(res){
-					Indicator.close();
-					this.top=0;
 //					//判断是否注册通过审核；
 //					console.log("首页项目列表成功");
 //					console.log(res)
@@ -551,11 +496,12 @@
 						}
 					}
 					this.topStatus=false;
-					this.topStatusTop=false;
 					if(res.body.data.length==0){
 						if(this.data.length==0){
 							this.botent="亲已经到底了"
 						}
+						this.$refs.wrapper.removeEventListener('scroll', this.faxianScroll);
+						this.$refs.wrapper.addEventListener('scroll', this.topGo)
 						this.tishis=true;
 						return;
 					}else{
@@ -583,22 +529,21 @@
 					}
 					this.page=this.page*1;
 					this.page=this.page+=1;
-					this.$nextTick(function(){
-						if (!this.betterscroll) {
-							this.initScroll();
-						}else{
-							this.scrollHeight=this.$refs.tianjia.scrollHeight;		//总高度
-							this.betterscroll.refresh();
-//							console.log(this.scrollHeight)
-//							console.log(this.clientHeight)
-//							console.log(this.clientHeight+this.scrollY)
-						}
-					});
+					if(this.n == 0){
+						this.$nextTick(function(){
+//							if(this.data[0].length<2 || this.data[0].length>1){
+//								var box=document.getElementsByClassName('ContentText');
+//								box[0].getElementsByClassName('li')[0].style.display="none";
+//								box[0].getElementsByClassName('ol')[0].style.display="none";
+//							}
+							this.n = 0; //存储图片加载到的位置，避免每次都从第一张图片开始遍历
+	  						this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
+	  						this.imgs()
+						});
+					}
 //					console.log(this.data);
 				},function(res){
-					Indicator.close();
 					this.topStatus=false;
-					this.topStatusTop=false;
 				    console.log(res);
 //				    Toast("系统繁忙请稍后再试")
 				})
@@ -785,15 +730,15 @@
 				}
 			},
 			contblock(id,type){		//<!--类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报 7:公司调研-->
-				if(this.shifouZhuce=='2'){
-					if(type=='1' || type=='2' ||type=='3' || type=='7'){
+				if(this.shifouZhuce==2){
+					if(type==1 || type==2 ||type==3 || type==7){
 						window.location.href="#/faxian/DingzengZhaiyao/"+this.userContent["token"]+'/'+id;
 					}else{
 						window.location.href="#/faxian/GuquanZhaiyao/"+this.userContent["token"]+'/'+id;
 					}
 				}else{
 					if(this.shifouZhuce=='6'){
-						if(type=='1' || type=='2' ||type=='3' || type=='7'){
+						if(type==1 || type==2 ||type==3 || type==7){
 //							window.location.href="#/faxian/DingzengZhaiyao/"+this.userContent["token"]+'/'+id;
 						}else{
 //							window.location.href="#/faxian/GuquanZhaiyao/"+this.userContent["token"]+'/'+id;
@@ -851,10 +796,10 @@
 	  	/*transform:rotate(360deg);*/
 	  	opacity: 0;
 	}
+
 	.faxian{
 		width:100%;
 		height:100%;
-		/*position:relative;*/
 		.searchBox {
 			position:fixed;
 			top:0;
@@ -907,22 +852,21 @@
 				}
 			}
 		}
-		/*.box::-webkit-scrollbar{width:0px}*/
+		.box::-webkit-scrollbar{width:0px}
 		.box{
 			position:absolute;
+			overflow-y:scroll;
 			width:100%;
 			height:100%;
 			top:0;
 			left:0;
-			overflow:hidden;
-			/*overflow-y:scroll;
+			overflow-y:scroll;
 			-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
 			.FadeContent{
-				/*position:relative;*/
+				position:relative;
 				width:100%;
 				height:auto;
-				padding-top:0.48rem;
-				padding-bottom:1.06rem;
+				padding-bottom:0.4rem;
 				.banner{
 					position:relative;
 					width:100%;
@@ -1295,7 +1239,7 @@
 					position:absolute;
 					left:0;
 					right:0;
-					bottom:0.66rem;
+					bottom:0.04rem;
 					width:92.5%;
 					height:0.36rem;
 					margin:0 auto;
@@ -1318,9 +1262,9 @@
 				}
 				.loding{
 					position:fixed;
-					bottom:0.68rem;
+					bottom:0.66rem;
 					left:0;
-					margin-bottom:0.12rem;
+					margin-bottom:0.1rem;
 					width:0.3rem;
 					margin:0 auto;
 					right:0;
@@ -1331,39 +1275,6 @@
 				    justify-content: center;
 				    -webkit-box-align: center;
 				    align-items: center;*/
-				}
-				.lodingTop{
-					padding:0.1rem 0;
-					width:0.3rem;
-					margin:0 auto;
-					display:block;
-				}
-				.lodingTop1{
-					display:flex;
-					-webkit-box-pack: center;
-				    justify-content: center;
-				    -webkit-box-align: center;
-				    align-items: center;
-					padding:0.1rem 0;
-					width:100%;
-					display:block;
-					text-align: center;
-					line-height: 30px;
-				}
-				.lodingTop2{
-					position:absolute;
-					top:0;
-					left:0;
-					display:flex;
-					-webkit-box-pack: center;
-				    justify-content: center;
-				    -webkit-box-align: center;
-				    align-items: center;
-					padding:0.1rem 0;
-					width:100%;
-					display:block;
-					text-align: center;
-					line-height: 30px;
 				}
 			}
 		}

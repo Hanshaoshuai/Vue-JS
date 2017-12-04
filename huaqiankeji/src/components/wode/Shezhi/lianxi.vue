@@ -113,7 +113,7 @@
 			color:#fff;
 			z-index:320;
 			span{
-				font-weight:bold;
+				/*font-weight:bold;*/
 			}
 			.xiangmu-left{
 				position:absolute;

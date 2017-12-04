@@ -48,9 +48,9 @@
 					</div>
 					<div class="zhuying_1 border">
 						<div class="ferst"><span></span>经营业绩</div>
-						<div class="last">
-							<p>上一财年：营收&nbsp;<span>{{data.last_year_revenue}}亿</span>&nbsp;&nbsp;扣非净利润&nbsp;<span>{{data.last_year_profit}}万</span></p>
-							<p>今年预计：营收&nbsp;<span>{{data.predict_revenue}}亿</span>&nbsp;&nbsp;扣非净利润&nbsp;<span>{{data.predict_profit}}万</span></p>
+						<div class="last lasts">
+							<p>上一财年:&nbsp;营收<span style="margin-left:0.01rem;">{{data.last_year_revenue}}亿</span>&nbsp;扣非净利润<span style="margin-left:0.01rem;">{{data.last_year_profit}}万</span></p>
+							<p>今年预计:&nbsp;营收<span style="margin-left:0.01rem;">{{data.predict_revenue}}亿</span>&nbsp;扣非净利润<span style="margin-left:0.01rem;">{{data.predict_profit}}万</span></p>
 						</div>
 					</div>
 					<div class="zhuying_1 border">
@@ -176,6 +176,7 @@
 							<li class="border-bottom" @click.stop="BugenYuanyin('营收和净利润规模偏小')"><span>营收和净利润规模偏小</span></li>
 							<li class="border-bottom" @click.stop="BugenYuanyin('融资估值有点贵')"><span>融资估值有点贵</span></li>
 							<li class="border-bottom" @click.stop="BugenYuanyin('主营业务比较传统')"><span>主营业务比较传统</span></li>
+							<li class="border-bottom" @click.stop="BugenYuanyin('非关注领域')"><span>非关注领域</span></li>
 							<li @click.stop="BugenYuanyin('有同事已经接触过')"><span>有同事已经接触过</span></li>
 						</ul>
 					</div>	
@@ -973,6 +974,9 @@
 						padding:0rem 0.14rem 0.18rem 0.14rem;
 						line-height:0.26rem;
 						/*box-shadow: 0 0.02rem 0.04rem #dedde1;*/
+					}
+					.lasts{
+						padding-right:0rem;
 					}
 				}
 				.lasttype{

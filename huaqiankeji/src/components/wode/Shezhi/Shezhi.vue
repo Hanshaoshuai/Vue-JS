@@ -87,6 +87,7 @@
 					localStorage.removeItem("photo");		//用户头像id
 					localStorage.removeItem("photourl");	//用户头像URL地址
 					localStorage.removeItem("panduanWanshan");
+					localStorage.removeItem("qiangZhi");
 					if(localStorage.getItem("typeID")){
 						localStorage.removeItem("typeID");
 					}
@@ -153,7 +154,7 @@
 			color:#fff;
 			z-index:300;
 			span{
-				font-weight:bold;
+				/*font-weight:bold;*/
 			}
 			.xiangmu-left{
 				position:absolute;

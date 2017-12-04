@@ -56,7 +56,8 @@
 	  data () {
 	    return {
 	    	userContent:"",
-	    	ZongHe:""
+	    	ZongHe:"",
+	    	blok:false
 	    }
 	  },
 	  methods:{

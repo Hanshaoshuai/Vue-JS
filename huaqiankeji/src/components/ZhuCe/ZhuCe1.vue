@@ -28,8 +28,8 @@
 						</div>
 					</div>
 					<div class="zhuying_1 liangdian_1 border-top">
-						<div class="ferst">选择您的行业身份<font></font></div>	<!--类型 1:企业 2:投资机构 3:合格投资人 4咨询机构/研究咨询 5:券商研究员/财务顾问 6:新三板做市商-->
-						<ul ref="biaoqian">
+						<div class="ferst">选择您的行业身份<font></font></div>	<!--类型 1:企业 2:投资机构 3:合格投资人 4咨询机构/研究咨询 5:券商研究员 7:财务顾问 6:新三板做市商-->
+						<div class="last" ref="biaoqian">
 							<span @click.stap="xuanze('0','2')">投资机构</span>
 							<span @click.stap="xuanze('1','7')">财务顾问</span>
 							<span @click.stap="xuanze('2','1')">企&nbsp;业</span>
@@ -37,16 +37,16 @@
 							<span @click.stap="xuanze('4','4')">研究咨询</span>
 							<span @click.stap="xuanze('5','6')">做市商</span>
 							<!--<span @click.stap="xuanze('6')">后续添加</span>-->
-						</ul>
+						</div>
 					</div>
 					<transition name="fades">
 						<div v-show="Leixing" class="zhuying_1 liangdian_1 border-topbottom">
 							<div class="ferst">您是什么类型的投资机构<font></font></div>
-							<ul ref="biaoqian2">
+							<div class="last" ref="biaoqian2">
 								<span @click.stap="xuanze2('0','Guquan','1')">股权投资</span>
 								<span @click.stap="xuanze2('1','Zaiquan','2')">债权投资</span>
 								<span @click.stap="xuanze2('2','Guzhai','3')">股债兼投</span>
-							</ul>
+							</div>
 						</div>
 					</transition>
 					<div class="zhuce-food" @click.stop="XiaYibu()">
@@ -466,25 +466,25 @@
 					}
 				}
 				.liangdian_1{
+					width:100%;
 					.ferst{
 						height:0.18rem;
 						padding-bottom:0.14rem;
 					}
-					ul{
+					.last{
 						width:100%;
 						overflow:hidden;
-						display:flex;
+						/*display:flex;*/
 						/*align-content:stretch;*/
 						/*align-items:stretch ;*/
 						/*justify-content:space-between;*/
-						flex-wrap:wrap;
-						
+						/*flex-wrap:wrap;*/
 						span{
-							display:inline-block;
+							display:block;
 							float:left;
 							font-size:0.14rem;
 							padding:0.06rem 0.08rem;
-							border:0.007rem solid #f2f2f2;
+							border:1px solid #f2f2f2;
 							color:#acacac;
 							border-radius:0.3rem;
 							margin:0 0.16rem 0.11rem 0;
@@ -493,34 +493,10 @@
 							margin:0 0 0.11rem 0;
 						}
 						.bianse{
-							border:0.007rem solid #fddcd0;
+							border:1px solid #fddcd0;
 							color:#ff7a59;
 						}
 					}
-				}
-				.zhuce-leixing{
-					width:100%;
-					height:2rem;
-					display: flex;
-					ul{
-						flex:1;
-						padding:0.2rem;
-						.leixing-header{
-							margin-left: 0.1rem;
-							margin-bottom:0.1rem;
-						}
-						li{
-							display:inline-block;
-							margin:0;
-							padding:0.08rem 0.16rem;
-							margin:0.06rem 0.1rem;
-						}
-					}
-				    /*-webkit-box-pack: center;
-				    justify-content: center;
-				    -webkit-box-align: center;
-				    align-items: center;*/
-				   
 				}
 				.zhuce-food{
 					width:100%;

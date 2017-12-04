@@ -6,8 +6,8 @@
 				<span>历史融资记录</span>
 			</div>
 			<div class="box" ref="wrapper">
-				<div class="contents" ref="tianjia">
-					<div style="width:100%;height:0.55rem;"></div>
+				<div style="width:100%;height:0.55rem;"></div>
+				<div class="contents">
 					<div v-for="(cont,index) in data" class="add" ref="lisitTop">
 						<div v-for="(item,index) in cont" class="sousuo-content border-topbottom">
 							<ul ref="index1" class="content-header border-bottom" index="type1"  @click.stap="typeName(item.id,item.type,item.is_send)">
@@ -51,18 +51,29 @@
 				<div v-show="topBlock" @click.stop="zhiDing()" class="zhiDing"></div>
 			</transition>
 			<router-view :token="token" :XiangmuID="XiangmuID" :is_send="is_send"></router-view>
+			<!--<dingzengzuoshi ref="dingzengzuoshiShow"></dingzengzuoshi>-->
+			<!--<zhuanlaogu ref="zhuanlaoguShow"></zhuanlaogu>-->
+			<!--<diaoyan ref="diaoyanShow"></diaoyan>-->
+			<!--<shuangchuang ref="shuangchuangShow"></shuangchuang>-->
+			<!--<zhiya ref="zhiyaShow"></zhiya>-->
+			<!--<zulin ref="zulinShow"></zulin>-->
 		</div>
 	</transition>
 </template>
 
 <script type="text/ecmascript">
-	import BScroll from "better-scroll";
 	import {URL} from '../../../common/js/path';
 	import {numToTime} from "../../../common/js/date.js";
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
 	import { Indicator } from 'mint-ui';
 	import box from "../../box.vue";
+//	import dingzengzuoshi from "./DingzengZuoshi.vue";
+//	import zhuanlaogu from "./ZhuanlaoGu.vue";
+//	import diaoyan from "./Diaoyan.vue";
+//	import shuangchuang from "./ShuangChuang.vue";
+//	import zhiya from "./ZhiYa.vue";
+//	import zulin from "./ZuLin.vue";
 	
 	export default {
 		props:{
@@ -94,6 +105,7 @@
 				is_send:"",
 				numToTime:"",
 				
+				
 				num:"",
 				n:"",		//存储图片加载到的位置，避免每次都从第一张图片开始遍历
 				height:0,
@@ -103,12 +115,7 @@
 				jeiguo:"亲已经到底了",
 				topStatus:false,
 				tems:'',
-				listlenght:-1,
-				
-				scrollY:'',
-				scrollHeight:"",
-				clientHeight:"",
-				top:0
+				listlenght:-1
 			}
 		},
 		mounted() {
@@ -117,42 +124,42 @@
 		},
 		methods:{
 			yijianHind(){
-				Indicator.close();
+//				Indicator.close();
 				history.go(-1)
 //				this.tucaoShow=false;
 			},
 			zhiDing(){		//返回顶部；
-				this.betterscroll.scrollToElement(this.$refs.tianjia,300);
+				this.$refs.wrapper.scrollTop=0;
 			},
-			initScroll(){
-				this.scrollHeight=this.$refs.tianjia.scrollHeight;		//总高度
-				this.clientHeight=this.$refs.wrapper.clientHeight;	//可视区高度
-				this.betterscroll=new BScroll(this.$refs.wrapper,{
-					click:true,probeType:3//probeType：3相当于实时监听高度位置
-				});
-				//通过betterscroll对象监听一个scroll事件，当scroll滚动时能够暴露出来，参数pos就是位置
-				this.betterscroll.on("scroll",(pos)=>{
-					this.scrollY=Math.abs(Math.round(pos.y));
-					if(this.scrollY>400){
-						this.topBlock=true;
-					}else{
-						this.topBlock=false;
-					}
-//					console.log(this.scrollHeight);
-//					console.log(this.clientHeight+this.scrollY)
-					if(this.clientHeight+this.scrollY==this.scrollHeight){
-						if(this.top==0){
-							this.top=1;
-							var tata=this;
-							this.topStatus=true;
-							this.tems=setTimeout(function(){
-								tata.pipeiBlock();
-							},400)
-						}
-					}
-				});
-				if(this.scrollHeight<600){
-					this.tishis=true;
+			handleScroll(){
+				if(this.$refs.wrapper.scrollTop>600){
+					this.topBlock=true;
+				}else{
+					this.topBlock=false;
+				}
+			},
+			faxianScroll(){
+				if(this.$refs.wrapper.scrollTop>600){
+					this.topBlock=true;
+				}else{
+					this.topBlock=false;
+				}
+				this.imgs()
+	//				console.log(this.img[6].offsetTop)
+			},
+			imgs(){
+				var scrollHeights=this.$refs.wrapper.scrollHeight;
+				var setHeight = document.documentElement.clientHeight; //可见区域高度
+				var scrollTop = this.$refs.wrapper.scrollTop; //滚动条距离顶部高度
+				var x=Math.abs(Math.round(setHeight + scrollTop))
+	//				console.log(x)
+	//				console.log(scrollHeights)
+				if(x==scrollHeights || scrollHeights-x==1){
+					var tata=this
+					this.topStatus=true;
+					this.tems=setTimeout(function(){
+						tata.pipeiBlock();
+					},400)
 				}
 			},
 			pipeiBlock(){
@@ -171,6 +178,8 @@
 						if(this.data.length==0){
 							this.jeiguo="暂无记录"
 						}
+						this.$refs.wrapper.removeEventListener('scroll', this.faxianScroll);
+						this.$refs.wrapper.addEventListener('scroll', this.handleScroll)
 						this.tishis=true;
 						return;
 					}else{
@@ -181,17 +190,13 @@
 					}
 					this.page=this.page*1;
 					this.page=this.page+=1;
-					this.$nextTick(function(){
-						if (!this.betterscroll) {
-							this.initScroll();
-						}else{
-							this.scrollHeight=this.$refs.tianjia.scrollHeight;		//总高度
-							this.betterscroll.refresh();
-							this.top=0;
-//							console.log(this.scrollHeight)
-//							console.log(this.clientHeight+this.scrollY)
-						}
-					})
+					if(this.n == 0){
+						this.$nextTick(function(){
+							this.n = 0; //存储图片加载到的位置，避免每次都从第一张图片开始遍历
+	  						this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
+	  						this.imgs()
+						});
+					}
 				},function(res){
 					Indicator.close();
 				    console.log(res.status);
@@ -281,12 +286,12 @@
 				}
 			}
 		}
-		/*.box::-webkit-scrollbar{width:0px}*/
+		.box::-webkit-scrollbar{width:0px}
 		.box{
-			/*overflow-y:auto;*/
+			overflow-y:auto;
 			width:100%;
 			height:100%;
-			/*-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
+			-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
 			.contents{
 				position:relative;
 				padding-bottom:0.52rem;
@@ -396,16 +401,6 @@
 		    justify-content: center;
 		    -webkit-box-align: center;
 		    align-items: center;
-		}
-		.zhiDing{
-			position:fixed;
-			bottom:1.6rem;
-			right:0.2rem;
-			background-image:url("../img/top.png");
-			background-size:100% 100%;
-			width:0.5rem;
-			height:0.5rem;
-			/*z-index: 200;*/
 		}
 	}
 </style>

@@ -5,9 +5,9 @@
 				<span class="xiangmu-left"><img src="./img/back.png"/></span>
 				<span>投资人反馈</span>
 			</div>
-			<div class="box" ref="wrapper">
+			<div class="box">
+				<div style="width:100%;height:0.45rem;"></div>
 				<div class="fankiu" ref="tianjia">
-					<div style="width:100%;height:0.45rem; background:#f5f4f9;"></div>
 					<div v-for="(item,index) in res" class="content-food border-bottom" @click.stap="xinxiTo(item.id,item.uname)">
 						<div class="imgas">
 							<p>
@@ -19,18 +19,28 @@
 						<span>&nbsp;&nbsp;{{item.com_short}}</span>
 						<span>&nbsp;&nbsp;{{item.position}}</span>
 					</div>
+					<!--<div class="content-food border-bottom" @click.stap="xinxiTo()">
+						<p>
+							<img class="border" src="" alt="" />
+							<font>6</font>
+						</p>
+						<span>&nbsp;&nbsp;次阅读</span>
+						<span>&nbsp;&nbsp;投资经理</span>
+						<span>&nbsp;&nbsp;张经理</span>
+					</div>-->
 				</div>
 			</div>
+			<!--<fankuixinxi ref="xinxiShow"></fankuixinxi>-->
 		</div>
 	</transition>
 </template>
 
 <script type="text/ecmascript">
-	import BScroll from "better-scroll";
 	import {URL} from '../../../common/js/path';
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
 	import { Indicator } from 'mint-ui';
+//	import fankuixinxi from "./FankuiXinxi.vue";
 	
 	
 	export default {
@@ -69,23 +79,34 @@
 				history.go(-1)
 //				this.tucaoShow=false;
 			},
-			initScroll(){
-				this.betterscroll=new BScroll(this.$refs.wrapper,{
-					click:true,probeType:3//probeType：3相当于实时监听高度位置
-				});
-				//通过betterscroll对象监听一个scroll事件，当scroll滚动时能够暴露出来，参数pos就是位置
-				this.betterscroll.on("scroll",(pos)=>{
-					this.scrollY=Math.abs(Math.round(pos.y));
-//					console.log(this.scrollHeight);
-//					console.log(this.clientHeight+this.scrollY)
-				});
-			},
 			fankuiBlock(){
 //				if(this.res==""){
 					Indicator.open({spinnerType: 'fading-circle'});
 					this.$http.post(URL.path+'chatcomment/comment_list',this.token,{emulateJSON:true}).then(function(res){
 						Indicator.close();
 						this.res=res.body.data;
+//						var data=[];
+//						var datas=[];
+//						var x=0;
+//						var y=0;
+//						var length=res.body.data.length;
+//						for(var item in this.res){
+//							if(this.res[item].nums!=0){
+//								datas[y]=this.res[item];
+//								this.res.splice(item,1);
+//								y+=1
+//							}else{
+//								data[x]=this.res[item];
+//								x+=1;
+//							}
+//						}
+//						for(var i=0; i<data.length;i++){
+//							datas.push(data[i])
+//						}
+//						this.res=datas;
+//						console.log(datas)
+						
+						
 						if(this.res.length=='0'){
 //							Toast("亲，您暂无反馈记录...")
 							return;
@@ -103,13 +124,6 @@
 										this.style.height="auto"
 									}
 								}
-							}
-							if (!this.betterscroll) {
-								this.initScroll();
-							}else{
-								this.betterscroll.refresh();
-		//							console.log(this.scrollHeight)
-		//							console.log(this.clientHeight+this.scrollY)
 							}
 						})
 //						console.log("取到评论反馈列表");
@@ -132,12 +146,36 @@
 		      		token:this.$route.params.token,		//	token	是	[string]		
 		      	}
 				this.$http.post(URL.path+'chatcomment/read_chat',farams,{emulateJSON:true}).then(function(res){
+//					console.log("反馈已读");
+//					console.log(res.body);
+//					this.$http.post(URL.path+'chatcomment/get_feedback_num',farams1,{emulateJSON:true}).then(function(res){
+//						var FankuiShu=res.body.data[0].feedback_num;
+//						this.FankuiShu=FankuiShu
+//						this.$emit("to-parent",FankuiShu);
+//						console.log("企业获取反馈个数");
+//						console.log(res);
+//					},function(res){
+//					    console.log(res);
+//					})
 				},function(res){
 				    console.log(res);
 				})
 				window.location.href="#/fankuixinxi/"+this.$route.params.token+'/'+to_id+'/'+uname;
 			}
 			
+//			show(){
+////				dom更新后在执行使用$refs
+//				this.$nextTick(function() {
+//					if(!this.betterscroll){
+//						this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
+//							click:true
+//						});
+//					}else{
+//						//重新计算高度  
+//						this.betterscroll.refresh();
+//					}
+//				});
+//			}
 		},
 		events:{
 			
@@ -149,8 +187,17 @@
 //			}
 		},
 		updated(){
+//			if(!this.betterscroll){
+//				this.betterscroll=new BScroll(this.$refs.betterscroll_food,{
+//					click:true
+//				});
+//			}else{
+//				//重新计算高度  
+//				this.betterscroll.refresh();
+//			}
 		},
 		components:{
+//			fankuixinxi
 		}
 	}
 </script>

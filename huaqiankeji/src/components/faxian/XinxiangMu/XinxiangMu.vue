@@ -15,6 +15,10 @@
 			<div class="box" ref="wrapper">
 				<div class="wenzhang-content" ref="tianjia">
 					<div style="width:100%;height:0.55rem;"></div>
+					<div class="zhuying-heder"><font></font>每个项目的<span>有效期仅10天</span>，是否跟进，请及时处理，过期将自动撤回。您的反馈率越高，后续接收到的项目就越好。</div>
+					<!--<div class="tixing">
+						<span>每个项目的&nbsp;&nbsp;<font style="color:#FF7A59;">有效期为10天</font>，请及时做出是否跟进的处理，过期将无法查看。反馈率越好，后续接收到的项目就越好。</span>
+					</div>-->
 					<div v-for="(cont,index) in data" class="add" :id="index" ref="lisitTop">
 						<div v-for="(item,index) in cont" class="tishi-bottom" @click.stop="xiangqing(item.id,numToTime(item.send_time),item.end_time.day,item.end_time.hour)">
 							<div v-if="item.is_read==2" class="tubiao"></div>
@@ -428,6 +432,53 @@
 			-webkit-overflow-scrolling:touch;/*解决苹果滑动流畅*/
 			.wenzhang-content{
 				position:relative;
+				.tixing{
+					display:flex;
+					align-content: center;
+					align-items: center;
+					justify-content: center;
+					width:90%;
+					margin:0 auto;
+					margin-bottom:0.14rem;
+					border-radius:0.06rem;
+					line-height:0.2rem;
+					padding:0.06rem 0;
+					background:#fff;
+					color:#bcbcbc;
+					span{
+						display:block;
+						padding:0 0.06rem;
+					}
+				}
+				.zhuying-heder{
+					width:90%;
+					/*padding:0.06rem 5%;
+					width:86%;
+					padding:0.06rem 2%;
+					border-radius:0.06rem;
+					background:#fff;*/
+					margin:0 auto;
+					margin-bottom:0.08rem;
+					/*padding:0.16rem 0.2rem 0.08rem 0.2rem;*/
+					line-height:0.22rem;
+					font-size:0.16rem;
+					/*font-weight:600;*/
+					font{
+						display:block;
+						float:left;
+						width:0.2rem;
+						height:0.2rem;
+						background-image:url("./img/zhongdian.png");
+						background-size:100% 100%;
+						vertical-align:top;
+						margin:-0.01rem 0.04rem 0 0;
+					}
+					span{
+						display:inline-block;
+						color:#fc9981;
+						/*font-weight:600;*/
+					}
+				}
 				.tishi-bottom{
 					width:90%;
 					margin:0 auto;

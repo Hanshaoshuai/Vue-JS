@@ -305,7 +305,7 @@
 				margin:0 auto;
 				position:relative;
 				margin-top:0.3rem;
-				border:0.008px solid #d0d0d0;
+				border:1px solid #d0d0d0;
 				ul{
 					width:100%;
 					li{
@@ -317,13 +317,13 @@
 							height:0.26rem;
 							flex:1;
 							padding-left:0.1rem;
-							border-left:0.008px solid #d0d0d0;
+							border-left:1px solid #d0d0d0;
 						}
 						input::-webkit-input-placeholder{ 
 							color: #d0d0d0; 
 						} 
 						&:first-child{
-							border-bottom:0.008px solid #d0d0d0;
+							border-bottom:1px solid #d0d0d0;
 						}
 						span{
 							display:inline-block;

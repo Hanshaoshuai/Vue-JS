@@ -1,52 +1,81 @@
 <template>
-	<div v-show="showFlag" class="wenzhang">
-		<div class="xiangmu-header" @click.stop="listnone1()">
-			<!--<span class="xiangmu-left"><img src="../img/back.png"/></span>-->
-			<span>一键投递</span>
-		</div>
-		<div class="wenzhang-list" >
-			<div ref="tianjia" class="wenzhang-content">
-				<div class="fankiu">
-					<div class="tubiao"></div>
-					<div class="content-food">
-						<span>已为您投递至如下投资人，请注意查收投资人反馈并及时回复</span>
+	<!--<transition name="fade">-->
+		<div v-show="showFlag" class="wenzhang">
+			<div class="xiangmu-header" @click.stop="listnone1()">
+				<!--<span class="xiangmu-left"><img src="../img/back.png"/></span>-->
+				<span>一键投递</span>
+			</div>
+			<div class="wenzhang-list">
+				<div ref="tianjia" class="wenzhang-content">
+					<div class="fankiu">
+						<div class="tubiao"></div>
+						<div class="content-food">
+							<span>已为您投递至如下投资人，请注意查收投资人反馈并及时回复</span>
+						</div>
 					</div>
-				</div>
-				<div class="donghuaGo" ref="donghuaGo">
-					<div>
-						<div v-for="(item,index) in data" v-bind:key="index" class="list-item">
-							<div class="sousuo-content border-topbottom">
-								<div class="content-header">
-									<font><img :src="item.photo"/></font>
-									<div class="names">
-										<span class="border-right">{{item.uname}}</span>
-										<span>{{item.com_short}}</span>&nbsp;
-										<span>{{item.position}}</span>
+					<div class="donghuaGo" ref="donghuaGo">
+						<!--<transition-group name="list" tag="p" >-->
+							<div v-for="(item,index) in data" v-bind:key="index" class="list-item">
+								<!--{{item}}-->
+								<div class="sousuo-content border-topbottom">
+									<div class="content-header">
+										<font><img :src="item.photo"/></font>
+										<div class="names">
+											<span class="border-right">{{item.uname}}</span>
+											<span>{{item.com_short}}</span>&nbsp;
+											<span>{{item.position}}</span>
+										</div>
 									</div>
 								</div>
 							</div>
-						</div>
+							<!--<div v-for="(item,index) in items" v-bind:key="index" class="list-item">
+								{{item}}
+								<div class="sousuo-content border-topbottom">
+									<div class="content-header">
+										<font><img :src="items[index].photo"/></font>
+										<div class="names">
+											<span class="border-right">{{items[index].uname}}</span>
+											<span>{{items[index].com_short}}</span>&nbsp;
+											<span>{{items[index].position}}</span>
+										</div>
+									</div>
+								</div>
+							</div>-->
+						<!--</transition-group>-->
 					</div>
 				</div>
 			</div>
+			<!--<div class="donghua">
+				<span ref="donghua">
+					
+				</span>
+			</div>-->
+			<div class="zhaiyao-food">
+				<span class="last" @click.stop="butten()">返回首页</span>
+			</div>
+			<div class="endtop" v-show="disnone">
+				<li>
+					<p><img src="../img/loader.gif"/><span>正在为您投递，请稍候…</span></p>
+				</li>
+			</div>
+			<!--<router-view></router-view>-->
 		</div>
-		<div class="zhaiyao-food">
-			<span class="last" @click.stop="butten()">返回首页</span>
-		</div>
-		<div class="endtop" v-show="disnone">
-			<li>
-				<p><img src="../img/loader.gif"/><span>正在为您投递，请稍候…</span></p>
-			</li>
-		</div>
-	</div>
+	<!--</transition>-->
 </template>
 
 <script type="text/ecmascript">
-	import BScroll from "better-scroll";
 	import {URL} from '../../../../common/js/path';
 	import { Toast } from 'mint-ui';
 	import { Indicator } from 'mint-ui';
+//	import Vue from "vue";
 	import { MessageBox } from 'mint-ui';
+//	import BScroll from "better-scroll";
+//	import Vue from "vue";
+//	import {formatDate} from "../../common/js/date.js";
+//	import cartcontrol from "../cartcontrol/cartcontrol.vue";
+//	import ratingselect from "../ratingselect/ratingselect.vue";
+//	import split from "../split/split.vue";
+	
 	
 	export default {
 		props:{
@@ -68,12 +97,8 @@
 				showblock:true,
 				items: [],
     			nextNum:[],
-    			disnone:true,
+    			disnone:true
     			
-    			scrollY:'',
-				scrollHeight:"",
-				clientHeight:"",
-				top:0
 			}
 		},
 		activated(){
@@ -90,23 +115,14 @@
 //				this.showFlag=false;
 				history.go(-1)
 			},
-			initScroll(){
-				this.betterscroll=new BScroll(this.$refs.donghuaGo,{
-					click:true,probeType:3//probeType：3相当于实时监听高度位置
-				});
-				//通过betterscroll对象监听一个scroll事件，当scroll滚动时能够暴露出来，参数pos就是位置
-				this.betterscroll.on("scroll",(pos)=>{
-					this.scrollY=Math.abs(Math.round(pos.y));
-				});
-			},
 			qingqui(){
 				var tata=this;
-//				var times=setTimeout(function(){
-//					tata.disnone=false;
-//					if(tata.disnone==false){
-//						clearTimeout(times)
-//					}
-//				},1000)
+				var times=setTimeout(function(){
+					tata.disnone=false;
+					if(tata.disnone==false){
+						clearTimeout(times)
+					}
+				},1000)
 				Indicator.open({spinnerType: 'fading-circle'});
 	//			console.log(this.$route.params.uID);
 				this.token=this.$route.params.token;
@@ -128,8 +144,31 @@
 					var tata=this;
 					Indicator.close();
 					this.data=res.body.data
+	//				Toast("您已成功投递 "+x+" 位投资人请您注意查收投资人的反馈并及时回复");
+	//				var y=0;
+	//				for(var item in this.data){
+	////						console.log(this.nextNum)
+	//					this.nextNum[y]=this.data[item]
+	//					y+=1;
+	//				}
+	//				var tata=this;
+	//				var x=0;
+	//		    	var times=setInterval(function(){
+	//		    		var contentTexte=tata.$refs.donghuaGo;
+	//					contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
+	//		    		if(x==tata.nextNum.length){
+	//		    			tata.$refs.donghua.style.background="#f5f4f9";
+	//		    			clearInterval(times)
+	//		    			return;
+	//		    		}
+	////			    		console.log(tata.nextNum[x])
+	//					tata.items.splice(tata.items.length, 0, tata.nextNum[x])
+	//					x+=1;
+	//					contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
+	//				},200)
+			    	
+			    	
 			    	tata.$nextTick(function(){
-			    		this.disnone=false;
 						var img = tata.$refs.tianjia.getElementsByTagName("img");
 						var length=img.length;
 						for (var i = 0; i < length; i++) {
@@ -142,11 +181,6 @@
 									this.style.height="auto"
 								}
 							}
-						}
-						if (!this.betterscroll) {
-							this.initScroll();
-						}else{
-							this.betterscroll.refresh();
 						}
 					})
 	//				console.log(res);
@@ -173,7 +207,18 @@
 		      	this.items.splice(this.randomIndex(), 1)
 		    },
 			butten(){
+//				MessageBox.confirm('您确定要联系对方并索要完整项目信息吗?').then(action => {
+//					this.ButtenName="申请成功，等待反馈";
+//					var tate=this;
+//					setTimeout(function(){
+//						tate.showFlag=false;
+//						tate.ButtenName="索要完整项目信息";
+//					},2000)
+//				  console.log("ijfj")
+//				});
+//				this.block=true;
 				window.location.href="#/faxian";
+//				location.reload()
 			}
 		},
 		events:{
@@ -266,7 +311,7 @@
 				.fankiu{
 					width:100%;
 					display:flex;
-					padding:0.1rem 0 0.1rem 0;
+					padding:0.1rem 0 0.2rem 0;
 					/*align-items:center;*/
 					.tubiao{
 						width:0.19rem;
@@ -284,12 +329,12 @@
 						}
 					}
 				}
-				/*.donghuaGo::-webkit-scrollbar{width:0px}*/
+				.donghuaGo::-webkit-scrollbar{width:0px}
 				.donghuaGo{
 					width:100%;
-					height:75%;
-					overflow:hidden;
-					/*-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
+					height:74%;
+					overflow-y:auto;
+					-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
 					.sousuo-content{
 						width:100%;
 						height:auto;

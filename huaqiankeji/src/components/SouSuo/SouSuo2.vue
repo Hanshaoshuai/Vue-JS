@@ -9,16 +9,18 @@
 				<span class="sousuoGo" @click.stap="sousuoGo()">搜索</span>
 			</div>
 			<div class="box" ref="wrapper">
-				<div class="wenzhang-content" ref="tianjia">
-					<div v-for="(cont,index) in data" class="add" :id="index" ref="lisitTop">
+				<div class="wenzhang-content" ref="tianjia" id="wrapper">
+					<!--<div v-for="(item,index) in data" class="sousuo-content border-topbottom" @click.stop="xiangQing('7','3',item.id)">-->
+					<div id="iscroll" v-for="(cont,index) in data" class="add" :id="index" ref="lisitTop">
+						<!--<div id="pullDown">下拉刷新</div>-->
 	<!--循环遍历-->		<div v-for="(item,index) in cont" class="sousuo-content border-topbottom" @click.stop="xiangQing(item.cctype,item.investment_type,item.uid)">
 							<div class="content-header">
+								<!--<font><img src="" :rul="item.photo"/></font>-->
 								<font><img :src="item.photo"/></font>
 								<div class="names">
 									<span class="border-right">{{item.uname}}</span>
-									<span v-if="item.acom_name==''">{{item.com_name}}</span>
-									<span v-if="item.acom_name!=''">{{item.acom_name}}</span>
-									&nbsp;<span>{{item.position}}</span>
+									<span>{{item.com_name}}</span>&nbsp;
+									<span>{{item.position}}</span>
 								</div>
 							</div>
 							<div v-if="item.cctype=='2'" class="xiaolv border-topbottom">
@@ -38,6 +40,7 @@
 										<font v-if="item.changenums==0">0&nbsp;%</font>
 										<font v-if="item.changenums!=0">{{Math.round((item.changenums/item.itemnumberes)*100)}}&nbsp;%</font>
 									</li>
+									<!--<li><font>{{item.changenums}}&nbsp;%</font></li>-->
 									<span>约谈率</span>
 								</div>
 							</div>
@@ -58,6 +61,7 @@
 										<font v-if="item.changenums==0">0&nbsp;%</font>
 										<font v-if="item.changenums!=0">{{Math.round((item.changenums/item.itemnumberes)*100)}}&nbsp;%</font>
 									</li>
+									<!--<li><font>{{item.changenums}}&nbsp;%</font></li>-->
 									<span>约谈率</span>
 								</div>
 							</div>
@@ -78,6 +82,7 @@
 										<font v-if="item.changenums==0">0&nbsp;%</font>
 										<font v-if="item.changenums!=0">{{Math.round((item.changenums/item.itemnumberes)*100)}}&nbsp;%</font>
 									</li>
+									<!--<li><font>{{item.changenums}}&nbsp;%</font></li>-->
 									<span>约谈率</span>
 								</div>
 							</div>
@@ -89,18 +94,26 @@
 									<span v-if="item.investment_type==2" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
 									<span v-if="item.investment_type==2" class="zijin"><a style="color:#2abdfc">资金成本：</a>年化 {{item.fund_min}}%-{{item.fund_max}}%</span>
 									<span v-if="item.investment_type==2" class="fangkuan"><a style="color:#2abdfc">放款速度：</a>不超过{{item.loan_time}}天</span>
+									<!--<span v-if="item.investment_type==3" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
+									<span v-if="item.investment_type==3" class="zijin"><a style="color:#2abdfc">资金成本：</a>年化 {{item.fund_min}}%-{{item.fund_max}}%</span>
+									<span v-if="item.investment_type==3" class="fangkuan"><a style="color:#2abdfc">放款速度：</a>不超过{{item.loan_time}}天</span>-->
 									
 									
 									<span v-if="item.cctype==1" class="lingyu"><font><a style="color:#2abdfc">行业：</a><a v-for="(item,index) in item.industry">{{item.title}}&nbsp;&nbsp;</a></font></span>
 									<span v-if="item.cctype==2" class="jieduan"><font v-if="item.investment_type==0"><a style="color:#2abdfc">阶段：</a><a v-for="(item,index) in item.fund_stage">{{item.title}}&nbsp;&nbsp;</a></font></span>
 									<span v-if="item.cctype==2" class="dangbi"><font v-if="item.investment_type==0"><font v-if="item.single_project!=0"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project[0].title}}</font></font></span>
 									<span v-if="item.cctype==2" class="lingyu"><font v-if="item.investment_type==0"><a style="color:#2abdfc">行业：</a><a v-for="(item,index) in item.interested">{{item.title}}&nbsp;&nbsp;</a></font></span>
+									<!--<span v-if="item.ctype==3" class="lingyu"><a style="color:#2abdfc">行业：</a><a v-for="item in item.interested">{{item.title}}、</a></span>-->
 									<span v-if="item.cctype==4" class="lingyu"><font v-if="item.investment_type==0"<a style="color:#2abdfc">行业：</a><a v-for="item in item.interested">{{item.title}}&nbsp;&nbsp;</a></font></span>
+									<!--<span v-if="item.ctype==3" class="lingyu">领域：<a v-for="(item,index) in item.interested">{{item.title}}、</a></span>
+									<span v-if="item.ctype==4" class="lingyu">领域：<a v-for="(item,index) in item.interested">{{item.title}}、</a></span>-->
 								</div>
 							</div>
 						</div>
+						<div id="pullUp">上啦加载</div>
 					</div>
-					<div v-show="tishis" class="tishi-bottoms">
+				</div>
+				<div v-show="tishis" class="tishi-bottoms">
 					<div class="tishis">
 						<ul>
 							<li class="border-bottom"></li>
@@ -109,8 +122,6 @@
 						</ul>
 					</div>
 				</div>
-				</div>
-				
 				<span class="loding" v-show="topStatus">
 	            	<mt-spinner :type="3" color="#26a2ff" :size="30"></mt-spinner>
 	          	</span>
@@ -124,7 +135,9 @@
 </template>
 
 <script type="text/ecmascript">
-	import BScroll from "better-scroll";
+	import $ from 'jquery';
+	import {IScroll} from '../../common/js/iscroll-probe.js';
+	import VueScroller from 'vue-scroller';
 	import {URL} from '../../common/js/path';
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
@@ -161,23 +174,110 @@
 				jeiguo:"亲已经到底了",
 				topBlock:false,
 				
-				scrollY:'',
-				scrollHeight:"",
-				clientHeight:"",
-				top:0
+				myScroll:'',
+				pullDownFlag:'',
+				pullUpFlag:"",
+				pullDown:"",
+				pullUp:""
 			}
 		},
 		mounted(){
-//			console.log()
+//			console.log(IScroll)
+//			var myScroll;
+//			var pullDownFlag, pullUpFlag;//标识
+//			var pullDown, pullUp;//DOM节点
+			
+			
 		},
 		methods:{
+			positionJudge() {
+				console.log(1)
+				if (this.y > 40) { //判断下拉
+					this.pullDown.innerHTML = "放开刷新页面";
+					this.pullDownFlag = 1;
+				} else if (this.y < (this.maxScrollY - 40)) { //判断上拉
+					this.pullUp.innerHTML = "放开加载页面";
+					this.pullUpFlag = 1;
+				}
+			},
+			
+			action() {
+				console.log(2)
+//				this.pullDownAction();
+				if (this.pullDownFlag == 1) {
+					this.pullUpAction();
+//					this.pullDownAction();
+					this.pullDown.innerHTML = "下拉刷新…";
+					this.pullDownFlag = 0;
+				} else if (this.pullUpFlag == 1) {
+//					this.pullUpAction();
+					this.pullDownAction();
+					this.pullUp.innerHTML = "上拉加载…";
+					this.pullUpFlag = 0;
+				}
+			},
+			
+			loaded() {
+				this.pullDownFlag = 0;
+				this.pullUpFlag = 0;
+				this.pullDown = document.getElementById("pullDown");
+				this.pullUp = document.getElementById("pullUp");
+				this.myScroll = new IScroll("#wrapper", {
+					/*需要使用iscroll-probe.js才能生效probeType：1  滚动不繁忙的时候触发
+					probeType：2  滚动时每隔一定时间触发
+					probeType：3  每滚动一像素触发一次*/
+					probeType: 3,
+			        momentum: true,//关闭惯性滑动
+					mouseWheel: true, //鼠标滑轮开启
+					scrollbars: false, //滚动条可见
+					fadeScrollbars: true, //滚动条渐隐
+					interactiveScrollbars: true, //滚动条可拖动
+					shrinkScrollbars: 'scale', // 当滚动边界之外的滚动条是由少量的收缩
+					useTransform: true, //CSS转化
+					useTransition: true, //CSS过渡
+					bounce: true, //反弹
+					freeScroll: false, //只能在一个方向上滑动
+					startX: 0,
+					startY: 0,
+			//      snap: "li",//以 li 为单位
+				});
+				this.myScroll.on('scroll', this.positionJudge);
+				this.myScroll.on("scrollEnd", this.action);
+			},
+//			loaded();
+			
+			pullDownAction() {
+				var that=this;
+			//	spinner.style.display = "block";
+				setTimeout(function() {
+					that.qingqiu();
+//					window.location.reload();
+			//		spinner.style.display = "none";
+					this.myScroll.refresh();
+				}, 1000);
+			},
+			
+			pullUpAction() {
+				var that=this;
+			//	spinner.style.display = "block";
+				setTimeout(function() {
+					that.qingqiu();
+			//		spinner.style.display = "none";
+			//		myScroll.refresh();
+				}, 300);
+			},
+			
+//			document.addEventListener('touchmove', function(e) {
+//				e.preventDefault();
+//			}, false);
+			//对开始拖动和拖动结束的监听，这是iScroll5的一个坑，positionJudge和action都是function，但是如果直接以function(){}的方式写在里面的话，调用会出问题，所以要单独写在外面
 			yijianHind(){
 				this.topStatus=false;
 				Indicator.close();
 				history.go(-1)
 			},
 			zhiDing(){		//返回顶部；
-				this.betterscroll.scrollToElement(this.$refs.tianjia,300);
+				this.$refs.wrapper.scrollTop=0;
 			},
 			xiangQing(id,Tid,uid){		//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构/研究咨询 5:券商研究员 6:新三板做市商 7:财务顾问
 //				window.location.href="#/faxian/sousuo/"+this.$route.params.token+'/'+"SousuoLeixing";
@@ -194,35 +294,35 @@
 					window.location.href="#/faxian/sousuo/Ziliao"+id+"/"+this.userContent["token"];
 				}
 			},
-			initScroll(){
-				this.scrollHeight=this.$refs.tianjia.scrollHeight;		//总高度
-				this.clientHeight=this.$refs.wrapper.clientHeight;	//可视区高度
-				this.betterscroll=new BScroll(this.$refs.wrapper,{
-					click:true,probeType:3//probeType：3相当于实时监听高度位置
-				});
-				//通过betterscroll对象监听一个scroll事件，当scroll滚动时能够暴露出来，参数pos就是位置
-				this.betterscroll.on("scroll",(pos)=>{
-					this.scrollY=Math.abs(Math.round(pos.y));
-//					console.log(this.scrollY);
-					if(this.scrollY>600){
-						this.topBlock=true;
-					}else{
-						this.topBlock=false;
-					}
-//					console.log(this.clientHeight+this.scrollY)
-					if(this.clientHeight+this.scrollY==this.scrollHeight){
-						if(this.top==0){
-							this.top=1;
-							var tata=this;
-							this.topStatus=true;
-							this.tems=setTimeout(function(){
-								tata.qingqiu();
-							},400)
-						}
-					}
-				});
-				if(this.scrollHeight<600){
-					this.tishis=true;
+			handleScroll(){
+				if(this.$refs.wrapper.scrollTop>800){
+					this.topBlock=true;
+				}else{
+					this.topBlock=false;
+				}
+			},
+			faxianScroll(){
+				if(this.$refs.wrapper.scrollTop>800){
+					this.topBlock=true;
+				}else{
+					this.topBlock=false;
+				}
+				var parend = this.$refs.tianjia.getElementsByClassName("add")[this.data.length-1]
+				this.imgs()
+			},
+			imgs(){
+				var scrollHeights=this.$refs.wrapper.scrollHeight;
+				var setHeight = document.documentElement.clientHeight; //可见区域高度
+				var scrollTop = this.$refs.wrapper.scrollTop; //滚动条距离顶部高度
+				var x=Math.abs(Math.round(setHeight + scrollTop))
+//				console.log(x)
+//				console.log(scrollHeights)
+				if(x==scrollHeights || scrollHeights-x==1){
+					var tata=this
+					this.topStatus=true;
+					this.tems=setTimeout(function(){
+						tata.qingqiu();
+					},1000)
 				}
 			},
 			sousuoGo(newVal){
@@ -240,7 +340,10 @@
 				var thata=this;
 				var params={
 		    		terminalNo:3,
-		    		limit:20,
+		    		limit:500, 
+//				    ctype:1,
+//					ctype:thata.type,			//用户身份
+//					interested:			//1,2,3,4,5,6
 					kw:this.texts,					//关键词搜索
 					page:this.page
 		    	}
@@ -248,11 +351,18 @@
 				this.$http.post(URL.path1+'welcome',params,{emulateJSON:true}).then(function(res){
 //					console.log(res);
 					Indicator.close();
+//					if(this.data.length==5){//长度大于5从新开始
+//						this.data=[]
+//						this.$refs.wrapper.scrollTop=0;
+//						this.height=0;
+//					}
 					this.topStatus=false;
 					if(res.body.data.length==0){
 						if(this.data.length==0){
 							this.jeiguo="暂无搜索结果"
 						}
+						this.$refs.wrapper.removeEventListener('scroll', this.faxianScroll);
+						this.$refs.wrapper.addEventListener('scroll', this.handleScroll)
 						this.tishis=true;
 						return;
 					}else{
@@ -277,17 +387,19 @@
 								}
 							}
 						}
-						if (!this.betterscroll) {
-							this.initScroll();
-						}else{
-							this.scrollHeight=this.$refs.tianjia.scrollHeight;		//总高度
-							this.betterscroll.refresh();
-							this.top=0;
-//							console.log(this.scrollHeight)
-//							console.log(this.clientHeight)
-//							console.log(this.clientHeight+this.scrollY)
-						}
+						this.loaded();
 					})
+					if(this.n == 0){
+						this.$nextTick(function(){
+							this.img = this.$refs.tianjia.getElementsByTagName("img");
+							this.parend = this.$refs.tianjia.getElementsByClassName("sousuo-content");
+							this.num = this.img.length;
+							this.n = 0; //存储图片加载到的位置，避免每次都从第一张图片开始遍历
+	//								this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+	  						this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
+	  						this.imgs()
+						});
+					}
 				},function(res){
 					Indicator.close();
 				    console.log(res);
@@ -304,7 +416,6 @@
 //			}
 		},
 		updated(){
-//			
 		},
 		components:{
 		}
@@ -410,17 +521,17 @@
 		    	z-index:600;
 		    }
 		}
-		/*.box::-webkit-scrollbar{width:0px;}*/
+		.box::-webkit-scrollbar{width:0px;}
 		.box{
 			width:100%;
-			height:100%;
-			/*overflow-y:scroll;
+			/*height:100%;*/
+			/*overflow-y:scroll;*/
 			-webkit-overflow-scrolling:touch;  		/*解决ios滑动*/
 			.wenzhang-content{
 				width:95%;
-				/*height:auto;*/
+				height:auto;
 				margin:0 auto;
-				padding:0.55rem 0 0.42rem 0;
+				/*padding:0.55rem 0 0.5rem 0;*/
 				.sousuo-content{
 					width:100%;
 					height:auto;
@@ -543,7 +654,7 @@
 				bottom:0;
 				left:0;*/
 				width:100%;
-				/*margin-top:-0.46rem;*/
+				margin-top:-0.46rem;
 				.tishis{
 					width:92.5%;
 					height:0.36rem;
@@ -576,6 +687,51 @@
 			width:0.5rem;
 			height:0.5rem;
 			/*z-index: 200;*/
+		}
+		
+		
+		
+		
+		#wrapper {
+		  	width: 95%;
+		  	z-index: 1;
+		  	left:2.5%;top:0;
+		  	position: absolute;
+		  	bottom:0px;
+			top:45px;
+			padding-top:10px;
+		  	overflow: hidden;
+		}
+		#wrapper #iscroll {
+			position:absolute;
+			z-index: 1;
+			position: relative;
+		  	width: 100%;
+		  	-webkit-tap-highlight-color: rgba(0,0,0,0);
+			/*min-width:320px;*/
+			/*max-width: 640px;*/
+			-webkit-transform: translateZ(0);
+			-moz-transform: translateZ(0);
+			-ms-transform: translateZ(0);
+			-o-transform: translateZ(0);
+			transform: translateZ(0);
+			-webkit-touch-callout: none;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+			-webkit-text-size-adjust: none;
+			-moz-text-size-adjust: none;
+			-ms-text-size-adjust: none;
+			-o-text-size-adjust: none;
+			text-size-adjust: none;
+			background: #fff;
+		}
+		#wrapper #iscroll #pullDown {
+		  position: absolute;
+		  height: 44px;
+		  top: -44px;
+		  bottom: 0;
 		}
 	}
 </style>

@@ -130,7 +130,7 @@
 			height:0.75rem;
 			overflow:hidden;
 			border-radius:0.06rem;
-			border:0.005rem solid #EAEAEA;
+			border:1px solid #EAEAEA;
 			label{
 				width:100%;
 				height:100%;

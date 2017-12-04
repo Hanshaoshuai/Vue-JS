@@ -48,9 +48,9 @@
 					</div>
 					<div class="zhuying_1 border">
 						<div class="ferst"><span></span>经营业绩</div>
-						<div class="last">
-							<p>上一财年：营收&nbsp;<span>{{data.last_year_revenue}}亿</span>&nbsp;&nbsp;净利润&nbsp;<span>{{data.last_year_profit}}万</span></p>
-							<p>今年预计：营收&nbsp;<span>{{data.predict_revenue}}亿</span>&nbsp;&nbsp;净利润&nbsp;<span>{{data.predict_profit}}万</span></p>
+						<div class="last lasts">
+							<p>上一财年:&nbsp;营收<span style="margin-left:0.01rem;">{{data.last_year_revenue}}亿</span>&nbsp;净利润<span style="margin-left:0.01rem;">{{data.last_year_profit}}万</span></p>
+							<p>今年预计:&nbsp;营收<span style="margin-left:0.01rem;">{{data.predict_revenue}}亿</span>&nbsp;净利润<span style="margin-left:0.01rem;">{{data.predict_profit}}万</span></p>
 						</div>
 					</div>
 					<!--<div class="zhuying_1 border">
@@ -729,6 +729,9 @@
 						padding:0rem 0.14rem 0.18rem 0.14rem;
 						line-height:0.26rem;
 						/*box-shadow: 0 0.02rem 0.04rem #dedde1;*/
+					}
+					.lasts{
+						padding-right:0rem;
 					}
 				}
 			}

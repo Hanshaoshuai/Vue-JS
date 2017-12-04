@@ -17,7 +17,7 @@
 					<div class="fankiu">
 						<div class="tubiao"></div>
 						<div class="content-food" style="text-align:center;">
-							<span>已为您匹配{{body}}人<!--&nbsp;&nbsp;上拉匹配更多--></span>
+							<span>已为您匹配{{body}}人</span>
 						</div>
 					</div>
 					<div v-for="(cont,index) in data" class="add" :id="index" ref="lisitTop">
@@ -161,7 +161,6 @@
 </template>
 
 <script type="text/ecmascript">
-	import BScroll from "better-scroll";
 	import { Indicator } from 'mint-ui';
 	import {URL} from '../../../../common/js/path';
 	import { Toast } from 'mint-ui';
@@ -203,17 +202,11 @@
 				jeiguo:"亲已经到底了",
 				topStatus:false,
 				tems:'',
-				listlenght:-1,
-				
-				
-				scrollY:'',
-				scrollHeight:"",
-				clientHeight:"",
-				top:0
+				listlenght:-1
 			}
 		},
 		mounted(){
-			this.pipeiBlock();
+			this.pipeiBlock(this.CanShu);
 		},
 		methods:{
 			listnone(){
@@ -222,41 +215,45 @@
 				history.go(-1)
 			},
 			zhiDing(){		//返回顶部；
-				this.betterscroll.scrollToElement(this.$refs.tianjia,300);
+				this.$refs.wrapper.scrollTop=0;
 			},
-			initScroll(){
-				this.scrollHeight=this.$refs.tianjia.scrollHeight;		//总高度
-				this.clientHeight=this.$refs.wrapper.clientHeight;	//可视区高度
-				this.betterscroll=new BScroll(this.$refs.wrapper,{
-					click:true,probeType:3//probeType：3相当于实时监听高度位置
-				});
-				//通过betterscroll对象监听一个scroll事件，当scroll滚动时能够暴露出来，参数pos就是位置
-				this.betterscroll.on("scroll",(pos)=>{
-					this.scrollY=Math.abs(Math.round(pos.y));
-					if(this.scrollY>600){
-						this.topBlock=true;
-					}else{
-						this.topBlock=false;
-					}
-//					console.log(this.scrollHeight);
-//					console.log(this.clientHeight+this.scrollY)
-					if(this.clientHeight+this.scrollY==this.scrollHeight){
-						if(this.top==0){
-							this.top=1;
-							var tata=this;
-							this.topStatus=true;
-							this.tems=setTimeout(function(){
-								tata.pipeiBlock();
-							},400)
-						}
-					}
-				});
-				if(this.scrollHeight<600){
-					this.tishis=true;
+			handleScroll(){
+				if(this.$refs.wrapper.scrollTop>600){
+					this.topBlock=true;
+				}else{
+					this.topBlock=false;
 				}
 			},
-			pipeiBlock(){
+			faxianScroll(){
+				if(this.$refs.wrapper.scrollTop>600){
+					this.topBlock=true;
+				}else{
+					this.topBlock=false;
+				}
+				this.imgs()
+//				console.log(this.img[6].offsetTop)
+			},
+			imgs(){
+				var scrollHeights=this.$refs.wrapper.scrollHeight;
+				var setHeight = document.documentElement.clientHeight; //可见区域高度
+				var scrollTop = this.$refs.wrapper.scrollTop; //滚动条距离顶部高度
+				var x=Math.abs(Math.round(setHeight + scrollTop))
+//				console.log(x)
+//				console.log(scrollHeights)
+				if(x==scrollHeights || scrollHeights-x==1){
+					var tata=this
+					this.topStatus=true;
+					this.tems=setTimeout(function(){
+						tata.pipeiBlock(tata.CanShu);
+					},400)
+				}
+			},
+			pipeiBlock(CanShu){
 				Indicator.open({spinnerType: 'fading-circle'});
+//				console.log(CanShu)
+//				console.log(this.token)
+				this.CanShu=CanShu
+//				this.showFlag=true;
 				//匹配投资人列表		
 				var datas = {
 					token:this.token,		//	token	是	[string]		
@@ -266,11 +263,19 @@
 				}
 				this.$http.post(URL.path+'finance/investor_list',datas,{emulateJSON:true}).then(function(res){
 					Indicator.close();
+//					console.log(this.body);
+//					if(this.data.length==5){//长度大于5从新开始
+//						this.data=[]
+//						this.$refs.wrapper.scrollTop=0;
+//						this.height=0;
+//					}
 					this.topStatus=false;
 					if(res.body.data.length==0){
 						if(this.data.length==0){
 							this.jeiguo="暂无匹配结果"
 						}
+						this.$refs.wrapper.removeEventListener('scroll', this.faxianScroll);
+						this.$refs.wrapper.addEventListener('scroll', this.handleScroll)
 						this.tishis=true;
 						return;
 					}else{
@@ -296,16 +301,18 @@
 								}
 							}
 						}
-						if (!this.betterscroll) {
-							this.initScroll();
-						}else{
-							this.scrollHeight=this.$refs.tianjia.scrollHeight;		//总高度
-							this.betterscroll.refresh();
-							this.top=0;
-//							console.log(this.scrollHeight)
-//							console.log(this.clientHeight+this.scrollY)
-						}
 					})
+					if(this.n == 0){
+						this.$nextTick(function(){
+							this.img = this.$refs.tianjia.getElementsByTagName("img");
+							this.parend = this.$refs.tianjia.getElementsByClassName("sousuo-content");
+							this.num = this.img.length;
+							this.n = 0; //存储图片加载到的位置，避免每次都从第一张图片开始遍历
+	//								this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+	  						this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
+	  						this.imgs()
+						});
+					}
 				},function(res){
 					Indicator.close();
 //					Toast("系统错误请稍后...")
@@ -398,7 +405,7 @@
 							this.length=this.uID.length;
 //							console.log(this.uID)
 							this.uID1=this.uID.join(';')
-//							console.log(this.uID1)
+							console.log(this.uID1)
 							this.y-=1
 							break;
 						}
@@ -563,18 +570,18 @@
 			    }
 			}
 		}
-		/*.wenzhang-list::-webkit-scrollbar{width:0px;}*/
+		.wenzhang-list::-webkit-scrollbar{width:0px;}
 		.wenzhang-list{
 			width:100%;
 			height:100%;
-			/*overflow-y:auto;
+			overflow-y:auto;
 			-webkit-overflow-scrolling:touch;  		/*解决ios滑动*/
 			.wenzhang-content{
 				position:relative;
 				width:95%;
 				height:auto;
 				margin:0 auto;
-				padding:0.45rem 0 1rem 0;
+				padding:0.45rem 0 0.42rem 0;
 				.fankiu{
 					width:100%;
 					display:flex;
@@ -717,7 +724,7 @@
 					position:absolute;
 					left:0;
 					right:0;
-					bottom:0.66rem;
+					bottom:0.04rem;
 					width:92.5%;
 					height:0.36rem;
 					margin:0 auto;

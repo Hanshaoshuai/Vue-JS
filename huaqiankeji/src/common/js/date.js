@@ -96,7 +96,6 @@ export function numToTime1(num){
 //    fenzhong = parseInt(num / 60);
 //  }
 	if(day==new Date().getDate()){
-		
 //		time.replace(/(上午|下午)\d+/, function(text){
 //			if(/上午/.test(text)){
 //				console.log(text)
@@ -208,8 +207,6 @@ export function numToTime3(num){
     });
 
     num = (num+10*24*3600*1000-newNum) /1000;
-    
-    
     var h = num/3600/24;
     var f = h- Math.floor(h)
     var x=f*24

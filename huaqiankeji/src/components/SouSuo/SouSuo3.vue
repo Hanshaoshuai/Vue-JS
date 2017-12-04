@@ -9,16 +9,18 @@
 				<span class="sousuoGo" @click.stap="sousuoGo()">搜索</span>
 			</div>
 			<div class="box" ref="wrapper">
+				<!--<scroller :on-infinite="infinite" ref="myscroller">-->
 				<div class="wenzhang-content" ref="tianjia">
+					<!--<div v-for="(item,index) in data" class="sousuo-content border-topbottom" @click.stop="xiangQing('7','3',item.id)">-->
 					<div v-for="(cont,index) in data" class="add" :id="index" ref="lisitTop">
 	<!--循环遍历-->		<div v-for="(item,index) in cont" class="sousuo-content border-topbottom" @click.stop="xiangQing(item.cctype,item.investment_type,item.uid)">
 							<div class="content-header">
+								<!--<font><img src="" :rul="item.photo"/></font>-->
 								<font><img :src="item.photo"/></font>
 								<div class="names">
 									<span class="border-right">{{item.uname}}</span>
-									<span v-if="item.acom_name==''">{{item.com_name}}</span>
-									<span v-if="item.acom_name!=''">{{item.acom_name}}</span>
-									&nbsp;<span>{{item.position}}</span>
+									<span>{{item.com_name}}</span>&nbsp;
+									<span>{{item.position}}</span>
 								</div>
 							</div>
 							<div v-if="item.cctype=='2'" class="xiaolv border-topbottom">
@@ -38,6 +40,7 @@
 										<font v-if="item.changenums==0">0&nbsp;%</font>
 										<font v-if="item.changenums!=0">{{Math.round((item.changenums/item.itemnumberes)*100)}}&nbsp;%</font>
 									</li>
+									<!--<li><font>{{item.changenums}}&nbsp;%</font></li>-->
 									<span>约谈率</span>
 								</div>
 							</div>
@@ -58,6 +61,7 @@
 										<font v-if="item.changenums==0">0&nbsp;%</font>
 										<font v-if="item.changenums!=0">{{Math.round((item.changenums/item.itemnumberes)*100)}}&nbsp;%</font>
 									</li>
+									<!--<li><font>{{item.changenums}}&nbsp;%</font></li>-->
 									<span>约谈率</span>
 								</div>
 							</div>
@@ -78,6 +82,7 @@
 										<font v-if="item.changenums==0">0&nbsp;%</font>
 										<font v-if="item.changenums!=0">{{Math.round((item.changenums/item.itemnumberes)*100)}}&nbsp;%</font>
 									</li>
+									<!--<li><font>{{item.changenums}}&nbsp;%</font></li>-->
 									<span>约谈率</span>
 								</div>
 							</div>
@@ -89,18 +94,26 @@
 									<span v-if="item.investment_type==2" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
 									<span v-if="item.investment_type==2" class="zijin"><a style="color:#2abdfc">资金成本：</a>年化 {{item.fund_min}}%-{{item.fund_max}}%</span>
 									<span v-if="item.investment_type==2" class="fangkuan"><a style="color:#2abdfc">放款速度：</a>不超过{{item.loan_time}}天</span>
+									<!--<span v-if="item.investment_type==3" class="dangbi"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project_min}}万-{{item.single_project_max}}万</span>
+									<span v-if="item.investment_type==3" class="zijin"><a style="color:#2abdfc">资金成本：</a>年化 {{item.fund_min}}%-{{item.fund_max}}%</span>
+									<span v-if="item.investment_type==3" class="fangkuan"><a style="color:#2abdfc">放款速度：</a>不超过{{item.loan_time}}天</span>-->
 									
 									
 									<span v-if="item.cctype==1" class="lingyu"><font><a style="color:#2abdfc">行业：</a><a v-for="(item,index) in item.industry">{{item.title}}&nbsp;&nbsp;</a></font></span>
 									<span v-if="item.cctype==2" class="jieduan"><font v-if="item.investment_type==0"><a style="color:#2abdfc">阶段：</a><a v-for="(item,index) in item.fund_stage">{{item.title}}&nbsp;&nbsp;</a></font></span>
 									<span v-if="item.cctype==2" class="dangbi"><font v-if="item.investment_type==0"><font v-if="item.single_project!=0"><a style="color:#2abdfc">单笔投资：</a>{{item.single_project[0].title}}</font></font></span>
 									<span v-if="item.cctype==2" class="lingyu"><font v-if="item.investment_type==0"><a style="color:#2abdfc">行业：</a><a v-for="(item,index) in item.interested">{{item.title}}&nbsp;&nbsp;</a></font></span>
+									<!--<span v-if="item.ctype==3" class="lingyu"><a style="color:#2abdfc">行业：</a><a v-for="item in item.interested">{{item.title}}、</a></span>-->
 									<span v-if="item.cctype==4" class="lingyu"><font v-if="item.investment_type==0"<a style="color:#2abdfc">行业：</a><a v-for="item in item.interested">{{item.title}}&nbsp;&nbsp;</a></font></span>
+									<!--<span v-if="item.ctype==3" class="lingyu">领域：<a v-for="(item,index) in item.interested">{{item.title}}、</a></span>
+									<span v-if="item.ctype==4" class="lingyu">领域：<a v-for="(item,index) in item.interested">{{item.title}}、</a></span>-->
 								</div>
 							</div>
 						</div>
 					</div>
-					<div v-show="tishis" class="tishi-bottoms">
+				</div>
+				<!--</scroller>-->
+				<div v-show="tishis" class="tishi-bottoms">
 					<div class="tishis">
 						<ul>
 							<li class="border-bottom"></li>
@@ -109,8 +122,6 @@
 						</ul>
 					</div>
 				</div>
-				</div>
-				
 				<span class="loding" v-show="topStatus">
 	            	<mt-spinner :type="3" color="#26a2ff" :size="30"></mt-spinner>
 	          	</span>
@@ -124,7 +135,7 @@
 </template>
 
 <script type="text/ecmascript">
-	import BScroll from "better-scroll";
+//	import VueScroller from 'vue-scroller';
 	import {URL} from '../../common/js/path';
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
@@ -161,13 +172,13 @@
 				jeiguo:"亲已经到底了",
 				topBlock:false,
 				
-				scrollY:'',
-				scrollHeight:"",
-				clientHeight:"",
-				top:0
+//				moveList:[1,2],
+//				noData: ''
 			}
 		},
 		mounted(){
+			
+
 //			console.log()
 		},
 		methods:{
@@ -176,8 +187,34 @@
 				Indicator.close();
 				history.go(-1)
 			},
+//			infinite(done) {
+//              console.log(this.noData)
+//              if(this.noData) {
+//              setTimeout(()=>{
+//                  this.$refs.myscroller.finishInfinite(2);
+//              })
+//              return;
+//              }
+//              let self = this;
+//              let start = this.moveList.length;
+//
+//              setTimeout(() => {
+//                  for(let i = start + 1; i < start + 10; i++) {
+//                      self.moveList.push(i)
+//                  }
+//                  if(start > 30) {
+//                      self.noData = "没有更多数据"
+//                  }
+//                  self.$refs.myscroller.resize();
+//                  done()
+//              }, 1500)
+//
+//          },
+//          refresh() {
+//              console.log('refresh')
+//          },
 			zhiDing(){		//返回顶部；
-				this.betterscroll.scrollToElement(this.$refs.tianjia,300);
+				this.$refs.wrapper.scrollTop=0;
 			},
 			xiangQing(id,Tid,uid){		//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构/研究咨询 5:券商研究员 6:新三板做市商 7:财务顾问
 //				window.location.href="#/faxian/sousuo/"+this.$route.params.token+'/'+"SousuoLeixing";
@@ -194,35 +231,35 @@
 					window.location.href="#/faxian/sousuo/Ziliao"+id+"/"+this.userContent["token"];
 				}
 			},
-			initScroll(){
-				this.scrollHeight=this.$refs.tianjia.scrollHeight;		//总高度
-				this.clientHeight=this.$refs.wrapper.clientHeight;	//可视区高度
-				this.betterscroll=new BScroll(this.$refs.wrapper,{
-					click:true,probeType:3//probeType：3相当于实时监听高度位置
-				});
-				//通过betterscroll对象监听一个scroll事件，当scroll滚动时能够暴露出来，参数pos就是位置
-				this.betterscroll.on("scroll",(pos)=>{
-					this.scrollY=Math.abs(Math.round(pos.y));
-//					console.log(this.scrollY);
-					if(this.scrollY>600){
-						this.topBlock=true;
-					}else{
-						this.topBlock=false;
-					}
-//					console.log(this.clientHeight+this.scrollY)
-					if(this.clientHeight+this.scrollY==this.scrollHeight){
-						if(this.top==0){
-							this.top=1;
-							var tata=this;
-							this.topStatus=true;
-							this.tems=setTimeout(function(){
-								tata.qingqiu();
-							},400)
-						}
-					}
-				});
-				if(this.scrollHeight<600){
-					this.tishis=true;
+			handleScroll(){
+				if(this.$refs.wrapper.scrollTop>800){
+					this.topBlock=true;
+				}else{
+					this.topBlock=false;
+				}
+			},
+			faxianScroll(){
+				if(this.$refs.wrapper.scrollTop>800){
+					this.topBlock=true;
+				}else{
+					this.topBlock=false;
+				}
+				var parend = this.$refs.tianjia.getElementsByClassName("add")[this.data.length-1]
+				this.imgs()
+			},
+			imgs(){
+				var scrollHeights=this.$refs.wrapper.scrollHeight;
+				var setHeight = document.documentElement.clientHeight; //可见区域高度
+				var scrollTop = this.$refs.wrapper.scrollTop; //滚动条距离顶部高度
+				var x=Math.abs(Math.round(setHeight + scrollTop))
+//				console.log(x)
+//				console.log(scrollHeights)
+				if(x==scrollHeights || scrollHeights-x==1){
+					var tata=this
+					this.topStatus=true;
+					this.tems=setTimeout(function(){
+						tata.qingqiu();
+					},1000)
 				}
 			},
 			sousuoGo(newVal){
@@ -240,7 +277,10 @@
 				var thata=this;
 				var params={
 		    		terminalNo:3,
-		    		limit:20,
+		    		limit:50,
+//				    ctype:1,
+//					ctype:thata.type,			//用户身份
+//					interested:			//1,2,3,4,5,6
 					kw:this.texts,					//关键词搜索
 					page:this.page
 		    	}
@@ -248,11 +288,18 @@
 				this.$http.post(URL.path1+'welcome',params,{emulateJSON:true}).then(function(res){
 //					console.log(res);
 					Indicator.close();
+//					if(this.data.length==5){//长度大于5从新开始
+//						this.data=[]
+//						this.$refs.wrapper.scrollTop=0;
+//						this.height=0;
+//					}
 					this.topStatus=false;
 					if(res.body.data.length==0){
 						if(this.data.length==0){
 							this.jeiguo="暂无搜索结果"
 						}
+						this.$refs.wrapper.removeEventListener('scroll', this.faxianScroll);
+						this.$refs.wrapper.addEventListener('scroll', this.handleScroll)
 						this.tishis=true;
 						return;
 					}else{
@@ -277,17 +324,18 @@
 								}
 							}
 						}
-						if (!this.betterscroll) {
-							this.initScroll();
-						}else{
-							this.scrollHeight=this.$refs.tianjia.scrollHeight;		//总高度
-							this.betterscroll.refresh();
-							this.top=0;
-//							console.log(this.scrollHeight)
-//							console.log(this.clientHeight)
-//							console.log(this.clientHeight+this.scrollY)
-						}
 					})
+					if(this.n == 0){
+						this.$nextTick(function(){
+							this.img = this.$refs.tianjia.getElementsByTagName("img");
+							this.parend = this.$refs.tianjia.getElementsByClassName("sousuo-content");
+							this.num = this.img.length;
+							this.n = 0; //存储图片加载到的位置，避免每次都从第一张图片开始遍历
+	//								this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
+	  						this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
+	  						this.imgs()
+						});
+					}
 				},function(res){
 					Indicator.close();
 				    console.log(res);
@@ -304,7 +352,6 @@
 //			}
 		},
 		updated(){
-//			
 		},
 		components:{
 		}
@@ -410,17 +457,17 @@
 		    	z-index:600;
 		    }
 		}
-		/*.box::-webkit-scrollbar{width:0px;}*/
+		.box::-webkit-scrollbar{width:0px;}
 		.box{
 			width:100%;
 			height:100%;
 			/*overflow-y:scroll;
-			-webkit-overflow-scrolling:touch;  		/*解决ios滑动*/
+			-webkit-overflow-scrolling:touch;  		/*解决ios滑动*/*/
 			.wenzhang-content{
 				width:95%;
-				/*height:auto;*/
+				height:auto;
 				margin:0 auto;
-				padding:0.55rem 0 0.42rem 0;
+				padding:0.55rem 0 0.5rem 0;
 				.sousuo-content{
 					width:100%;
 					height:auto;
@@ -543,7 +590,7 @@
 				bottom:0;
 				left:0;*/
 				width:100%;
-				/*margin-top:-0.46rem;*/
+				margin-top:-0.46rem;
 				.tishis{
 					width:92.5%;
 					height:0.36rem;

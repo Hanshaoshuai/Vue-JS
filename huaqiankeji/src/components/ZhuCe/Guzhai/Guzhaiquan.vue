@@ -12,7 +12,7 @@
 					</div>-->
 					<div class="type-cont border-bottom">
 						<div class="tuse">
-							<font></font><span>您倾向于生么样的投资方式？<a>（可多选）</a></span>
+							<font></font><span>您倾向于什么样的投资方式？<a>（可多选）</a></span>
 						</div>
 						<div class="content-touzi"  ref="foods">
 							<ul>

@@ -5,21 +5,20 @@
 				<span class="xiangmu-left"><img src="../img/back.png"/></span>
 				<span>已投清单</span>
 			</div>
-			<div class="wenzhang-list" ref="wrapper">
+			<div class="wenzhang-list">
 				<div ref="tianjia" class="wenzhang-content">
 					<div class="donghuaGo" ref="donghuaGo">
-						<div v-for="(item,index) in data" v-bind:key="index" class="list-item heights">
-							<div v-if="index!=length-1">
-								<div class="fankiu">
-									<div class="tubiao"></div>
-									<div class="content-food">
-										<span>{{numToTime2(item['0'].send_time)}}</span>
-										<span style="display:inline-block;margin-left:0.2rem;">（{{item.length}}&nbsp;条）</span>
+						<!--<transition-group name="list" tag="p" >-->
+							<!--<div v-for="(item,index) in data" v-bind:key="index" class="list-item">
+								<div v-if="index!=length-1">
+									<div v-if="fenzhong[index]!=fenzhong[index-1]" class="fankiu">
+										<div class="tubiao"></div>
+										<div class="content-food">
+											<span>{{numToTime2(item.send_time)}}</span>
+										</div>
+										<div @click.stop="zhanKai()" class="anNui"></div>
 									</div>
-									<div @click.stop="zhanKai(index)" class="anNui"><div class="imgas"></div></div>
 								</div>
-							</div>
-							<div v-for="(item,index) in item">
 								<div class="sousuo-content border-topbottom">
 									<div class="content-header">
 										<font><img :src="item.photo"/></font>
@@ -30,30 +29,42 @@
 										</div>
 									</div>
 								</div>
+								<div style="width:100%;height:0.1rem;"></div>
+							</div>-->
+							<div v-for="(item,index) in data" v-bind:key="index" class="list-item heights">
+								<div v-if="index!=length-1">
+									<div class="fankiu">
+										<div class="tubiao"></div>
+										<div class="content-food">
+											<span>{{numToTime2(item['0'].send_time)}}</span>
+											<span style="display:inline-block;margin-left:0.2rem;">（{{item.length}}&nbsp;条）</span>
+										</div>
+										<div @click.stop="zhanKai(index)" class="anNui"><div class="imgas"></div></div>
+									</div>
+								</div>
+								<div v-for="(item,index) in item">
+									<div class="sousuo-content border-topbottom">
+										<div class="content-header">
+											<font><img :src="item.photo"/></font>
+											<div class="names">
+												<span class="border-right">{{item.uname}}</span>
+												<span>{{item.com_short}}</span>&nbsp;
+												<span>{{item.position}}</span>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div style="width:100%;height:0.1rem;"></div>
 							</div>
-							<div style="width:100%;height:0.1rem;"></div>
-						</div>
-					</div>
-					<div v-show="tishis" class="tishi-bottom">
-						<div class="tishis">
-							<ul>
-								<li class="border-bottom"></li>
-								<li class="tishi-center">{{jeiguo}}</li>
-								<li class="border-bottom"></li>
-							</ul>
-						</div>
+						<!--</transition-group>-->
 					</div>
 				</div>
 			</div>
-			<transition name="fade1">
-				<div v-show="topBlock" @click.stop="zhiDing()" class="zhiDing"></div>
-			</transition>
 		</div>
 	</transition>
 </template>
 
 <script type="text/ecmascript">
-	import BScroll from "better-scroll";
 	import {URL} from '../../../common/js/path';
 	import {numToTime} from "../../../common/js/date.js";
 	import {numToTime2} from "../../../common/js/date.js";
@@ -80,35 +91,26 @@
 				showblock:true,
 				items: [],
     			nextNum:[],
+    			disnone:true,
     			numToTime:"",
     			numToTime2:"",
     			ri:[],
     			fenzhong:[],
     			length:"",
-    			heights:"heights",
-    			
-    			num:"",
-				n:"",		//存储图片加载到的位置，避免每次都从第一张图片开始遍历
-				height:0,
-				topBlock:false,
-				page:1,
-				tishis:false,
-				jeiguo:"亲已经到底了",
-				topStatus:false,
-				tems:'',
-				listlenght:-1,
-				
-				scrollY:'',
-				scrollHeight:"",
-				clientHeight:"",
-				top:0
+    			heights:"heights"
 			}
 		},
 		mounted(){
 			this.numToTime=numToTime;
 			this.numToTime2=numToTime2;
 			var tata=this;
-			Indicator.open({spinnerType: 'fading-circle'});
+			var times=setTimeout(function(){
+				tata.disnone=false;
+				if(tata.disnone==false){
+					clearTimeout(times)
+				}
+			},2000)
+//			Indicator.open({spinnerType: 'fading-circle'});
 //			console.log(this.$route.params.uID);
 			this.token=localStorage.getItem("token");
 			this.XiangmuID=this.$route.params.XiangmuID;
@@ -123,9 +125,26 @@
 			}
 			this.$http.post(URL.path+'finance/get_send_list',datas,{emulateJSON:true}).then(function(res){
 				var tata=this;
+				Indicator.close();
 				this.data=res.body.data
+//				var y=0;
+//				for(var item in this.data){
+//					var fenzhong=numToTime2(this.data[item].send_time).substr(-2,2)
+//					var length=this.data.length;
+//					this.fenzhong[y]=fenzhong;
+////					console.log(numToTime2(this.data[item].send_time).substr(-2,2))
+//					for(var i=0; i<length; i++){
+//						if(numToTime2(this.data[item].send_time)[i]=='日'){
+//							this.ri[y]=numToTime2(this.data[item].send_time).substr(i-2,2);
+////							return;
+//						}
+//					}
+//					this.length=this.fenzhong.length;
+//					console.log(this.length)
+//					console.log(this.fenzhong)
+//					y+=1;
+//				}
 		    	tata.$nextTick(function(){
-		    		Indicator.close();
 					var img = tata.$refs.tianjia.getElementsByTagName("img");
 					var length=img.length;
 					for (var i = 0; i < length; i++) {
@@ -138,15 +157,6 @@
 								this.style.height="auto"
 							}
 						}
-					}
-					if (!this.betterscroll) {
-						this.initScroll();
-					}else{
-						this.scrollHeight=this.$refs.tianjia.scrollHeight;		//总高度
-						this.betterscroll.refresh();
-						this.top=0;
-//							console.log(this.scrollHeight)
-//							console.log(this.clientHeight+this.scrollY)
 					}
 				})
 //				console.log(res);
@@ -165,33 +175,19 @@
 			pipeiBlock(){
 				this.showFlag=true;
 			},
-			zhiDing(){		//返回顶部；
-				this.betterscroll.scrollToElement(this.$refs.tianjia,300);
-			},
-			initScroll(){
-				this.scrollHeight=this.$refs.tianjia.scrollHeight;		//总高度
-				this.clientHeight=this.$refs.wrapper.clientHeight;	//可视区高度
-				this.betterscroll=new BScroll(this.$refs.wrapper,{
-					click:true,probeType:3//probeType：3相当于实时监听高度位置
-				});
-				//通过betterscroll对象监听一个scroll事件，当scroll滚动时能够暴露出来，参数pos就是位置
-				this.betterscroll.on("scroll",(pos)=>{
-					this.scrollY=Math.abs(Math.round(pos.y));
-					if(this.scrollY>400){
-						this.topBlock=true;
-					}else{
-						this.topBlock=false;
-					}
-//					console.log(this.scrollHeight);
-//					console.log(this.clientHeight+this.scrollY)
-					if(this.clientHeight+this.scrollY==this.scrollHeight){
-						this.tishis=true;
-					}
-				});
-				if(this.scrollHeight<600){
-					this.tishis=true;
-				}
-			},
+			randomIndex: function () {
+		      	return Math.floor(Math.random() * this.items.length)
+		    },
+		    add: function () {
+		    	var tata=this;
+		    	setInterval(function(){
+					tata.items.splice(tata.items.length, 0, tata.nextNum++)
+				},1000)
+//		      	this.items.splice(this.items.length, 0, this.nextNum++)
+		    },
+		    remove: function () {
+		      	this.items.splice(this.randomIndex(), 1)
+		    },
 		    zhanKai(index){
 		    	var contlist=this.$refs.donghuaGo.getElementsByClassName("list-item");
 		    	var length=contlist.length;
@@ -208,17 +204,6 @@
 		    	}else{
 		    		contlist[index].setAttribute("class",'list-item heights')
 		    	}
-		    	this.$nextTick(function(){
-		    		if (!this.betterscroll) {
-						this.initScroll();
-					}else{
-						this.scrollHeight=this.$refs.tianjia.scrollHeight;		//总高度
-						this.betterscroll.refresh();
-						this.top=0;
-//							console.log(this.scrollHeight)
-//							console.log(this.clientHeight+this.scrollY)
-					}
-		    	});
 //		    	console.log(contlist)
 		    },
 			butten(){
@@ -229,10 +214,6 @@
 			
 		},
 		filters:{
-//			formatDate(time){
-//				let date = new Date(time);
-//				return formatDate(date,'yyyy-MM-dd hh:mm');
-//			}
 		},
 		updated(){
 		},
@@ -303,15 +284,15 @@
 		.wenzhang-list{
 			width:100%;
 			height:100%;
-			/*overflow: hidden;*/
+			overflow: hidden;
 			/*overflow-y:auto;
 			-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
 			.wenzhang-content{
 				width:95%;
-				/*height:90%;*/
+				height:90%;
 				margin:0 auto;
 				overflow: hidden;
-				padding:0.56rem 0 0.46rem 0;
+				padding:0.56rem 0 0 0;
 				.donghuaGo::-webkit-scrollbar{width:0px}
 				.donghuaGo{
 					width:100%;
@@ -397,31 +378,6 @@
 						}
 					}
 				}
-				.tishi-bottom{
-					position:absolute;
-					left:0;
-					right:0;
-					bottom:0.04rem;
-					width:92.5%;
-					height:0.36rem;
-					margin:0 auto;
-					ul{
-						width:100%;
-						height:100%;
-						display:flex;
-						li{
-							flex:1;
-							height:0.2rem;
-							&.tishi-center{
-								width:0.57rem;
-								line-height:0.36rem;
-								text-align:center;
-								font-size:0.12rem;
-								color:#bcbcbc;
-							}
-						}
-					}
-				}
 			}
 		}
 		.donghua{
@@ -434,16 +390,6 @@
 			align-content: center;
 			align-items: center;
 			justify-content: center;
-		}
-		.zhiDing{
-			position:fixed;
-			bottom:1.6rem;
-			right:0.2rem;
-			background-image:url("../img/top.png");
-			background-size:100% 100%;
-			width:0.5rem;
-			height:0.5rem;
-			/*z-index: 200;*/
 		}
 	}
 </style>

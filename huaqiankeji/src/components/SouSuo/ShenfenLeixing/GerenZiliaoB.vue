@@ -32,7 +32,7 @@
 							<span class="lasst" ref="text2"></span>
 							<div v-if="BianJi2==0" class="content-touzi" ref="foods">
 								<ul>
-									<li  v-show="x" class="src1" id='4'>
+									<li v-show="x" class="src1" id='4'>
 										<span>融资租赁</span><font class="img1"></font>
 									</li>
 									<li v-show="z" class="src1" id="5">
@@ -134,7 +134,9 @@
 							<span>地域要求</span>
 							<ul v-if="BianJi3==0" class="first">
 								<li>
-									<input readOnly="true" v-model="numberh" placeholder="暂无填写" type="text" class="mint-field-core">
+									<p v-if="numberh" class="mint-field-core">{{numberh}}</p>
+									<p v-if="!numberh" class="mint-field-core">暂无填写</p>
+									<!--<input readOnly="true" v-model="numberh" placeholder="暂无填写" type="text" class="mint-field-core">-->
 								</li>
 							</ul>
 							<div v-if="BianJi3==1" class="xiaolv anli">
