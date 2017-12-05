@@ -145,7 +145,7 @@
 			top:0;
 			left:0;
 			width:100%;
-			height:0.46rem;
+			height:0.45rem;
 			font-weight:600;
 			background:#ff7a59;
 			font-size:0.2rem;

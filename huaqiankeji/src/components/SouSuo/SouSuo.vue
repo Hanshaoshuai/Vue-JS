@@ -1,7 +1,7 @@
 <template>
 	<transition name="fade">
-		<div class="faxian">
-			<div class="searchBox">
+		<div  class="faxian">
+			<div ref="searchBox" class="searchBox">
 				<span class="xiangmu-left"  @click.stap="yijianHind()"><img src="./img/back.png"/></span>
 				<div class="home-search">
 					<input v-model="texts" placeholder="请输入公司名或者人名" type="text" class="mint-field-core sousuo">
@@ -164,7 +164,10 @@
 				scrollY:'',
 				scrollHeight:"",
 				clientHeight:"",
-				top:0
+				top:0,
+				opacity:1,
+				scrollYTop:"",
+				scrollYTop1:""
 			}
 		},
 		mounted(){
@@ -203,7 +206,8 @@
 				//通过betterscroll对象监听一个scroll事件，当scroll滚动时能够暴露出来，参数pos就是位置
 				this.betterscroll.on("scroll",(pos)=>{
 					this.scrollY=Math.abs(Math.round(pos.y));
-//					console.log(this.scrollY);
+					this.scrollYTop=Math.round(pos.y)*-1;
+//					console.log(this.scrollYTop);
 					if(this.scrollY>600){
 						this.topBlock=true;
 					}else{
@@ -219,6 +223,18 @@
 								tata.qingqiu();
 							},400)
 						}
+					}
+					if(this.scrollYTop>20){
+						this.$refs.searchBox.style.opacity=(120-this.scrollYTop)/100;
+//						console.log((120-this.scrollYTop)/1000);
+						if((120-this.scrollYTop)/1000<0){
+							this.$refs.searchBox.style.display="none";
+						}else{
+							this.$refs.searchBox.style.display="block";
+						}
+					}
+					if(this.scrollYTop==0){
+						this.$refs.searchBox.style.opacity=1;
 					}
 				});
 				if(this.scrollHeight<600){

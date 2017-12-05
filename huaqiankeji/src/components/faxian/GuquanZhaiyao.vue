@@ -41,7 +41,7 @@
 			</div>
 			<div class="zhaiyao-list">
 				<div class="zhaiyao-content">
-					<div class="tishi-bottom">
+					<div v-if="data" class="tishi-bottom">
 						<div class="border">
 							<ul>
 								<!--<li class="border-bottom"></li>-->

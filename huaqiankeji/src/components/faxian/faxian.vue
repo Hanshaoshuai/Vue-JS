@@ -1,7 +1,7 @@
 <template>
 	<!--<transition name="fade">-->
 		<div class="faxian">
-			<div class="searchBox">
+			<div ref="searchBox" class="searchBox">
 				<div class="home-search" @click.stop="sousuo()">
 					<img src="./img/circle_hot_search.png"/>
 					<span>搜公司，碰碰运气吧</span>
@@ -131,12 +131,12 @@
 						</ul>
 					</div>
 					</transition>
-					<span class="loding" v-show="topStatus">
-		            	<mt-spinner :type="3" color="#26a2ff" :size="30"></mt-spinner>
-		          	</span>
 				</div>
 				<div style="width:100%;height:0.6rem;"></div>
 		    </div>
+		    <span class="loding" v-show="topStatus">
+            	<mt-spinner :type="3" color="#26a2ff" :size="30"></mt-spinner>
+          	</span>
 			<xiangmugenjin :shifouZhuce="shifouZhuce"></xiangmugenjin>
 			<router-view :setscrollTop="scrollTop" :datas="datas" :userContent='userContent' :type="type" :FankuiShu="FankuiShu"></router-view>
 			<transition name="fade">
@@ -464,6 +464,18 @@
 								}
 							},600)
 						}
+					}
+					if(this.scrollYTop>45){
+						this.$refs.searchBox.style.opacity=(145-this.scrollYTop)/100;
+//						console.log((145-this.scrollYTop)/100);
+						if((145-this.scrollYTop)/1000<-0.01){
+							this.$refs.searchBox.style.display="none";
+						}else{
+							this.$refs.searchBox.style.display="block";
+						}
+					}
+					if(this.scrollYTop==0){
+						this.$refs.searchBox.style.opacity=1;
 					}
 				});
 				if(this.scrollHeight<600){
@@ -860,7 +872,7 @@
 			top:0;
 			left:0;
 		    width: 100%;
-		    height:0.48rem;
+		    height:0.45rem;
 		    background-color: #ff7a59;
 		    z-index:20;
 		    .home-search {
@@ -921,7 +933,7 @@
 				/*position:relative;*/
 				width:100%;
 				height:auto;
-				padding-top:0.48rem;
+				padding-top:0.45rem;
 				padding-bottom:1.06rem;
 				.banner{
 					position:relative;
@@ -1316,22 +1328,6 @@
 						}
 					}
 				}
-				.loding{
-					position:fixed;
-					bottom:0.68rem;
-					left:0;
-					margin-bottom:0.12rem;
-					width:0.3rem;
-					margin:0 auto;
-					right:0;
-					display: inline-block;
-					/*text-align:center;
-					display:flex;
-					-webkit-box-pack: center;
-				    justify-content: center;
-				    -webkit-box-align: center;
-				    align-items: center;*/
-				}
 				.lodingTop{
 					padding:0.1rem 0;
 					width:0.3rem;
@@ -1366,6 +1362,22 @@
 					line-height: 30px;
 				}
 			}
+		}
+		.loding{
+			position:fixed;
+			bottom:0.68rem;
+			left:0;
+			margin-bottom:0.12rem;
+			width:0.3rem;
+			margin:0 auto;
+			right:0;
+			display: inline-block;
+			/*text-align:center;
+			display:flex;
+			-webkit-box-pack: center;
+		    justify-content: center;
+		    -webkit-box-align: center;
+		    align-items: center;*/
 		}
 		.zhiDing{
 			position:fixed;
