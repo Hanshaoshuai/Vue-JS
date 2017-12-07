@@ -86,7 +86,8 @@
 				<div v-show="topBlock" @click.stop="zhiDing()" class="zhiDing"></div>
 			</transition>
 	    	<tishi @to-parent="child" ref="tishiShow" :xingXi="texts" :token="token" :XiangmuID="XiangmuID" :send_id='send_id'></tishi>
-			<router-view :userContent="userContent" :XiangmuID="XiangmuID" :left='left' :right="right"></router-view>
+			<!--<router-view :userContent="userContent" :XiangmuID="XiangmuID" :left='left' :right="right"></router-view>-->
+			<router-view :XiangmuID="XiangmuID" :left='left' :right="right"></router-view>
 		</div>
 	<!--</transition>-->
 </template>
@@ -104,11 +105,11 @@
 	
 	export default {
 		props:{
-			setscrollTop:{
-//				type:Object
-			},
-			datas:{},
-			userContent:{}
+//			setscrollTop:{
+////				type:Object
+//			},
+//			datas:{},
+//			userContent:{}
 		},
 		data () {
 			return {
@@ -145,7 +146,8 @@
 		        tishis:false,
 		        page:1,
 		        n:"",		//存储图片加载到的位置，避免每次都从第一张图片开始遍历
-		        jeiguo:"亲已经到底了"
+		        jeiguo:"亲已经到底了",
+		        userContent:""
 			}
 		},
 		mounted() {
@@ -157,12 +159,17 @@
 			var tata=this;
 			this.numToTime=numToTime;
 			this.numToTime3=numToTime3;
-			this.LieBiao()
+			this.userContent=this.$route.params.token;
+//			this.LieBiao()
 //	    	console.log("计算高度")
 	      	this.wrapperHeight = document.documentElement.clientHeight - this.$refs.wrapper.getBoundingClientRect().top;
 //	      	console.log(this.userContent)
 	    },
 	    activated(){
+//	    	console.log("this.userContent")
+			this.tishis=false;
+	    	this.data=[];
+	    	this.page=1;
 			this.LieBiao();
 		},
 		methods:{
@@ -170,6 +177,7 @@
 				this.$refs.wrapper.scrollTop=0;
 			},
 	      	child(data){
+	      		this.tishis=false;
 	      		this.data=[];
 	      		this.page=1;
 	      		this.LieBiao();
@@ -203,17 +211,19 @@
 					this.topStatus=true;
 					this.tems=setTimeout(function(){
 						tata.LieBiao();
-					},1000)
+					},100)
 				}
 			},
 			LieBiao(){
 				var token={
-		      		token:this.userContent['token'],
+					token:this.$route.params.token,
+//		      		token:this.userContent['token'],
 		      		page:this.page,			//page	是	[string]		
 					size:10			//size	是	[string]		
 //					follow:	2 已结束 其他表示所有收到的项目	是	[string]
 		      	}
-		      	this.token=this.userContent['token'];
+//		      	this.token=this.userContent['token'];
+		      	this.token=this.$route.params.token;
 	//			项目列表（投资人收到的项目）
 //				Indicator.open({spinnerType: 'fading-circle'});
 				this.$http.post(URL.path+'finance/received_item_list',token,{emulateJSON:true}).then(function(res){
@@ -287,7 +297,7 @@
 				
 			},
 			yifouXiangmu(){
-				window.location.href="#/faxian/YifouXiangmu/"+this.userContent['token'];
+				window.location.href="#/YifouXiangmu/"+this.$route.params.token;
 //				this.$refs.yifouShou.yifouBlock();
 			},
 			xiangqing(XiangmuID,send_time,day,hour){
@@ -306,7 +316,7 @@
 				},function(res){
 				    console.log(res);
 				})
-				window.location.href="#/faxian/XinxiangMu/"+this.userContent['token']+"/XiangmuXiangqing"+'/'+XiangmuID;
+				window.location.href="#/XinxiangMu/"+this.$route.params.token+"/XiangmuXiangqing"+'/'+XiangmuID;
 //				this.$refs.xiangqingShow.xiangqingBlock();
 			},
 			jieshu(XiangmuID,xianmuMing,send_id,uid){

@@ -1,6 +1,6 @@
 <template>
 	<!--<transition name="fade">-->
-		<div class="faxian">
+		<div class="faxian" ref="faxian">
 			<div ref="searchBox" class="searchBox">
 				<div class="home-search" @click.stop="sousuo()">
 					<img src="./img/circle_hot_search.png"/>
@@ -205,24 +205,48 @@
 		        houtaiTishi:'',
 		        diyiCi:false,
 		        shengqingZhongtishi:'您的注册申请尚在审核中',
-		        shaoDeng:false,
+//		        shaoDeng:false,
 		        tems:'',
 		        
 		        scrollY:'',
 		        scrollYTop:"",
 				scrollHeight:"",
 				clientHeight:"",
-				top:0,
+				top:'0',
+				top1:'0',
 				qingzhiShuaxin:0,
 				qiangZhi:0
 			}
 		},
 		mounted() {	//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商
+			document.activeElement.blur();
 //			if(!localStorage.getItem("qiangZhi")){
 //				localStorage.setItem("qiangZhi",'1')
 //				location.reload();
 //			}
 			var that=this;
+//	    	获取通讯录
+//			that.shaoDeng=true;
+			if(!localStorage.getItem("YiyouTongxin")){
+				var params={
+		    		id:localStorage.getItem("userID"),
+		    		phone_list:localStorage.getItem("TongxunLu")
+		    	}
+//					alert("本地已存在记录正在提交")
+				that.$http.post(URL.path1+'common/phone_list',params,{emulateJSON:true}).then(function(res){
+//					console.log('提交通讯录成功');
+//					alert("提交通讯录成功")
+					localStorage.setItem("YiyouTongxin",'1');
+					localStorage.setItem("TongxunLu",'');
+//					console.log(res);
+//					clearTimeout(temouto);
+				},function(res){
+//					alert("没有提交成功")
+				    console.log(res);
+				})
+			}else{
+//				alert("YiyouTongxin不存在")
+			}
 	    	window.onhashchange = function() {
 //				console.log('111111')
 				if(that.shifouZhuce=='2'){
@@ -270,7 +294,7 @@
 				if (this.betterscroll) {
 					this.scrollHeight=this.$refs.tianjia.scrollHeight;		//总高度
 					this.betterscroll.refresh();
-					this.top=0;
+//					this.top=0;
 //					console.log(this.scrollHeight)
 //					console.log(this.clientHeight)
 //					console.log(this.clientHeight+this.scrollY)
@@ -295,37 +319,12 @@
 				},function(res){
 				    console.log(res);
 				})
-//	    		获取通讯录
-				if(that.shaoDeng==false){
-//					alert("开始提交")
-					that.shaoDeng=true;
-					if(!localStorage.getItem("YiyouTongxin")){
-						var params={
-				    		id:localStorage.getItem("userID"),
-				    		phone_list:localStorage.getItem("TongxunLu")
-				    	}
-//						alert("本地已存在记录正在提交")
-						that.$http.post(URL.path1+'common/phone_list',params,{emulateJSON:true}).then(function(res){
-//							console.log('提交通讯录成功');
-//							alert("提交通讯录成功")
-							localStorage.setItem("YiyouTongxin",'1');
-							localStorage.setItem("TongxunLu",'');
-//							console.log(res);
-//							clearTimeout(temouto);
-						},function(res){
-//							alert("没有提交成功")
-						    console.log(res);
-						})
-					}else{
-//						alert("YiyouTongxin不存在")
-					}
-				}
 				console.log('111111')
 				that.topBlock=false;
 				if(that.shifouZhuce=='2'){
 					that.huoqugeshu();
 					that.qiyeFankui();
-					that.qinQiu();
+//					that.qinQiu();		//此处不再使用已屏蔽 2017/12/5
 				}
 //				if(that.diyiCi==false){
 //					that.jiantingTongguo()
@@ -365,7 +364,20 @@
 						this.panDuan();
 					}else{
 						if(res.body.returnCode=='401'){
-							window.location.href="#/denglu";
+							localStorage.removeItem("userID");		//用户ID
+							localStorage.removeItem("token");		//用户token
+							localStorage.removeItem("phone");		//用户电话
+							localStorage.removeItem("type");		//用户类型
+							localStorage.removeItem("name");
+							localStorage.removeItem("photo");		//用户头像id
+							localStorage.removeItem("photourl");	//用户头像URL地址
+							localStorage.removeItem("panduanWanshan");
+							localStorage.removeItem("qiangZhi");
+							if(localStorage.getItem("typeID")){
+								localStorage.removeItem("typeID");
+							}
+							location.replace(document.referrer);
+//							window.location.href="#/denglu";
 //							this.shengqingZhongtishi='1'
 						}else{
 							Toast(this.shengqingZhongtishi)
@@ -423,7 +435,7 @@
 					if(this.clientHeight+this.scrollY==this.scrollHeight){
 						if(this.top=='0'){
 //							console.log("fksjdk")
-							this.top=1;
+							this.top='1';
 							var tata=this;
 							this.topStatus=true;
 							this.tems=setTimeout(function(){
@@ -432,11 +444,11 @@
 								}else{
 									tata.qinQiu();
 								}
-							},400)
+							},100)
 						}
 					}
 					if(this.scrollYTop<-46){
-						if(this.top=='0'){
+						if(this.top1=='0'){
 							this.qingzhiShuaxin=1;
 							this.topStatusTop2=false;
 							this.topStatusTop1=true;
@@ -448,7 +460,7 @@
 							this.topStatusTop1=false;
 							this.topStatusTop2=true;
 //							console.log("fksjdk")
-							this.top=1;
+							this.top1='1';
 							var tata=this;
 							this.topStatusTop=true;
 							this.tems=setTimeout(function(){
@@ -462,7 +474,7 @@
 								}else{
 									tata.qinQiu();
 								}
-							},600)
+							},100)
 						}
 					}
 					if(this.scrollYTop>45){
@@ -474,7 +486,8 @@
 							this.$refs.searchBox.style.display="block";
 						}
 					}
-					if(this.scrollYTop==0){
+					if(this.scrollY<=40){
+						this.$refs.searchBox.style.display="block";
 						this.$refs.searchBox.style.opacity=1;
 					}
 				});
@@ -490,7 +503,8 @@
 					size:6					//	size	是	[string]
 				}
 				this.$http.post(URL.path+'common/item_list',post,{emulateJSON:true}).then(function(res){
-					this.top=0;
+					this.top='0';
+					this.top1='0'
 //					console.log(res);
 //					console.log("注册未通过的首页项目列表成功");
 					this.topStatus=false;
@@ -498,8 +512,10 @@
 					if(res.body.data.length==0){
 						if(this.data.length==0){
 							this.botent="亲已经到底了"
+							this.top='1';
 						}
 						this.tishis=true;
+						this.top='1';
 						return;
 					}else{
 						this.data.push(res.body.data);
@@ -547,7 +563,8 @@
 //				console.log(token)
 				this.$http.post(URL.path+'finance/get_item_list',token,{emulateJSON:true}).then(function(res){
 					Indicator.close();
-					this.top=0;
+					this.top='0';
+					this.top1='0'
 //					//判断是否注册通过审核；
 //					console.log("首页项目列表成功");
 //					console.log(res)
@@ -567,8 +584,10 @@
 					if(res.body.data.length==0){
 						if(this.data.length==0){
 							this.botent="亲已经到底了"
+							this.top='1';
 						}
 						this.tishis=true;
+						this.top='1';
 						return;
 					}else{
 						this.data.push(res.body.data);
@@ -583,7 +602,7 @@
 							this.botent="暂无数据"
 						}
 						this.$nextTick(function(){
-							if(this.data[0][0].length<2 || this.data[0][0].length>1){
+							if(this.data[0].length<3 || this.data[0][0].length>1){
 								var box=document.getElementsByClassName('ContentText');
 								box[0].getElementsByClassName('li')[0].style.display="none";
 								box[0].getElementsByClassName('ol')[0].style.display="none";
@@ -727,7 +746,7 @@
 			},
 			rongziGo(){
 				if(this.shifouZhuce==2){
-					window.location.href="#/faxian/WoyaoRongzi/"+this.userContent["token"];
+					window.location.href="#/WoyaoRongzi/"+this.userContent["token"];
 				}else{
 					if(this.shifouZhuce=='6'){
 //						window.location.href="#/faxian/WoyaoRongzi/"+this.userContent["token"];
@@ -745,7 +764,7 @@
 			touzifankuiGo(){
 				if(this.shifouZhuce==2){
 //					console.log(this.userContent)
-					window.location.href="#/faxian/Fankui/"+this.userContent["token"];
+					window.location.href="#/Fankui/"+this.userContent["token"];
 				}else{
 					if(this.shifouZhuce=='6'){
 //						window.location.href="#/faxian/Fankui/"+this.userContent["token"];
@@ -762,7 +781,7 @@
 			},
 			XiangMuGo(){
 				if(this.shifouZhuce==2){
-					window.location.href="#/faxian/XinxiangMu/"+this.userContent["token"];
+					window.location.href="#/XinxiangMu/"+this.userContent["token"];
 					this.scrollTop=sessionStorage.getItem("scrollTop")
 				}else{
 					if(this.shifouZhuce=='6'){
@@ -781,7 +800,7 @@
 			qiyefankuiGo(){
 				if(this.shifouZhuce==2){
 //					console.log(this.userContent)
-					window.location.href="#/faxian/Fankui/"+this.userContent["token"];
+					window.location.href="#/Fankui/"+this.userContent["token"];
 				}else{
 					if(this.shifouZhuce=='6'){
 //						window.location.href="#/faxian/Fankui/"+this.userContent["token"];
@@ -799,9 +818,9 @@
 			contblock(id,type){		//<!--类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报 7:公司调研-->
 				if(this.shifouZhuce=='2'){
 					if(type=='1' || type=='2' ||type=='3' || type=='7'){
-						window.location.href="#/faxian/DingzengZhaiyao/"+this.userContent["token"]+'/'+id;
+						window.location.href="#/DingzengZhaiyao/"+this.userContent["token"]+'/'+id;
 					}else{
-						window.location.href="#/faxian/GuquanZhaiyao/"+this.userContent["token"]+'/'+id;
+						window.location.href="#/GuquanZhaiyao/"+this.userContent["token"]+'/'+id;
 					}
 				}else{
 					if(this.shifouZhuce=='6'){

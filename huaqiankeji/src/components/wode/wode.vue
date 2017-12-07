@@ -241,7 +241,20 @@
 						this.gerenZiliao();
 					}else{
 						if(res.body.returnCode=='401'){
-							window.location.href="#/denglu";
+							localStorage.removeItem("userID");		//用户ID
+							localStorage.removeItem("token");		//用户token
+							localStorage.removeItem("phone");		//用户电话
+							localStorage.removeItem("type");		//用户类型
+							localStorage.removeItem("name");
+							localStorage.removeItem("photo");		//用户头像id
+							localStorage.removeItem("photourl");	//用户头像URL地址
+							localStorage.removeItem("panduanWanshan");
+							localStorage.removeItem("qiangZhi");
+							if(localStorage.getItem("typeID")){
+								localStorage.removeItem("typeID");
+							}
+							location.replace(document.referrer);
+//							window.location.href="#/denglu";
 //							this.shengqingZhongtishi='1'
 						}else{
 							Toast(this.shengqingZhongtishi)
@@ -349,7 +362,7 @@
 					return;
 				}
 				if(this.shifouZhuce==2){
-					window.location.href="#/wode/jilu/0";
+					window.location.href="#/jilu/0";
 				}else{
 					if(this.shifouZhuce=='6'){
 //						window.location.href="#/wode/jilu/0";

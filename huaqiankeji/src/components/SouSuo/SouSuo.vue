@@ -36,7 +36,7 @@
 								<div class="border-right">
 									<li>
 										<font v-if="item.changenums==0">0&nbsp;%</font>
-										<font v-if="item.changenums!=0">{{Math.round((item.changenums/item.itemnumberes)*100)}}&nbsp;%</font>
+										<font v-if="item.changenums!=0">{{(item.changenums/item.itemnumberes*100).toFixed(1)}}&nbsp;%</font>
 									</li>
 									<span>约谈率</span>
 								</div>
@@ -56,7 +56,7 @@
 								<div class="border-right">
 									<li>
 										<font v-if="item.changenums==0">0&nbsp;%</font>
-										<font v-if="item.changenums!=0">{{Math.round((item.changenums/item.itemnumberes)*100)}}&nbsp;%</font>
+										<font v-if="item.changenums!=0">{{(item.changenums/item.itemnumberes*100).toFixed(1)}}&nbsp;%</font>
 									</li>
 									<span>约谈率</span>
 								</div>
@@ -76,7 +76,7 @@
 								<div class="border-right">
 									<li>
 										<font v-if="item.changenums==0">0&nbsp;%</font>
-										<font v-if="item.changenums!=0">{{Math.round((item.changenums/item.itemnumberes)*100)}}&nbsp;%</font>
+										<font v-if="item.changenums!=0">{{(item.changenums/item.itemnumberes*100).toFixed(1)}}&nbsp;%</font>
 									</li>
 									<span>约谈率</span>
 								</div>
@@ -221,19 +221,20 @@
 							this.topStatus=true;
 							this.tems=setTimeout(function(){
 								tata.qingqiu();
-							},400)
+							},100)
 						}
 					}
-					if(this.scrollYTop>20){
-						this.$refs.searchBox.style.opacity=(120-this.scrollYTop)/100;
-//						console.log((120-this.scrollYTop)/1000);
-						if((120-this.scrollYTop)/1000<0){
+					if(this.scrollYTop>45){
+						this.$refs.searchBox.style.opacity=(145-this.scrollYTop)/100;
+//						console.log((145-this.scrollYTop)/1000);
+						if((145-this.scrollYTop)/1000<0){
 							this.$refs.searchBox.style.display="none";
 						}else{
 							this.$refs.searchBox.style.display="block";
 						}
 					}
-					if(this.scrollYTop==0){
+					if(this.scrollYTop<=40){
+						this.$refs.searchBox.style.display="block";
 						this.$refs.searchBox.style.opacity=1;
 					}
 				});
@@ -262,7 +263,7 @@
 		    	}
 //				console.log(params)
 				this.$http.post(URL.path1+'welcome',params,{emulateJSON:true}).then(function(res){
-//					console.log(res);
+					console.log(res);
 					Indicator.close();
 					this.topStatus=false;
 					if(res.body.data.length==0){

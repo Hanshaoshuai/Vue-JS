@@ -89,16 +89,17 @@
 				this.$http.post(URL.path1+'upload/photo',urlfrom,{emulateJSON:true}).then(function(res){
 //                  console.log(res);
                     Indicator.close();
-					if(res.body.returnCode=='200'){
+//					if(res.body.returnCode=='200'){
 						var data=res.body.data
 						this.touxiangID=data.id;
 						localStorage.setItem("photourl",res.body.data.url);
 						img.src=localStorage.getItem("photourl");
 						this.$emit("to-parent",res.body.data.url);
-					}else{
-						this.$refs.file.value=''
-						Toast("上传失败请重新上传");
-					}
+						Toast("上传成功");
+//					}else{
+//						this.$refs.file.value=''
+//						Toast("上传失败请重新上传");
+//					}
                 },function(res){
                 	Indicator.close();
                 	this.$refs.file.value=''

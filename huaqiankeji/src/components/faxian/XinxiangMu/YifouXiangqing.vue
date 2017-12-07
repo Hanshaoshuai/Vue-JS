@@ -247,6 +247,7 @@
 			}
 		},
 		mounted(){
+			console.log("keyide")
 //			this.numToTime=numToTime;
 			this.localId=this.$route.params.XiangmuID
 			//项目详情
@@ -271,7 +272,7 @@
 						}
 					})
 				}
-//				console.log(res);
+				console.log(res);
 			},function(res){
 				Indicator.close();
 			    console.log(res.status);
@@ -329,7 +330,8 @@
 			},
 			createDownloadTask(){
 //				var yes=1;
-//				if(localStorage.getItem(this.localId)){
+				if(localStorage.getItem(this.localId)){
+					plus.runtime.openFile(localStorage.getItem(this.localId));
 //					plus.runtime.openFile(localStorage.getItem(this.localId),function(errorCB){
 //						if(!errorCB){
 //							yes=0;
@@ -337,74 +339,75 @@
 //							localStorage.setItem(this.localId,'')
 //						}
 //					});
-//				}
-//				if(yes==0){
-//					return;
-//				}
-				var that=this;
-//				var dtask=null;
-				var str=''
-				if ( this.dtask ) {
-					plus.runtime.openFile(this.dataFile)
-//					outLine( "下载任务已创建！" );
-					return;
-				}
-			    var url = this.srcgo;
-			    var options = {method:"GET"};
-				this.dtask = plus.downloader.createDownload( url, {options},function(d, status) {
-					if(status == 200) { // 下载成功
-						var path = d.filename;
-
-//								mui.toast('下载成功');
-//						othis.attr('data-file',d.filename);
-						that.dataFile=d.filename;
-						localStorage.setItem(that.localId,d.filename)
-						plus.runtime.openFile(d.filename);
-					} else { //下载失败
-						mui.toast('下载失败' + status)
+				}else{
+	//				if(yes==0){
+	//					return;
+	//				}
+					var that=this;
+	//				var dtask=null;
+					var str=''
+					if ( this.dtask ) {
+						plus.runtime.openFile(this.dataFile)
+	//					outLine( "下载任务已创建！" );
+						return;
 					}
-				});
-			    this.dtask.addEventListener( "statechanged", function(task,status){
-			    	if(!that.dtask){return;}
-			    	switch(task.state) {
-			    		case 1: // 开始
-		//	    			outLine( "开始下载..." );
-			    		break;
-			    		case 2: // 已连接到服务器
-		//	    			outLine( "链接到服务器..." );
-			    			str = '请稍后...'
-			    		break;
-			    		case 3:	// 已接收到数据
-		//	    			outSet( "下载数据更新:" );
-//			    			outLine( task.downloadedSize+"/"+task.totalSize );
-			    			task.downloadedSize = parseInt(task.downloadedSize/1024/1024*100)/100;
-							task.totalSize = parseInt(task.totalSize/1024/1024*100)/100;
-							
-							str = '加载中...'+task.downloadedSize + "M/" + task.totalSize+'M'
-			    		break;
-			    		case 4:	// 下载完成
-		//	    			outSet( "下载完成！" );
-		//	    			outLine( task.totalSize );
-			    			str = '点击打开'
-						break;
-			    	}
-//			    	if(task.downloadedSize==task.totalSize){
-//			    		that.daXiao="";
-//			    	}
-			    	that.titBox=str;
-			    });
-			    this.dtask.start();
+				    var url = this.srcgo;
+				    var options = {method:"GET"};
+					this.dtask = plus.downloader.createDownload( url, {options},function(d, status) {
+						if(status == 200) { // 下载成功
+							var path = d.filename;
+	
+	//								mui.toast('下载成功');
+	//						othis.attr('data-file',d.filename);
+							that.dataFile=d.filename;
+							localStorage.setItem(that.localId,d.filename)
+							plus.runtime.openFile(d.filename);
+						} else { //下载失败
+							mui.toast('下载失败' + status)
+						}
+					});
+				    this.dtask.addEventListener( "statechanged", function(task,status){
+				    	if(!that.dtask){return;}
+				    	switch(task.state) {
+				    		case 1: // 开始
+			//	    			outLine( "开始下载..." );
+				    		break;
+				    		case 2: // 已连接到服务器
+			//	    			outLine( "链接到服务器..." );
+				    			str = '请稍后...'
+				    		break;
+				    		case 3:	// 已接收到数据
+			//	    			outSet( "下载数据更新:" );
+	//			    			outLine( task.downloadedSize+"/"+task.totalSize );
+				    			task.downloadedSize = parseInt(task.downloadedSize/1024/1024*100)/100;
+								task.totalSize = parseInt(task.totalSize/1024/1024*100)/100;
+								
+								str = '加载中...'+task.downloadedSize + "M/" + task.totalSize+'M'
+				    		break;
+				    		case 4:	// 下载完成
+			//	    			outSet( "下载完成！" );
+			//	    			outLine( task.totalSize );
+				    			str = '点击打开'
+							break;
+				    	}
+	//			    	if(task.downloadedSize==task.totalSize){
+	//			    		that.daXiao="";
+	//			    	}
+				    	that.titBox=str;
+				    });
+				    this.dtask.start();
+			   	}
 			},
 			chakanBA(){
 				this.createDownloadTask();
 			},
 			xiangguan(){
 				if(this.jihuaShu==''){
-					
 					return;
 				}
 //				var yes=1;
-//				if(localStorage.getItem(this.localId+'b')){
+				if(localStorage.getItem(this.localId+'b')){
+					plus.runtime.openFile(localStorage.getItem(this.localId+'b'));
 //					plus.runtime.openFile(localStorage.getItem(this.localId+'b'),function(errorCB){
 //						if(!errorCB){
 //							yes=0
@@ -412,63 +415,64 @@
 //							localStorage.setItem(this.localId+'b','')
 //						}
 //					});
-//				}
-//				if(yes==0){
-//					return;
-//				}
-				var that=this;
-//				var dtask=null;
-				var str=''
-				if ( this.dtask2 ) {
-					plus.runtime.openFile(this.dataFile2)
-//					outLine( "下载任务已创建！" );
-					return;
-				}
-			    var url = this.jihuaShu;
-			    var options = {method:"GET"};
-				this.dtask2 = plus.downloader.createDownload( url, {options},function(d, status) {
-					if(status == 200) { // 下载成功
-						var path = d.filename;
-
-//								mui.toast('下载成功');
-//						othis.attr('data-file',d.filename);
-						that.dataFile2=d.filename;
-						localStorage.setItem(that.localId+'b',d.filename)
-						plus.runtime.openFile(d.filename);
-					} else { //下载失败
-						mui.toast('下载失败' + status)
+				}else{
+	//				if(yes==0){
+	//					return;
+	//				}
+					var that=this;
+	//				var dtask=null;
+					var str=''
+					if ( this.dtask2 ) {
+						plus.runtime.openFile(this.dataFile2)
+	//					outLine( "下载任务已创建！" );
+						return;
 					}
-				});
-			    this.dtask2.addEventListener( "statechanged", function(task,status){
-			    	if(!that.dtask){return;}
-			    	switch(task.state) {
-			    		case 1: // 开始
-		//	    			outLine( "开始下载..." );
-			    		break;
-			    		case 2: // 已连接到服务器
-		//	    			outLine( "链接到服务器..." );
-			    			str = '请稍后...'
-			    		break;
-			    		case 3:	// 已接收到数据
-		//	    			outSet( "下载数据更新:" );
-//			    			outLine( task.downloadedSize+"/"+task.totalSize );
-			    			task.downloadedSize = parseInt(task.downloadedSize/1024/1024*100)/100;
-							task.totalSize = parseInt(task.totalSize/1024/1024*100)/100;
-							
-							str = '加载中...'+task.downloadedSize + "M/" + task.totalSize+'M'
-			    		break;
-			    		case 4:	// 下载完成
-		//	    			outSet( "下载完成！" );
-		//	    			outLine( task.totalSize );
-			    			str = '点击打开'
-						break;
-			    	}
-//			    	if(task.downloadedSize==task.totalSize){
-//			    		that.daXiao2="";
-//			    	}
-			    	that.titBox2=str;
-			    });
-			    this.dtask2.start();
+				    var url = this.jihuaShu;
+				    var options = {method:"GET"};
+					this.dtask2 = plus.downloader.createDownload( url, {options},function(d, status) {
+						if(status == 200) { // 下载成功
+							var path = d.filename;
+	
+	//								mui.toast('下载成功');
+	//						othis.attr('data-file',d.filename);
+							that.dataFile2=d.filename;
+							localStorage.setItem(that.localId+'b',d.filename)
+							plus.runtime.openFile(d.filename);
+						} else { //下载失败
+							mui.toast('下载失败' + status)
+						}
+					});
+				    this.dtask2.addEventListener( "statechanged", function(task,status){
+				    	if(!that.dtask2){return;}
+				    	switch(task.state) {
+				    		case 1: // 开始
+			//	    			outLine( "开始下载..." );
+				    		break;
+				    		case 2: // 已连接到服务器
+			//	    			outLine( "链接到服务器..." );
+				    			str = '请稍后...'
+				    		break;
+				    		case 3:	// 已接收到数据
+			//	    			outSet( "下载数据更新:" );
+	//			    			outLine( task.downloadedSize+"/"+task.totalSize );
+				    			task.downloadedSize = parseInt(task.downloadedSize/1024/1024*100)/100;
+								task.totalSize = parseInt(task.totalSize/1024/1024*100)/100;
+								
+								str = '加载中...'+task.downloadedSize + "M/" + task.totalSize+'M'
+				    		break;
+				    		case 4:	// 下载完成
+			//	    			outSet( "下载完成！" );
+			//	    			outLine( task.totalSize );
+				    			str = '点击打开'
+							break;
+				    	}
+	//			    	if(task.downloadedSize==task.totalSize){
+	//			    		that.daXiao2="";
+	//			    	}
+				    	that.titBox2=str;
+				    });
+				    this.dtask2.start();
+			    }
 			},
 			xiangqingBlock(){
 				this.tucaoShow=true;

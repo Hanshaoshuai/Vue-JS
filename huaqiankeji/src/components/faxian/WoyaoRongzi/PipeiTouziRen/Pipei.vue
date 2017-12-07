@@ -247,7 +247,7 @@
 							this.topStatus=true;
 							this.tems=setTimeout(function(){
 								tata.pipeiBlock();
-							},400)
+							},100)
 						}
 					}
 				});

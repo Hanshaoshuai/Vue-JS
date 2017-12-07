@@ -211,7 +211,7 @@
 		z-index:3000;
 		background:none;
 		.mint-spinner-fading-circle-circle::before{
-	    background-color: #77D5FD !important;
+	    background-color: #26a2ff !important;
 		}
 	}
 	.mint-toast{

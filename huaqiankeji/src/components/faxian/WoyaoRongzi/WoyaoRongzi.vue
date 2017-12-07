@@ -1,5 +1,5 @@
 <template>
-	<transition name="fade">
+	<!--<transition name="fade">-->
 		<div v-show="tucaoShow" class="xiangmu">
 			<div class="xiangmu-header" @click.stap="yijianHind()">
 				<span class="xiangmu-left"><img src="./img/back.png"/></span>
@@ -69,7 +69,7 @@
 				<router-view :token="token" :BiaoQian="BiaoQian" :type="type"></router-view>
 			</div>
 		</div>
-	</transition>
+	<!--</transition>-->
 </template>
 
 <script type="text/ecmascript">
@@ -151,6 +151,14 @@
 			this.numToTime=numToTime;
 //			console.log(this.$route.params['type'])
 			this.token=this.$route.params['type'];
+//			this.pipeiBlock();
+		},
+		activated(){
+//			console.log("jjjj")
+			this.data=[];
+			this.top=0;
+			this.page=1;
+			this.tishis=false;
 			this.pipeiBlock();
 		},
 		methods:{
@@ -184,7 +192,7 @@
 							this.topStatus=true;
 							this.tems=setTimeout(function(){
 								tata.pipeiBlock();
-							},400)
+							},100)
 						}
 					}
 				});

@@ -1,5 +1,5 @@
 <template>
-	<transition name="fade">
+	<!--<transition name="fade">-->
 		<div v-show="showFlag" class="zhaiyao">
 			<div class="xiangmu-header"></div>
 			<div class="searchBox">
@@ -99,7 +99,7 @@
 			
 			<div id="nativeShare"></div>
 		</div>
-	</transition>
+	<!--</transition>-->
 </template>
 
 <script type="text/ecmascript">
@@ -108,6 +108,7 @@
 	import {common} from "../../common/js/common.js";
 	import {common1} from "../../common/js/common1.js";
 	import { Toast } from 'mint-ui';
+	import { Indicator } from 'mint-ui';
 	import { MessageBox } from 'mint-ui';
 	import {URL} from '../../common/js/path';
 //	import BScroll from "better-scroll";
@@ -154,41 +155,52 @@
 			}
 		},
 		mounted(){
+//			if(localStorage.getItem("type")=='1' || localStorage.getItem("type")=='7'){
+//				this.buttenBlock=false;
+//			}else{
+//				this.buttenBlock=true;
+//			};
+			if(localStorage.getItem("type")=='2' || localStorage.getItem("type")=='3' || localStorage.getItem("type")=='4' || localStorage.getItem("type")=='5' || localStorage.getItem("type")=='6'){
+				this.buttenBlock=true;
+			}else{
+				this.buttenBlock=false;
+			};
+			this.shuaxin();
 //			this.numToTime=numToTime;
-			//项目详情
-			var data = {
-				token:this.$route.params.token,
-				item_id:this.$route.params.XiangmuID			//	项目id
-			}
-//			console.log(data)
-			this.$http.post(URL.path+'finance/item_detail',data,{emulateJSON:true}).then(function(res){
-				this.data=res.body.data[0];
-				this.shorts=this.data.com_short.substr(1,1);
-				this.codes=this.data.com_code.substr(0,2);
-				this.times=numToTime(this.data.create_time)
-//				if(localStorage.getItem("type")=='1' || localStorage.getItem("type")=='7'){
-//					this.buttenBlock=false;
-//				}else{
-//					this.buttenBlock=true;
-//				};
-				if(localStorage.getItem("type")=='2' || localStorage.getItem("type")=='3' || localStorage.getItem("type")=='4' || localStorage.getItem("type")=='5' || localStorage.getItem("type")=='6'){
-					this.buttenBlock=true;
-				}else{
-					this.buttenBlock=false;
-				};
-				this.$nextTick(function(){
-					this.output=this.$refs.output
-					this.dcontent=this.$refs.dcontent;
-				});
-//				console.log(res);
-			},function(res){
-			    console.log(res.status);
-			})
+		},
+		activated(){
+//			console.log("jjjj")
+			this.shuaxin();
 		},
 		methods:{
 			listnone(){
+				Indicator.close();
 				history.go(-1)
 //				this.showFlag=false;
+			},
+			shuaxin(){
+				//项目详情
+				var data = {
+					token:this.$route.params.token,
+					item_id:this.$route.params.XiangmuID			//	项目id
+				}
+				Indicator.open({spinnerType: 'fading-circle'});
+	//			console.log(data)
+				this.$http.post(URL.path+'finance/item_detail',data,{emulateJSON:true}).then(function(res){
+					Indicator.close();
+					this.data=res.body.data[0];
+					this.shorts=this.data.com_short.substr(1,1);
+					this.codes=this.data.com_code.substr(0,2);
+					this.times=numToTime(this.data.create_time)
+					this.$nextTick(function(){
+						this.output=this.$refs.output
+						this.dcontent=this.$refs.dcontent;
+					});
+	//				console.log(res);
+				},function(res){
+					Indicator.close();
+				    console.log(res.status);
+				})
 			},
 			shareHref(){
 				var biaoQian='';
@@ -513,8 +525,8 @@
 		.zhaiyao-list{
 			position:absolute;
 			overflow-y:scroll;
-			width:94%;
-			padding-right:0.03rem;
+			width:100%;
+			/*padding-right:0.03rem;*/
 			margin:auto;
 			height:100%;
 			top:0;
@@ -523,7 +535,7 @@
 			z-index:310;
 			-webkit-overflow-scrolling:touch;/*解决苹果滑动流畅*/
 			.zhaiyao-content{
-				width: 98%;
+				width: 94%;
 				height:auto;
 				margin:0 auto;
 				margin-top:0.45rem;

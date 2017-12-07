@@ -1,5 +1,5 @@
 <template>
-	<transition name="fade">
+	<!--<transition name="fade">-->
 		<div v-show="tucaoShow" class="xiangmu">
 			<div class="searchBox">
 				<div class="home-search">
@@ -83,7 +83,7 @@
 			<router-view :userContent="userContent" :XiangmuID="XiangmuID" :left="left" :right="right"></router-view>
 			<!--<xiangmuxiangqing ref="xiangqingShow"></xiangmuxiangqing>-->
 		</div>
-	</transition>
+	<!--</transition>-->
 </template>
 
 <script type="text/ecmascript">
@@ -129,6 +129,13 @@
 		mounted(){
 //			Indicator.open({spinnerType: 'fading-circle'});
 			this.numToTime=numToTime;
+//			this.LieBiao();
+		},
+		activated(){
+//	    	console.log("this.userContent");
+	    	this.tishis=false;
+	    	this.data=[];
+	    	this.page=1;
 			this.LieBiao();
 		},
 		methods:{
@@ -168,7 +175,7 @@
 					this.topStatus=true;
 					this.tems=setTimeout(function(){
 						tata.LieBiao();
-					},1000)
+					},100)
 				}
 			},
 			LieBiao(){
@@ -252,7 +259,7 @@
 				}
 				this.left=send_time;
 				this.XiangmuID=XiangmuID;
-				window.location.href="#/faxian/YifouXiangmu/"+this.userContent['token']+"/YifouXiangqing/"+this.XiangmuID;
+				window.location.href="#/YifouXiangmu/"+this.userContent['token']+"/YifouXiangqing/"+this.XiangmuID;
 //				this.$refs.xiangqingShow.xiangqingBlock();
 			}
 			

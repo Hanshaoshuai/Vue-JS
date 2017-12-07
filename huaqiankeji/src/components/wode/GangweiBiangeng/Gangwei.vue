@@ -60,7 +60,7 @@
 	import { Field } from 'mint-ui';
 	import { Indicator } from 'mint-ui';
 	import mingpian from "../../ShangchuanMingpian.vue";
-	import touxiang from "../../ShangchuanTouxiang.vue";
+//	import touxiang from "../../ShangchuanTouxiang.vue";
 	
 	export default {
 		props:{
@@ -298,8 +298,8 @@
 		updated(){
 		},
 		components:{
-			mingpian,
-			touxiang
+			mingpian
+//			touxiang
 		}
 	}
 </script>

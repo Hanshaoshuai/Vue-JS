@@ -1,5 +1,5 @@
 <template>
-	<transition name="fade">
+	<!--<transition name="fade">-->
 		<div v-show="tucaoShow" class="yijian">
 			<div class="xiangmu-header" @click.stop="yijianHind()">
 				<span class="xiangmu-left"><img src="./img/back.png"/></span>
@@ -22,7 +22,7 @@
 				</div>
 			</div>
 		</div>
-	</transition>
+	<!--</transition>-->
 </template>
 
 <script type="text/ecmascript">
@@ -54,13 +54,16 @@
 		},
 		mounted(){
 //			获取评论反馈列表
-			console.log(this.$route.params.token,)
+//			console.log(this.$route.params.token,)
 			this.token={
 				token:this.$route.params.token
 			}
-			this.fankuiBlock();
+//			this.fankuiBlock();
 		},
 		activated(){	//解决返回刷新问题；
+//			console.log(this.$route.params.token,)
+//			console.log("刷新")
+			this.res="";
 			this.fankuiBlock();
 		},
 		methods:{

@@ -1,5 +1,5 @@
 <template>
-	<transition name="fade">
+	<!--<transition name="fade">-->
 		<div v-show="tucaoShow" class="xiangmu">
 			<div class="xiangmu-header" @click.stop="yijianHind()">
 				<span class="xiangmu-left"><img src="../img/back.png"/></span>
@@ -52,7 +52,7 @@
 			</transition>
 			<router-view :token="token" :XiangmuID="XiangmuID" :is_send="is_send"></router-view>
 		</div>
-	</transition>
+	<!--</transition>-->
 </template>
 
 <script type="text/ecmascript">
@@ -113,7 +113,15 @@
 		},
 		mounted() {
 			this.numToTime=numToTime;
-			this.pipeiBlock()
+//			this.pipeiBlock()
+		},
+		activated(){
+//			console.log("jjjj")
+			this.data=[];
+			this.top=0;
+			this.page=1;
+			this.tishis=false;
+			this.pipeiBlock();
 		},
 		methods:{
 			yijianHind(){
@@ -147,7 +155,7 @@
 							this.topStatus=true;
 							this.tems=setTimeout(function(){
 								tata.pipeiBlock();
-							},400)
+							},100)
 						}
 					}
 				});
@@ -188,6 +196,9 @@
 							this.scrollHeight=this.$refs.tianjia.scrollHeight;		//总高度
 							this.betterscroll.refresh();
 							this.top=0;
+							if(this.scrollHeight<600){
+								this.tishis=true;
+							}
 //							console.log(this.scrollHeight)
 //							console.log(this.clientHeight+this.scrollY)
 						}

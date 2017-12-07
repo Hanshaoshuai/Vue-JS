@@ -111,7 +111,41 @@ export default ({
 					{path:"ziliaoT3/:token",component:ziliaoT3},
 		    	]
 		   	},
-			{path:"Yijian/:token",component: Yijian},
+			{path:"WoyaoRongzi/:type",component:WoyaoRongzi,
+//				children:[
+//					{path:"Diaoyan",component:Diaoyan},
+//					{path:"Dingzeng",component:Dingzeng},
+//					{path:"Zuoshi",component:Zuoshi},
+//					{path:"ShuangChuang",component:ShuangChuang},
+//					{path:"ZhiYa",component:ZhiYa},
+//					{path:"ZhuanlaoGu",component:ZhuanlaoGu},
+//					{path:"ZuLin",component:ZuLin},
+//					{path:"YanBao",component:YanBao}
+//				]
+			},
+			{path:"XinxiangMu/:token",component:XinxiangMu,
+				children:[
+					{path:"XiangmuXiangqing/:XiangmuID",component:XiangmuXiangqing,
+						children:[
+							{path:"BP",component:BP},
+							{path:"jihuaShu",component:jihuaShu}
+						]
+					}
+				]
+			},
+			{path:"YifouXiangmu/:token",component:YifouXiangmu,
+				children:[
+					{path:"YifouXiangqing/:XiangmuID",component:YifouXiangqing}
+				]
+			},
+			{path:"Fankui/:token",component: Fankui
+			},
+			{path:"DingzengZhaiyao/:token/:XiangmuID",component: DingzengZhaiyao
+			},
+			{path:"GuquanZhaiyao/:token/:XiangmuID",component: GuquanZhaiyao
+			},
+			{path:"Yijian/:token",component: Yijian
+			},
 //			{path:"DiaoyanShili",component:DiaoyanShili,
 //				children:[
 //					{path:"YanbaoXiangqing",component:YanbaoXiangqing}
@@ -119,36 +153,6 @@ export default ({
 //			}
 		]
     },
-    {path:"/DingzengZhaiyao/:token/:XiangmuID",component: DingzengZhaiyao},
-	{path:"/GuquanZhaiyao/:token/:XiangmuID",component: GuquanZhaiyao},
-	{path:"/Fankui/:token",component: Fankui},
-	{path:"/XinxiangMu/:token",component:XinxiangMu,
-		children:[
-			{path:"XiangmuXiangqing/:XiangmuID",component:XiangmuXiangqing,
-				children:[
-					{path:"BP",component:BP},
-					{path:"jihuaShu",component:jihuaShu}
-				]
-			}
-		]
-	},
-	{path:"/YifouXiangmu/:token",component:YifouXiangmu,
-		children:[
-			{path:"YifouXiangqing/:XiangmuID",component:YifouXiangqing}
-		]
-	},
-	{path:"/WoyaoRongzi/:type",component:WoyaoRongzi,
-//		children:[
-//			{path:"Diaoyan",component:Diaoyan},
-//			{path:"Dingzeng",component:Dingzeng},
-//			{path:"Zuoshi",component:Zuoshi},
-//			{path:"ShuangChuang",component:ShuangChuang},
-//			{path:"ZhiYa",component:ZhiYa},
-//			{path:"ZhuanlaoGu",component:ZhuanlaoGu},
-//			{path:"ZuLin",component:ZuLin},
-//			{path:"YanBao",component:YanBao}
-//		]
-	},
 //  {path: '/shendu',component: Shendu,//暂不使用
 //  	children:[
 //			{path:"WenzhangGengduo/:classid",component:WenzhangGengduo
@@ -171,6 +175,7 @@ export default ({
     {path:"/touXiang/:classid",component:touXiang,},
     {path: '/wode',component: Wode,
     	children:[
+    		{path:"jilu/:classid",component:Jilu,},
 //			{path:"baoming/:classid",component:Baoming,//暂不使用
 //				children:[
 //					{path:"PreIpo",component:PreIPO},
@@ -202,7 +207,6 @@ export default ({
 			}
     	]
     },
-    {path:"/jilu/:classid",component:Jilu,},
     {path:"/DingzengZuoshi/:type/:XiangmuID/:is_send",component:DingzengZuoshi,
 		children:[
 		    {path: 'Pipei',component: Pipei},
