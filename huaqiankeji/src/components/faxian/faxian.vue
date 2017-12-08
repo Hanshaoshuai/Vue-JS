@@ -215,7 +215,10 @@
 				top:'0',
 				top1:'0',
 				qingzhiShuaxin:0,
-				qiangZhi:0
+				qiangZhi:0,
+				
+				dongtai:"0",
+				jiantingTongguos:"0"
 			}
 		},
 		mounted() {	//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商
@@ -247,7 +250,11 @@
 			}else{
 //				alert("YiyouTongxin不存在")
 			}
+//			获取企融直通车动态数据
+			this.dongtaiShuju();
 	    	window.onhashchange = function() {
+	    		that.jiantingTongguos="0";
+	    		that.dongtai="0";
 //				console.log('111111')
 				if(that.shifouZhuce=='2'){
 					that.huoqugeshu();
@@ -270,23 +277,21 @@
 				photourl:localStorage.getItem("photourl")	//用户头像URL地址
 	  		}
 			this.type=this.userContent['type'];
-			this.userType(this.type)
-			console.log(this.userContent)
+			this.userType(localStorage.getItem("type"))
+//			console.log(this.userContent)
 	    	var datas = {		//相应参数
 				token:"N8KCEuwCyhOSviBLwm9PhbrZEQ1aUJBhHMkL7XNv5cEqBF2xs1DQSupWBgxWpz5w",//	token	是	[string]		
 				page:"",		
 				size:'4'	
 			}
 	    	var token={
-	    		token:this.userContent.token,
+	    		token:localStorage.getItem("token"),
 	    		page:1,			//	page	是	[string]		
 				size:1			//	size	是	[string]
 	    	}
 	    	this.token=token;
 //			刚注册判断接口	个人信息
 	    	this.panDuan();
-//			获取企融直通车动态数据
-			this.dongtaiShuju()
 	    },
 	    activated(){
 	    	var that=this;
@@ -301,6 +306,8 @@
 				}
 			});
 	    	window.onhashchange = function() {
+	    		that.jiantingTongguos="0";
+	    		that.dongtai="0";
 //	    		if(localStorage.getItem("qiangZhi")){
 //					localStorage.removeItem("qiangZhi");
 //					console.log(localStorage.getItem("qiangZhi"))
@@ -364,23 +371,28 @@
 						this.panDuan();
 					}else{
 						if(res.body.returnCode=='401'){
-							localStorage.removeItem("userID");		//用户ID
-							localStorage.removeItem("token");		//用户token
-							localStorage.removeItem("phone");		//用户电话
-							localStorage.removeItem("type");		//用户类型
-							localStorage.removeItem("name");
-							localStorage.removeItem("photo");		//用户头像id
-							localStorage.removeItem("photourl");	//用户头像URL地址
-							localStorage.removeItem("panduanWanshan");
-							localStorage.removeItem("qiangZhi");
-							if(localStorage.getItem("typeID")){
-								localStorage.removeItem("typeID");
-							}
-							location.replace(document.referrer);
-//							window.location.href="#/denglu";
-//							this.shengqingZhongtishi='1'
+							Toast("您的登录已过期请重新登录");
+//							console.log("401");
+							setTimeout(function(){
+								localStorage.removeItem("userID");		//用户ID
+								localStorage.removeItem("token");		//用户token
+								localStorage.removeItem("phone");		//用户电话
+								localStorage.removeItem("type");		//用户类型
+								localStorage.removeItem("name");
+								localStorage.removeItem("photo");		//用户头像id
+								localStorage.removeItem("photourl");	//用户头像URL地址
+								localStorage.removeItem("panduanWanshan");
+								localStorage.removeItem("qiangZhi");
+								if(localStorage.getItem("typeID")){
+									localStorage.removeItem("typeID");
+								}
+								location.replace(document.referrer);
+	//							window.location.href="#/denglu";
+	//							this.shengqingZhongtishi='1'
+							},1600)
 						}else{
-							Toast(this.shengqingZhongtishi)
+							Toast(this.shengqingZhongtishi);
+//							console.log("402");
 						}
 					}
 				},function(res){
@@ -412,7 +424,7 @@
 						this.WeitongGuo();
 					}
 				},function(res){
-//				    console.log(res);
+				    console.log(res);
 				})
 			},
 			initScroll(){
@@ -423,6 +435,19 @@
 				});
 				//通过betterscroll对象监听一个scroll事件，当scroll滚动时能够暴露出来，参数pos就是位置
 				this.betterscroll.on("scroll",(pos)=>{
+					if(this.jiantingTongguos=="0"){
+//						console.log("就一次")
+						this.jiantingTongguos="1";
+						this.jiantingTongguo();
+					}
+					this.$refs.faxian.style.height="100%";
+					if(this.dongtai=="0"){
+//						console.log("就一次")
+						this.dongtai="1"
+						this.dongtaiShuju();
+						this.huoqugeshu();
+						this.qiyeFankui();
+					}
 					this.scrollY=Math.abs(Math.round(pos.y));
 					this.scrollYTop=Math.round(pos.y)*-1;
 //					console.log(this.scrollYTop);
@@ -586,6 +611,17 @@
 							this.botent="亲已经到底了"
 							this.top='1';
 						}
+						this.$nextTick(function(){
+							if (!this.betterscroll) {
+								this.initScroll();
+							}else{
+								this.scrollHeight=this.$refs.tianjia.scrollHeight;		//总高度
+								this.betterscroll.refresh();
+	//							console.log(this.scrollHeight)
+	//							console.log(this.clientHeight)
+	//							console.log(this.clientHeight+this.scrollY)
+							}
+						});
 						this.tishis=true;
 						this.top='1';
 						return;
@@ -688,7 +724,7 @@
 			huoqugeshu(){
 //			投资机构收到的新项目数
 				var token={
-		    		token:this.userContent.token
+		    		token:localStorage.getItem("token")
 		    	}
 				this.$http.post(URL.path+'finance/new_item',token,{emulateJSON:true}).then(function(res){
 					this.XiangmuShu=res.body.data.new_item;
@@ -701,7 +737,7 @@
 			qiyeFankui(){
 //				企业获取反馈数	和	投资机构收获取反馈数
 				var token={
-		    		token:this.userContent.token
+		    		token:localStorage.getItem("token")
 		    	}
 				this.$http.post(URL.path+'chatcomment/get_feedback_num',token,{emulateJSON:true}).then(function(res){
 //					console.log('企业获取反馈数');
@@ -746,7 +782,7 @@
 			},
 			rongziGo(){
 				if(this.shifouZhuce==2){
-					window.location.href="#/WoyaoRongzi/"+this.userContent["token"];
+					window.location.href="#/WoyaoRongzi/"+localStorage.getItem("token");
 				}else{
 					if(this.shifouZhuce=='6'){
 //						window.location.href="#/faxian/WoyaoRongzi/"+this.userContent["token"];
@@ -764,7 +800,7 @@
 			touzifankuiGo(){
 				if(this.shifouZhuce==2){
 //					console.log(this.userContent)
-					window.location.href="#/Fankui/"+this.userContent["token"];
+					window.location.href="#/Fankui/"+localStorage.getItem("token");
 				}else{
 					if(this.shifouZhuce=='6'){
 //						window.location.href="#/faxian/Fankui/"+this.userContent["token"];
@@ -781,7 +817,7 @@
 			},
 			XiangMuGo(){
 				if(this.shifouZhuce==2){
-					window.location.href="#/XinxiangMu/"+this.userContent["token"];
+					window.location.href="#/XinxiangMu/"+localStorage.getItem("token");
 					this.scrollTop=sessionStorage.getItem("scrollTop")
 				}else{
 					if(this.shifouZhuce=='6'){
@@ -800,7 +836,7 @@
 			qiyefankuiGo(){
 				if(this.shifouZhuce==2){
 //					console.log(this.userContent)
-					window.location.href="#/Fankui/"+this.userContent["token"];
+					window.location.href="#/Fankui/"+localStorage.getItem("token");
 				}else{
 					if(this.shifouZhuce=='6'){
 //						window.location.href="#/faxian/Fankui/"+this.userContent["token"];
@@ -818,9 +854,9 @@
 			contblock(id,type){		//<!--类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报 7:公司调研-->
 				if(this.shifouZhuce=='2'){
 					if(type=='1' || type=='2' ||type=='3' || type=='7'){
-						window.location.href="#/DingzengZhaiyao/"+this.userContent["token"]+'/'+id;
+						window.location.href="#/DingzengZhaiyao/"+localStorage.getItem("token")+'/'+id;
 					}else{
-						window.location.href="#/GuquanZhaiyao/"+this.userContent["token"]+'/'+id;
+						window.location.href="#/GuquanZhaiyao/"+localStorage.getItem("token")+'/'+id;
 					}
 				}else{
 					if(this.shifouZhuce=='6'){
@@ -844,7 +880,7 @@
 				this.$refs.GuquanShow.Guquanblock();
 			},
 			yijianFankui(){
-				window.location.href="#/faxian/Yijian/"+this.userContent["token"];
+				window.location.href="#/faxian/Yijian/"+localStorage.getItem("token");
 			},
 //			faxianScroll () {
 //			  var scrollTop = this.$refs.wrapper.scrollTop

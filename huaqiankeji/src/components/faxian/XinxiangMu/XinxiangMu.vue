@@ -225,8 +225,9 @@
 //		      	this.token=this.userContent['token'];
 		      	this.token=this.$route.params.token;
 	//			项目列表（投资人收到的项目）
-//				Indicator.open({spinnerType: 'fading-circle'});
+				Indicator.open({spinnerType: 'fading-circle'});
 				this.$http.post(URL.path+'finance/received_item_list',token,{emulateJSON:true}).then(function(res){
+					Indicator.close();
 //					if(this.data.length==5){//长度大于5从新开始
 //						this.data=[]
 //						this.$refs.wrapper.scrollTop=0;
@@ -278,7 +279,7 @@
 //					console.log("投资人收到的项目列表");
 //					console.log(res.body);
 				},function(res){
-//						Indicator.close();
+						Indicator.close();
 				    console.log(res);
 				})
 //				this.tucaoShow=true;

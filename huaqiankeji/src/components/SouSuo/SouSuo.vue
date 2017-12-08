@@ -188,13 +188,13 @@
 //				console.log(id)
 				if(id=='2'){
 					if(Tid=='0'){
-						window.location.href="#/faxian/sousuo/ZiliaoT1"+"/"+this.userContent["token"];//1:股权投资   2:债权投资   3:股债兼投
+						window.location.href="#/faxian/sousuo/ZiliaoT1"+"/"+localStorage.getItem("token");//1:股权投资   2:债权投资   3:股债兼投
 					}else{
-						window.location.href="#/faxian/sousuo/ZiliaoT"+Tid+"/"+this.userContent["token"];//1:股权投资   2:债权投资   3:股债兼投
+						window.location.href="#/faxian/sousuo/ZiliaoT"+Tid+"/"+localStorage.getItem("token");//1:股权投资   2:债权投资   3:股债兼投
 					}
 					
 				}else{
-					window.location.href="#/faxian/sousuo/Ziliao"+id+"/"+this.userContent["token"];
+					window.location.href="#/faxian/sousuo/Ziliao"+id+"/"+localStorage.getItem("token");
 				}
 			},
 			initScroll(){

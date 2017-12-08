@@ -21,11 +21,11 @@
 //	return URL;
 //}
 export var URL = {
-	path: 'http://www.qironghome.com/api/index.php/v2/', 
-	path1: 'http://www.qironghome.com/api/index.php/', //不用授权的接口地址
+//	path: 'http://www.qironghome.com/api/index.php/v2/', 
+//	path1: 'http://www.qironghome.com/api/index.php/', //不用授权的接口地址
 
-// 	path: 'http://test.qironghome.com/bak/web/api/index.php/v2/', //接口地址test.qironghome.com/bak/web/api/index.php/upload/photo
-// 	path1: 'http://test.qironghome.com/bak/web/api/index.php/', //接口地址
+   	path: 'http://test.qironghome.com/bak/web/api/index.php/v2/', //接口地址test.qironghome.com/bak/web/api/index.php/upload/photo
+   	path1: 'http://test.qironghome.com/bak/web/api/index.php/', //接口地址
 
 
 

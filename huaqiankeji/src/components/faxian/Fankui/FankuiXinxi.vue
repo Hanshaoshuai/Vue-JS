@@ -178,6 +178,9 @@
 					var cont="xxx 总经理 申请换取名片"
 					var res=res.body.data;
 					var length=res.length;
+					if(!res[0]){
+						return;
+					}
 					if(res[0].from_id==this.uid){
 						this.from_photo=res[0]['from_photo'];	//发送方头像
 //						this.to_photo=res[0]['to_photo'];	//我的方头像

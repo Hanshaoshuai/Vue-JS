@@ -236,6 +236,9 @@
 //							console.log(this.scrollHeight)
 //							console.log(this.clientHeight+this.scrollY)
 						}
+						if(this.scrollHeight<700){
+							this.tishis=true;
+						}
 					})
 				},function(res){
 					Indicator.close();

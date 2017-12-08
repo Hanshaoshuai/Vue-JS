@@ -127,7 +127,6 @@
 			}
 		},
 		mounted(){
-//			Indicator.open({spinnerType: 'fading-circle'});
 			this.numToTime=numToTime;
 //			this.LieBiao();
 		},
@@ -185,10 +184,12 @@
 					size:10,			//size	是	[string]		
 					follow:"2"			//2 已结束 其他表示所有收到的项目	是	[string]	
 				}
+				Indicator.open({spinnerType: 'fading-circle'});
 //				console.log(this.userContent)
 	//			已否项目列表（）
 //				if(this.data==""){
 					this.$http.post(URL.path+'finance/received_item_list',this.userContent,{emulateJSON:true}).then(function(res){
+						Indicator.close();
 //						console.log("已否项目列表");
 //						console.log(res.body);
 //						if(this.data.length==5){//长度大于5从新开始
@@ -240,8 +241,8 @@
 							});
 						}
 					},function(res){
-	//					Indicator.close();
-//					    console.log(res);
+						Indicator.close();
+					    console.log(res);
 					})
 //				}
 			},
