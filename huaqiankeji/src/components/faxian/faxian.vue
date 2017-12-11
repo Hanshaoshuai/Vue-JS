@@ -273,7 +273,7 @@
 				token:localStorage.getItem("token"),		//用户token
 				phone:localStorage.getItem("phone"),		//用户电话
 				type:localStorage.getItem("type"),			//用户类型
-				photo:localStorage.getItem("photo"),	//用户头像id
+				photo:localStorage.getItem("photo"),		//用户头像id
 				photourl:localStorage.getItem("photourl")	//用户头像URL地址
 	  		}
 			this.type=this.userContent['type'];
@@ -459,7 +459,7 @@
 //					console.log(this.clientHeight+this.scrollY)
 					if(this.clientHeight+this.scrollY==this.scrollHeight){
 						if(this.top=='0'){
-//							console.log("fksjdk")
+//							console.log("上拉请求的")
 							this.top='1';
 							var tata=this;
 							this.topStatus=true;
@@ -589,7 +589,7 @@
 				this.$http.post(URL.path+'finance/get_item_list',token,{emulateJSON:true}).then(function(res){
 					Indicator.close();
 					this.top='0';
-					this.top1='0'
+					this.top1='0';
 //					//判断是否注册通过审核；
 //					console.log("首页项目列表成功");
 //					console.log(res)
@@ -1292,7 +1292,9 @@
 							display:inline-block;
 							padding-bottom:0.02rem;
 							max-height:1.04rem;
+							/*word-wrap:break-word;*/
 							/*white-space:nowrap;*/
+							word-break:break-all;
 							overflow:hidden;
 							text-overflow:ellipsis;
 						}

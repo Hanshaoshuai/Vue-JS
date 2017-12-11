@@ -315,7 +315,7 @@
 					this.liuYans="liuYan";
 					this.jiaoHuans="jiaoHuan";
 					this.butenRight="";
-					this.genjins="了解中";
+					this.genjins="跟进中";
 //					this.bugen="停止跟进";
 				}else{
 					this.yigenJin=2;
@@ -674,7 +674,7 @@
 							},function(res){
 							    console.log(res.status);
 							})
-							this.genjins="了解中"
+							this.genjins="跟进中"
 							this.yigenJin=1;
 //							this.bugen="停止跟进"
 //							console.log("跟进");
@@ -977,6 +977,7 @@
 						color:#676767;
 						padding:0rem 0.14rem 0.18rem 0.14rem;
 						line-height:0.26rem;
+						word-break:break-all;
 						/*box-shadow: 0 0.02rem 0.04rem #dedde1;*/
 					}
 					.lasts{

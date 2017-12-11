@@ -40,12 +40,36 @@
 						</div>
 					</div>
 					<transition name="fades">
-						<div v-show="Leixing" class="zhuying_1 liangdian_1 border-topbottom">
-							<div class="ferst">您是什么类型的投资机构<font></font></div>
-							<div class="last" ref="biaoqian2">
-								<span @click.stap="xuanze2('0','Guquan','1')">股权投资</span>
-								<span @click.stap="xuanze2('1','Zaiquan','2')">债权投资</span>
-								<span @click.stap="xuanze2('2','Guzhai','3')">股债兼投</span>
+						<div  v-show="Leixing" class="zongBiaoQian">
+							<div class="zhuying_1 liangdian_1 border-topbottom">
+								<div class="ferst">您是什么类型的投资机构<font></font></div>
+								<div class="last" ref="biaoqian2">
+									<span @click.stap="xuanze2('0','Guquan','1')">股权投资</span>
+									<!--<span @click.stap="xuanze2('1','Zaiquan','2')">债权投资</span>-->
+									<span @click.stap="xuanze2('1','Guzhai','3')">投贷联动</span>
+									<span @click.stap="xuanze2('2','Rongzi','4')">融资租赁</span>
+									<span @click.stap="xuanze2('3','Zhiya','5')">股权质押</span>
+									<span @click.stap="xuanze2('4','Baoli','6')">保&nbsp;理</span>
+									<span @click.stap="xuanze2('5','Gudong','7')">股东借款</span>
+									<span @click.stap="xuanze2('6','YinbaoHan','8')">银行保函</span>
+									<span @click.stap="xuanze2('7','Duanqi','9')">短期拆借</span>
+									<span @click.stap="xuanze2('8','YinshouQuan','10')">银行授信</span>
+								</div>
+							</div>
+							<div v-show="Leixing1" class="zhuying_1 liangdian_1">
+								<div class="ferst">您是什么类型的投资机构<font></font></div>
+								<div class="last" ref="biaoqian2s">
+									<span id="1" @click.stap="xuanze2s('0','Guquan','1')">股权投资</span>
+									<!--<span @click.stap="xuanze2('1','Zaiquan','2')">债权投资</span>-->
+									<span id="3" @click.stap="xuanze2s('1','Guzhai','3')">投贷联动</span>
+									<span id="4" @click.stap="xuanze2s('2','Rongzi','4')">融资租赁</span>
+									<span id="5" @click.stap="xuanze2s('3','Zhiya','5')">股权质押</span>
+									<span id="6" @click.stap="xuanze2s('4','Baoli','6')">保&nbsp;理</span>
+									<span id="7" @click.stap="xuanze2s('5','Gudong','7')">股东借款</span>
+									<span id="8" @click.stap="xuanze2s('6','YinbaoHan','8')">银行保函</span>
+									<span id="9" @click.stap="xuanze2s('7','Duanqi','9')">短期拆借</span>
+									<span id="10" @click.stap="xuanze2s('8','YinshouQuan','10')">银行授信</span>
+								</div>
 							</div>
 						</div>
 					</transition>
@@ -66,15 +90,13 @@
 	import { Indicator } from 'mint-ui';
 	import mingpian from "../ShangchuanMingpian.vue";
 	import touxiang from "../ShangchuanTouxiang.vue";
-
-	
 	
 	export default {
-		props:['datas'],
-//			datas:{
+		props:{
+			datas:{
 //				type: Object
-//			}
-//		},
+			}
+		},
 		data () {
 			return {
 //				datas:'',
@@ -83,6 +105,7 @@
 				contens:"",
 				type:"",
 				Leixing:false,
+				Leixing1:false,
 				butten:"下一步",
 				classId:"0",
 				Type:{
@@ -99,13 +122,16 @@
 				index:"0",
 				JigouType:"",
 				typeID:"",
-				TouziType:""
+				typeIDs:"",
+				TouziType:"",
+				biaoQianID:[],		//储存标签id
+				biaoQianid:'',		//储存标签id字符串
+				y:1
 			}
 		},
 		mounted(){
 //			console.log(this.$route.params.token)
 //			this.datas=this.$route.params.token.split(',');
-			
 //			console.log(this.datas);//上一级传的参数；
 									//phone:this.phone,  //手机号
 									//texts:this.texts,	//验证码
@@ -154,34 +180,35 @@
 				if(this.index==0){		//投资机构下一步
 					Indicator.open({spinnerType: 'fading-circle'});
 					localStorage.setItem("typeID",this.typeID);
-					this.$http.post(URL.path+'regist/go',data,{emulateJSON:true}).then(function(res){
-						Indicator.close();
-//	                    console.log(res);
-						if(res.body.returnCode=='200'){
-//							Toast('注册成功请进行下一步完善信息');
-							this.XiajiCanshu={
-						        id:res.body.data.id,
-						        phone:res.body.data.phone,
-						        nickname:res.body.data.nickname,
-						        token:res.body.data.token
-						    }
-							localStorage.setItem("userID",res.body.data.id);
-							localStorage.setItem("token",res.body.data.token);
-							localStorage.setItem("phone",res.body.data.phone);
-							localStorage.setItem("type",this.type);
+//					console.log(localStorage.getItem("typeID"))
+//					this.$http.post(URL.path+'regist/go',data,{emulateJSON:true}).then(function(res){
+//						Indicator.close();
+////	                    console.log(res);
+//						if(res.body.returnCode=='200'){
+////							Toast('注册成功请进行下一步完善信息');
+//							this.XiajiCanshu={
+//						        id:res.body.data.id,
+//						        phone:res.body.data.phone,
+//						        nickname:res.body.data.nickname,
+//						        token:res.body.data.token
+//						    }
+//							localStorage.setItem("userID",res.body.data.id);
+//							localStorage.setItem("token",res.body.data.token);
+//							localStorage.setItem("phone",res.body.data.phone);
+//							localStorage.setItem("type",this.type);
 //							console.log(this.XiajiCanshu)
 //							window.location.href="#/zhuce/ZhuCe1/"+res.body.data.token+','+res.body.data.id+','+this.typeID+"/"+this.JigouType;
-							window.location.href="#/zhuce/ZhuCe1/"+res.body.data.token+"/"+this.JigouType;
-						}else{
-							window.location.href="#/denglu"
-							Toast(res.body.msg);
-						}
-	                },function(res){
-	                	Indicator.close();
-	                	this.mingpianID=1;
-	                	Toast("系统正忙请稍后！");
-	                    console.log(res);
-	                });
+							window.location.href="#/zhuce/ZhuCe1/"+"res.body.data.token"+"/"+this.JigouType;
+//						}else{
+//							Toast(res.body.msg);
+//							window.location.href="#/denglu"
+//						}
+//	                },function(res){
+//	                	Indicator.close();
+//	                	this.mingpianID=1;
+//	                	Toast("系统正忙请稍后！");
+//	                    console.log(res);
+//	                });
 				}else{
 					if(this.index==1 || this.index==5){
 						Indicator.open({spinnerType: 'fading-circle'});
@@ -203,8 +230,8 @@
 //								console.log(this.XiajiCanshu)
 								window.location.href="#/faxian"
 							}else{
-								window.location.href="#/denglu"
 								Toast(res.body.msg);
+								window.location.href="#/denglu"
 							}
 		                },function(res){
 		                	Indicator.close();
@@ -233,8 +260,8 @@
 //								console.log(this.XiajiCanshu)
 								window.location.href="#/zhuce/ZhuCe1/"+this.type+"/type"+this.index;
 							}else{
-								window.location.href="#/denglu"
 								Toast(res.body.msg);
+								window.location.href="#/denglu"
 							}
 		                },function(res){
 		                	Indicator.close();
@@ -259,8 +286,10 @@
 				}
 				if(index==0){
 					this.Leixing=true;
+					this.Leixing1=true;
 				}else{
 					this.Leixing=false;
+					this.Leixing1=false;
 				}
 				for(var i=0; i<length; i++){
 					if(spans[i].getAttribute("class")=="bianse"){
@@ -270,11 +299,32 @@
 				spans[index].setAttribute("class","bianse")
 			},
 			xuanze2(index,type,id){
+				console.log(id)
 //				console.log(this.$refs.biaoqian.getElementsByTagName("span"))
 				var spans=this.$refs.biaoqian2.getElementsByTagName("span")
 				var length=spans.length;
+				var spans1=this.$refs.biaoqian2s.getElementsByTagName("span")
+				var length1=spans1.length;
+				var tiaoChu=0;
+				for(var e=0; e<length1; e++){
+					spans1[e].style.display="block";
+					if(spans1[index].id==this.biaoQianID[e]){
+						this.biaoQianID.splice(e,1);
+						this.y-=1;
+						spans1[index].setAttribute("class","");
+					}
+				}
+				spans1[index].style.display="none";
+//				for(var e=0; e<length; e++){
+//					if(this.biaoQianID[e]==id){
+//						tiaoChu=1;
+//					}
+//				}
+//				if(tiaoChu==1){
+//					return;
+//				}
 				this.typeID=id;
-				localStorage.setItem("typeID",id);
+//				localStorage.setItem("typeID",id);
 				this.JigouType=type;
 				for(var i=0; i<length; i++){
 					if(spans[i].getAttribute("class")=="bianse"){
@@ -282,6 +332,43 @@
 					}
 				}
 				spans[index].setAttribute("class","bianse")
+			},
+			xuanze2s(index,type,id){
+//				if(this.typeID==id){
+//					return;
+//				}
+//				console.log(id)
+//				console.log(this.$refs.biaoqian.getElementsByTagName("span"))
+				var spans=this.$refs.biaoqian2s.getElementsByTagName("span")
+				var length=spans.length;
+				this.typeIDs=id;
+//				localStorage.setItem("typeID",id);
+				this.JigouType=type;
+				if(spans[index].getAttribute("class")=="bianse"){
+					spans[index].setAttribute("class","");
+					for(var z=0; z<this.y; z++){
+						if(this.biaoQianID[z]==spans[index].id){
+							this.biaoQianID.splice(z,1);
+//							console.log(this.biaoQianID)
+							this.biaoQianid=this.biaoQianID.join()
+							console.log(this.biaoQianid)
+							this.y-=1
+							break;
+						}
+					}
+				}else{
+					spans[index].setAttribute("class","bianse");
+					this.y+=1;
+					for(var i=0; i<this.y; i++){
+						if(this.biaoQianID[i]!=spans[index].id){
+							this.biaoQianID.push(spans[index].id)
+							break;
+						}
+					}
+//					console.log(this.biaoQianID)
+					this.biaoQianid=this.biaoQianID.join()
+					console.log(this.biaoQianid)
+				}
 			},
 			yanZheng(){
 				
@@ -503,6 +590,7 @@
 					height:0.4rem;
 					margin:0 auto;
 					margin-top:0.18rem;
+					padding-bottom:0.2rem;
 					span{
 						width:100%;
 						height:100%;

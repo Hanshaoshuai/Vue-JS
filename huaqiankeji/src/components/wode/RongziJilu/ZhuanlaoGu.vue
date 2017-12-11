@@ -44,7 +44,7 @@
 						<div class="zhuying_1">
 							<div class="ferst"><span></span>投资亮点</div>
 							<div class="last">
-								<p>{{textc}}</p>
+								<p class="huanhang">{{textc}}</p>
 							</div>
 						</div>
 					</div>
@@ -665,6 +665,9 @@
 						}
 						.jianchi{
 							color:#676767;
+						}
+						.huanhang{
+							word-break:break-all;
 						}
 						/*box-shadow: 0 0.02rem 0.04rem #dedde1;*/
 					}

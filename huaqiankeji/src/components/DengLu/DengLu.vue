@@ -119,7 +119,7 @@
 //					version: '1.2.5',//版本号
 					terminalNo: 'terminalNo'
 				}
-				console.log(datas['version'])
+//				console.log(datas['version']);
 				if(!phone.test(this.phone)) {
 					Toast('输入手机号有误');
 					return;

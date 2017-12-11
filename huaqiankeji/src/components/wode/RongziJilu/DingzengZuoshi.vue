@@ -44,7 +44,7 @@
 						<div class="zhuying_1">
 							<div class="ferst"><span></span>投资亮点</div>
 							<div class="last">
-								<p>{{textc}}</p>
+								<p class="huanhang">{{textc}}</p>
 							</div>
 						</div>
 					</div>
@@ -581,6 +581,7 @@
 						color:#676767;
 						padding:0rem 0.14rem 0.18rem 0.14rem;
 						line-height:0.26rem;
+						word-break:break-all;
 						overflow:hidden;
 						font{
 							display:inline-block;
@@ -604,6 +605,9 @@
 						p{
 							word-wrap:break-word;
 							text-align: justify;
+						}
+						.huanhang{
+							word-break:break-all;
 						}
 						/*box-shadow: 0 0.02rem 0.04rem #dedde1;*/
 					}

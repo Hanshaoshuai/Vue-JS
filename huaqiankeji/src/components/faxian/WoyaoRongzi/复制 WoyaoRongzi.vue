@@ -7,16 +7,7 @@
 			</div>
 			<div class="box" ref="wrapper">
 				<div class="contents" ref="tianjia">
-					<div style="width:100%;height:0.53rem;"></div>
-					<div v-if="Youtype!='2'" class="zhuying">
-						<div class="zhuying-heder"><font></font>债权融资入口<span>（会员服务）</span></div>
-						<div class="zhuying_1">
-							<div class="ferst">
-								<span style="padding-left:0.15rem;">债权融资入口<a @click.stap="ZaiquanGo()">（点击前往）</a></font></span>
-							</div>
-						</div>
-					</div>
-					<div v-if="Youtype!='2'" style="width:100%;height:0.06rem;background: #f5f4f9;"></div>
+					<div style="width:100%;height:0.5rem;"></div>
 					<div class="zhuying">
 						<div class="zhuying-heder"><font></font>新项目发起融资<span>（电脑端）</span></div>
 						<div class="zhuying_1">
@@ -30,7 +21,7 @@
 							</div>
 						</div>
 					</div>
-					<div style="width:100%;height:0.0rem;background: #f5f4f9;"></div>
+					<div style="width:100%;height:0.08rem;background: #f5f4f9;"></div>
 					<div class="fankiu">
 						<div class="zhuying-heder"><font></font>已有项目继续投递<span>（移动端）</span></div>
 						<div v-for="(cont,index) in data" class="add" ref="lisitTop">
@@ -105,7 +96,6 @@
 				src:"",
 				urlName:"Dingzeng",
 				type:"1",			//创建类型
-				Youtype:"",
 				fankui:"45",
 				genjin:"458",
 				introduction:"",
@@ -158,7 +148,6 @@
 			}
 		},
 		mounted(){
-			this.Youtype=localStorage.getItem("type")
 			this.numToTime=numToTime;
 //			console.log(this.$route.params['type'])
 			this.token=this.$route.params['type'];
@@ -176,9 +165,6 @@
 			yijianHind(){
 				Indicator.close();
 				history.go(-1)
-			},
-			ZaiquanGo(){
-				window.location.href="#/ZhaiquanRukou/"+localStorage.getItem("token");
 			},
 			zhiDing(){		//返回顶部；
 				this.betterscroll.scrollToElement(this.$refs.tianjia,300);

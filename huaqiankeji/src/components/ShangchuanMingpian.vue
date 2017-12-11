@@ -57,6 +57,7 @@
 		            }
 	              	var reader = new FileReader();
 	              	reader.onload = function(evt){
+//	              		console.log(file.files[0])
 //	              		if(!(file.files[0].type.indexOf('image')==0 && file.files[0].type && /\.(?:jpg|png|gif)$/.test(file.files[0].name)) ){  
 //					        Toast('图片只能是jpg,gif,png');  
 //					        return ;
