@@ -60,6 +60,13 @@
 							<span class="one src1" @click.stop="xuanZe('4','3')">股权质押</span>
 							<span class="one src1" @click.stop="xuanZe('5','4')">融资租赁</span>
 							<span class="one src1" @click.stop="xuanZe('7','5')">公司调研</span>
+							<!--<span class="one src1" @click.stop="xuanZe('8','6')">保理</span>
+							<span class="one src1" @click.stop="xuanZe('9','7')">股东借款</span>
+							<span class="one src1" @click.stop="xuanZe('10','8')">银行保函</span>
+							<span class="one src1" @click.stop="xuanZe('11','9')">短期拆借</span>
+							<span class="one src1" @click.stop="xuanZe('12','10')">银行授信</span>
+							<span class="one src1" @click.stop="xuanZe('13','11')">大额增信</span>
+							<span class="one src1" @click.stop="xuanZe('14','12')">产业发展基金</span>-->
 						</div>
 					</div>
 					
@@ -181,6 +188,9 @@
 				if(index==6){
 					index=5;
 				}
+				if(index>6){
+					index-=1;
+				}
 				span[index].setAttribute("class","one src2");
 //				this.$nextTick(function() {
 //					var img = this.$refs.tianjia;
@@ -226,6 +236,7 @@
 //				console.log(MingpianImg)
 //			},
 			xuanZe(type,index){
+//				console.log(type)
 				if(this.showFlag1==false){
 					return;
 				}

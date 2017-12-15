@@ -15,7 +15,7 @@
 							<span v-if="item.type==6" class="texts">研报支持</span>
 							<span v-if="item.type==7" class="texts">公司调研</span>
 							<font v-if="item.is_send=='1' && item.audit!='1'">已投递</font>
-							<font v-if="item.audit=='2'">未投递</font>
+							<font v-if="item.audit=='2' || item.audit=='0'">未投递</font>
 							<font v-if="item.audit=='1'">已撤回</font>
 						</div>
 						<div class="content-bottom">

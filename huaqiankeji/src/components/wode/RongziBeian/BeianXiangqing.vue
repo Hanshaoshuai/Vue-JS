@@ -471,11 +471,11 @@
 						margin-bottom:0.1rem;
 					}
 					.neirong{
-						min-height:1.22rem;
+						min-height:0.6rem;
 						.mint-field-core{
 							resize: none;
 							background:#f5f4f9;
-							min-height:1.22rem;
+							min-height:0.6rem;
 							line-height:0.2rem;
 							&::-webkit-scrollbar{width:0;height:0}
 						}

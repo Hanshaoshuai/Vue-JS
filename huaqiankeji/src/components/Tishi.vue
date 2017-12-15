@@ -166,7 +166,8 @@
 			guoHui(){
 //				this.onlyContent=false;
 				if(this.datas=="pipei"){
-					window.location.href='#/wode/DingzengZuoshi/1/Pipei2/3/4';
+					this.onlyContent=false;
+//					window.location.href='#/wode/DingzengZuoshi/1/Pipei2/3/4';
 //					this.content.pipeiBlock(this.CanShu);
 					return;
 				}
@@ -184,7 +185,8 @@
 					return;
 				}
 				if(this.datas=="pipei"){
-					this.content.pipeiBlock(this.CanShu);
+					this.onlyContent=false;
+//					this.content.pipeiBlock(this.CanShu);
 					return;
 				}
 				if(this.XiangmuID){		//项目已放弃接口

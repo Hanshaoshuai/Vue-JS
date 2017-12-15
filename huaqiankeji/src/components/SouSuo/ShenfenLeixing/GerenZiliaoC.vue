@@ -67,7 +67,9 @@
 								<span>单笔投资额</span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
-										<input readOnly="true" v-model="numberg" placeholder="" type="text" class="mint-field-core">
+										<!--<input readOnly="true" v-model="numberg" placeholder="" type="text" class="mint-field-core">-->
+										<input v-if="single_project_max!=0" readOnly="true" v-model="numberg" placeholder="" type="text" class="mint-field-core">
+										<a v-if="single_project_max==0" ><input v-if="numberg1" readOnly="true" :placeholder="numberg1['0'].title" type="text" class="mint-field-core"></a>
 									</li>
 								</ul>
 								<div v-if="BianJi==1" class="type-conts">
@@ -364,6 +366,7 @@
 				biaoQianid2:'',		//储存标签id字符串
 				oDbiaoQianID2:'',		//后台获取的储存标签id
 				scrollTop:"",
+				single_project_max:"",
 				userID:"",
 				nones:''
 			}
@@ -382,6 +385,7 @@
 				Indicator.close();
 				this.data=res.body.data;
 				this.imgs=res.body.data.photo.url;
+				this.single_project_max=res.body.data.info.single_project_max*1+res.body.data.info.single_project_min*1;
 				this.numberg=this.data.info.single_project_min+'万-'+this.data.info.single_project_max+'万';
 				this.numberh=this.data.info.territory;
 				this.textc=this.data.info.resources;

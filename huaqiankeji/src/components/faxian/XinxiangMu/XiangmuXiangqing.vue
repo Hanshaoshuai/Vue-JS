@@ -156,7 +156,8 @@
 					</div>
 				</div>
 				<box></box>
-				<div v-if="data.end_follow!='2'" class="butten">
+				<!--<div v-if="data.end_follow!='2'" class="butten">-->
+				<div class="butten">
 					<div class="tousu"><span>保密信息，禁止传播</span></div>
 					<ul>
 						<li @click.stap="liuYanTo()"><span :class="liuYans"></span><p>留言询问</p></li>
@@ -164,7 +165,8 @@
 					</ul>
 				</div>
 			</div>
-			<div v-if="data.end_follow!='2'" class="baoming border-top">
+			<!--<div v-if="data.end_follow!='2'" class="baoming border-top">-->
+			<div class="baoming border-top">
 				<span class="border-right" :class="butenLeft" @click.stap="genJin()">{{genjins}}</span>
 				<span :class="butenRight" @click.stap="buGen()">不感兴趣</span>
 			</div>
@@ -315,7 +317,7 @@
 					this.liuYans="liuYan";
 					this.jiaoHuans="jiaoHuan";
 					this.butenRight="";
-					this.genjins="了解中";
+					this.genjins="跟进中";
 //					this.bugen="停止跟进";
 				}else{
 					this.yigenJin=2;
@@ -419,7 +421,7 @@
 							this.$refs.tishiShow.tishiBlock(this.mingPian,this.token);//CanShu是下级要传的参数
 						})
 					}else{
-						Toast("亲，你还没有跟进是不可以向对方换取名片的");
+						Toast("亲，你还没有感兴趣是不可以向对方换取名片的");
 					}
 				}else{
 					this.onlyContent2=false;
@@ -581,7 +583,7 @@
 				if(this.types==1){			//跳转到留言页面
 					window.location.href="#/fankuixinxi/"+this.$route.params.token+"/"+this.data.uid+'/'+this.data.uname;
 				}else{
-					Toast("亲，你还没有跟进是不可以给对方留言的");
+					Toast("亲，你还没有感兴趣是不可以给对方留言的");
 				}
 //				this.liuYans="liuYan";
 			},
@@ -670,11 +672,11 @@
 									
 								}
 //								console.log(res);
-								Toast("亲，您已跟进可以给对方留言或换名片啦");
+								Toast("亲，您已感兴趣可以给对方留言或换名片啦");
 							},function(res){
 							    console.log(res.status);
 							})
-							this.genjins="了解中"
+							this.genjins="跟进中"
 							this.yigenJin=1;
 //							this.bugen="停止跟进"
 //							console.log("跟进");
@@ -977,6 +979,7 @@
 						color:#676767;
 						padding:0rem 0.14rem 0.18rem 0.14rem;
 						line-height:0.26rem;
+						word-break:break-all;
 						/*box-shadow: 0 0.02rem 0.04rem #dedde1;*/
 					}
 					.lasts{

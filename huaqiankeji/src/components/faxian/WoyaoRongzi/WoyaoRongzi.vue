@@ -7,13 +7,22 @@
 			</div>
 			<div class="box" ref="wrapper">
 				<div class="contents" ref="tianjia">
-					<div style="width:100%;height:0.5rem;"></div>
+					<div style="width:100%;height:0.53rem;"></div>
+					<div v-if="Youtype=='1'" class="zhuying">
+						<div class="zhuying-heder"><font></font>债权融资入口<span>（会员服务）</span></div>
+						<div class="zhuying_1">
+							<div class="ferst">
+								<span style="padding-left:0.15rem;">债权融资<font></font><a @click.stap="ZaiquanGo()">（点击前往）</a></span>
+							</div>
+						</div>
+					</div>
+					<div v-if="Youtype=='1'" style="width:100%;height:0.06rem;background: #f5f4f9;"></div>
 					<div class="zhuying">
 						<div class="zhuying-heder"><font></font>新项目发起融资<span>（电脑端）</span></div>
 						<div class="zhuying_1">
 							<div class="ferst">
-								<span>1、填写并完成融资项目备案<a @click.stap="BeianGo()">（点击前往）</a></font></span>
-								<span>2、登录<a>www.qironghome.com</a>，进入项目融资发布后台；</font></span>
+								<span>1、填写并完成项目备案<font></font><a @click.stap="BeianGo()">（点击前往）</a></span>
+								<span>2、登录<a>www.qironghome.com</a>，进入项目融资发布后台；</span>
 								<span>3、点击“我要融资”，填写公司融资要素，上传商业计划书；</span>
 								<span>4、根据系统智能推荐的投资人清单，选择希望投递的投资机构；</span>
 								<span>5、阅读平台服务费收费协议并完成投递；</span>
@@ -21,7 +30,7 @@
 							</div>
 						</div>
 					</div>
-					<div style="width:100%;height:0.08rem;background: #f5f4f9;"></div>
+					<div style="width:100%;height:0.0rem;background: #f5f4f9;"></div>
 					<div class="fankiu">
 						<div class="zhuying-heder"><font></font>已有项目继续投递<span>（移动端）</span></div>
 						<div v-for="(cont,index) in data" class="add" ref="lisitTop">
@@ -29,7 +38,7 @@
 								<ul ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.type,item.is_send)">
 									<li>
 										<div class="content-top">
-											<span>{{item.com_short}}{{item.com_name}}&nbsp;（{{item.com_code}}）</span>
+											<span>{{item.com_short}}<!--{{item.com_name}}-->&nbsp;（{{item.com_code}}）</span>
 											<!--<span>{{item.type}}</span>-->
 											<span v-if="item.type==1" class="texts">定增</span>
 											<span v-if="item.type==2" class="texts">做市</span>
@@ -38,8 +47,15 @@
 											<span v-if="item.type==5" class="texts">融资租赁</span>
 											<span v-if="item.type==6" class="texts">研报支持</span>
 											<span v-if="item.type==7" class="texts">公司调研</span>
+											<span v-if="item.type==8" class="texts">保理</span>
+											<span v-if="item.type==9" class="texts">股东借款</span>
+											<span v-if="item.type==10" class="texts">银行保函</span>
+											<span v-if="item.type==11" class="texts">短期拆借</span>
+											<span v-if="item.type==12" class="texts">银行授信</span>
+											<span v-if="item.type==13" class="texts">大额增信</span>
+											<span v-if="item.type==14" class="texts">产业发展基金</span>
 											<font v-if="item.is_send=='1' && item.audit!='1'">已投递</font>
-											<font v-if="item.audit=='2'">未投递</font>
+											<font v-if="item.audit=='0' && item.is_send!='1'">未投递</font>
 											<font v-if="item.audit=='1'">已撤回</font>
 										</div>
 										<div class="content-bottom">
@@ -96,6 +112,7 @@
 				src:"",
 				urlName:"Dingzeng",
 				type:"1",			//创建类型
+				Youtype:"",
 				fankui:"45",
 				genjin:"458",
 				introduction:"",
@@ -120,7 +137,14 @@
 					type3:"ZhuanlaoGu1",
 					type4:"ZhiYa1",
 					type5:"ZuLin1",
-					type7:"Diaoyan1"
+					type7:"Diaoyan1",
+					type8:"BaoliJ",
+					type9:"GudongJ",
+					type10:"YinbaoHanJ",
+					type11:"DuanqiJ",
+					type12:"YinshouXinJ",
+//					type13:"Diaoyan1"
+//					type14:"Diaoyan1"
 				},
 				XiangmuID:"",
 				is_send:"",
@@ -148,6 +172,7 @@
 			}
 		},
 		mounted(){
+			this.Youtype=localStorage.getItem("type")
 			this.numToTime=numToTime;
 //			console.log(this.$route.params['type'])
 			this.token=this.$route.params['type'];
@@ -165,6 +190,9 @@
 			yijianHind(){
 				Indicator.close();
 				history.go(-1)
+			},
+			ZaiquanGo(){
+				window.location.href="#/ZhaiquanRukou/"+localStorage.getItem("token");
 			},
 			zhiDing(){		//返回顶部；
 				this.betterscroll.scrollToElement(this.$refs.tianjia,300);
@@ -500,7 +528,7 @@
 									display:flex;
 									span{
 										display:inline-block;
-										width:0.8rem;
+										width:0.84rem;
 										&:first-child{
 											color:#323232;
 											font-size:0.18rem;
@@ -509,7 +537,7 @@
 									}
 									font{
 										display:inline-block;
-										width:0.5rem;
+										width:0.46rem;
 										font-size:0.12rem;
 										color:#717070;
 										line-height:0.18rem;
@@ -595,6 +623,16 @@
 							}*/
 							a{
 								color:#fc9981;
+							}
+							font{
+								display:inline-block;
+								width:0.22rem;
+								height:0.14rem;
+								margin-left:0.06rem;
+								margin-bottom:-0.02rem;
+								background-image:url('./img/timg1.gif');
+								background-size:100% 100%;
+								transform:rotate(180deg);
 							}
 						}
 					}

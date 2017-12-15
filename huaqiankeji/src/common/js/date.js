@@ -17,10 +17,10 @@ export function formatDate(date,fmt){
 	}
 	return fmt;
 };
-
 function padLeftZero(str){
 	return ('00'+str).substr(str.length);
 }
+
 
 export function numToTime(num){
 	num *= 1000;
@@ -31,12 +31,24 @@ export function numToTime(num){
       day,
       newTime = new Date(newNum).toLocaleString();
 
-    time = time.replace(/\d+[\/\-]/, function(text){
-      year = text.match(/\d+/)[0];
+//  time = time.replace(/\d+[\/\-]/, function(text){
+//    year = text.match(/\d+/)[0];
+//    return '';
+//  });
+//  time = time.replace(/\d+[\/\-]/, function(text){
+//    mouth = text.match(/\d+/)[0];
+//    return '';
+//  });
+//  time = time.replace(/\d+/, function(text){
+//    day = text.match(/\d+/)[0];
+//    return '';
+//  });
+	time = time.replace(/\d+/, function(text){
+      year = text;
       return '';
     });
-    time = time.replace(/\d+[\/\-]/, function(text){
-      mouth = text.match(/\d+/)[0];
+    time = time.replace(/\d+/, function(text){
+      mouth = text;
       return '';
     });
     time = time.replace(/\d+/, function(text){
@@ -57,6 +69,8 @@ export function numToTime(num){
       return year + '年' + mouth + '月' + day + '日';
     }
 }
+
+
 export function numToTime1(num){
 	num *= 1000;
 //	console.log(num)
@@ -69,12 +83,24 @@ export function numToTime1(num){
       m,
       newTime = new Date(newNum).toLocaleString();
 //    console.log(time)
-    time = time.replace(/\d+[\/\-]/, function(text){
-      year = text.match(/\d+/)[0];
+//  time = time.replace(/\d+[\/\-]/, function(text){
+//    year = text.match(/\d+/)[0];
+//    return '';
+//  });
+//  time = time.replace(/\d+[\/\-]/, function(text){
+//    mouth = text.match(/\d+/)[0];
+//    return '';
+//  });
+//  time = time.replace(/\d+/, function(text){
+//    day = text.match(/\d+/)[0];
+//    return '';
+//  });
+	time = time.replace(/\d+/, function(text){
+      year = text;
       return '';
     });
-    time = time.replace(/\d+[\/\-]/, function(text){
-      mouth = text.match(/\d+/)[0];
+    time = time.replace(/\d+/, function(text){
+      mouth = text;
       return '';
     });
     time = time.replace(/\d+/, function(text){
@@ -136,6 +162,7 @@ export function numToTime1(num){
     }
 }
 
+
 export function numToTime2(num){
 	num *= 1000;
 //	console.log(num)
@@ -148,19 +175,31 @@ export function numToTime2(num){
       m,
       newTime = new Date(newNum).toLocaleString();
 
-    time = time.replace(/\d+[\/\-]/, function(text){
-      year = text.match(/\d+/)[0];
+//  time = time.replace(/\d+[\/\-]/, function(text){
+//    year = text.match(/\d+/)[0];
+//    return '';
+//  });
+//  time = time.replace(/\d+[\/\-]/, function(text){
+//    mouth = text.match(/\d+/)[0];
+//    return '';
+//  });
+//  time = time.replace(/\d+/, function(text){
+//    day = text.match(/\d+/)[0];
+//    return '';
+//  });
+	time = time.replace(/\d+/, function(text){
+      year = text;
       return '';
     });
-    time = time.replace(/\d+[\/\-]/, function(text){
-      mouth = text.match(/\d+/)[0];
+    time = time.replace(/\d+/, function(text){
+      mouth = text;
       return '';
     });
     time = time.replace(/\d+/, function(text){
       day = text.match(/\d+/)[0];
       return '';
     });
-     time = time.replace(/\d+/, function(text){
+    time = time.replace(/\d+/, function(text){
       h = text.match(/\d+/)[0];
       return '';
     });
@@ -184,6 +223,7 @@ export function numToTime2(num){
     }
 }
 
+
 //倒计时
 export function numToTime3(num){
 	num *= 1000;
@@ -193,12 +233,24 @@ export function numToTime3(num){
       mouth,
       day,
       newTime = new Date(newNum).toLocaleString();
-    time = time.replace(/\d+[\/\-]/, function(text){
-      year = text.match(/\d+/)[0];
+//  time = time.replace(/\d+[\/\-]/, function(text){
+//    year = text.match(/\d+/)[0];
+//    return '';
+//  });
+//  time = time.replace(/\d+[\/\-]/, function(text){
+//    mouth = text.match(/\d+/)[0];
+//    return '';
+//  });
+//  time = time.replace(/\d+/, function(text){
+//    day = text.match(/\d+/)[0];
+//    return '';
+//  });
+    time = time.replace(/\d+/, function(text){
+      year = text;
       return '';
     });
-    time = time.replace(/\d+[\/\-]/, function(text){
-      mouth = text.match(/\d+/)[0];
+    time = time.replace(/\d+/, function(text){
+      mouth = text;
       return '';
     });
     time = time.replace(/\d+/, function(text){

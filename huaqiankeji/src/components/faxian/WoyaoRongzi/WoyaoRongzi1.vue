@@ -1,89 +1,60 @@
 <template>
-	<transition name="fade">
+	<!--<transition name="fade">-->
 		<div v-show="tucaoShow" class="xiangmu">
 			<div class="xiangmu-header" @click.stap="yijianHind()">
 				<span class="xiangmu-left"><img src="./img/back.png"/></span>
 				<span>我要融资</span>
 			</div>
 			<div class="box" ref="wrapper">
-				<div style="width:100%;height:0.5rem;"></div>
-				<div class="zhuying">
-					<div class="zhuying-heder"><font></font>新项目发起融资<span>（电脑端）</span></div>
-					<div class="zhuying_1">
-						<div class="ferst">
-							<span>1、填写并完成融资项目备案<a @click.stap="BeianGo()">（点击前往）</a></font></span>
-							<span>2、登录<a>www.qironghome.com</a>，进入项目融资发布后台；</font></span>
-							<span>3、点击“我要融资”，填写公司融资要素，上传商业计划书；</span>
-							<span>4、根据系统智能推荐的投资人清单，选择希望投递的投资机构；</span>
-							<span>5、阅读平台服务费收费协议并完成投递；</span>
-							<span>6、所有投资人将在10天内完成初步反馈，请您注意查收和回复。</span>
+				<div class="contents" ref="tianjia">
+					<div style="width:100%;height:0.5rem;"></div>
+					<div class="zhuying">
+						<div class="zhuying-heder"><font></font>新项目发起融资<span>（电脑端）</span></div>
+						<div class="zhuying_1">
+							<div class="ferst">
+								<span>1、填写并完成项目备案<font></font><a @click.stap="BeianGo()">（点击前往）</a></span>
+								<span>2、登录<a>www.qironghome.com</a>，进入项目融资发布后台；</span>
+								<span>3、点击“我要融资”，填写公司融资要素，上传商业计划书；</span>
+								<span>4、根据系统智能推荐的投资人清单，选择希望投递的投资机构；</span>
+								<span>5、阅读平台服务费收费协议并完成投递；</span>
+								<span>6、所有投资人将在10天内完成初步反馈，请您注意查收和回复。</span>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div style="width:100%;height:0.08rem;background: #f5f4f9;"></div>
-				<div class="fankiu">
-					<div class="zhuying-heder"><font></font>已有项目继续投递<span>（移动端）</span></div>
-					<!--<div class="content-food" ref="foods">
-						<span>已有项目继续投递<a>（移动端）</a></span>
-						<ul>
-							<li class="src1" ref="img1" index="img1" @click.stap="dingzengGo('Dingzeng','1')">
-								<span>定增</span><font class="img1"></font>
-							</li>
-							<li class="src2" ref="img2" index="img2" @click.stap="zuoshiGo('Zuoshi','2')">
-								<span>做市</span><font></font>
-							</li>
-						</ul>
-						<ul>
-							<li class="src3" ref="img3" index="img3" @click.stap="zhuanguGo('ZhuanlaoGu','3')">
-								<span>转老股</span><font></font>
-							</li>
-							<li class="src4" ref="img4" index="img4" @click.stap="zhiyaGo('ZhiYa','4')">
-								<span>股权质押</span><font></font>
-							</li>
-						</ul>
-						<ul>
-							<li class="src5" ref="img5" index="img5" @click.stap="zulinGo('ZuLin','5')">
-								<span>融资租赁</span><font></font>
-							</li>
-							<li  style="" class="src6" ref="img6" index="img6" @click.stap="yanbaoGo('YanBao','6')">
-								<span>研报支持</span><font></font>
-							</li>
-						</ul>
-						<ul>
-							<li style="display:none;" class="src7" ref="img7" index="img7" @click.stap="shuangchuangGo('ShuangChuang')">
-								<span>双创债</span><font></font>
-							</li>
-							<li  style="" class="src8" ref="img8" index="img8" @click.stap="diaoyanGo('Diaoyan','7')">
-								<span>公司调研</span><font></font>
-							</li>
-						</ul>
-					</div>-->
-					<!--<jiLuqingdan ref="youhuiShow"></jiLuqingdan>-->
-					
-					
-					<div v-for="(cont,index) in data" class="add" ref="lisitTop">
-						<div v-for="(item,index) in cont" class="sousuo-content border-bottom">
-							<ul ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.type,item.is_send)">
-								<li>
-									<div class="content-top">
-										<span>{{item.com_short}}{{item.com_name}}&nbsp;（{{item.com_code}}）</span>
-										<!--<span>{{item.type}}</span>-->
-										<span v-if="item.type==1" class="texts">定增</span>
-										<span v-if="item.type==2" class="texts">做市</span>
-										<span v-if="item.type==3" class="texts">转老股</span>
-										<span v-if="item.type==4" class="texts">股权质押</span>
-										<span v-if="item.type==5" class="texts">融资租赁</span>
-										<span v-if="item.type==6" class="texts">研报支持</span>
-										<span v-if="item.type==7" class="texts">公司调研</span>
-										<font v-if="item.is_send=='1' && item.audit!='1'">已投递</font>
-										<font v-if="item.audit=='2'">未投递</font>
-										<font v-if="item.audit=='1'">已撤回</font>
-									</div>
-									<div class="content-bottom">
-										<span>{{numToTime(item.create_time)}}</span>
-									</div>
-								</li>
-							</ul>
+					<div style="width:100%;height:0.08rem;background: #f5f4f9;"></div>
+					<div class="fankiu">
+						<div class="zhuying-heder"><font></font>已有项目继续投递<span>（移动端）</span></div>
+						<div v-for="(cont,index) in data" class="add" ref="lisitTop">
+							<div v-for="(item,index) in cont" class="sousuo-content border-bottom">
+								<ul ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.type,item.is_send)">
+									<li>
+										<div class="content-top">
+											<span>{{item.com_short}}<!--{{item.com_name}}-->&nbsp;（{{item.com_code}}）</span>
+											<!--<span>{{item.type}}</span>-->
+											<span v-if="item.type==1" class="texts">定增</span>
+											<span v-if="item.type==2" class="texts">做市</span>
+											<span v-if="item.type==3" class="texts">转老股</span>
+											<span v-if="item.type==4" class="texts">股权质押</span>
+											<span v-if="item.type==5" class="texts">融资租赁</span>
+											<span v-if="item.type==6" class="texts">研报支持</span>
+											<span v-if="item.type==7" class="texts">公司调研</span>
+											<span v-if="item.type==8" class="texts">保理</span>
+											<span v-if="item.type==9" class="texts">股东借款</span>
+											<span v-if="item.type==10" class="texts">银行保函</span>
+											<span v-if="item.type==11" class="texts">短期拆借</span>
+											<span v-if="item.type==12" class="texts">银行授信</span>
+											<span v-if="item.type==13" class="texts">大额增信</span>
+											<span v-if="item.type==14" class="texts">产业发展基金</span>
+											<font v-if="item.is_send=='1' && item.audit!='1'">已投递</font>
+											<font v-if="item.audit=='0' && item.is_send!='1'">未投递</font>
+											<font v-if="item.audit=='1'">已撤回</font>
+										</div>
+										<div class="content-bottom">
+											<span>{{numToTime(item.create_time)}}</span>
+										</div>
+									</li>
+								</ul>
+							</div>
 						</div>
 					</div>
 					<div v-show="tishis" class="tishi-bottom">
@@ -96,29 +67,26 @@
 						</div>
 					</div>
 				</div>
-				<!--<div style="width:100%;height:0.6rem;"></div>-->
-				<!--<div class="butten">
-					<span @click.stop="XiaYibu()">继续手机端操作</span>
-				</div>-->
+				<span class="loding" v-show="topStatus">
+	            	<mt-spinner :type="3" color="#26a2ff" :size="30"></mt-spinner>
+	          	</span>
+				<transition name="fade1">
+					<div v-show="topBlock" @click.stop="zhiDing()" class="zhiDing"></div>
+				</transition>
+				<router-view :token="token" :BiaoQian="BiaoQian" :type="type"></router-view>
 			</div>
-			<span class="loding" v-show="topStatus">
-            	<mt-spinner :type="3" color="#26a2ff" :size="30"></mt-spinner>
-          	</span>
-			<transition name="fade1">
-				<div v-show="topBlock" @click.stop="zhiDing()" class="zhiDing"></div>
-			</transition>
-			<router-view :token="token" :BiaoQian="BiaoQian" :type="type"></router-view>
 		</div>
-	</transition>
+	<!--</transition>-->
 </template>
 
 <script type="text/ecmascript">
+	import BScroll from "better-scroll";
 	import {URL} from '../../../common/js/path';
 	import {numToTime} from "../../../common/js/date.js";
 	import { Indicator } from 'mint-ui';
 	import { Field } from 'mint-ui';
 	import box from "../../box.vue";
-	import jiLuqingdan from "./jiLuQingdan.vue";
+//	import jiLuqingdan from "./jiLuQingdan.vue";
 //	import fankuixinxi from "./FankuiXinxi.vue";
 	
 	
@@ -178,26 +146,27 @@
 				jeiguo:"亲已经到底了",
 				topStatus:false,
 				tems:'',
-				listlenght:-1
+				listlenght:-1,
+				
+				scrollY:'',
+				scrollHeight:"",
+				clientHeight:"",
+				top:0
 			}
 		},
 		mounted(){
 			this.numToTime=numToTime;
 //			console.log(this.$route.params['type'])
 			this.token=this.$route.params['type'];
+//			this.pipeiBlock();
+		},
+		activated(){
+//			console.log("jjjj")
+			this.data=[];
+			this.top=0;
+			this.page=1;
+			this.tishis=false;
 			this.pipeiBlock();
-			//获取标签
-//			var datas = {
-//				token:this.$route.params['type'],//	token	是	[string]	URL获取的参数
-//			}
-//			this.$http.post(URL.path1+'login/three',datas,{emulateJSON:true}).then(function(res){
-//				var data=res.body.data
-//				this.BiaoQian=res.body.data
-//				console.log(this.BiaoQian);
-//				console.log(res);
-//			},function(res){
-//			    console.log(res.status);
-//			})
 		},
 		methods:{
 			yijianHind(){
@@ -205,38 +174,38 @@
 				history.go(-1)
 			},
 			zhiDing(){		//返回顶部；
-				this.$refs.wrapper.scrollTop=0;
+				this.betterscroll.scrollToElement(this.$refs.tianjia,300);
 			},
-			handleScroll(){
-				if(this.$refs.wrapper.scrollTop>600){
-					this.topBlock=true;
-				}else{
-					this.topBlock=false;
-				}
-			},
-			faxianScroll(){
-				if(this.$refs.wrapper.scrollTop>600){
-					this.topBlock=true;
-				}else{
-					this.topBlock=false;
-				}
-				this.imgs()
-//				console.log(this.img[6].offsetTop)
-			},
-			imgs(){
-				var scrollHeights=this.$refs.wrapper.scrollHeight;
-				var setHeight = document.documentElement.clientHeight; //可见区域高度
-				var scrollTop = this.$refs.wrapper.scrollTop; //滚动条距离顶部高度
-				var x=Math.abs(Math.round(setHeight + scrollTop))
-//				console.log(x)
-//				console.log(scrollHeights)
-				if(x==scrollHeights || scrollHeights-x==1){
-					var tata=this
-					this.topStatus=true;
-					this.tems=setTimeout(function(){
-						tata.pipeiBlock();
-					},400)
-				}
+			initScroll(){
+				this.scrollHeight=this.$refs.tianjia.scrollHeight;		//总高度
+				this.clientHeight=this.$refs.wrapper.clientHeight;	//可视区高度
+				this.betterscroll=new BScroll(this.$refs.wrapper,{
+					click:true,probeType:3//probeType：3相当于实时监听高度位置
+				});
+				//通过betterscroll对象监听一个scroll事件，当scroll滚动时能够暴露出来，参数pos就是位置
+				this.betterscroll.on("scroll",(pos)=>{
+					this.scrollY=Math.abs(Math.round(pos.y));
+					if(this.scrollY>600){
+						this.topBlock=true;
+					}else{
+						this.topBlock=false;
+					}
+//					console.log(this.scrollHeight);
+//					console.log(this.clientHeight+this.scrollY)
+					if(this.clientHeight+this.scrollY==this.scrollHeight){
+						if(this.top==0){
+							this.top=1;
+							var tata=this;
+							this.topStatus=true;
+							this.tems=setTimeout(function(){
+								tata.pipeiBlock();
+							},100)
+						}
+					}
+				});
+//				if(this.scrollHeight<1000){
+//					this.tishis=true;
+//				}
 			},
 			pipeiBlock(){
 //				console.log(this.token)
@@ -249,20 +218,12 @@
 				Indicator.open({spinnerType: 'fading-circle'});
 				this.$http.post(URL.path+'finance/creae_list',datas,{emulateJSON:true}).then(function(res){
 					Indicator.close();
-//					console.log('已投清单');
-//					console.log(res.body.data);
-//					if(this.data.length==5){//长度大于5从新开始
-//						this.data=[]
-//						this.$refs.wrapper.scrollTop=0;
-//						this.height=0;
-//					}
+					console.log(res);
 					this.topStatus=false;
 					if(res.body.data.length==0){
 						if(this.data.length==0){
 							this.jeiguo="暂无投递"
 						}
-						this.$refs.wrapper.removeEventListener('scroll', this.faxianScroll);
-						this.$refs.wrapper.addEventListener('scroll', this.handleScroll)
 						this.tishis=true;
 						return;
 					}else{
@@ -273,13 +234,20 @@
 					}
 					this.page=this.page*1;
 					this.page=this.page+=1;
-					if(this.n == 0){
-						this.$nextTick(function(){
-							this.n = 0; //存储图片加载到的位置，避免每次都从第一张图片开始遍历
-	  						this.$refs.wrapper.addEventListener('scroll', this.faxianScroll)	//做一个scroll监听
-	  						this.imgs()
-						});
-					}
+					this.$nextTick(function(){
+						if (!this.betterscroll) {
+							this.initScroll();
+						}else{
+							this.scrollHeight=this.$refs.tianjia.scrollHeight;		//总高度
+							this.betterscroll.refresh();
+							this.top=0;
+//							console.log(this.scrollHeight)
+//							console.log(this.clientHeight+this.scrollY)
+						}
+						if(this.scrollHeight<700){
+							this.tishis=true;
+						}
+					})
 				},function(res){
 					Indicator.close();
 				    console.log(res.status);
@@ -386,7 +354,7 @@
 		},
 		components:{
 			box,
-			jiLuqingdan
+//			jiLuqingdan
 //			fankuixinxi
 		}
 	}
@@ -417,7 +385,7 @@
 	}
 	.xiangmu{
 		position:fixed;
-		background:#fff;
+		background:#f5f4f9;
 		bottom:0;
 		top:0;
 		left:0;
@@ -448,139 +416,142 @@
 				}
 			}
 		}
-		.box::-webkit-scrollbar{width:0px}
+		/*.box::-webkit-scrollbar{width:0px}*/
 		.box{
-			overflow-y:auto;
+			/*overflow-y:auto;*/
 			width:100%;
 			height:100%;
-			-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
-			.fankiu{
-				position:relative;
-				width:100%;
+			/*-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
+			.contents{
 				padding-bottom:0.5rem;
-				.content-food{
-					flex:1;
-					padding:0.18rem 5.6% 0.27rem 5.6%;
-					line-height:0.3rem;
-					font-size:0.18rem;
-					span{
-						display:inline-block;
-						font-weight:500;
-						/*color:#000000;*/
-						a{
-							color:#fc9981;
-						}
-					}
-					ul{
-						width:100%;
-						overflow:hidden;
-						&:first-child{
-							/*border:0.01rem solid #ff7a59;*/
-						}
-						li{
-							width:48%;
-							border-radius:0.04rem;
-							font-size:0.22rem;
-							color:#525252;
-							display:inline-block;
-							text-align:center;
-							background:#fff;
-							border:0.01rem solid #ddddde;
-							/*border:0.005rem solid #ff7a59;*/
-							box-sizing: border-box;
-							line-height:0.95rem;
-							margin:0.06rem 0;
-							float:left;
-							position:relative;
-							box-sizing:border-box;
-							&:last-child{
-								float:right;
-								margin-right:0;
-							}
-							font{
-								display:inline-block;
-								position:absolute;
-								bottom:-0.01rem;
-								right:-0.01rem;
-								background-size:100% 100%;
-								width:0.36rem;
-								height:0.36rem;
-							}
-							.img1{
-								background-image:url("./img/duihao.png");
-							}
-						}
-						.src1{
-							border:0.01rem solid #ff7a59;
-						}
-						&:last-child{
-							li{
-								float:left;
-							}
-						}
-					}
-				}
-				.sousuo-content{
+				position:relative;
+				.fankiu{
 					width:100%;
 					background:#fff;
-					.content-header{
-						width:96%;
-						margin:0 auto;
-						padding:0.16rem 0;
-						font-size:0.16rem;
-						li{
-							width:91.7%;
-							margin:0 auto;
-							color:#8c8c8c;
-							.content-top{
-								width:100%;
-								height:0.22rem;
-								display:flex;
-								span{
-									display:inline-block;
-									width:0.8rem;
-									&:first-child{
-										color:#323232;
-										font-size:0.18rem;
-										flex:1;
-									}
+					.content-food{
+						flex:1;
+						padding:0.18rem 5.6% 0.27rem 5.6%;
+						line-height:0.3rem;
+						font-size:0.18rem;
+						span{
+							display:inline-block;
+							font-weight:500;
+							/*color:#000000;*/
+							a{
+								color:#fc9981;
+							}
+						}
+						ul{
+							width:100%;
+							overflow:hidden;
+							&:first-child{
+								/*border:0.01rem solid #ff7a59;*/
+							}
+							li{
+								width:48%;
+								border-radius:0.04rem;
+								font-size:0.22rem;
+								color:#525252;
+								display:inline-block;
+								text-align:center;
+								background:#fff;
+								border:0.01rem solid #ddddde;
+								/*border:0.005rem solid #ff7a59;*/
+								box-sizing: border-box;
+								line-height:0.95rem;
+								margin:0.06rem 0;
+								float:left;
+								position:relative;
+								box-sizing:border-box;
+								&:last-child{
+									float:right;
+									margin-right:0;
 								}
 								font{
 									display:inline-block;
-									width:0.5rem;
-									font-size:0.12rem;
-									color:#717070;
-									line-height:0.18rem;
+									position:absolute;
+									bottom:-0.01rem;
+									right:-0.01rem;
+									background-size:100% 100%;
+									width:0.36rem;
+									height:0.36rem;
 								}
-								.texts{
-									text-align:center;
+								.img1{
+									background-image:url("./img/duihao.png");
 								}
 							}
-							.content-bottom{
-								span{
-									font-size:0.12rem;
-									color:#cfcfcf;
+							.src1{
+								border:0.01rem solid #ff7a59;
+							}
+							&:last-child{
+								li{
+									float:left;
 								}
 							}
 						}
 					}
-				}
-				.times{
-					width:100%;
-					height:0.3rem;
-					background:#fff;
-					line-height:0.3rem;
-					.times_1{
-						display:inline-block;
-						padding-left:0.2rem;
+					.sousuo-content{
+						width:100%;
+						background:#fff;
+						.content-header{
+							width:96%;
+							margin:0 auto;
+							padding:0.16rem 0;
+							font-size:0.16rem;
+							li{
+								width:91.7%;
+								margin:0 auto;
+								color:#8c8c8c;
+								.content-top{
+									width:100%;
+									height:0.22rem;
+									display:flex;
+									span{
+										display:inline-block;
+										width:0.84rem;
+										&:first-child{
+											color:#323232;
+											font-size:0.18rem;
+											flex:1;
+										}
+									}
+									font{
+										display:inline-block;
+										width:0.46rem;
+										font-size:0.12rem;
+										color:#717070;
+										line-height:0.18rem;
+									}
+									.texts{
+										text-align:center;
+									}
+								}
+								.content-bottom{
+									span{
+										font-size:0.12rem;
+										color:#cfcfcf;
+									}
+								}
+							}
+						}
 					}
-					.text-center{
-						display:inline-block;
-						padding:0 0.08rem;
-					}
-					.times-name{
-						float:right;
-						margin-right:0.1rem;
+					.times{
+						width:100%;
+						height:0.3rem;
+						background:#fff;
+						line-height:0.3rem;
+						.times_1{
+							display:inline-block;
+							padding-left:0.2rem;
+						}
+						.text-center{
+							display:inline-block;
+							padding:0 0.08rem;
+						}
+						.times-name{
+							float:right;
+							margin-right:0.1rem;
+						}
 					}
 				}
 				.tishi-bottom{
@@ -611,6 +582,7 @@
 			}
 			.zhuying{
 				width:100%;
+				background:#fff;
 				.zhuying_1{
 					width:89.5%;
 					margin:0 auto;
@@ -631,6 +603,16 @@
 							}*/
 							a{
 								color:#fc9981;
+							}
+							font{
+								display:inline-block;
+								width:0.22rem;
+								height:0.14rem;
+								margin-left:0.06rem;
+								margin-bottom:-0.02rem;
+								background-image:url('./img/timg1.gif');
+								background-size:100% 100%;
+								transform:rotate(180deg);
 							}
 						}
 					}
@@ -656,6 +638,16 @@
 					font-size:0.17rem;
 					color:#fff;
 				}
+			}
+			.zhiDing{
+				position:fixed;
+				bottom:1.6rem;
+				right:0.2rem;
+				background-image:url("../img/top.png");
+				background-size:100% 100%;
+				width:0.5rem;
+				height:0.5rem;
+				/*z-index: 200;*/
 			}
 		}
 		.loding{

@@ -64,7 +64,7 @@
 //	import ratingselect from "../ratingselect/ratingselect.vue";
 //	import split from "../split/split.vue";
 	
-	
+	var ac = document.activeElement;
 	export default {
 		props:{
 //			food:{
@@ -100,11 +100,6 @@
 				history.go(-1)
 			},
 			denglus(){
-				this.$refs.mima.blur();
-//				cttx.disabled = true
-//				window.dapi.hideinput()
-//				document.activeElement.blur();
-				document.activeElement.blur();//隐藏软键盘；
 				var tate=this;
 				var phone=/^1[34578]\d{9}$/;
 				var ph=0;
@@ -119,7 +114,7 @@
 //					version: '1.2.5',//版本号
 					terminalNo: 'terminalNo'
 				}
-				console.log(datas['version'])
+//				console.log(datas['version']);
 				if(!phone.test(this.phone)) {
 					Toast('输入手机号有误');
 					return;

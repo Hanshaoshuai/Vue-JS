@@ -33,6 +33,18 @@ import Faxian from "../components/faxian/faxian.vue"
 //			import YanbaoXiangqing from "../components/Faxian/YanbaoShili/wenzhang.vue"
 
 
+	import ZhaiquanRukou from "../components/faxian/WoyaoRongzi/ZhaiquanRukou.vue"
+		import ZuLinQ from "../components/faxian/WoyaoRongzi/ZaiquanRongzi/ZuLin.vue"
+		import ZhiyaQ from "../components/faxian/WoyaoRongzi/ZaiquanRongzi/Zhiya.vue"
+		import BaoliQ from "../components/faxian/WoyaoRongzi/ZaiquanRongzi/Baoli.vue"
+		import GudongQ from "../components/faxian/WoyaoRongzi/ZaiquanRongzi/Gudong.vue"
+		import YinbaoHanQ from "../components/faxian/WoyaoRongzi/ZaiquanRongzi/YinbaoHan.vue"
+		import DuanqiQ from "../components/faxian/WoyaoRongzi/ZaiquanRongzi/Duanqi.vue"
+		import YinshouXinQ from "../components/faxian/WoyaoRongzi/ZaiquanRongzi/YinshouXin.vue"
+		import ZengxinQ from "../components/faxian/WoyaoRongzi/ZaiquanRongzi/Zengxin.vue"
+		import JijinQ from "../components/faxian/WoyaoRongzi/ZaiquanRongzi/Jijin.vue"
+
+
 //import Shendu from "../components/shendu/shendu.vue"//暂不使用
 //	import WenzhangGengduo from "../components/shendu/WenzhangGengduo/gengduo.vue"
 //	import XianxiaWenzhang from "../components/shendu/WenzhangYuedu/XianxiaWenzhang.vue"
@@ -54,6 +66,11 @@ import Wode from "../components/wode/wode.vue"
 		import ZuLin1 from "../components/wode/RongziJilu/ZuLin.vue"
 		import Diaoyan1 from "../components/wode/RongziJilu/Diaoyan.vue"
 		import YitouQingdan from "../components/wode/RongziJilu/YitouQingdan.vue"
+		import BaoliJ from "../components/wode/RongziJilu/Baoli.vue"
+		import GudongJ from "../components/wode/RongziJilu/Gudong.vue"
+		import YinbaoHanJ from "../components/wode/RongziJilu/YinbaoHan.vue"
+		import DuanqiJ from "../components/wode/RongziJilu/Duanqi.vue"
+		import YinshouXinJ from "../components/wode/RongziJilu/YinshouXin.vue"
 //	import Baoming from "../components/wode/WoyaoBaoming/Baoming.vue"//暂不使用
 	import Ziliao1 from "../components/wode/GerenZiliao/GerenZiliao1.vue"
 	import Ziliao3 from "../components/wode/GerenZiliao/GerenZiliao3.vue"
@@ -83,6 +100,13 @@ import ZhuCe from "../components/ZhuCe/ZhuCe0.vue"
 		import Zaiquan from "../components/ZhuCe/Zaiquan/Zaiquan.vue"
 		import Guzhai from "../components/ZhuCe/Guzhai/Guzhai.vue"
 			import Guzhaiquan from "../components/ZhuCe/Guzhai/Guzhaiquan.vue"
+		import Rongzi from "../components/ZhuCe/Rongzi.vue"
+		import Zhiya from "../components/ZhuCe/Zhiya.vue"
+		import Baoli from "../components/ZhuCe/Baoli.vue"
+		import Gudong from "../components/ZhuCe/Gudong.vue"
+		import YinbaoHan from "../components/ZhuCe/YinbaoHan.vue"
+		import Duanqi from "../components/ZhuCe/Duanqi.vue"
+		import YinshouXin from "../components/ZhuCe/YinshouXin.vue"
 
 
 import Denglu from "../components/DengLu/DengLu.vue"
@@ -149,6 +173,20 @@ export default ({
 //			{path:"YanBao",component:YanBao}
 //		]
 	},
+	{path:"/ZhaiquanRukou/:type",component:ZhaiquanRukou,
+		children:[
+			{path:"ZuLinQ",component:ZuLinQ},
+			{path:"ZhiyaQ",component:ZhiyaQ},
+			{path:"BaoliQ",component:BaoliQ},
+			{path:"GudongQ",component:GudongQ},
+			{path:"YinbaoHanQ",component:YinbaoHanQ},
+			{path:"DuanqiQ",component:DuanqiQ},
+			{path:"YinshouXinQ",component:YinshouXinQ},
+			{path:"ZengxinQ",component:ZengxinQ},
+			{path:"JijinQ",component:JijinQ}
+		]
+	},
+	{path: '/Pipei',component: Pipei},
 //  {path: '/shendu',component: Shendu,//暂不使用
 //  	children:[
 //			{path:"WenzhangGengduo/:classid",component:WenzhangGengduo
@@ -233,6 +271,36 @@ export default ({
 		    {path: 'YitouQingdan',component: YitouQingdan}
 		]
 	},
+	{path:"/BaoliJ/:type/:XiangmuID/:is_send",component:BaoliJ,
+		children:[
+		    {path: 'Pipei',component: Pipei},
+		    {path: 'YitouQingdan',component: YitouQingdan}
+		]
+	},
+	{path:"/GudongJ/:type/:XiangmuID/:is_send",component:GudongJ,
+		children:[
+		    {path: 'Pipei',component: Pipei},
+		    {path: 'YitouQingdan',component: YitouQingdan}
+		]
+	},
+	{path:"/YinbaoHanJ/:type/:XiangmuID/:is_send",component:YinbaoHanJ,
+		children:[
+		    {path: 'Pipei',component: Pipei},
+		    {path: 'YitouQingdan',component: YitouQingdan}
+		]
+	},
+	{path:"/DuanqiJ/:type/:XiangmuID/:is_send",component:DuanqiJ,
+		children:[
+		    {path: 'Pipei',component: Pipei},
+		    {path: 'YitouQingdan',component: YitouQingdan}
+		]
+	},
+	{path:"/YinshouXinJ/:type/:XiangmuID/:is_send",component:YinshouXinJ,
+		children:[
+		    {path: 'Pipei',component: Pipei},
+		    {path: 'YitouQingdan',component: YitouQingdan}
+		]
+	},
     {path: '/zhuce',component: ZhuCe,
       	children:[
       		{path:"ZhuCe1/:token",component:ZhuCe1,
@@ -246,7 +314,14 @@ export default ({
 						children:[
 				    		{path:"Guzhaiquan",component:Guzhaiquan}
 				    	]
-					}
+					},
+					{path:"Rongzi",component:Rongzi},
+					{path:"Zhiya",component:Zhiya},
+					{path:"Baoli",component:Baoli},
+					{path:"Gudong",component:Gudong},
+					{path:"YinbaoHan",component:YinbaoHan},
+					{path:"Duanqi",component:Duanqi},
+					{path:"YinshouXin",component:YinshouXin},
 				]
 			}
 		]

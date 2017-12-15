@@ -70,11 +70,11 @@
 	
 	
 	export default {
-		props:['datas'],
-//			datas:{
+		props:{
+			datas:{
 //				type: Object
-//			}
-//		},
+			}
+		},
 		data () {
 			return {
 //				datas:'',
@@ -106,7 +106,7 @@
 //			console.log(this.$route.params.token)
 //			this.datas=this.$route.params.token.split(',');
 			
-//			console.log(this.datas);//上一级传的参数；
+			console.log(this.datas);//上一级传的参数；
 									//phone:this.phone,  //手机号
 									//texts:this.texts,	//验证码
 									//pwd: this.pwd, //密码
@@ -154,6 +154,7 @@
 				if(this.index==0){		//投资机构下一步
 					Indicator.open({spinnerType: 'fading-circle'});
 					localStorage.setItem("typeID",this.typeID);
+//					console.log(localStorage.getItem("typeID"))
 					this.$http.post(URL.path+'regist/go',data,{emulateJSON:true}).then(function(res){
 						Indicator.close();
 //	                    console.log(res);
@@ -173,8 +174,8 @@
 //							window.location.href="#/zhuce/ZhuCe1/"+res.body.data.token+','+res.body.data.id+','+this.typeID+"/"+this.JigouType;
 							window.location.href="#/zhuce/ZhuCe1/"+res.body.data.token+"/"+this.JigouType;
 						}else{
-							window.location.href="#/denglu"
 							Toast(res.body.msg);
+							window.location.href="#/denglu"
 						}
 	                },function(res){
 	                	Indicator.close();
@@ -203,8 +204,8 @@
 //								console.log(this.XiajiCanshu)
 								window.location.href="#/faxian"
 							}else{
-								window.location.href="#/denglu"
 								Toast(res.body.msg);
+								window.location.href="#/denglu"
 							}
 		                },function(res){
 		                	Indicator.close();
@@ -233,8 +234,8 @@
 //								console.log(this.XiajiCanshu)
 								window.location.href="#/zhuce/ZhuCe1/"+this.type+"/type"+this.index;
 							}else{
-								window.location.href="#/denglu"
 								Toast(res.body.msg);
+								window.location.href="#/denglu"
 							}
 		                },function(res){
 		                	Indicator.close();
@@ -274,7 +275,7 @@
 				var spans=this.$refs.biaoqian2.getElementsByTagName("span")
 				var length=spans.length;
 				this.typeID=id;
-				localStorage.setItem("typeID",id);
+//				localStorage.setItem("typeID",id);
 				this.JigouType=type;
 				for(var i=0; i<length; i++){
 					if(spans[i].getAttribute("class")=="bianse"){

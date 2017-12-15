@@ -16,14 +16,14 @@
 								<div class="content-heder">
 									<span>{{texta}}</span>
 									<span class="text-center">（{{textb}}）</span>
-									<span v-if="Xiangmutype==1" class="texts">&nbsp;定增</span>
+									<!--<span v-if="Xiangmutype==1" class="texts">&nbsp;定增</span>
 									<span v-if="Xiangmutype==2" class="texts">&nbsp;做市</span>
 									<span v-if="Xiangmutype==3" class="texts">&nbsp;转老股</span>
 									<span v-if="Xiangmutype==4" class="texts">&nbsp;股权质押</span>
 									<span v-if="Xiangmutype==5" class="texts">&nbsp;融资租赁</span>
 									<span v-if="Xiangmutype==6" class="texts">&nbsp;研报支持</span>
-									<span v-if="Xiangmutype==7" class="texts">&nbsp;公司调研</span>
-									<!--<span>&nbsp;{{data.type}}</span>-->
+									<span v-if="Xiangmutype==7" class="texts">&nbsp;公司调研</span>-->
+									<span>&nbsp;转老股</span>
 								</div>
 							</li>
 							<!--<li class="border-bottom"></li>-->
@@ -44,7 +44,7 @@
 						<div class="zhuying_1">
 							<div class="ferst"><span></span>投资亮点</div>
 							<div class="last">
-								<p>{{textc}}</p>
+								<p class="huanhang">{{textc}}</p>
 							</div>
 						</div>
 					</div>
@@ -90,112 +90,16 @@
 					<div style="width:100%;height:0.65rem;"></div>
 				</div>
 			</div>
-			<div v-if="data.end_follow!='2'" class="baoming border-top">
+			<div class="baoming border-top">
 				<span class="border-right" :class="butenLeft" @click.stap="genJin()">已投清单</span>
 				<span :class="butenRight" @click.stap="xiayibuGo()">继续投递</span>
 			</div>
 			<router-view :token="token" :type="type" :XiangmuID="XiangmuID" :Xiangmutype="Xiangmutype"></router-view>
-			<tishi ref="tishiShow" :xingXi="xingXi" :content="content"></tishi>
+			<!--<tishi ref="tishiShow" :xingXi="xingXi" :content="content"></tishi>-->
 		</div>
 	<!--</transition>-->
 </template>
 
-<!--<template>
-	<transition name="fade">
-		<div v-show="tucaoShow" class="xiangmu">
-			<div class="xiangmu-header" @click.stap="yijianHind()">
-				<span class="xiangmu-left"><img src="../img/back.png"/></span>
-				<span>项目详情</span>
-			</div>
-			<div class="box" ref="guanzhuLingyu">
-				<div style="width:100%;height:0.45rem;"></div>
-				<box></box>
-				<div class="fankiu-content">
-					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>企业名称</div>
-						<div class="last">
-							<textarea readOnly="true" placeholder="" class="mint-field-core" v-model="texta"></textarea>
-						</div>
-					</div>
-					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>企业代码</div>
-						<div class="last">
-							<textarea readOnly="true" placeholder="" class="mint-field-core" v-model="textb"></textarea>
-						</div>
-					</div>
-					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>企业推荐</div>
-						<div class="last neirong">
-							<textarea readOnly="true" placeholder="请填写直营业务、投资亮点等" class="mint-field-core" v-model="textc"></textarea>
-						</div>
-						<li>{{x}}/200</li>
-					</div>
-					<div v-if="industry" class="zhuying_1 liangdian_1">
-						<div class="ferst"><span>*</span>企业所在行业标签<font>（选标签）</font></div>
-						<ul ref="biaoqian">
-							<span v-if="BianJi==0" v-for="(item,index) in industry1" class="bianse">{{item}}</span>
-							<span v-if="BianJi==1" v-for="(item,index) in BiaoQian" @click.stap="xuanze(index)" :id="item.id">{{item.title}}</span>
-						</ul>
-					</div>
-					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>上一财年营收、净利润</div>
-						<div class="last number last-bottom">
-							<input readOnly="true" v-model="numbera" placeholder="请填写年营业" number="true" type="number" class="mint-field-core">
-							<span>亿元</span>
-						</div>
-						<div class="last number">
-							<input readOnly="true" v-model="numberb" placeholder="请填写净利润" number="true" type="number" class="mint-field-core">
-							<span>万元</span>
-						</div>
-					</div>
-					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>今年预计营收、净利润</div>
-						<div class="last number last-bottom">
-							<input readOnly="true" v-model="numberc" placeholder="请填写预计营收" number="true" type="number" class="mint-field-core">
-							<span>亿元</span>
-						</div>
-						<div class="last number">
-							<input readOnly="true" v-model="numberd" placeholder="请填写净利润" number="true" type="number" class="mint-field-core">
-							<span>万元</span>
-						</div>
-					</div>
-					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>逆转股份数</div>
-						<div class="last number">
-							<input readOnly="true" v-model="numbere" placeholder="输入数字" number="true" type="number" class="mint-field-core">
-						</div>
-					</div>
-					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>每股价格</div>
-						<div class="last number">
-							<input readOnly="true" v-model="numberf" placeholder="输入数字" number="true" type="number" class="mint-field-core">
-						</div>
-					</div>
-					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>是否本人股份</div>
-						<div class="last number">
-							<input readOnly="true" v-model="numberg" placeholder="是 / 否" number="true" type="text" class="mint-field-core">
-						</div>
-					</div>
-					<div class="zhuying_1">
-						<div class="ferst"><span>*</span>所在省份</div>
-						<div class="last number">
-							<input readOnly="true" v-model="numberh" placeholder="" type="text" class="mint-field-core">
-						</div>
-					</div>
-					<div class="times">
-					</div>
-				</div>
-				<div class="baoming border-top">
-					<span v-show="none" :class="butenRight" @click.stap="buGen()">重编辑</span>
-					<span class="border-right" :class="butenLeft" @click.stap="xiayibuGo()">继续投递</span>
-				</div>
-			</div>
-			<router-view :token="token" :type="type" :XiangmuID="XiangmuID" :Xiangmutype="Xiangmutype"></router-view>
-			<tishi ref="tishiShow" :xingXi="xingXi" :content="content"></tishi>
-		</div>
-	</transition>
-</template>-->
 
 <script type="text/ecmascript">
 	import {URL} from '../../../common/js/path';
@@ -203,7 +107,7 @@
 	import { Toast } from 'mint-ui';
 	import { Indicator } from 'mint-ui';
 	import box from "../../box.vue";
-	import tishi from "../../Tishi.vue";
+//	import tishi from "../../Tishi.vue";
 	
 	
 	export default {
@@ -345,130 +249,15 @@
 			genJin(){
 				window.location.href='#/ZhuanlaoGu1/1/'+this.XiangmuID+'/1/YitouQingdan';
 			},
-			xuanze(index){
-				var spans=this.$refs.biaoqian.getElementsByTagName("span");	
-				if(spans[index].getAttribute("class")=="bianse"){			//判断是否选择标签；》=1为选择；
-					spans[index].setAttribute("class","")
-					for(var z=0; z<this.y; z++){
-						if(this.biaoQianID[z]==spans[index].id){
-							this.biaoQianID.splice(z,1);
-//							console.log(this.biaoQianID)
-							this.biaoQianid=this.biaoQianID.join()
-//							console.log(this.biaoQianid)
-							this.y-=1
-							break;
-						}
-					}
-				}else{
-					if(this.y>2){
-						Toast('最多可选三个');
-					}else{
-						spans[index].setAttribute("class","bianse");
-						this.y+=1;
-						for(var i=0; i<this.y; i++){
-							if(this.biaoQianID[i]!=spans[index].id){
-								this.biaoQianID.push(spans[index].id)
-								break;
-							}
-						}
-//						console.log(this.biaoQianID)
-						this.biaoQianid=this.biaoQianID.join()
-//						console.log(this.biaoQianid)
-					}
-				}
-//				console.log(this.y)
-			},
 			xiayibuGo(){
 				var yes;
 				if(this.data.audit=='1'){
 					Toast("该项目已被系统强制撤回");
 					return;
 				}
-//				if(this.numberg=='是'){
-//					this.yes='1'
-//				}else{
-//					if(this.numberg=='否'){
-//						this.yes='2'
-//					}else{
-//						this.numberg='';
-//					}
-//				}
-//				this.butenLeft="butenLeft";
-//				this.butenRight="";
-				var CanShu={				//给下级要传的参数
-					texta:this.texta,
-					textb:this.textb,
-					textc:this.textc,
-					numbera:this.numbera,
-					numberb:this.numberb,
-					numberc:this.numberc,
-					numberd:this.numberd,
-					numbere:this.numbere,
-					numberf:this.numberf,
-					numberg:this.numberg,
-					numberh:this.numberh,
-					XiangmuID:this.XiangmuID,
-					type:this.data.type
-				}
-				var ok=0;
-				for(var item in CanShu){		//判断填写信息是否完整Ok=1；标签必选
-					if(!CanShu[item]=="" && this.y>=1){
-						
-					}else{
-						ok+=1;
-					}
-				}
-				if(ok==0){
-					this.content=this.$refs.pipeiShow;
-					if(this.is_send=='1'){
-//						this.$refs.pipeiShow.pipeiBlock(CanShu);
-						window.location.href='#/ZhuanlaoGu1/1/'+this.XiangmuID+'/1/Pipei';
-					}else{
-						this.$refs.tishiShow.tishiBlock(CanShu,'pipei');//CanShu是下级要传的参数
-					}
-//					this.$refs.tishiShow.tishiBlock(CanShu,'pipei');//CanShu是下级要传的参数
-				}else{
-					Toast("请填写完整您的信息！是否已选标签...");
-				}
-				
-//				this.$refs.pipeiShow.pipeiBlock();
+				window.location.href='#/ZhuanlaoGu1/1/'+this.XiangmuID+'/1/Pipei';
 			},
-			buGen(){
-				this.none=false;
-				var textInputs = this.$refs.guanzhuLingyu.getElementsByClassName("mint-field-core");
-				var length=textInputs.length;
-				//获取标签
-				if(this.industry){
-					this.BianJi=1;
-					this.$nextTick(function() {
-						var spans=this.$refs.biaoqian.getElementsByTagName("span")[0];
-						spans.setAttribute("class","bianse");
-						this.biaoQianID.push(spans.id);
-					});
-				}
-				for(var i=0; i<length; i++){
-					textInputs[i].value="";
-					textInputs[i].removeAttribute("readOnly")		//点击编辑   input去除属性readOnly即可编辑
-				}
-				textInputs[0].focus();
-				this.types=0;
-				this.butenRight="";
-				this.butenLeft="butenLeft";
-			}
 			
-		},
-		watch:{					//监听输入范围
-//			textc:function(newVal,oldVal){
-//				var x=newVal.length;
-//				if(x<=200){
-//					this.x=x;
-//				}else{
-//					this.textc=oldVal;
-//					Toast("您的输入超出范围！")
-//				}
-//				
-//				
-//			}
 		},
 		events:{
 			
@@ -479,7 +268,7 @@
 		},
 		components:{
 			box,
-			tishi
+//			tishi
 		}
 	}
 </script>
@@ -665,6 +454,9 @@
 						}
 						.jianchi{
 							color:#676767;
+						}
+						.huanhang{
+							word-break:break-all;
 						}
 						/*box-shadow: 0 0.02rem 0.04rem #dedde1;*/
 					}

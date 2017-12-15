@@ -187,6 +187,7 @@
 				    console.log(res);
 				})
 			}
+			this.gerenZiliao();
 //			if(this.diyiCi==false){
 //				this.jiantingTongguo()
 //			}

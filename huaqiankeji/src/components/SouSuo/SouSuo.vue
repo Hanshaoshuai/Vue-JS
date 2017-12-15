@@ -31,14 +31,14 @@
 								</div>
 								<div class="border-right">
 									<li><font class="center">{{item.feedback}}&nbsp;%</font></li>
-									<span class="center">反馈率</span>
+									<span class="center">查看率</span>
 								</div>
 								<div class="border-right">
 									<li>
 										<font v-if="item.changenums==0">0&nbsp;%</font>
 										<font v-if="item.changenums!=0">{{(item.changenums/item.itemnumberes*100).toFixed(1)}}&nbsp;%</font>
 									</li>
-									<span>约谈率</span>
+									<span>反馈率</span>
 								</div>
 							</div>
 							<div v-if="item.cctype=='3'" class="xiaolv border-topbottom">
@@ -51,14 +51,14 @@
 								</div>
 								<div class="border-right">
 									<li><font class="center">{{item.feedback}}&nbsp;%</font></li>
-									<span class="center">反馈率</span>
+									<span class="center">查看率</span>
 								</div>
 								<div class="border-right">
 									<li>
 										<font v-if="item.changenums==0">0&nbsp;%</font>
 										<font v-if="item.changenums!=0">{{(item.changenums/item.itemnumberes*100).toFixed(1)}}&nbsp;%</font>
 									</li>
-									<span>约谈率</span>
+									<span>反馈率</span>
 								</div>
 							</div>
 							<div v-if="item.cctype=='6'" class="xiaolv border-topbottom">
@@ -71,14 +71,14 @@
 								</div>
 								<div class="border-right">
 									<li><font class="center">{{item.feedback}}&nbsp;%</font></li>
-									<span class="center">反馈率</span>
+									<span class="center">查看率</span>
 								</div>
 								<div class="border-right">
 									<li>
 										<font v-if="item.changenums==0">0&nbsp;%</font>
 										<font v-if="item.changenums!=0">{{(item.changenums/item.itemnumberes*100).toFixed(1)}}&nbsp;%</font>
 									</li>
-									<span>约谈率</span>
+									<span>反馈率</span>
 								</div>
 							</div>
 							<div class="leimu">

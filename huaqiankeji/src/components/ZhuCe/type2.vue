@@ -117,7 +117,10 @@
 				var datas={
 					id:localStorage.getItem("userID"),//	用户id	是	[string]			
 					ctype:localStorage.getItem("type"),//	类型 1企业 4研究机构	是	[string]		
-					industry:this.biaoQianID1,//	所属行业标签，多个用 逗号分割	是	[string]		
+					industry:this.biaoQianID1,//	所属行业标签，多个用 逗号分割	是	[string]
+					business:"暂无填写",
+					revenue:0,					//营收收入不低于
+					profit:0						//净利润不低于
 				}
 				if(this.y>=1){
 					window.location.href="#/faxian";

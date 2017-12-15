@@ -515,6 +515,7 @@
 							color:#676767;
 							padding:0rem 0.14rem 0.18rem 0.14rem;
 							line-height:0.26rem;
+							word-break:break-all;
 							/*box-shadow: 0 0.02rem 0.04rem #dedde1;*/
 						}
 						.lasts{

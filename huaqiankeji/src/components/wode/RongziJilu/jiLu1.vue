@@ -13,7 +13,7 @@
 							<ul ref="index1" class="content-header border-bottom" index="type1"  @click.stap="typeName(item.id,item.type,item.is_send)">
 								<li>
 									<div class="content-top">
-										<span><!--{{item.com_name}}&nbsp;-->{{item.com_short}}&nbsp;</span>
+										<!--<span>{{item.com_short}}&nbsp;</span>
 										<span>（{{item.com_code}}）</span>
 										<span v-if="item.type==1" class="texts">定增</span>
 										<span v-if="item.type==2" class="texts">做市</span>
@@ -24,6 +24,24 @@
 										<span v-if="item.type==7" class="texts">公司调研</span>
 										<font v-if="item.is_send=='1' && item.audit!='1'">已投递</font>
 										<font v-if="item.audit=='2'">未投递</font>
+										<font v-if="item.audit=='1'">已撤回</font>-->
+										<span>{{item.com_short}}&nbsp;（{{item.com_code}}）</span>
+										<span v-if="item.type==1" class="texts">定增</span>
+										<span v-if="item.type==2" class="texts">做市</span>
+										<span v-if="item.type==3" class="texts">转老股</span>
+										<span v-if="item.type==4" class="texts">股权质押</span>
+										<span v-if="item.type==5" class="texts">融资租赁</span>
+										<span v-if="item.type==6" class="texts">研报支持</span>
+										<span v-if="item.type==7" class="texts">公司调研</span>
+										<span v-if="item.type==8" class="texts">保理</span>
+										<span v-if="item.type==9" class="texts">股东借款</span>
+										<span v-if="item.type==10" class="texts">银行保函</span>
+										<span v-if="item.type==11" class="texts">短期拆借</span>
+										<span v-if="item.type==12" class="texts">银行授信</span>
+										<span v-if="item.type==13" class="texts">大额增信</span>
+										<span v-if="item.type==14" class="texts">产业发展基金</span>
+										<font v-if="item.is_send=='1' && item.audit!='1'">已投递</font>
+										<font v-if="item.audit=='0' && item.is_send!='1'">未投递</font>
 										<font v-if="item.audit=='1'">已撤回</font>
 									</div>
 									<div class="content-bottom">
@@ -316,7 +334,7 @@
 								display:flex;
 								span{
 									display:inline-block;
-									width:0.97rem;
+									width:0.84rem;
 									&:first-child{
 										color:#323232;
 										font-size:0.18rem;
@@ -325,7 +343,7 @@
 								}
 								font{
 									display:inline-block;
-									width:0.58rem;
+									width:0.46rem;
 									font-size:0.12rem;
 									color:#717070;
 									line-height:0.18rem;

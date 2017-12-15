@@ -64,7 +64,7 @@
 						</div>
 						<div class="fankiu border-bottom dangeDiyu">
 							<div class="content-food">
-								<span>单个投资额</span>
+								<span>单笔投资额</span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
 										<input v-if="single_project_max!=0" readOnly="true" v-model="numberg" placeholder="" type="text" class="mint-field-core">
@@ -221,11 +221,11 @@
 	    		uid:this.uid
 	    	}
 			this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
-//				console.log(res);
+				console.log(res);
 				Indicator.close();
 				this.data=res.body.data;
 				this.imgs=res.body.data.photo.url;
-				this.single_project_max=res.body.data.info.single_project_max
+				this.single_project_max=res.body.data.info.single_project_max*1+res.body.data.info.single_project_min*1;
 				this.numberg=this.data.info.single_project_min+'万-'+this.data.info.single_project_max+'万';
 				this.numberg1=this.data.info.single_project;
 				this.numberh=this.data.info.territory;
