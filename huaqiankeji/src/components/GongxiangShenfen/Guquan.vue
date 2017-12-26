@@ -1,29 +1,20 @@
 <template>
 	<transition name="fade">
-		<div v-show="tucaoShow" class="xiangmu">
-			<div class="xiangmu-header">
-				<span class="xiangmu-left"  @click.stap="yijianHind()"><img src="../img/back.png"/></span>
-				<span>个人资料</span>
-				<div @click.stap="baocun()" class="fanhui-right">
-					<div>
-						<font>保存</font>
-					</div>
-				</div>
-			</div>
+		<div ref="types" v-show="tucaoShow" class="xiangmu">
 			<div class="box" ref="box">
-				<div style="width:100%;height:0.45rem;"></div>
 				<div class="guQuan">
 					<div class="fankiu border-topbottom">
 						<div class="content-food touBiao">
 							<span>股权投资</span>
+							<div v-if="shifouZhankai=='zhanKai'" @click.stop="zhanKai()" class="anNui"><div class="imgas"></div></div>
 						</div>
 					</div>
-					<div style="width:100%;height:0.06rem;"></div>
+					<div style="width:100%;height:0.06rem;background:#f5f4f9"></div>
 					<div ref="guanzhuLingyu">
 						<div class="fankiu border-topbottom">
 							<div class="content-food">
 								<span>关注领域</span>
-								<span ref="bianji" class="lasst" @click.stap="bianji('1')">编辑</span>
+								<span ref="bianji" class="lasst" @click.stap="bianji('1')"><font  v-if="shifouZhankai=='zhanKai'">编辑</font></span>
 								<ul v-if="BianJi==0" class="first">
 									<li>
 										<p class="mint-field-core">{{numbera}}</p>
@@ -122,7 +113,7 @@
 					<div style="height:0.06rem;width:100%;background:#f5f4f9"></div>
 					<div class="sousuo-content border-topbottom">
 						<div class="content-header border-topbottom">
-							<span>产业资源</span><span ref="bianji3" class="lasst" @click.stap="bianji('3')">编辑</span>
+							<span>产业资源</span><span ref="bianji3" class="lasst" @click.stap="bianji('3')"><font  v-if="shifouZhankai=='zhanKai'">编辑</font></span>
 						</div>
 						<div class="xiaolv anli">
 							<ul v-if="BianJi2==0" class="first">
@@ -141,7 +132,7 @@
 					<div style="height:0.06rem;width:100%;background:#f5f4f9"></div>
 					<div class="sousuo-content border-topbottom">
 						<div class="content-header border-topbottom">
-							<span>并购重组</span><span ref="bianji4" class="lasst" @click.stap="bianji('4')">编辑</span>
+							<span>并购重组</span><span ref="bianji4" class="lasst" @click.stap="bianji('4')"><font  v-if="shifouZhankai=='zhanKai'">编辑</font></span>
 						</div>
 						<div class="xiaolv anli">
 							<ul v-if="BianJi4==0" class="first">
@@ -158,21 +149,6 @@
 						</div>
 					</div>
 				</div>
-				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
-				<rongzi :shifouZhankai="shifouZhankai"></rongzi>
-				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
-				<zhiya :shifouZhankai="shifouZhankai"></zhiya>
-				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
-				<baoli :shifouZhankai="shifouZhankai"></baoli>
-				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
-				<gudong :shifouZhankai="shifouZhankai"></gudong>
-				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
-				<yinbaohan :shifouZhankai="shifouZhankai"></yinbaohan>
-				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
-				<duanqi :shifouZhankai="shifouZhankai"></duanqi>
-				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
-				<yinshouxin :shifouZhankai="shifouZhankai"></yinshouxin>
-				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
 			</div>
 			<!--<youhuiquan ref="youhuiShow"></youhuiquan>-->
 		</div>
@@ -180,30 +156,23 @@
 </template>
 
 <script type="text/ecmascript">
-	import {URL} from '../../../common/js/path';
-	import {numToTime} from "../../../common/js/date.js";
+	import {URL} from '../../common/js/path';
+	import {numToTime} from "../../common/js/date.js";
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
 	import { Indicator } from 'mint-ui';
-	import box from "../../box.vue";
+	import box from "../box.vue";
 	import { MessageBox } from 'mint-ui';
 //	import youhuiquan from "../../shendu/PeixunZixun/YouhuiQuan.vue";
 //	import fankuixinxi from "./FankuiXinxi.vue";
-
-	import rongzi from "../../GongxiangShenfen/Rongzi.vue";
-	import zhiya from "../../GongxiangShenfen/Zhiya.vue";
-	import baoli from "../../GongxiangShenfen/Baoli.vue";
-	import gudong from "../../GongxiangShenfen/Gudong.vue";
-	import yinbaohan from "../../GongxiangShenfen/YinbaoHan.vue";
-	import duanqi from "../../GongxiangShenfen/Duanqi.vue";
-	import yinshouxin from "../../GongxiangShenfen/YinshouXin.vue";
 	
 	
 	export default {
 		props:{
 			userContent:{
 //				type:Object
-			}
+			},
+			shifouZhankai:{}
 		},
 		data () {
 			return {
@@ -265,18 +234,19 @@
 				yy:[],
 				xx1:[],
 				yy1:[],
-				numToTime:"",
-				
-				shifouZhankai:'zhanKai'
+				numToTime:""
 			}
 		},
 		mounted(){
+			if(this.shifouZhankai=='BuzhanKai'){
+				this.$refs.types.style.height="auto";
+			}
 			this.numToTime=numToTime;
 			Indicator.open({spinnerType: 'fading-circle'});
 //			console.log(this.userContent)
 //			个人资料
 			var params={
-	    		token:this.userContent.token,
+	    		token:localStorage.getItem("token")
 	    	}
 			this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
 //				console.log(this.oDbiaoQianID1);
@@ -336,6 +306,18 @@
 			yijianHind(){
 				Indicator.close();
 				history.go(-1)
+			},
+			zhanKai(){
+				console.log(this.$refs.types.style.height)
+				if(this.$refs.types.style.height!="0.58rem"){
+					if(this.$refs.types.style.height==""){
+						this.$refs.types.style.height="auto";
+					}else{
+						this.$refs.types.style.height="0.58rem";
+					}
+				}else{
+					this.$refs.types.style.height="auto";
+				}
 			},
 			baocun(){
 				var nuwID;
@@ -422,7 +404,7 @@
 //				MessageBox.confirm('请您确认好之后在保存 慎重！').then(action => {
 	//				保存修改投资额
 					var anliParam={
-			    		token:this.userContent.token,
+			    		token:localStorage.getItem("token"),
 			    		item_id:item_id,		//	项目id	是	[string]		
 						send_id:id,		//	发送记录id	是	[string]		
 						investment:this.textInputs[index].value		//	投资额	是	[string]
@@ -455,7 +437,7 @@
 			YitouLiebiao(){
 //				已投案例接口   已投项目列表
 				var anliParam={
-		    		token:this.userContent.token,
+		    		token:localStorage.getItem("token"),
 		    		type:'1'			//1:股权 2：债权	是	[string]
 		    	}
 				this.$http.post(URL.path+'finance/get_deliver_list',anliParam,{emulateJSON:true}).then(function(res){
@@ -479,7 +461,7 @@
 						this.$refs.bianji.innerText="取消"
 						//获取标签
 						var datas = {
-							token:this.$route.params.token//	token	是	[string]	URL获取的参数
+							token:localStorage.getItem("token")//	token	是	[string]	URL获取的参数
 						}
 						this.$http.post(URL.path1+'login/three',datas,{emulateJSON:true}).then(function(res){
 							this.BiaoQian=res.body.data
@@ -710,13 +692,6 @@
 		},
 		components:{
 			box,
-			rongzi,
-			zhiya,
-			baoli,
-			gudong,
-			yinbaohan,
-			duanqi,
-			yinshouxin
 		}
 	}
 </script>
@@ -734,60 +709,21 @@
 	  	/*opacity: 0;*/
 	}
 	.xiangmu{
-		position:fixed;
+		/*position:fixed;
 		background:#f5f4f9;
 		bottom:0;
 		top:0;
 		left:0;
 		right:0;
-		z-index:220;
-		.xiangmu-header{
-			position:fixed;
-			top:0;
-			left:0;
-			width:100%;
-			height:0.46rem;
-			font-weight:600;
-			background:#ff7a59;
-			font-size:0.2rem;
-			text-align:center;
-			line-height:0.45rem;
-			color:#fff;
-			z-index:300;
-			.xiangmu-left{
-				position:absolute;
-				height:100%;
-				padding:0 0.16rem 0 0.16rem;
-				display:inline-block;
-				top:0.04rem;
-				left:0;
-				img{
-					height:0.2rem;
-				}
-			}
-			.fanhui-right{
-		    	position:absolute;
-		    	right:0.2rem;
-		    	top:0;
-		    	font-size: 0.16rem;
-		    	font{
-		    		display:inline-block;
-					vertical-align: top;
-					/*width:0.2rem;*/
-					height:0.2rem;
-					line-height: 0.22rem;
-					margin-top:0.13rem;
-					/*background-image:url("../img/bianji.png");*/
-					background-size:100% 100%;
-		    	}
-		    }
-		}
-		.box::-webkit-scrollbar{width:0px;}
+		z-index:220;*/
+		height:0.58rem;
+		overflow:hidden;
+		/*.box::-webkit-scrollbar{width:0px;}*/
 		.box{
-			overflow-y:auto;
+			/*overflow-y:auto;*/
 			width:100%;
-			height:100%;
-			-webkit-overflow-scrolling:touch;/*解决苹果滑动流畅*/
+			/*height:100%;*/
+			/*-webkit-overflow-scrolling:touch;解决苹果滑动流畅*/
 			.guQuan{
 				width:100%;
 				margin:0 auto;
@@ -799,6 +735,7 @@
 					flex:1;
 					padding:0.15rem 5%;
 					background:#fff;
+					position:relative;
 					span{
 						font-size:0.18rem;
 						line-height:0.18rem;
@@ -887,6 +824,20 @@
 							}
 						}
 					}
+					.anNui{
+						position:absolute;
+						top:0rem;
+						right:0.16rem;
+						height:100%;
+						width:0.3rem;
+						.imgas{
+							width:0.16rem;
+							height:0.1rem;
+							margin-top:0.25rem;
+							background-image:url("./img/ico_16.png");
+							background-size:100% 100%;
+						}
+					}
 				}
 				.touBiao{
 					height:0.58rem;
@@ -900,7 +851,7 @@
 						color:#fff;
 						font-size:0.18rem;
 						line-height:0.19rem;
-						background-image:url("../img/biaoti.png");
+						background-image:url("./img/biaoti.png");
 						background-size:100% 100%;
 					}
 				}
@@ -1157,7 +1108,7 @@
 								font-size:0.16rem;
 							}
 							.img1{
-								background-image:url("../img/duihao.png");
+								background-image:url("./img/duihao.png");
 							}
 						}
 						.src0{

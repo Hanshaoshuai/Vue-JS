@@ -1,33 +1,37 @@
 <template>
 	<transition name="fade">
-		<div class="type" v-show="showFlag">
-			<!--<div class="xiangmu-header">
-				<span class="xiangmu-left" @click.stap="yijianHind()"><img src="../img/back.png"/></span>
-				<span>融资租赁</span>
-			</div>-->
+		<div ref="types" class="type" v-show="showFlag">
 			<div class="xiangmu-header">
 				<span class="xiangmu-left"  @click.stap="yijianHind()"><img src="../img/back.png"/></span>
-				<span>个人资料</span>
-				<div @click.stap="baocun()" class="fanhui-right">
-					<div>
-						<font>保存</font>
-					</div>
-				</div>
+				<span></span>
 			</div>
 			<div class="type-content-list">
-				<div class="type-content ferst">
-					<div class="fankiu border-topbottom">
-						<div class="content-food touBiao">
-							<span>融资租赁</span>
+				<div style="width:100%;height:0.2rem;"></div>
+				<div class="searchBox">
+					<div class="home-search">
+						<img ref="images" :src="imgs"/>
+					</div>
+					<div class="header-name">
+						<font>data.uname</font>
+						<div class="header-content">
+							<span>data.com_short</span>
+							<span>data.position</span>
 						</div>
 					</div>
+					<!--<div class="jifen"><font></font><span>积分 666</span></div>-->
 				</div>
-				<div style="width:100%;height:0.06rem;"></div>
+				<div class="fankiu border-topbottom">
+					<div class="content-food touBiao">
+						<span>融资租赁</span>
+						<!--<div v-if="shifouZhankai=='zhanKai'" @click.stop="zhanKai()" class="anNui"><div class="imgas"></div></div>-->
+					</div>
+				</div>
+				<div style="background:#f5f4f9;width:100%;height:0.06rem;"></div>
 				<div class="type-content">
 					<div class="type-cont">
 						<div class="tuse">
 							<font></font><span>单笔租赁业务的资金规模</span>
-							<span v-if="shifouZhankai=='zhanKai'" ref="bianji" class="lasst" @click.stap="bianji()">编辑</span>
+							<!--<span v-if="shifouZhankai=='zhanKai'" ref="bianji" class="lasst" @click.stap="bianji()">编辑</span>-->
 						</div>
 						<ul v-if="BianJi==0" class="first">
 							<li>
@@ -130,11 +134,11 @@
 						</ul>
 					</div>
 				</div>
-				<div style="background:#f5f4f9;width:100%;height:0.1rem;"></div>
+				<div style="background:#f5f4f9;width:100%;height:0.06rem;"></div>
 				<div class="type-content">
 					<div class="type-cont">
 						<div class="tuse">
-							<font></font><span>您是否有地域要求<a>（选填）</a></span>
+							<font></font><span>您是否有地域要求<a><!--（选填）--></a></span>
 						</div>
 						<div v-if="BianJi==0" class="xiaolv anli first1">
 							<ul>
@@ -152,7 +156,7 @@
 				<div class="type-content">
 					<div class="type-cont">
 						<div class="tuse">
-							<font></font><span>其他要求<a>（选填）</a></span>
+							<font></font><span>其他要求<a><!--（选填）--></a></span>
 						</div>
 						<div v-if="BianJi==0" class="xiaolv anli first1">
 							<ul>
@@ -184,9 +188,14 @@
 				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
 				<yinshouxin :shifouZhankai="shifouZhankai"></yinshouxin>
 				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
+				<!--<div v-if="this.data.id!=userID" class="butten">
+					<ul v-if="nones!='ok'">
+						<li><span @click.stop="liuYan()">留言</span></li>
+					</ul>
+				</div>-->
 				<!--<div class="type-food" @click.stop="ToHoom()">
 					<div class="type-food-text">
-						<span>提交审核</span>
+						<span>留言</span>
 					</div>
 				</div>-->
 			</div>
@@ -220,7 +229,7 @@
 			XiajiCanshu:{
 //				type:Object
 			},
-			typeID:{}
+			typeID:{},
 		},
 		data () {
 			return {
@@ -242,7 +251,6 @@
 				showFlag:true,
 				urlName:"Dingzeng",
 				
-				shifouZhankai:'zhanKai',
 				BianJi:'0',
 				numberToa:"1",
 				numberTob:"2",
@@ -251,7 +259,10 @@
 				numberToe:"5",
 				numberTof:"6",
 				numberTog:"7",
-				numberToh:"8"
+				numberToh:"8",
+				imgs:'',
+				
+				shifouZhankai:'BuzhanKai'
 //				onlyContent:true,
 //				times:20177111129
 			}
@@ -270,6 +281,18 @@
 			Tozhaiquan(){
 				this.showFlag=true;
 			},
+			zhanKai(){
+				console.log(this.$refs.types.style.height)
+				if(this.$refs.types.style.height!="0.58rem"){
+					if(this.$refs.types.style.height==""){
+						this.$refs.types.style.height="auto";
+					}else{
+						this.$refs.types.style.height="0.58rem";
+					}
+				}else{
+					this.$refs.types.style.height="auto";
+				}
+			},
 			bianji(id){
 				if(this.BianJi==1){
 					this.BianJi=0;
@@ -278,6 +301,9 @@
 					this.BianJi=1;
 					this.$refs.bianji.innerText="取消"
 				}
+			},
+			liuYan(){
+				window.location.href="#/fankuixinxi/"+localStorage.getItem("token")+"/"+this.uid+"/"+this.data.uname;
 			},
 			ToHoom(){
 				var CanShu={				//给下级要传的参数
@@ -408,6 +434,8 @@
 		right:0;
 		bottom:0;
 		z-index:300;
+		/*height:0.58rem;
+		overflow:hidden;*/
 		.xiangmu-header{
 			position:fixed;
 			top:0;
@@ -420,11 +448,11 @@
 			text-align:center;
 			line-height:0.45rem;
 			color:#fff;
-			z-index:300;
+			z-index:1600;
 			.xiangmu-left{
 				position:absolute;
 				height:100%;
-				padding-left:0.16rem;
+				padding:0 0.16rem 0 0.16rem;
 				display:inline-block;
 				top:0.04rem;
 				left:0;
@@ -432,48 +460,127 @@
 					height:0.2rem;
 				}
 			}
-			.fanhui-right{
-		    	position:absolute;
-		    	right:0.2rem;
-		    	top:0;
-		    	font-size: 0.16rem;
-		    	font{
-		    		display:inline-block;
-					vertical-align: top;
-					/*width:0.2rem;*/
-					height:0.2rem;
-					line-height: 0.22rem;
-					margin-top:0.13rem;
-					/*background-image:url("../img/bianji.png");*/
+		}
+		.fankiu{
+			width:100%;
+			display:flex;
+			.content-food{
+				flex:1;
+				padding:0.15rem 5%;
+				background:#fff;
+				position:relative;
+				.anNui{
+					position:absolute;
+					top:0rem;
+					right:0.16rem;
+					height:100%;
+					width:0.3rem;
+					.imgas{
+						width:0.16rem;
+						height:0.1rem;
+						margin-top:0.25rem;
+						background-image:url("../img/ico_16.png");
+						background-size:100% 100%;
+					}
+				}
+			}
+			.touBiao{
+				height:0.58rem;
+				padding:0 0 0 0;
+				span{
+					position:absolute;
+					top:0.09rem;
+					left:0rem;
+					display:inline-block;
+					padding:0.1rem 0.21rem 0.14rem 0.21rem;
+					color:#fff;
+					font-size:0.18rem;
+					line-height:0.19rem;
+					background-image:url("../img/biaoti.png");
 					background-size:100% 100%;
-		    	}
-		    }
+				}
+			}
 		}
 		.type-content-list::-webkit-scrollbar{width:0px;}
 		.type-content-list{
 			width:100%;
 			height:100%;
+			padding-bottom:0.16rem;
+			background:#fff;
 			overflow-y:auto;
 			-webkit-overflow-scrolling:touch;/*解决苹果滑动流畅*/
-			.ferst{
-				padding-top:0.55rem;
-				.touBiao{
-					background:#fff;
-					height:0.58rem;
-					padding:0 0 0 0;
-					span{
-						position:absolute;
-						top:0.09rem;
-						left:0rem;
-						display:inline-block;
-						padding:0.1rem 0.21rem 0.14rem 0.21rem;
-						color:#fff;
-						font-size:0.18rem;
-						line-height:0.19rem;
-						background-image:url("../img/biaoti.png");
-						background-size:100% 100%;
+			.searchBox {
+				/*position:absolute;
+				top:0;
+				left:0;*/
+				width:100%;
+			    padding:0.26rem 0 0.18rem 0;
+			    background-image:url("../img/bgbg.png");
+			    background-size:100%;
+			    background-position:0 -0.2rem;
+			    display:flex;
+			    z-index:100;
+			    .home-search {
+			    	position:relative;
+			    	width:0.62rem;
+			    	height:0.62rem;
+				    background: #ffffff;
+				    margin-left:4.9%;
+				    border-radius:0.06rem;
+				    overflow:hidden;
+				    img{
+				    	position:absolute;
+				    	top:0;
+				    	right:0;
+				    	left:0;
+				    	bottom:0;
+				    	margin:auto;
+				    	/*width:100%;
+				    	height:100%;*/
+				    }
+				}
+				.header-name{
+					padding-left:0.11rem;
+					height:100%;
+					color:#fff;
+					font{
+						font-size:0.2rem;
+						line-height:0.34rem;
+					}
+					.header-content{
+						margin-top:0.06rem;
+						font-size:0.16rem;
+						span{
+							&:first-child{
+								display:inline-block;
+								padding-right:0.13rem;
+							}
+						}
 					}
 				}
+				.jifen{
+					width:0.75rem;
+					height:0.15rem;
+					position:absolute;
+					top:0.58rem;
+					right:0.16rem;
+					font-size:0.12rem;
+					display:flex;
+					align-items:center;
+					color:#fff;
+					font{
+						display:inline-block;
+						width:0.15rem;
+						height:0.15rem;
+						background-image:url("../img/jifen.png");
+						background-size:100% 100%;
+						margin:-0.02rem 0.06rem 0 0;
+					}
+				}
+			}
+			.ferst{
+				padding-top:0.55rem;
+				background:#fff;
 			}
 			/*.list-header{
 				width:100%;
@@ -521,54 +628,6 @@
 							margin:0.02rem 0.1rem 0 0;
 						}
 					}
-					.content-touzi{
-						flex:1;
-						font-size:0.14rem;
-						background:#fff;
-						margin-top:0.08rem;
-						ul{
-							width:100%;
-							display:flex;
-							justify-content:flex-start;
-							li{
-								&:first-child{
-									margin-right:0.06rem;
-								}
-								width:1.08rem;
-								height:0.36rem;
-								border-radius:0.04rem;
-								color:#525252;
-								background:#fff;
-								box-sizing: border-box;
-								position:relative;
-								display:flex;
-								justify-content:center;
-								align-items:center;
-								span{
-									display:inline-block;
-									font-size:0.16rem;
-								}
-								.img1{
-									background-image:url("../img/duihao.png");
-								}
-							}
-							.src0{
-								border:0.01rem solid #ddddde;
-							}
-							.src1{
-								border:0.01rem solid #ff7a59;
-								font{
-									display:inline-block;
-									position:absolute;
-									bottom:-0.008rem;
-									right:-0.008rem;
-									background-size:100% 100%;
-									width:0.2rem;
-									height:0.2rem;
-								}
-							}
-						}
-					}
 					ul{
 						font{
 							color:#959595;
@@ -605,7 +664,7 @@
 						ul{
 							width:100%;
 							.mint-field-core::-webkit-input-placeholder{
-							  color: #787777;
+							  	color: #787777;
 							}
 							.ziyuanChongzu{
 								resize: none;

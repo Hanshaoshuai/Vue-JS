@@ -416,12 +416,12 @@
 //				this.$http.post(URL.path+'finance/creae_list',datas,{emulateJSON:true}).then(function(res){
 //					Indicator.close();
 //					console.log(res);
-//					window.location.href="#/ZhaiquanRukou/"+this.type+"/"+this.urlName;
+					window.location.href="#/ZhaiquanRukou/"+this.type+"/"+this.urlName;
 //				},function(res){
 //					Indicator.close();
 //				    console.log(res.status);
 //				})
-				this.zhifuMokuai();
+//				this.zhifuMokuai();
 				
 				
 			}
@@ -445,7 +445,7 @@
 						}
 					}
 				}
-				console.log(this.type)
+//				console.log(this.type)
 			}
 		},
 		events:{
@@ -629,7 +629,7 @@
 				width:100%;
 				.content-food{
 					flex:1;
-					padding:0.18rem 5.6% 0.1rem 5.6%;
+					padding:0.06rem 5.6% 0.1rem 5.6%;
 					line-height:0.3rem;
 					font-size:0.18rem;
 					span{

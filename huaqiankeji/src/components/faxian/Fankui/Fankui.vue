@@ -58,12 +58,12 @@
 			this.token={
 				token:this.$route.params.token
 			}
-//			this.fankuiBlock();
+			this.fankuiBlock();
 		},
 		activated(){	//解决返回刷新问题；
 //			console.log(this.$route.params.token,)
 //			console.log("刷新")
-			this.res="";
+//			this.res="";
 			this.fankuiBlock();
 		},
 		methods:{
@@ -87,6 +87,8 @@
 //				if(this.res==""){
 					Indicator.open({spinnerType: 'fading-circle'});
 					this.$http.post(URL.path+'chatcomment/comment_list',this.token,{emulateJSON:true}).then(function(res){
+//						console.log("取到评论反馈列表");
+//						console.log(res);
 						Indicator.close();
 						this.res=res.body.data;
 						if(this.res.length=='0'){
@@ -115,8 +117,6 @@
 		//							console.log(this.clientHeight+this.scrollY)
 							}
 						})
-//						console.log("取到评论反馈列表");
-//						console.log(res);
 					},function(res){
 						Indicator.close();
 					    console.log(res);

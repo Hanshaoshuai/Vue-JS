@@ -8,6 +8,13 @@ import Faxian from "../components/faxian/faxian.vue"
 		import ziliaoT1 from "../components/SouSuo/ShenfenLeixing/GerenZiliaoA.vue"
 		import ziliaoT2 from "../components/SouSuo/ShenfenLeixing/GerenZiliaoB.vue"
 		import ziliaoT3 from "../components/SouSuo/ShenfenLeixing/GerenZiliaoC.vue"
+		import ziliaoT4 from "../components/SouSuo/ShenfenLeixing/GerenZiliaoD.vue"
+		import ziliaoT5 from "../components/SouSuo/ShenfenLeixing/GerenZiliaoE.vue"
+		import ziliaoT6 from "../components/SouSuo/ShenfenLeixing/GerenZiliaoF.vue"
+		import ziliaoT7 from "../components/SouSuo/ShenfenLeixing/GerenZiliaoG.vue"
+		import ziliaoT8 from "../components/SouSuo/ShenfenLeixing/GerenZiliaoH.vue"
+		import ziliaoT9 from "../components/SouSuo/ShenfenLeixing/GerenZiliaoI.vue"
+		import ziliaoT10 from "../components/SouSuo/ShenfenLeixing/GerenZiliaoJ.vue"
 	import Yijian from "../components/faxian/yijian.vue"
 	import DingzengZhaiyao from "../components/faxian/DingzengZhaiyao.vue"
 	import GuquanZhaiyao from "../components/faxian/GuquanZhaiyao.vue"
@@ -80,6 +87,13 @@ import Wode from "../components/wode/wode.vue"
 	import ZiliaoT1 from "../components/wode/GerenZiliao/GerenZiliaoA.vue"
 	import ZiliaoT2 from "../components/wode/GerenZiliao/GerenZiliaoB.vue"
 	import ZiliaoT3 from "../components/wode/GerenZiliao/GerenZiliaoC.vue"
+	import ZiliaoT4 from "../components/wode/GerenZiliao/GerenZiliaoD.vue"
+	import ZiliaoT5 from "../components/wode/GerenZiliao/GerenZiliaoE.vue"
+	import ZiliaoT6 from "../components/wode/GerenZiliao/GerenZiliaoF.vue"
+	import ZiliaoT7 from "../components/wode/GerenZiliao/GerenZiliaoG.vue"
+	import ZiliaoT8 from "../components/wode/GerenZiliao/GerenZiliaoH.vue"
+	import ZiliaoT9 from "../components/wode/GerenZiliao/GerenZiliaoI.vue"
+	import ZiliaoT10 from "../components/wode/GerenZiliao/GerenZiliaoJ.vue"
 	import Gangwei from "../components/wode/GangweiBiangeng/Gangwei.vue"
 	import Shezhi from "../components/wode/Shezhi/Shezhi.vue"
 		import ShezhiMima from "../components/wode/Shezhi/shezhiMima.vue"
@@ -133,6 +147,13 @@ export default ({
 					{path:"ziliaoT1/:token",component:ziliaoT1},
 					{path:"ziliaoT2/:token",component:ziliaoT2},
 					{path:"ziliaoT3/:token",component:ziliaoT3},
+					{path:"ziliaoT4/:token",component:ziliaoT4},
+					{path:"ziliaoT5/:token",component:ziliaoT5},
+					{path:"ziliaoT6/:token",component:ziliaoT6},
+					{path:"ziliaoT7/:token",component:ziliaoT7},
+					{path:"ziliaoT8/:token",component:ziliaoT8},
+					{path:"ziliaoT9/:token",component:ziliaoT9},
+					{path:"ziliaoT10/:token",component:ziliaoT10},
 		    	]
 		   	},
 			{path:"Yijian/:token",component: Yijian},
@@ -223,6 +244,13 @@ export default ({
 			{path:"ZiliaoT1/:token",component:ZiliaoT1},
 			{path:"ZiliaoT2/:token",component:ZiliaoT2},
 			{path:"ZiliaoT3/:token",component:ZiliaoT3},
+			{path:"ZiliaoT4/:token",component:ZiliaoT4},
+			{path:"ZiliaoT5/:token",component:ZiliaoT5},
+			{path:"ZiliaoT6/:token",component:ZiliaoT6},
+			{path:"ZiliaoT7/:token",component:ZiliaoT7},
+			{path:"ZiliaoT8/:token",component:ZiliaoT8},
+			{path:"ZiliaoT9/:token",component:ZiliaoT9},
+			{path:"ZiliaoT10/:token",component:ZiliaoT10},
 			{path:"gangwei/:classid",component:Gangwei},
 			{path:"shezhi/:token",component:Shezhi,
 				children:[

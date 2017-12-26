@@ -1,33 +1,38 @@
 <template>
 	<transition name="fade">
 		<div class="type" v-show="showFlag">
-			<!--<div class="xiangmu-header">
-				<span class="xiangmu-left" @click.stap="yijianHind()"><img src="../img/back.png"/></span>
-				<span>融资租赁</span>
-			</div>-->
 			<div class="xiangmu-header">
 				<span class="xiangmu-left"  @click.stap="yijianHind()"><img src="../img/back.png"/></span>
-				<span>个人资料</span>
-				<div @click.stap="baocun()" class="fanhui-right">
-					<div>
-						<font>保存</font>
-					</div>
-				</div>
+				<span></span>
 			</div>
 			<div class="type-content-list">
+				<div style="width:100%;height:0.2rem;"></div>
+				<div class="searchBox">
+					<div class="home-search">
+						<img ref="images" :src="imgs"/>
+					</div>
+					<div class="header-name">
+						<font>data.uname</font>
+						<div class="header-content">
+							<span>data.com_short</span>
+							<span>data.position</span>
+						</div>
+					</div>
+					<!--<div class="jifen"><font></font><span>积分 666</span></div>-->
+				</div>
 				<div class="type-content ferst">
 					<div class="fankiu border-topbottom">
 						<div class="content-food touBiao">
-							<span>融资租赁</span>
+							<span>银行授信</span>
 						</div>
 					</div>
 				</div>
-				<div style="width:100%;height:0.06rem;"></div>
+				<div style="background:#f5f4f9;width:100%;height:0.06rem;"></div>
 				<div class="type-content">
 					<div class="type-cont">
 						<div class="tuse">
-							<font></font><span>单笔租赁业务的资金规模</span>
-							<span v-if="shifouZhankai=='zhanKai'" ref="bianji" class="lasst" @click.stap="bianji()">编辑</span>
+							<font></font><span>单笔授信的资金规模</span>
+							<!--<span v-if="shifouZhankai=='zhanKai'" ref="bianji" class="lasst" @click.stap="bianji()">编辑</span>-->
 						</div>
 						<ul v-if="BianJi==0" class="first">
 							<li>
@@ -63,7 +68,7 @@
 				<div class="type-content">
 					<div class="type-cont">
 						<div class="tuse">
-							<font></font><span>手续费</span>
+							<font></font><span>借款期限</span>
 						</div>
 						<ul v-if="BianJi==0" class="first">
 							<li>
@@ -71,46 +76,10 @@
 							</li>
 						</ul>
 						<ul v-if="BianJi==1">
-							<input v-model="numbera" placeholder="填写利息" number="true" type="number" class="mint-field-core border">
-							<font>%&nbsp;至</font>
-							<input v-model="numberb" placeholder="填写利息" number="true" type="number" class="mint-field-core border">
-							<font>%&nbsp;</font>
-						</ul>
-					</div>
-				</div>
-				<div class="type-content">
-					<div class="type-cont">
-						<div class="tuse">
-							<font></font><span>保证金</span>
-						</div>
-						<ul v-if="BianJi==0" class="first">
-							<li>
-								<input readOnly="true" :placeholder="numberTod" type="text" class="mint-field-core">
-							</li>
-						</ul>
-						<ul v-if="BianJi==1">
-							<input v-model="numberk" placeholder="填写利息" number="true" type="number" class="mint-field-core border">
-							<font>%&nbsp;至</font>
-							<input v-model="numberh" placeholder="填写利息" number="true" type="number" class="mint-field-core border">
-							<font>%&nbsp;</font>
-						</ul>
-					</div>
-				</div>
-				<div class="type-content">
-					<div class="type-cont">
-						<div class="tuse">
-							<font></font><span>租赁期限</span>
-						</div>
-						<ul v-if="BianJi==0" class="first">
-							<li>
-								<input readOnly="true" :placeholder="numberToe" type="text" class="mint-field-core">
-							</li>
-						</ul>
-						<ul v-if="BianJi==1">
 							<input v-model="numberi" placeholder="填写数字" number="true" type="number" class="mint-field-core border">
-							<font>月&nbsp;至</font>
+							<font>天&nbsp;至</font>
 							<input v-model="numberj" placeholder="填写数字" number="true" type="number" class="mint-field-core border">
-							<font>月&nbsp;</font>
+							<font>天&nbsp;</font>
 						</ul>
 					</div>
 				</div>
@@ -121,7 +90,7 @@
 						</div>
 						<ul v-if="BianJi==0" class="first">
 							<li>
-								<input readOnly="true" :placeholder="numberTof" type="text" class="mint-field-core">
+								<input readOnly="true" :placeholder="numberTod" type="text" class="mint-field-core">
 							</li>
 						</ul>
 						<ul v-if="BianJi==1">
@@ -130,11 +99,11 @@
 						</ul>
 					</div>
 				</div>
-				<div style="background:#f5f4f9;width:100%;height:0.1rem;"></div>
+				<div style="background:#f5f4f9;width:100%;height:0.06rem;"></div>
 				<div class="type-content">
 					<div class="type-cont">
 						<div class="tuse">
-							<font></font><span>您是否有地域要求<a>（选填）</a></span>
+							<font></font><span>您是否有地域要求<!--<a>（选填）</a>--></span>
 						</div>
 						<div v-if="BianJi==0" class="xiaolv anli first1">
 							<ul>
@@ -152,7 +121,7 @@
 				<div class="type-content">
 					<div class="type-cont">
 						<div class="tuse">
-							<font></font><span>其他要求<a>（选填）</a></span>
+							<font></font><span>其他要求<!--<a>（选填）</a>--></span>
 						</div>
 						<div v-if="BianJi==0" class="xiaolv anli first1">
 							<ul>
@@ -172,6 +141,8 @@
 				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
 				<toudai :shifouZhankai="shifouZhankai"></toudai>
 				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
+				<rongzi :shifouZhankai="shifouZhankai"></rongzi>
+				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
 				<zhiya :shifouZhankai="shifouZhankai"></zhiya>
 				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
 				<baoli :shifouZhankai="shifouZhankai"></baoli>
@@ -181,8 +152,6 @@
 				<yinbaohan :shifouZhankai="shifouZhankai"></yinbaohan>
 				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
 				<duanqi :shifouZhankai="shifouZhankai"></duanqi>
-				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
-				<yinshouxin :shifouZhankai="shifouZhankai"></yinshouxin>
 				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
 				<!--<div class="type-food" @click.stop="ToHoom()">
 					<div class="type-food-text">
@@ -202,12 +171,12 @@
 	
 	import guquan from "../../GongxiangShenfen/Guquan.vue";
 	import toudai from "../../GongxiangShenfen/Toudai.vue";
+	import rongzi from "../../GongxiangShenfen/Rongzi.vue";
 	import zhiya from "../../GongxiangShenfen/Zhiya.vue";
 	import baoli from "../../GongxiangShenfen/Baoli.vue";
 	import gudong from "../../GongxiangShenfen/Gudong.vue";
 	import yinbaohan from "../../GongxiangShenfen/YinbaoHan.vue";
 	import duanqi from "../../GongxiangShenfen/Duanqi.vue";
-	import yinshouxin from "../../GongxiangShenfen/YinshouXin.vue";
 //	import BScroll from "better-scroll";
 //	import {formatDate} from "../../common/js/date.js";
 //	import cartcontrol from "../cartcontrol/cartcontrol.vue";
@@ -225,24 +194,21 @@
 		data () {
 			return {
 				y:1,			//判断是否选择标签；》=1为选择；
-				numbera:"",
-				numberb:"",
 				numberc:"",
 				numberd:"",
 				numbere:"",
 				numberf:"",
 				numberg:"",
-				numberh:"",
 				numberi:"",
 				numberj:"",
-				numberk:"",
 				block:false,
 				texta:"",
 				textb:"",
 				showFlag:true,
 				urlName:"Dingzeng",
 				
-				shifouZhankai:'zhanKai',
+				imgs:'',
+				shifouZhankai:'BuzhanKai',
 				BianJi:'0',
 				numberToa:"1",
 				numberTob:"2",
@@ -283,33 +249,25 @@
 				var CanShu={				//给下级要传的参数
 					texta:this.texta,
 					textb:this.textb,
-					numbera:this.numbera,
-					numberb:this.numberb,
 					numberc:this.numberc,
 					numberd:this.numberd,
 					numbere:this.numbere,
 					numberf:this.numberf,
 					numberg:this.numberg,
-					numberh:this.numberh,
 					numberi:this.numberi,
-					numberj:this.numberj,
-					numberk:this.numberk,
+					numberj:this.numberj
 //					XiangmuID:this.XiangmuID
 				}
 				var CanShu1={				//给下级要传的参数
 //					texta:this.texta,
 //					textb:this.textb,
-					numbera:this.numbera,
-					numberb:this.numberb,
 					numberc:this.numberc,
 					numberd:this.numberd,
 					numbere:this.numbere,
 					numberf:this.numberf,
 					numberg:this.numberg,
-					numberh:this.numberh,
 					numberi:this.numberi,
-					numberj:this.numberj,
-					numberk:this.numberk,
+					numberj:this.numberj
 //					XiangmuID:this.XiangmuID
 				}
 				var datas={
@@ -321,9 +279,9 @@
 					single_project_min:this.numbere,			//单笔投资最小值	是	[string]		
 //					fund_stage:'',			//投资阶段 15债转股 16债权 17 新三板 62PE 63 VC 64 天使投资 75PreIPO	是	[string]		
 					territory:this.texta,			//地域要求	是	[string]		
-					investment_way:0,			//投资方式 1:定增 2:接老股 3:二级市场 4:融资租赁 5:股权质押 6:双创债	是	[string]		
-					revenue_min:this.numbera,			//最低营收要求	是	[string]		
-					profit_min:this.numberb,			//最低净利润要求	是	[string]		
+					investment_way:'',			//投资方式 1:定增 2:接老股 3:二级市场 4:融资租赁 5:股权质押 6:双创债	是	[string]		
+					revenue_min:0,			//最低营收要求	是	[string]		
+					profit_min:0,			//最低净利润要求	是	[string]		
 					fund_min:this.numberc,			//最小年化资金成本范围	是	[string]		
 					fund_max:this.numberd,			//最大年化资金成本范围	是	[string]		
 					loan_time:this.numberg,			//放款时间	是	[string]		
@@ -362,7 +320,7 @@
 				}else{
 					Toast("请填写完整您的信息！是否已选标签...");
 				}
-			},
+			}
 		},
 		events:{
 			
@@ -378,12 +336,12 @@
 		components:{
 			guquan,
 			toudai,
+			rongzi,
 			zhiya,
 			baoli,
 			gudong,
 			yinbaohan,
-			duanqi,
-			yinshouxin,
+			duanqi
 		}
 	}
 </script>
@@ -420,11 +378,11 @@
 			text-align:center;
 			line-height:0.45rem;
 			color:#fff;
-			z-index:300;
+			z-index:1600;
 			.xiangmu-left{
 				position:absolute;
 				height:100%;
-				padding-left:0.16rem;
+				padding:0 0.16rem 0 0.16rem;
 				display:inline-block;
 				top:0.04rem;
 				left:0;
@@ -432,22 +390,6 @@
 					height:0.2rem;
 				}
 			}
-			.fanhui-right{
-		    	position:absolute;
-		    	right:0.2rem;
-		    	top:0;
-		    	font-size: 0.16rem;
-		    	font{
-		    		display:inline-block;
-					vertical-align: top;
-					/*width:0.2rem;*/
-					height:0.2rem;
-					line-height: 0.22rem;
-					margin-top:0.13rem;
-					/*background-image:url("../img/bianji.png");*/
-					background-size:100% 100%;
-		    	}
-		    }
 		}
 		.type-content-list::-webkit-scrollbar{width:0px;}
 		.type-content-list{
@@ -455,8 +397,76 @@
 			height:100%;
 			overflow-y:auto;
 			-webkit-overflow-scrolling:touch;/*解决苹果滑动流畅*/
+			.searchBox {
+				/*position:absolute;
+				top:0;
+				left:0;*/
+				width:100%;
+			    padding:0.26rem 0 0.18rem 0;
+			    background-image:url("../img/bgbg.png");
+			    background-size:100%;
+			    background-position:0 -0.2rem;
+			    display:flex;
+			    z-index:100;
+			    .home-search {
+			    	position:relative;
+			    	width:0.62rem;
+			    	height:0.62rem;
+				    background: #ffffff;
+				    margin-left:4.9%;
+				    border-radius:0.06rem;
+				    overflow:hidden;
+				    img{
+				    	position:absolute;
+				    	top:0;
+				    	right:0;
+				    	left:0;
+				    	bottom:0;
+				    	margin:auto;
+				    	/*width:100%;
+				    	height:100%;*/
+				    }
+				}
+				.header-name{
+					padding-left:0.11rem;
+					height:100%;
+					color:#fff;
+					font{
+						font-size:0.2rem;
+						line-height:0.34rem;
+					}
+					.header-content{
+						margin-top:0.06rem;
+						font-size:0.16rem;
+						span{
+							&:first-child{
+								display:inline-block;
+								padding-right:0.13rem;
+							}
+						}
+					}
+				}
+				.jifen{
+					width:0.75rem;
+					height:0.15rem;
+					position:absolute;
+					top:0.58rem;
+					right:0.16rem;
+					font-size:0.12rem;
+					display:flex;
+					align-items:center;
+					color:#fff;
+					font{
+						display:inline-block;
+						width:0.15rem;
+						height:0.15rem;
+						background-image:url("../img/jifen.png");
+						background-size:100% 100%;
+						margin:-0.02rem 0.06rem 0 0;
+					}
+				}
+			}
 			.ferst{
-				padding-top:0.55rem;
 				.touBiao{
 					background:#fff;
 					height:0.58rem;

@@ -281,7 +281,22 @@
 						</div>
 					</div>
 				</div>
-				<box></box>
+				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
+				<rongzi :shifouZhankai="shifouZhankai"></rongzi>
+				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
+				<zhiya :shifouZhankai="shifouZhankai"></zhiya>
+				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
+				<baoli :shifouZhankai="shifouZhankai"></baoli>
+				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
+				<gudong :shifouZhankai="shifouZhankai"></gudong>
+				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
+				<yinbaohan :shifouZhankai="shifouZhankai"></yinbaohan>
+				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
+				<duanqi :shifouZhankai="shifouZhankai"></duanqi>
+				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
+				<yinshouxin :shifouZhankai="shifouZhankai"></yinshouxin>
+				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
+				
 				<div v-if="this.data.id!=userID" class="butten">
 					<ul v-if="nones!='ok'">
 						<li><span @click.stop="liuYan()">留言</span></li>
@@ -301,6 +316,14 @@
 	import box from "../../box.vue";
 //	import youhuiquan from "../../shendu/PeixunZixun/YouhuiQuan.vue";
 //	import fankuixinxi from "./FankuiXinxi.vue";
+	
+	import rongzi from "../../GongxiangShenfen/Rongzi.vue";
+	import zhiya from "../../GongxiangShenfen/Zhiya.vue";
+	import baoli from "../../GongxiangShenfen/Baoli.vue";
+	import gudong from "../../GongxiangShenfen/Gudong.vue";
+	import yinbaohan from "../../GongxiangShenfen/YinbaoHan.vue";
+	import duanqi from "../../GongxiangShenfen/Duanqi.vue";
+	import yinshouxin from "../../GongxiangShenfen/YinshouXin.vue";
 	
 	
 	export default {
@@ -499,7 +522,14 @@
 		updated(){
 		},
 		components:{
-			box
+			box,
+			rongzi,
+			zhiya,
+			baoli,
+			gudong,
+			yinbaohan,
+			duanqi,
+			yinshouxin
 		}
 	}
 </script>

@@ -34,12 +34,12 @@
 						<li class="border-rightleft">
 							<span v-if="inof=='0'" class="zanwu">暂无</span>
 							<span v-if="inof!='0'">{{inof}}%</span>
-							<span>反馈率</span>
+							<span>查看率</span>
 						</li>
 						<li>
 							<span v-if="data.exchange_card=='0'" class="zanwu">暂无</span>
 							<span v-if="data.exchange_card!='0'">{{yuetan}}%</span>
-							<span>约谈率</span>
+							<span>反馈率</span>
 						</li>
 					</ul>
 					<box></box>		<!--类型 1:企业 2:投资机构 3:合格投资人 4咨询机构/研究咨询 5:券商研究员/财务顾问 6:新三板做市商-->
@@ -272,6 +272,7 @@
 		    	}
 //				Indicator.open({spinnerType: 'fading-circle'});
 				this.$http.post(URL.path1+'account/info',params,{emulateJSON:true}).then(function(res){
+//					console.log(res);
 //					Indicator.close();
 					this.data=res.body.data;
 					this.yuetan=res.body.data.exchange_card.toFixed(2);
@@ -294,7 +295,6 @@
 						}
 					});
 //					console.log("个人资料");
-//					console.log(res);
 				},function(res){
 //					Indicator.close();
 				    console.log(res);
@@ -314,6 +314,7 @@
 				}
 				if(this.shifouZhuce==2){
 					if(id=='2'){
+//						window.location.href="#/wode/ZiliaoT"+'10'+"/"+this.userContent["token"];
 						window.location.href="#/wode/ZiliaoT"+this.investment_type+"/"+this.userContent["token"];//1:股权投资   2:债权投资   3:股债兼投
 					}else{
 						window.location.href="#/wode/Ziliao"+id+"/"+this.userContent["token"];

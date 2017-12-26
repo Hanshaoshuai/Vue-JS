@@ -348,8 +348,21 @@
 						</div>
 					</div>
 				</div>
-				<box></box>
-				<box></box>
+				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
+				<rongzi :shifouZhankai="shifouZhankai"></rongzi>
+				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
+				<zhiya :shifouZhankai="shifouZhankai"></zhiya>
+				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
+				<baoli :shifouZhankai="shifouZhankai"></baoli>
+				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
+				<gudong :shifouZhankai="shifouZhankai"></gudong>
+				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
+				<yinbaohan :shifouZhankai="shifouZhankai"></yinbaohan>
+				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
+				<duanqi :shifouZhankai="shifouZhankai"></duanqi>
+				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
+				<yinshouxin :shifouZhankai="shifouZhankai"></yinshouxin>
+				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
 			</div>
 			<!--<youhuiquan ref="youhuiShow"></youhuiquan>-->
 		</div>
@@ -364,6 +377,14 @@
 	import box from "../../box.vue";
 //	import youhuiquan from "../../shendu/PeixunZixun/YouhuiQuan.vue";
 //	import fankuixinxi from "./FankuiXinxi.vue";
+
+	import rongzi from "../../GongxiangShenfen/Rongzi.vue";
+	import zhiya from "../../GongxiangShenfen/Zhiya.vue";
+	import baoli from "../../GongxiangShenfen/Baoli.vue";
+	import gudong from "../../GongxiangShenfen/Gudong.vue";
+	import yinbaohan from "../../GongxiangShenfen/YinbaoHan.vue";
+	import duanqi from "../../GongxiangShenfen/Duanqi.vue";
+	import yinshouxin from "../../GongxiangShenfen/YinshouXin.vue";
 	
 	
 	export default {
@@ -467,7 +488,9 @@
 				yy1:[],
 				SuozaiHangye:'',
 				numToTime:"",
-				block:true
+				block:true,
+				
+				shifouZhankai:'zhanKai'
 			}
 		},
 		mounted(){
@@ -1125,7 +1148,14 @@
 		updated(){
 		},
 		components:{
-			box
+			box,
+			rongzi,
+			zhiya,
+			baoli,
+			gudong,
+			yinbaohan,
+			duanqi,
+			yinshouxin
 		}
 	}
 </script>
@@ -1283,7 +1313,7 @@
 							}*/
 							.ziyuanChongzu{
 								resize: none;
-								min-height:1.02rem;
+								min-height:0.6rem;
 								line-height:0.2rem;
 								&::-webkit-scrollbar{width:0;height:0}
 								border:1px solid #d2d2d2;
@@ -1465,7 +1495,7 @@
 						}
 						.ziyuanChongzu{
 							resize: none;
-							min-height:1.02rem;
+							min-height:0.6rem;
 							line-height:0.2rem;
 							&::-webkit-scrollbar{width:0;height:0}
 						}
@@ -1476,7 +1506,7 @@
 						}
 						.ziyuanChongzu{
 							resize: none;
-							min-height:1.02rem;
+							min-height:0.6rem;
 							line-height:0.2rem;
 							&::-webkit-scrollbar{width:0;height:0}
 						}

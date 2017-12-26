@@ -39,6 +39,7 @@
 							</div>
 							<div class="TypeList-text border-right">
 								<span>新项目</span>
+								<!--<span>查收新项目</span>-->
 								<span class="text-coler">专属优质项目等您反馈</span>
 							</div>
 						</div>
@@ -70,11 +71,29 @@
 							</div>
 						</div>
 					</div>
+					<!--<div v-if="type=='1' || type=='7'" class="ContentList ">
+						<div class="swiper-img">
+							<span class="img-rongzi0"></span>
+						</div>
+						<div class="swiper-container">
+							<span v-if="type=='1'" class="text">您正在融资的项目</span>
+							<span v-if="type=='7'" class="text">您正在融资的项目</span>
+						</div>
+					</div>-->
 					<div class="ContentList ">
 						<div class="swiper-img">
 							<span class="img-rongzi"></span>
 						</div>
 						<div class="swiper-container">
+							<!--<span v-if="type=='2'" class="text">以下正在融资的项目您可能感兴趣的哦</span>
+							<span v-if="type=='2'" class="text">以下为您匹配可能感兴趣的融资项目</span>-->
+							<!--<span v-if="type=='2'" class="text">以下为您匹配的融资项目您可能感兴趣</span>
+							<span v-if="type=='3'" class="text">以下为您匹配的融资项目您可能感兴趣</span>
+							<span v-if="type=='4'" class="text">以下为您匹配的融资项目您可能感兴趣</span>
+							<span v-if="type=='5'" class="text">以下为您匹配的融资项目您可能感兴趣</span>
+							<span v-if="type=='6'" class="text">以下为您匹配的融资项目您可能感兴趣</span>
+							<span v-if="type=='1'" class="text">其他企业正在融资的项目</span>
+							<span v-if="type=='7'" class="text">其他企业正在融资的项目</span>-->
 							<span v-if="type=='2'" class="text">你可以联系的其他正在融资项目</span>
 							<span v-if="type=='3'" class="text">你可以联系的其他正在融资项目</span>
 							<span v-if="type=='4'" class="text">你可以联系的其他正在融资项目</span>
@@ -85,8 +104,8 @@
 						</div>
 					</div>
 <!--循环遍历data-->	<div v-for="(cont,index) in data" class="add" :id="index" ref="lisitTop">
-						<div v-for="(item,index) in cont" class="Content" >
-							<div class="ContentText" :id="index" @click.stop="contblock(item.id,item.type)">
+						<div v-for="(item,index) in cont" class="Content Content1" >
+							<div class="ContentText ContentText1" :id="index" @click.stop="contblock(item.id,item.type)">
 								<div class="TextMame">
 									<div class="margin">		<!--类型 1:定增 2:做市 3:转老股 4:股权质押 5:融资租赁 6:研报 6：公司调研-->
 										<span v-if="item.type==1" class="texts">定增</span>
@@ -113,8 +132,10 @@
 										<span>{{numToTime(item.create_time)}}</span>&nbsp;发布
 									</div>
 									<div class="tishi-right">
-										<span>{{item.follow}}&nbsp;查看</span>
-										<span>{{item.feedback}}&nbsp;反馈</span>
+										<span>{{item.chakan}}&nbsp;查看</span>&nbsp;
+										<span>{{item.fankui}}&nbsp;反馈</span>
+										<!--<span>{{item.follow}}&nbsp;查看</span>
+										<span>{{item.feedback}}&nbsp;反馈</span>-->
 									</div>
 								</div>
 								<li class="li"></li>
@@ -677,8 +698,9 @@
 			},
 			tuCao(){
 				var that=this;
-				var box=document.getElementsByClassName('ContentText');
-				var child=document.getElementsByClassName('Content')[1];
+				var box=document.getElementsByClassName('ContentText1');
+//				var box2=document.getElementsByClassName('ContentText2');
+				var child=document.getElementsByClassName('Content1')[1];
 //				console.log(child)
 				var div=document.createElement("div");
 				var img=document.createElement("img");
@@ -702,6 +724,10 @@
 						box[i].getElementsByClassName('li')[0].style.display="none";
 						box[i].getElementsByClassName('ol')[0].style.display="none";
 					}
+//					if(this.type=='1' || this.type=='7'){
+//						box2[0].getElementsByClassName('li')[0].style.display="none";
+//						box2[0].getElementsByClassName('ol')[0].style.display="none";
+//					}
 				}
 				this.$nextTick(function(){
 					document.getElementById('imgSrc').src=this.imgSrc;
@@ -1156,10 +1182,10 @@
 						justify-content:flex-end;
 						span{
 							display:inline-block;
-							width:0.16rem;
-							height:0.18rem;
+							width:0.18rem;
+							height:0.22rem;
 							/*background:#25A4BB;*/
-							background-image:url("./img/gonggao.png");
+/*							background-image:url("./img/gonggao.png");*/
 							background-size:100% 100%;
 							float:right;
 							/*margin-top:0.06rem;*/
@@ -1167,6 +1193,13 @@
 						}
 						.img-rongzi{
 							background-image:url("./img/qita.png");
+						}
+						.img-rongzi0{
+							width:0.24rem;
+							height:0.24rem;
+							/*background-image:url("./img/timg.jpg");*/
+							/*background-image:url("./img/timg2.png");*/
+							background-image:url("./img/timg.gif");
 						}
 					}
 				    .swiper-container{
@@ -1318,7 +1351,7 @@
 					    align-items: center;
 					    border-radius:0rem 0 0.12rem 0.12rem;
 					    .tishi-left{
-					    	flex:3;
+					    	flex:1;
 					    	padding-left:5.5%;
 					    	span{
 					    		&:first-child{
@@ -1328,13 +1361,13 @@
 					    	}
 					    }
 					    .tishi-right{
-					    	flex:2;
+					    	flex:1;
 					    	padding-right:5.5%;
 					    	text-align:right;
 					    	span{
 					    		&:first-child{
 					    			display:inline-block;
-					    			margin-right:0.09rem;
+					    			/*margin-right:0.09rem;*/
 					    		}
 					    	}
 					    }

@@ -427,6 +427,17 @@
 					this.onlyContent2=false;
 				}
 			},
+			JiangtingBP(){
+				var data = {
+					token:this.$route.params.token,
+					item_id:this.$route.params.XiangmuID			//	项目id
+				}
+				this.$http.post(URL.path+'finance/download_bp',data,{emulateJSON:true}).then(function(res){
+					console.log(res)
+				},function(res){
+				    console.log(res.status);
+				})
+			},
 			createDownloadTask(){//下载BP
 //				var yes=1;
 				if(localStorage.getItem(this.localId)){
@@ -498,12 +509,14 @@
 			    }
 			},
 			chakanBA(){
+				this.JiangtingBP();
 				this.createDownloadTask();
 			},
 			xiangguan(){
 				if(this.jihuaShu==''){
 					return;
 				}
+				this.JiangtingBP();
 //				var yes=1;
 				if(localStorage.getItem(this.localId+'b')){
 					plus.runtime.openFile(localStorage.getItem(this.localId+'b'))

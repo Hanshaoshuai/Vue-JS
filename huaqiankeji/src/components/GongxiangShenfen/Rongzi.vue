@@ -1,28 +1,16 @@
 <template>
 	<transition name="fade">
-		<div class="type" v-show="showFlag">
-			<!--<div class="xiangmu-header">
-				<span class="xiangmu-left" @click.stap="yijianHind()"><img src="../img/back.png"/></span>
-				<span>融资租赁</span>
-			</div>-->
-			<div class="xiangmu-header">
-				<span class="xiangmu-left"  @click.stap="yijianHind()"><img src="../img/back.png"/></span>
-				<span>个人资料</span>
-				<div @click.stap="baocun()" class="fanhui-right">
-					<div>
-						<font>保存</font>
-					</div>
+		<div ref="types" class="type1" v-show="showFlag">
+			<div class="fankiu border-topbottom">
+				<div class="content-food touBiao">
+					<span>融资租赁</span>
+					<div v-if="shifouZhankai=='zhanKai'" @click.stop="zhanKai()" class="anNui"><div class="imgas"></div></div>
 				</div>
 			</div>
+			<div style="width:100%;height:0.06rem;"></div>
 			<div class="type-content-list">
-				<div class="type-content ferst">
-					<div class="fankiu border-topbottom">
-						<div class="content-food touBiao">
-							<span>融资租赁</span>
-						</div>
-					</div>
-				</div>
-				<div style="width:100%;height:0.06rem;"></div>
+				<!--<div class="type-content ferst">
+				</div>-->
 				<div class="type-content">
 					<div class="type-cont">
 						<div class="tuse">
@@ -134,7 +122,7 @@
 				<div class="type-content">
 					<div class="type-cont">
 						<div class="tuse">
-							<font></font><span>您是否有地域要求<a>（选填）</a></span>
+							<font></font><span>您是否有地域要求<a v-if="shifouZhankai=='zhanKai'">（选填）</a></span>
 						</div>
 						<div v-if="BianJi==0" class="xiaolv anli first1">
 							<ul>
@@ -152,7 +140,7 @@
 				<div class="type-content">
 					<div class="type-cont">
 						<div class="tuse">
-							<font></font><span>其他要求<a>（选填）</a></span>
+							<font></font><span>其他要求<a v-if="shifouZhankai=='zhanKai'">（选填）</a></span>
 						</div>
 						<div v-if="BianJi==0" class="xiaolv anli first1">
 							<ul>
@@ -167,23 +155,7 @@
 						</div>
 					</div>
 				</div>
-				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
-				<guquan :shifouZhankai="shifouZhankai"></guquan>
-				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
-				<toudai :shifouZhankai="shifouZhankai"></toudai>
-				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
-				<zhiya :shifouZhankai="shifouZhankai"></zhiya>
-				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
-				<baoli :shifouZhankai="shifouZhankai"></baoli>
-				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
-				<gudong :shifouZhankai="shifouZhankai"></gudong>
-				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
-				<yinbaohan :shifouZhankai="shifouZhankai"></yinbaohan>
-				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
-				<duanqi :shifouZhankai="shifouZhankai"></duanqi>
-				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
-				<yinshouxin :shifouZhankai="shifouZhankai"></yinshouxin>
-				<div style="height:0.2rem;width:100%;background:#f5f4f9"></div>
+				
 				<!--<div class="type-food" @click.stop="ToHoom()">
 					<div class="type-food-text">
 						<span>提交审核</span>
@@ -195,19 +167,10 @@
 </template>
 
 <script type="text/ecmascript">
-	import {URL} from '../../../common/js/path';
+	import {URL} from '../../common/js/path';
 	import { Toast } from 'mint-ui';
 	import { Field } from 'mint-ui';
 	import { Indicator } from 'mint-ui';
-	
-	import guquan from "../../GongxiangShenfen/Guquan.vue";
-	import toudai from "../../GongxiangShenfen/Toudai.vue";
-	import zhiya from "../../GongxiangShenfen/Zhiya.vue";
-	import baoli from "../../GongxiangShenfen/Baoli.vue";
-	import gudong from "../../GongxiangShenfen/Gudong.vue";
-	import yinbaohan from "../../GongxiangShenfen/YinbaoHan.vue";
-	import duanqi from "../../GongxiangShenfen/Duanqi.vue";
-	import yinshouxin from "../../GongxiangShenfen/YinshouXin.vue";
 //	import BScroll from "better-scroll";
 //	import {formatDate} from "../../common/js/date.js";
 //	import cartcontrol from "../cartcontrol/cartcontrol.vue";
@@ -220,7 +183,8 @@
 			XiajiCanshu:{
 //				type:Object
 			},
-			typeID:{}
+			typeID:{},
+			shifouZhankai:{}
 		},
 		data () {
 			return {
@@ -242,7 +206,6 @@
 				showFlag:true,
 				urlName:"Dingzeng",
 				
-				shifouZhankai:'zhanKai',
 				BianJi:'0',
 				numberToa:"1",
 				numberTob:"2",
@@ -257,6 +220,9 @@
 			}
 		},
 		mounted(){
+			if(this.shifouZhankai=='BuzhanKai'){
+				this.$refs.types.style.height="auto";
+			}
 			this.$nextTick(function() {
 //				var typeLi=this.$refs.foods.getElementsByTagName("li")[0];
 //				this.biaoQianID.push(typeLi.id);
@@ -269,6 +235,18 @@
 			},
 			Tozhaiquan(){
 				this.showFlag=true;
+			},
+			zhanKai(){
+				console.log(this.$refs.types.style.height)
+				if(this.$refs.types.style.height!="0.58rem"){
+					if(this.$refs.types.style.height==""){
+						this.$refs.types.style.height="auto";
+					}else{
+						this.$refs.types.style.height="0.58rem";
+					}
+				}else{
+					this.$refs.types.style.height="auto";
+				}
 			},
 			bianji(id){
 				if(this.BianJi==1){
@@ -376,14 +354,7 @@
 		updated(){
 		},
 		components:{
-			guquan,
-			toudai,
-			zhiya,
-			baoli,
-			gudong,
-			yinbaohan,
-			duanqi,
-			yinshouxin,
+			
 		}
 	}
 </script>
@@ -400,80 +371,67 @@
 	  	/*transform:rotate(360deg);*/
 	  	/*opacity: 0;*/
 	}
-	.type{
-		position:absolute;
+	.type1{
+		/*position:absolute;
 		background:#f5f4f9;
 		top:0;
 		left:0;
 		right:0;
 		bottom:0;
-		z-index:300;
-		.xiangmu-header{
-			position:fixed;
-			top:0;
-			left:0;
+		z-index:300;*/
+		height:0.58rem;
+		overflow:hidden;
+		.fankiu{
 			width:100%;
-			height:0.46rem;
-			font-weight:600;
-			background:#ff7a59;
-			font-size:0.2rem;
-			text-align:center;
-			line-height:0.45rem;
-			color:#fff;
-			z-index:300;
-			.xiangmu-left{
-				position:absolute;
-				height:100%;
-				padding-left:0.16rem;
-				display:inline-block;
-				top:0.04rem;
-				left:0;
-				img{
-					height:0.2rem;
+			display:flex;
+			.content-food{
+				flex:1;
+				padding:0.15rem 5%;
+				background:#fff;
+				position:relative;
+				.anNui{
+					position:absolute;
+					top:0rem;
+					right:0.16rem;
+					height:100%;
+					width:0.3rem;
+					.imgas{
+						width:0.16rem;
+						height:0.1rem;
+						margin-top:0.25rem;
+						background-image:url("./img/ico_16.png");
+						background-size:100% 100%;
+					}
 				}
 			}
-			.fanhui-right{
-		    	position:absolute;
-		    	right:0.2rem;
-		    	top:0;
-		    	font-size: 0.16rem;
-		    	font{
-		    		display:inline-block;
-					vertical-align: top;
-					/*width:0.2rem;*/
-					height:0.2rem;
-					line-height: 0.22rem;
-					margin-top:0.13rem;
-					/*background-image:url("../img/bianji.png");*/
+			.touBiao{
+				height:0.58rem;
+				padding:0 0 0 0;
+				span{
+					position:absolute;
+					top:0.09rem;
+					left:0rem;
+					display:inline-block;
+					padding:0.1rem 0.21rem 0.14rem 0.21rem;
+					color:#fff;
+					font-size:0.18rem;
+					line-height:0.19rem;
+					background-image:url("./img/biaoti.png");
 					background-size:100% 100%;
-		    	}
-		    }
+				}
+			}
 		}
 		.type-content-list::-webkit-scrollbar{width:0px;}
 		.type-content-list{
 			width:100%;
 			height:100%;
+			padding-bottom:0.16rem;
+			background:#fff;
 			overflow-y:auto;
 			-webkit-overflow-scrolling:touch;/*解决苹果滑动流畅*/
 			.ferst{
 				padding-top:0.55rem;
-				.touBiao{
-					background:#fff;
-					height:0.58rem;
-					padding:0 0 0 0;
-					span{
-						position:absolute;
-						top:0.09rem;
-						left:0rem;
-						display:inline-block;
-						padding:0.1rem 0.21rem 0.14rem 0.21rem;
-						color:#fff;
-						font-size:0.18rem;
-						line-height:0.19rem;
-						background-image:url("../img/biaoti.png");
-						background-size:100% 100%;
-					}
-				}
+				background:#fff;
 			}
 			/*.list-header{
 				width:100%;
@@ -521,54 +479,6 @@
 							margin:0.02rem 0.1rem 0 0;
 						}
 					}
-					.content-touzi{
-						flex:1;
-						font-size:0.14rem;
-						background:#fff;
-						margin-top:0.08rem;
-						ul{
-							width:100%;
-							display:flex;
-							justify-content:flex-start;
-							li{
-								&:first-child{
-									margin-right:0.06rem;
-								}
-								width:1.08rem;
-								height:0.36rem;
-								border-radius:0.04rem;
-								color:#525252;
-								background:#fff;
-								box-sizing: border-box;
-								position:relative;
-								display:flex;
-								justify-content:center;
-								align-items:center;
-								span{
-									display:inline-block;
-									font-size:0.16rem;
-								}
-								.img1{
-									background-image:url("../img/duihao.png");
-								}
-							}
-							.src0{
-								border:0.01rem solid #ddddde;
-							}
-							.src1{
-								border:0.01rem solid #ff7a59;
-								font{
-									display:inline-block;
-									position:absolute;
-									bottom:-0.008rem;
-									right:-0.008rem;
-									background-size:100% 100%;
-									width:0.2rem;
-									height:0.2rem;
-								}
-							}
-						}
-					}
 					ul{
 						font{
 							color:#959595;
@@ -605,7 +515,7 @@
 						ul{
 							width:100%;
 							.mint-field-core::-webkit-input-placeholder{
-							  color: #787777;
+							  	color: #787777;
 							}
 							.ziyuanChongzu{
 								resize: none;

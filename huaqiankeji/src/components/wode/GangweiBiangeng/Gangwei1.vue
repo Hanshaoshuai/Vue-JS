@@ -25,7 +25,7 @@
 					<div class="zhuying_1 liangdian_1 border-top">
 						<div class="ferst">选择您的新身份<font></font></div>	<!--类型 1:企业 2:投资机构 3:合格投资人 4咨询机构/研究咨询 5:券商研究员/财务顾问 6:新三板做市商-->
 						<div class="last" ref="biaoqian">
-							<span @click.stap="xuanze('0','2')">投资机构</span>
+							<span class="bianse" @click.stap="xuanze('0','2')">投资机构</span>
 							<span @click.stap="xuanze('1','7')">财务顾问</span>
 							<span @click.stap="xuanze('2','1')">企&nbsp;业</span>
 							<span @click.stap="xuanze('3','3')">合格投资人</span>
@@ -35,36 +35,12 @@
 						</div>
 					</div>
 					<transition name="fades">
-						<div  v-show="Leixing" class="zongBiaoQian">
-							<div class="zhuying_1 liangdian_1 border-topbottom">
-								<div class="ferst">您是什么类型的投资机构<font></font></div>
-								<div class="last" ref="biaoqian2">
-									<span @click.stap="xuanze2('0','Guquan','1')">股权投资</span>
-									<!--<span @click.stap="xuanze2('1','Zaiquan','2')">债权投资</span>-->
-									<span @click.stap="xuanze2('1','Guzhai','3')">投贷联动</span>
-									<span @click.stap="xuanze2('2','Rongzi','4')">融资租赁</span>
-									<span @click.stap="xuanze2('3','Zhiya','5')">股权质押</span>
-									<span @click.stap="xuanze2('4','Baoli','6')">保&nbsp;理</span>
-									<span @click.stap="xuanze2('5','Gudong','7')">股东借款</span>
-									<span @click.stap="xuanze2('6','YinbaoHan','8')">银行保函</span>
-									<span @click.stap="xuanze2('7','Duanqi','9')">短期拆借</span>
-									<span @click.stap="xuanze2('8','YinshouXin','10')">银行授信</span>
-								</div>
-							</div>
-							<div v-show="Leixing1" class="zhuying_1 liangdian_1">
-								<div class="ferst">您是什么类型的投资机构<font></font></div>
-								<div class="last" ref="biaoqian2s">
-									<span id="1" @click.stap="xuanze2s('0','Guquan','1')">股权投资</span>
-									<!--<span @click.stap="xuanze2('1','Zaiquan','2')">债权投资</span>-->
-									<span id="3" @click.stap="xuanze2s('1','Guzhai','3')">投贷联动</span>
-									<span id="4" @click.stap="xuanze2s('2','Rongzi','4')">融资租赁</span>
-									<span id="5" @click.stap="xuanze2s('3','Zhiya','5')">股权质押</span>
-									<span id="6" @click.stap="xuanze2s('4','Baoli','6')">保&nbsp;理</span>
-									<span id="7" @click.stap="xuanze2s('5','Gudong','7')">股东借款</span>
-									<span id="8" @click.stap="xuanze2s('6','YinbaoHan','8')">银行保函</span>
-									<span id="9" @click.stap="xuanze2s('7','Duanqi','9')">短期拆借</span>
-									<span id="10" @click.stap="xuanze2s('8','YinshouXin','10')">银行授信</span>
-								</div>
+						<div v-show="Leixing" class="zhuying_1 liangdian_1 border-topbottom">
+							<div class="ferst">选择您的新类型投资机构<font></font></div>
+							<div class="last" ref="biaoqian2">
+								<span class="bianse" @click.stap="xuanze2('0','Guquan','1')">股权投资</span>
+								<span @click.stap="xuanze2('1','Zaiquan','2')">债权投资</span>
+								<span @click.stap="xuanze2('2','Guzhai','3')">股债兼投</span>
 							</div>
 						</div>
 					</transition>
@@ -98,9 +74,8 @@
 				XiajiCanshu:'',
 				token:"DxZGPSUsZsp48LUdWYWpca2HXxwfUDZY1zfFHzyhidbfov0BKWrnwiuKVhpqkFa5",
 				contens:"",
-				type:"",
-				Leixing:false,
-				Leixing1:false,
+				type:"2",
+				Leixing:true,
 				butten:"下一步",
 				classId:"0",
 				Type:{
@@ -114,17 +89,12 @@
 				id:3,
 				showFlag:false,
 				onlyContent:true,
-				imgurl:"",
-				images:false,
-				
 				index:"0",
-				JigouType:"",
-				typeID:"0",
-				typeIDs:"",
+				JigouType:"Guquan",
+				typeID:"1",
 				TouziType:"",
-				biaoQianID:[],		//储存标签id
-				biaoQianid:'',		//储存标签id字符串
-				y:1
+				imgurl:"",
+				images:false
 			}
 		},
 		mounted(){
@@ -165,19 +135,8 @@
 					Toast("请上传名片");
 					return;
 				}
-				if(this.type==''){
-					Toast("请选择您的身份");
-					return;
-				}
-				var no=0;
-				if(this.index==0){
-					if(this.typeID=='0'){
-						Toast("请选择您的投资类型");
-						no=1
-					}
-				}
-				if(no==1){
-					return;
+				if(this.index!=0){
+					this.typeID='0'
 				}
 				var data={			//财务顾问  做市商直接注册
 					token:localStorage.getItem("token"),						//	手机号	是	[string]	
@@ -282,6 +241,7 @@
 					}
 				}
 				
+				
 			},
 			xuanze(index,type){
 				this.type=type;
@@ -297,10 +257,8 @@
 				}
 				if(index==0){
 					this.Leixing=true;
-					this.Leixing1=true;
 				}else{
 					this.Leixing=false;
-					this.Leixing1=false;
 				}
 				for(var i=0; i<length; i++){
 					if(spans[i].getAttribute("class")=="bianse"){
@@ -310,120 +268,19 @@
 				spans[index].setAttribute("class","bianse")
 			},
 			xuanze2(index,type,id){
-				console.log(id)
 //				console.log(this.$refs.biaoqian.getElementsByTagName("span"))
 				var spans=this.$refs.biaoqian2.getElementsByTagName("span")
 				var length=spans.length;
-				var spans1=this.$refs.biaoqian2s.getElementsByTagName("span")
-				var length1=spans1.length;
-				var tiaoChu=0;
-				for(var e=0; e<length1; e++){
-					spans1[e].style.display="block";
-					if(spans1[index].id==this.biaoQianID[e]){
-						this.biaoQianID.splice(e,1);
-						this.y-=1;
-						spans1[index].setAttribute("class","");
-					}
-				}
-				spans1[index].style.display="none";
-				if(index==0){
-					spans1[1].style.display="none";
-					spans1[1].setAttribute("class","");
-					for(var a=0; a<this.y; a++){
-						if(this.biaoQianID[a]==spans1[1].id){
-							this.biaoQianID.splice(a,1);
-							this.biaoQianid=this.biaoQianID.join()
-							console.log(this.biaoQianid)
-							this.y-=1
-							break;
-						}
-					}
-				}
-				if(index==1){
-					spans1[0].style.display="none";
-					spans1[0].setAttribute("class","");
-					for(var s=0; s<this.y; s++){
-						if(this.biaoQianID[s]==spans1[0].id){
-							this.biaoQianID.splice(s,1);
-							this.biaoQianid=this.biaoQianID.join()
-							console.log(this.biaoQianid)
-							this.y-=1
-							break;
-						}
-					}
-				}
 				this.typeID=id;
-//				localStorage.setItem("typeID",id);
 				this.JigouType=type;
+				localStorage.setItem("typeID",id);
+//				console.log(localStorage.getItem("typeID"));
 				for(var i=0; i<length; i++){
 					if(spans[i].getAttribute("class")=="bianse"){
 						spans[i].setAttribute("class","");
 					}
 				}
 				spans[index].setAttribute("class","bianse")
-			},
-			xuanze2s(index,type,id){
-//				if(this.typeID==id){
-//					return;
-//				}
-//				console.log(id)
-//				console.log(this.$refs.biaoqian.getElementsByTagName("span"))
-				var spans=this.$refs.biaoqian2s.getElementsByTagName("span")
-				var length=spans.length;
-				this.typeIDs=id;
-//				localStorage.setItem("typeID",id);
-				this.JigouType=type;
-				if(spans[index].getAttribute("class")=="bianse"){
-					spans[index].setAttribute("class","");
-					for(var z=0; z<this.y; z++){
-						if(this.biaoQianID[z]==spans[index].id){
-							this.biaoQianID.splice(z,1);
-//							console.log(this.biaoQianID)
-							this.biaoQianid=this.biaoQianID.join()
-							console.log(this.biaoQianid)
-							this.y-=1
-							break;
-						}
-					}
-				}else{
-					spans[index].setAttribute("class","bianse");
-					this.y+=1;
-					for(var i=0; i<this.y; i++){
-						if(this.biaoQianID[i]!=spans[index].id){
-							this.biaoQianID.push(spans[index].id)
-							break;
-						}
-					}
-//					console.log(this.biaoQianID)
-					this.biaoQianid=this.biaoQianID.join()
-					console.log(this.biaoQianid)
-				}
-				if(index==0){
-					spans[1].style.display="none";
-					spans[1].setAttribute("class","");
-					for(var a=0; a<this.y; a++){
-						if(this.biaoQianID[a]==spans[1].id){
-							this.biaoQianID.splice(a,1);
-							this.biaoQianid=this.biaoQianID.join()
-							console.log(this.biaoQianid)
-							this.y-=1
-							break;
-						}
-					}
-				}
-				if(index==1){
-					spans[0].style.display="none";
-					spans[0].setAttribute("class","");
-					for(var s=0; s<this.y; s++){
-						if(this.biaoQianID[s]==spans[0].id){
-							this.biaoQianID.splice(s,1);
-							this.biaoQianid=this.biaoQianID.join()
-							console.log(this.biaoQianid)
-							this.y-=1
-							break;
-						}
-					}
-				}
 			},
 			yanZheng(){
 				
@@ -624,7 +481,6 @@
 					height:0.4rem;
 					margin:0 auto;
 					margin-top:0.18rem;
-					padding-bottom:0.2rem;
 					span{
 						width:100%;
 						height:100%;

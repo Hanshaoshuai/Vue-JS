@@ -30,14 +30,16 @@
 									<span>收获项目数</span>
 								</div>
 								<div class="border-right">
-									<li><font class="center">{{item.feedback}}&nbsp;%</font></li>
+									<!--<li><font class="center">{{item.feedback}}&nbsp;%</font></li>-->
+									<li><font class="center">{{item.chakanlv/100}}&nbsp;%</font></li>
 									<span class="center">查看率</span>
 								</div>
 								<div class="border-right">
-									<li>
+									<!--<li>
 										<font v-if="item.changenums==0">0&nbsp;%</font>
 										<font v-if="item.changenums!=0">{{(item.changenums/item.itemnumberes*100).toFixed(1)}}&nbsp;%</font>
-									</li>
+									</li>-->
+									<li><font class="center">{{item.fankuilv/100}}&nbsp;%</font></li>
 									<span>反馈率</span>
 								</div>
 							</div>
@@ -50,14 +52,16 @@
 									<span>收获项目数</span>
 								</div>
 								<div class="border-right">
-									<li><font class="center">{{item.feedback}}&nbsp;%</font></li>
+									<!--<li><font class="center">{{item.feedback}}&nbsp;%</font></li>-->
+									<li><font class="center">{{item.chakanlv/100}}&nbsp;%</font></li>
 									<span class="center">查看率</span>
 								</div>
 								<div class="border-right">
-									<li>
+									<!--<li>
 										<font v-if="item.changenums==0">0&nbsp;%</font>
 										<font v-if="item.changenums!=0">{{(item.changenums/item.itemnumberes*100).toFixed(1)}}&nbsp;%</font>
-									</li>
+									</li>-->
+									<li><font class="center">{{item.fankuilv/100}}&nbsp;%</font></li>
 									<span>反馈率</span>
 								</div>
 							</div>
@@ -70,14 +74,16 @@
 									<span>收获项目数</span>
 								</div>
 								<div class="border-right">
-									<li><font class="center">{{item.feedback}}&nbsp;%</font></li>
+									<!--<li><font class="center">{{item.feedback}}&nbsp;%</font></li>-->
+									<li><font class="center">{{item.chakanlv/100}}&nbsp;%</font></li>
 									<span class="center">查看率</span>
 								</div>
 								<div class="border-right">
-									<li>
+									<!--<li>
 										<font v-if="item.changenums==0">0&nbsp;%</font>
 										<font v-if="item.changenums!=0">{{(item.changenums/item.itemnumberes*100).toFixed(1)}}&nbsp;%</font>
-									</li>
+									</li>-->
+									<li><font class="center">{{item.fankuilv/100}}&nbsp;%</font></li>
 									<span>反馈率</span>
 								</div>
 							</div>
