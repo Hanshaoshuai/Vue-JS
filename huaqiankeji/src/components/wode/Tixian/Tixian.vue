@@ -22,7 +22,7 @@
 						<div class="recharge-input-box bb">
 							<div class="recharge-icon">￥</div>
 							<!--<input v-model="jinE" type="text" class="recharge-input" name="many" onkeyup="value=value.replace(/[^\d]/g,'')" />-->
-							<input v-model="jinE" type="text" class="recharge-input" name="many"/>
+							<input v-model="jinE" type="number" class="recharge-input" name="many"/>
 						</div>
 						<div class="withdrawals-balance">提现的金额要>=100</div>
 					</div>
@@ -283,12 +283,14 @@
 				  	.recharge-icon {
 					  font-size: .22rem;
 					}
-					.recharge-input[type=text] {
-					  border: 0;
-					  margin: 0;
-					  padding: 0 0 0 0.15rem;
-					  font-size: .2rem;
-					  outline: none;
+					.recharge-input[type=number] {
+					  	border: 0;
+					  	margin: 0;
+					  	padding: 0 0 0 0.15rem;
+					  	font-size: .2rem;
+					  	border:none;
+				  		appearance: none;
+					  	outline: none;
 					}
 				}
 				.withdrawals-balance {

@@ -290,7 +290,7 @@
 					// 获取支付通道
 					plus.payment.getChannels(function(channels){
 						console.log("支付通道信息");
-						dcontent.innerHTML='<div class="Zfirst border-bottom">请选择您的支付方式</div>';
+						dcontent.innerHTML='<div style="color:#888;background:#ffffff;" class="Zfirst border-bottom">请选择您的支付方式</div>';
 						var content=dcontent;
 			//			var content=document.getElementById('dcontent');
 			//			var info=document.getElementById('info');
@@ -312,14 +312,16 @@
 							de.id=channel.id;
 							if(x==0){
 								de.setAttribute('class', 'button border-bottom');
-								x+=1;
+							}
+							if(x==1){
+								de.style.borderRadius="0rem 0 0.06rem 0.06rem";
 							}
 //							de.style.width='1rem';
 //							de.style.lineHeight='0.4rem';
 //							de.style.fontSize='0.16rem';
 //							de.style.textAlign='center';
 //							de.style.borderRadius='6px';
-//							de.style.background="#ff7a59";
+							de.style.background="#ffffff";
 //							de.style.color="#ffffff";
 							de.onclick=function pay(){
 								var id=this.id;
@@ -334,7 +336,22 @@
 							}
 							de.innerText=channel.description+'支付';
 							content.appendChild(de);
+							if(x==1){
+								var de=document.createElement('div');
+								de.setAttribute('class', 'button');
+								de.style.background="#ffffff";
+								de.style.borderRadius="0.06rem";
+								de.style.marginTop="0.1rem";
+								de.style.marginBottom="0.1rem";
+								de.style.fontWeight='bold';
+								de.innerText='取消';
+								de.onclick=function pay(){
+									that.blocks=false;
+								}
+								content.appendChild(de);
+							}
 							checkServices(channel);
+							x=1;
 						}
 						info.innerText=txt;
 					},function(e){
@@ -597,6 +614,7 @@
 							#total{
 								width:36%;
 								color:#2abdfc;
+								font-size:0.19rem;
 								background:none;
 								text-align:center;
 							}
@@ -623,15 +641,19 @@
 						.loding{
 							position:relative;
 							.loadEffect{
-					            width: 100%;
+					            width: 96%;
 					            text-align:center;
 					            position: absolute;
+					            left:2%;
 					            bottom:0;
 					            line-height: 0.5rem;
 					            font-size: 0.16rem;
-					            background: #fff;
+					            border-radius:0.06rem;
+					            overflow:hidden;
+					            /*background: #fff;*/
 					            .Zfirst{
 					            	font-size: 0.18rem;
+					            	color:#888;
 					            }
 					        }
 					    }
