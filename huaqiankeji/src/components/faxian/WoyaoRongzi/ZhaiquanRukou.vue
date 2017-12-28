@@ -72,7 +72,7 @@
 				<div class="contents">
 					<div class="tops">
 						<div class="tishixin">
-							<span>亲！您还不是会员，请开通会员。</span>
+							<span>亲！您还不是VIP会员，请开通VIP</span>
 							<font></font>
 						</div>
 						<div id="dcontent" class="dcontent">
@@ -82,26 +82,32 @@
 							<div style="display:none; padding: 0.5em 1em;"><hr color="#EEE"/></div>
 							<p style="display:none; padding: 0 1em;text-align:left;">为DCloud提供的免费软件进行赞助吧。</p>
 							<div class="shurujine" style="padding: 0 2em;text-align:left">
-								会员金额：<input readOnly="true" ref="total" id="total" type="number" v-model="value"/> 元
+								VIP会员金额：<input readOnly="true" ref="total" id="total" type="number" v-model="value"/> 元
 							</div>
-							<div ref="dcontent" class="zhifuFangshi">
-								<!--<div class="button">支付宝支付</div>
-								<div class="button">微信支付</div>-->
+							<!--<div ref="dcontent" class="zhifuFangshi">
+								<div class="button">支付宝支付</div>
+								<div class="button">微信支付</div>
+							</div>-->
+							<div @click.stop="xiaoShi()" ref="xianShi" v-show="onlyContent1" class="loding" style="position: absolute;z-index: 1600; top: 0;right: 0;bottom: 0;left: 0;background-color: rgba(0,0,0,0.3);">
+							    <transition name="fade1">
+								    <div v-show="onlyContent2" class="loadEffect" ref="dcontent">
+								    	<!--<div class="Zfirst border-bottom">请选择您的支付方式</div>-->
+										<!--<div class="button border-bottom">支付宝支付</div>
+										<div class="button">微信支付</div>-->
+									</div>	
+								</transition>
 							</div>
 						</div>
 						<div ref="output" id="output" style="display:none;">
 							Share模块管理客户端的社交分享功能，提供调用终端社交软件的分享能力。通过plus.share可获取社交分享管理对象。
 						</div>
 					</div>
-					<div class="guanbi" @click.stop="guanbi()">取消</div>
+					<div class="guanbi">
+						<div @click.stop="Xuanzhifu()" class="button">确定</div>
+						<div @click.stop="guanbi()" class="button">取消</div>
+					</div>
 				</div>
 			</div>
-			<!--<span class="loding" v-show="topStatus">
-            	<mt-spinner :type="3" color="#26a2ff" :size="30"></mt-spinner>
-          	</span>-->
-			<!--<transition name="fade1">
-				<div v-show="topBlock" @click.stop="zhiDing()" class="zhiDing"></div>
-			</transition>-->
 			<router-view :token="token" :BiaoQian="BiaoQian" :type="type"></router-view>
 		</div>
 	<!--</transition>-->
@@ -176,7 +182,9 @@
 				dcontent:"",
 				value:0.1,
 				blocks:false,
-				dataS:{}
+				dataS:{},
+				onlyContent1:false,
+				onlyContent2:false
 			}
 		},
 		mounted(){
@@ -191,12 +199,26 @@
 				Indicator.close();
 				history.go(-1)
 			},
+			xiaoShi(){
+				this.onlyContent1=false;
+				this.onlyContent2=false;
+			},
+			guanbi(){
+				this.blocks=false;
+				this.onlyContent1=false;
+				this.onlyContent2=false;
+			},
+			Xuanzhifu(){
+				this.onlyContent1=true;
+				this.onlyContent2=true;
+				this.zhifu(this.dcontent,this.$refs.info,this.value,URL.path1);
+			},
 			zhiDing(){		//返回顶部；
 				this.$refs.wrapper.scrollTop=0;
 			},
 			zhifuMokuai(){	//支付模块
 				this.blocks=true;
-				this.zhifu(this.dcontent,this.$refs.info,this.value,URL.path1);
+//				this.zhifu(this.dcontent,this.$refs.info,this.value,URL.path1);
 			},
 			qingDingdan(type,w,id,PAYSERVER,value,pays){	//获取订单信息
 				var datas = {
@@ -214,7 +236,7 @@
 						token: localStorage.getItem("token"),
 						trade_no: res.body.data.order_no,	//会员订单号
 						amount: value,	//金额[string]
-						subject: '会员订单'
+						subject: 'VIP会员订单'
 					};
 					if(w){return;}//检查是否请求订单中
 					if(id==='appleiap'){
@@ -237,9 +259,9 @@
 						plus.payment.request(pays[id], res.body, function(result) {		//调用原生支付API
 //							return fun(result);
 							console.log(result);
-							plus.nativeUI.alert('您已成功支付'+value+'元，成为【企融直通车】会员','支付成功。',function(){
+							plus.nativeUI.alert('您已成功支付'+value+'元，成为【企融直通车】VIP会员','支付成功。',function(){
 								back();
-							},'会员支付');
+							},'VIP会员支付');
 						}, function(error) {
 							console.log(error);
 							plus.nativeUI.alert(payUrl, null, '支付失败：'+error.code);
@@ -268,7 +290,7 @@
 					// 获取支付通道
 					plus.payment.getChannels(function(channels){
 						console.log("支付通道信息");
-						dcontent.innerHTML='';
+						dcontent.innerHTML='<div class="Zfirst border-bottom">请选择您的支付方式</div>';
 						var content=dcontent;
 			//			var content=document.getElementById('dcontent');
 			//			var info=document.getElementById('info');
@@ -289,16 +311,16 @@
 			//				de.setAttribute('onclick', 'pay(this.id)');
 							de.id=channel.id;
 							if(x==0){
-								de.style.marginRight='0.2rem';
+								de.setAttribute('class', 'button border-bottom');
 								x+=1;
 							}
-							de.style.width='1rem';
-							de.style.lineHeight='0.4rem';
-							de.style.fontSize='0.16rem';
-							de.style.textAlign='center';
-							de.style.borderRadius='6px';
-							de.style.background="#ff7a59";
-							de.style.color="#ffffff";
+//							de.style.width='1rem';
+//							de.style.lineHeight='0.4rem';
+//							de.style.fontSize='0.16rem';
+//							de.style.textAlign='center';
+//							de.style.borderRadius='6px';
+//							de.style.background="#ff7a59";
+//							de.style.color="#ffffff";
 							de.onclick=function pay(){
 								var id=this.id;
 								var typeid
@@ -340,9 +362,6 @@
 						}, pc.description);
 					}
 				}
-			},
-			guanbi(){
-				this.blocks=false;
 			},
 			ZuLin(name,type){
 //				console.log(name)
@@ -416,13 +435,12 @@
 //				this.$http.post(URL.path+'finance/creae_list',datas,{emulateJSON:true}).then(function(res){
 //					Indicator.close();
 //					console.log(res);
-					window.location.href="#/ZhaiquanRukou/"+this.type+"/"+this.urlName;
+//					window.location.href="#/ZhaiquanRukou/"+this.type+"/"+this.urlName;
 //				},function(res){
 //					Indicator.close();
 //				    console.log(res.status);
 //				})
-//				this.zhifuMokuai();
-				
+				this.zhifuMokuai();
 				
 			}
 		},
@@ -486,7 +504,7 @@
 	  	transition: all .5s ease;
 	}
 	.fade1-enter, .fade1-leave-active {
-	  	transform: translateX(4.17rem);
+	  	transform: translateY(4rem);
 	  	/*transform:rotate(360deg);*/
 	  	/*opacity: 0;*/
 	}
@@ -545,7 +563,7 @@
 					height:80%;
 					.tishixin{
 						width:100%;
-						height:56%;
+						height:68%;
 						/*display:flex;
 						align-content: center;
 						justify-content: center;
@@ -554,8 +572,8 @@
 						span{
 							display:block;
 							width:100%;
-							height:0.7rem;
-							line-height:0.7rem;
+							height:0.8rem;
+							line-height:0.8rem;
 							text-align: center;
 						}
 						font{
@@ -575,14 +593,15 @@
 							justify-content: center;
 							align-items: center;
 							margin:0.2rem 0;
-							font-size:0.16rem;
+							font-size:0.17rem;
 							#total{
 								width:36%;
+								color:#2abdfc;
 								background:none;
 								text-align:center;
 							}
 						}
-						.zhifuFangshi{
+						/*.zhifuFangshi{
 							width:100%;
 							display:flex;
 							align-content: center;
@@ -600,10 +619,25 @@
 									margin-right:0.2rem;
 								}
 							}
-						}
+						}*/
+						.loding{
+							position:relative;
+							.loadEffect{
+					            width: 100%;
+					            text-align:center;
+					            position: absolute;
+					            bottom:0;
+					            line-height: 0.5rem;
+					            font-size: 0.16rem;
+					            background: #fff;
+					            .Zfirst{
+					            	font-size: 0.18rem;
+					            }
+					        }
+					    }
 					}
 				}
-				.guanbi{
+				/*.guanbi{
 					width:1rem;
 					height:0.4rem;
 					color:#ffffff;
@@ -615,6 +649,25 @@
 					align-items: center;
 					background:#ff7a59;
 					margin:0 auto;
+				}*/
+				.guanbi{
+					width:100%;
+					display:flex;
+					align-content: center;
+					justify-content: center;
+					align-items: center;
+					.button{
+						width:1rem;
+						line-height:0.4rem;
+						border-radius:6px;
+						text-align:center;
+						font-size:0.18rem;
+						background:#ff7a59;
+						color:#ffffff;
+						&:nth-child(1){
+							margin-right:0.2rem;
+						}
+					}
 				}
 			}
 		}
@@ -836,20 +889,6 @@
 					color:#fff;
 				}
 			}
-		}
-		.loding{
-			position:fixed;
-			bottom:0.0rem;
-			left:0;
-			margin-bottom:0.12rem;
-			width:100%;
-			display: inline-block;
-			text-align:center;
-			display:flex;
-			-webkit-box-pack: center;
-		    justify-content: center;
-		    -webkit-box-align: center;
-		    align-items: center;
 		}
 		.zhuying-heder{
 			padding:0.16rem 0.2rem 0.08rem 0.2rem;

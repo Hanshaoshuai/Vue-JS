@@ -59,6 +59,10 @@
 						<span><font class="kuaixunc"></font>历史融资记录</span>
 						<span></span>
 					</div>
+					<div v-show="block" class="dujia-header border-top" @click.stop="Huiyuan()">
+						<span><font class="kuaixung"></font>会员中心</span>
+						<span></span>
+					</div>
 					<!--<div class="dujia-header border-top" @click.stop="baomingGo()">
 						<span><font class="kuaixund"></font>我报名的</span>
 						<span></span>
@@ -299,6 +303,9 @@
 //					Indicator.close();
 				    console.log(res);
 				})
+			},
+			Huiyuan(){
+				window.location.href="#/wode/VIP/"+this.userContent["token"];
 			},
 			gaiBian(){
 				window.location.href="#/touXiang/"+this.userContent["token"];
@@ -595,6 +602,12 @@
 						}
 						.kuaixunc{
 							background-image:url("./img/jilu.png");
+						}
+						.kuaixung{
+							width:0.28rem;
+							height:0.28rem;
+							margin:0.02rem 0.05rem 0 -0.02rem;
+							background-image:url("./img/VIP.png");
 						}
 						.kuaixund{
 							background-image:url("./img/baoming.png");

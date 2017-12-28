@@ -66,6 +66,9 @@ import Faxian from "../components/faxian/faxian.vue"
 
 import Wode from "../components/wode/wode.vue"
 	import touXiang from "../components/wode/touXiang.vue"
+	import VIP from "../components/wode/VIP.vue"
+	import QianbaoMingxi from "../components/wode/QianbaoMingxi/QianbaoMingxi.vue"
+	import Tixian from "../components/wode/Tixian/Tixian.vue"
 	import Jilu from "../components/wode/RongziJilu/jiLu.vue"
 		import DingzengZuoshi from "../components/wode/RongziJilu/DingzengZuoshi.vue"
 		import ZhiYa1 from "../components/wode/RongziJilu/ZhiYa.vue"
@@ -265,10 +268,13 @@ export default ({
 					{path:"QiyeBeianXiang/:type",component:QiyeBeianXiang},
 					{path:"TianQiBeian",component:TianQiBeian}
 		    	]
-			}
+			},
+			{path:"VIP/:token",component:VIP}
     	]
     },
-    {path:"/jilu/:classid",component:Jilu,},
+    {path:"/QianbaoMingxi",component:QianbaoMingxi},
+    {path:"/Tixian",component:Tixian},
+    {path:"/jilu/:classid",component:Jilu},
     {path:"/DingzengZuoshi/:type/:XiangmuID/:is_send",component:DingzengZuoshi,
 		children:[
 		    {path: 'Pipei',component: Pipei},

@@ -3,38 +3,22 @@
 		<div v-show="tucaoShow" class="xiangmu">
 			<div class="xiangmu-header" @click.stop="yijianHind()">
 				<span class="xiangmu-left"><img src="../img/back.png"/></span>
-				<span>历史融资记录</span>
+				<span>钱包明细</span>
 			</div>
 			<div class="box" ref="wrapper">
 				<div class="contents" ref="tianjia">
 					<div style="width:100%;height:0.55rem;"></div>
 					<div v-for="(cont,index) in data" class="add" ref="lisitTop">
 						<div v-for="(item,index) in cont" class="sousuo-content">
-							<ul ref="index1" class="content-header border-bottom" index="type1"  @click.stap="typeName(item.id,item.type,item.is_send)">
+							<ul ref="index1" class="content-header border-bottom" index="type1">
 								<li>
 									<div class="content-top">
-										<span><!--{{item.com_name}}&nbsp;-->{{item.com_short}}&nbsp;（{{item.com_code}}）</span>
-										<!--<span></span>-->
-										<span v-if="item.type==1" class="texts">定增</span>
-										<span v-if="item.type==2" class="texts">做市</span>
-										<span v-if="item.type==3" class="texts">转老股</span>
-										<span v-if="item.type==4" class="texts">股权质押</span>
-										<span v-if="item.type==5" class="texts">融资租赁</span>
-										<span v-if="item.type==6" class="texts">研报支持</span>
-										<span v-if="item.type==7" class="texts">公司调研</span>
-										<span v-if="item.type==8" class="texts">保理</span>
-										<span v-if="item.type==9" class="texts">股东借款</span>
-										<span v-if="item.type==10" class="texts">银行保函</span>
-										<span v-if="item.type==11" class="texts">短期拆借</span>
-										<span v-if="item.type==12" class="texts">银行授信</span>
-										<span v-if="item.type==13" class="texts">大额增信</span>
-										<span v-if="item.type==14" class="texts">产业发展基金</span>
-										<font v-if="item.is_send=='1' && item.audit!='1'">已投递</font>
-										<font v-if="item.audit=='0' && item.is_send!='1'">未投递</font>
-										<font v-if="item.audit=='1'">已撤回</font>
+										<span>{{item.pay_ways}}</span>
+										<span class="texts">{{item.money}}元</span>
+										<font>{{item.title}}</font>
 									</div>
 									<div class="content-bottom">
-										<span>{{numToTime(item.create_time)}}</span>
+										<span>{{item.created_at}}</span>
 									</div>
 								</li>
 							</ul>
@@ -54,10 +38,6 @@
 			<span class="loding" v-show="topStatus">
             	<mt-spinner :type="3" color="#26a2ff" :size="30"></mt-spinner>
           	</span>
-			<transition name="fade1">
-				<div v-show="topBlock" @click.stop="zhiDing()" class="zhiDing"></div>
-			</transition>
-			<router-view :token="token" :XiangmuID="XiangmuID" :is_send="is_send"></router-view>
 		</div>
 	<!--</transition>-->
 </template>
@@ -65,7 +45,6 @@
 <script type="text/ecmascript">
 	import BScroll from "better-scroll";
 	import {URL} from '../../../common/js/path';
-	import {numToTime} from "../../../common/js/date.js";
 	import { Field } from 'mint-ui';
 	import { Toast } from 'mint-ui';
 	import { Indicator } from 'mint-ui';
@@ -80,40 +59,12 @@
 		data () {
 			return {
 				data:[],
-				x:'1',
-				urlName:"DingzengZuoshi",
-				fankui:"45",
-				genjin:"458",
-				introduction:"",
-				times:20177111129,
-				showFlag:false,
 				tucaoShow:true,
-				boxUl:"",
-				types:{
-					type1:"DingzengZuoshi",
-					type2:"DingzengZuoshi",
-					type3:"ZhuanlaoGu1",
-					type4:"ZhiYa1",
-					type5:"ZuLin1",
-					type7:"Diaoyan1",
-					type8:"BaoliJ",
-					type9:"GudongJ",
-					type10:"YinbaoHanJ",
-					type11:"DuanqiJ",
-					type12:"YinshouXinJ",
-//					type13:"Diaoyan1"
-//					type14:"Diaoyan1"
-				},
-				XiangmuID:"",
-				is_send:"",
-				numToTime:"",
-				
-				num:"",
 				n:"",		//存储图片加载到的位置，避免每次都从第一张图片开始遍历
 				height:0,
 				topBlock:false,
 				page:1,
-				tishis:false,
+				tishis:true,
 				jeiguo:"亲已经到底了",
 				topStatus:false,
 				tems:'',
@@ -126,7 +77,6 @@
 			}
 		},
 		mounted() {
-			this.numToTime=numToTime;
 //			this.pipeiBlock()
 		},
 		activated(){
@@ -168,6 +118,7 @@
 							var tata=this;
 							this.topStatus=true;
 							this.tems=setTimeout(function(){
+								tata.data=[];
 								tata.pipeiBlock();
 							},100)
 						}
@@ -182,11 +133,10 @@
 				//项目列表（自己创建的历史融资记录）	
 				var datas = {
 					token:localStorage.getItem("token"),//	token	是	[string]		
-					page:this.page,	//page	是	[string]		
-					size:20	//size	是	[string]
+					terminalNo: 3,	
 				}
 				Indicator.open({spinnerType: 'fading-circle'});
-				this.$http.post(URL.path+'finance/creae_list',datas,{emulateJSON:true}).then(function(res){
+				this.$http.post(URL.path1+'balance/blist',datas,{emulateJSON:true}).then(function(res){ //获取订单信息接口
 					console.log(res);
 					Indicator.close();
 					this.topStatus=false;
@@ -198,6 +148,7 @@
 						return;
 					}else{
 						this.data.push(res.body.data);
+						this.tishis=true;
 					}
 					if(this.n !== 0){
 						clearTimeout(this.tems);
@@ -222,16 +173,6 @@
 					Indicator.close();
 				    console.log(res.status);
 				})
-			},
-			typeName(id,type,is_send){
-//				var Uls=this.boxUl[type]
-				this.XiangmuID=id;
-				this.is_send=is_send;		//是否投递过
-				this.types['type'+type]
-//				console.log(this.types['type'+type])
-//				window.location.href="#/wode/jilu/0/"+this.types['type'+type];
-				window.location.href="#/"+this.types['type'+type]+'/'+type+'/'+id+'/'+is_send;
-//				this.$refs.dingzengzuoshiShow.zuoshiBlock();
 			},
 		},
 		events:{
@@ -346,10 +287,11 @@
 								}
 								font{
 									display:inline-block;
-									width:0.46rem;
+									width:0.6rem;
 									font-size:0.12rem;
 									color:#717070;
 									line-height:0.18rem;
+									text-align:center;
 								}
 								.texts{
 									text-align:center;
@@ -422,16 +364,6 @@
 		    justify-content: center;
 		    -webkit-box-align: center;
 		    align-items: center;
-		}
-		.zhiDing{
-			position:fixed;
-			bottom:1.6rem;
-			right:0.2rem;
-			background-image:url("../img/top.png");
-			background-size:100% 100%;
-			width:0.5rem;
-			height:0.5rem;
-			/*z-index: 200;*/
 		}
 	}
 </style>

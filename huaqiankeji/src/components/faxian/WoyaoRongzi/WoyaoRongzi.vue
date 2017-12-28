@@ -7,14 +7,14 @@
 			</div>
 			<div class="box" ref="wrapper">
 				<div class="contents" ref="tianjia">
-					<div style="width:100%;height:0.53rem;"></div>
+					<div style="width:100%;height:0.52rem;"></div>
 					<div v-if="Youtype=='1'" class="zhuying">
-						<div class="zhuying-heder"><font></font>债权融资入口<span>（会员服务）</span></div>
-						<div class="zhuying_1">
+						<div class="zhuying-heder" @click.stap="ZaiquanGo()"><font></font>债权融资入口<font class="ferst1"></font><span>（VIP服务）</span></div>
+						<!--<div class="zhuying_1">
 							<div class="ferst">
 								<span style="padding-left:0.15rem;">债权融资<font></font><a @click.stap="ZaiquanGo()">（点击前往）</a></span>
 							</div>
-						</div>
+						</div>-->
 					</div>
 					<div v-if="Youtype=='1'" style="width:100%;height:0.06rem;background: #f5f4f9;"></div>
 					<div class="zhuying">
@@ -30,12 +30,12 @@
 							</div>
 						</div>
 					</div>
-					<div style="width:100%;height:0.0rem;background: #f5f4f9;"></div>
+					<div style="width:100%;height:0.06rem;background: #f5f4f9;"></div>
 					<div class="fankiu">
 						<div class="zhuying-heder"><font></font>已有项目继续投递<span>（移动端）</span></div>
 						<div v-for="(cont,index) in data" class="add" ref="lisitTop">
-							<div v-for="(item,index) in cont" class="sousuo-content border-bottom">
-								<ul ref="index1" class="content-header" index="type1"  @click.stap="typeName(item.id,item.type,item.is_send)">
+							<div v-for="(item,index) in cont" class="sousuo-content">
+								<ul ref="index1" class="content-header border-bottom" index="type1"  @click.stap="typeName(item.id,item.type,item.is_send)">
 									<li>
 										<div class="content-top">
 											<span>{{item.com_short}}<!--{{item.com_name}}-->&nbsp;（{{item.com_code}}）</span>
@@ -702,6 +702,16 @@
 				display:inline-block;
 				color:#fc9981;
 				/*font-weight:600;*/
+			}
+			.ferst1{
+				display:inline-block;
+				width:0.22rem;
+				height:0.14rem;
+				margin-left:0.06rem;
+				margin-top:0.02rem;
+				background-image:url('./img/timg1.gif');
+				background-size:100% 100%;
+				transform:rotate(180deg);
 			}
 		}
 	}
