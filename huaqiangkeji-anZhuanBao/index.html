@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+		<meta http-equiv="refresh">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<meta name="HandheldFriendly" content="true"/>
+		<meta name="MobileOptimized" content="320"/>
+    <title>华千科技</title>
+    <link rel="stylesheet" type="text/css" href="static/css/reset.css"/>
+    <style type="text/css"></style>
+    <script src="static/swiper/js/fastclick.js" type="text/javascript" charset="utf-8"></script>
+    <script src="path.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript">
+//  	处理移动端 click 事件 300 毫秒延迟
+    	window.addEventListener('load', function() {
+			  FastClick.attach(document.body);
+			}, false);
+			(function (doc, win) {
+		        var docEl = doc.documentElement,
+	            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
+	            recalc = function () {
+	                var clientWidth = docEl.clientWidth;
+	                if (!clientWidth) return;
+	                if(clientWidth>=375){
+	                    docEl.style.fontSize = '100px';
+	                }else{
+	                    docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
+	                }
+	            };
+		        if (!doc.addEventListener) return;
+		        win.addEventListener(resizeEvt, recalc, false);
+		        doc.addEventListener('DOMContentLoaded', recalc, false);
+		    })(document, window);
+		</script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="js/mui.min.js"></script>
+    <script type="text/javascript">
+    	var body=document.getElementsByTagName("body")[0];
+    	if(!localStorage.getItem("appDiyici")){
+    		body.style.display="none";
+	    	var times=setTimeout(function() {
+	    		localStorage.setItem("appDiyici","yes")
+	    		body.style.display="block";
+				},3000);
+			}
+    	
+    	
+//		mui.init();
+			mui.back = function() {};
+			mui.plusReady(function() {
+				if(mui.os.ios) {
+					plus.navigator.setFullscreen(true);
+				}
+				plus.navigator.closeSplashscreen();
+			});
+//		mui.init();
+			var first = null;
+			mui.back = function() {
+//			localStorage.setItem("denglu",denglu)
+//			localStorage.setItem("faxian",faxian)
+				var href=window.location.href
+				if(href==localStorage.getItem("denglu")){
+					plus.runtime.quit();//那么就退出app
+				}
+				if(href==localStorage.getItem("faxian")){
+					plus.runtime.quit();//那么就退出app
+				}else{
+					history.go(-1)
+//					首次按键，提示‘再按一次退出应用’
+//				  if (!first) {
+//			      first = new Date().getTime();//记录第一次按下回退键的时间
+////					mui.toast('再按一次退出应用');//给出提示
+//			      history.go(-1)//回退到上一页面
+//			      setTimeout(function() {//1s中后清除
+//		          first = null;
+//			      }, 1000);
+//				  } else {
+//			      if (new Date().getTime() - first < 1000) {//如果两次按下的时间小于1s，
+//			        plus.runtime.quit();//那么就退出app
+//						} 
+//				  } 
+				}
+			};
+			var body=document.getElementsByTagName("body")[0];
+			var box=document.createElement("div");
+			document.addEventListener("plusready", function() {
+				plus.navigator.setStatusBarBackground('#ff7a59');		//设置顶部20px高度的背景颜色
+					// 扩展API加载完毕，现在可以正常调用扩展API
+//					var TrafficStats;  //TrafficStats类实例对象
+//	        var total_data;    //总共接收到的流量
+//	        var traffic_data;  //一定时间内接收到的流量
+//	        var intervalId;    //定时器的返回值，用于控制计时器的停止
+////		      document.addEventListener('plusready', function(){
+//	          //console.log("所有plus api都应该在此事件发生后调用，否则会出现plus is undefined。"
+//	          TrafficStats = plus.android.importClass("android.net.TrafficStats");
+//	          total_data = TrafficStats.getTotalRxBytes();
+//	          intervalId = window.setInterval(
+//	           /**
+//				       * 核心方法
+//				       */
+//				    function(){
+//				        traffic_data = TrafficStats.getTotalRxBytes() - total_data;
+//				        total_data = TrafficStats.getTotalRxBytes();
+//			//	        document.getElementById("net").value = bytesToSize(traffic_data);
+//				        console.log(bytesToSize(traffic_data));
+////				        alert(bytesToSize(traffic_data))
+//				    }, 1000);
+//		      });
+	        //将byte自动转换为其他单位
+//	        function bytesToSize(bytes) {
+//	          if (bytes === 0){
+//		          return '0 B/s';
+//	          }
+//	          var k = 1000; // or 1024
+//         	var sizes = ['B/s', 'KB/s', 'MB/s', 'GB/s', 'TB/s', 'PB/s', 'EB/s', 'ZB/s', 'YB/s'];
+//          var i = Math.floor(Math.log(bytes) / Math.log(k));
+//		        return (bytes / Math.pow(k, i)).toPrecision(3) + ' ' + sizes[i];
+//	        }
+//					mui.plusReady(function(){            
+//              plus.networkinfo.CONNECTION_UNKNOW = "未知";状态码：0 
+//              plus.networkinfo.CONNECTION_NONE = "无网络链接"; 状态码：1
+//              plus.networkinfo.CONNECTION_ETHERNET = "有线网络"; 状态码：2
+//              plus.networkinfo.CONNECTION_WIFI = "无线网络"; 状态码：3
+//              plus.networkinfo.CONNECTION_CELL2G = "蜂窝移动2G网络"; 状态码：4
+//              plus.networkinfo.CONNECTION_CELL3G = "蜂窝移动3G网络"; 状态码：5
+//              plus.networkinfo.CONNECTION_CELL4G = "蜂窝移动4G网络"; 状态码：6
+//          if(plus.networkinfo.getCurrentType()!=3){// 3为状态码，wifi状态码是3
+//          	mui.toast("正在使用蜂窝移动网络");
+//          }
+				mui.plusReady(function() {
+					if(plus.networkinfo.getCurrentType()==1){// 3为状态码，wifi状态码是3
+          plus.nativeUI.toast("亲，您当前没有连接网络请退出链接！",{
+//			      icon : "./u740.png",// eg. "/img/add.png"  
+					    duration : "long",// 持续3.5s，short---2s  
+					    align : "center",// 水平居中  
+//						verticalAlign : "bottom"// 垂直底部  
+		        });
+        	}
+					//读取本地存储，检查是否为首次启动
+					//plus.storage.removeItem("lauchFlag")
+					var showGuide = plus.storage.getItem("lauchFlag");
+					//仅支持竖屏显示
+					plus.screen.lockOrientation("portrait-primary");
+					var user = JSON.parse(plus.storage.getItem('user'));
+					if(user) {
+						vm.myid = user.id;
+					}
+					if(showGuide) {
+						//有值， 说明已经显示过了， 无需显示；
+						//关闭splash页面；
+						plus.navigator.closeSplashscreen();
+						plus.navigator.setFullscreen(false);
+//						document.querySelector(".home-mask").style.display = 'none';
+						//预加载
+//						preload();
+					} else {
+						//显示启动导航
+						//alert(1)
+						mui.openWindow({
+							id: 'guide.html',
+							url: 'guide.html',
+							styles: {
+								popGesture: "none"
+							},
+							show: {
+								aniShow: 'none'
+							},
+							waiting: {
+								autoShow: false
+							}
+						});
+//							setTimeout(function() {
+							//预加载
+//							preload();
+							//			alert(document.querySelector(".home-mask"))
+//									document.querySelector(".home-mask").style.display = 'none';
+//							}, 1000);
+					}
+				});
+				var wgtVer=null;
+	      plus.runtime.getProperty(plus.runtime.appid, function(inf) {
+          console.log("当前应用版本：" + inf.version + ' , app id=' + inf.appid+' id2='+plus.runtime.appid);
+        	var urlS= URL.path1 + "app/get_version";
+        	var ua = navigator.userAgent.toLowerCase();// 使用navigator.userAgent.toLowerCase()判断移动端类型
+        	var ver= inf.version;//当前应用版本
+        	var w=0;
+//        var ver= '1.2.1';
+          localStorage.setItem("version",ver);
+          var yl=ver.split(".");
+          if(/iphone|ipad|ipod/.test(ua)) {    //苹果手机  
+						mui.ajax({
+	            type: "POST",
+	            url: urlS,
+	            data: {type:"ios"},
+	            dataType: "json",
+	            success: function(data){
+		            var data=data.data//下载地址
+		            var x=data.version.split(".")
+		            var xin='';
+	              var jiu='';
+		            for(var i=0;i<3;i++){
+		            	xin+=yl[i];
+	                jiu+=x[i];
+		            }
+		            xin = xin.replace(/[^0-9]/ig,""); 
+	            	jiu = jiu.replace(/[^0-9]/ig,"");
+	            	console.log(xin*1)
+	            	console.log(jiu*1)
+		            if(xin*1<jiu*1){
+	            		w=1;
+	            	}
+	//          	alert(w)
+		            if(w==0){
+	//	            mui.init({
+	//							subpages: [{
+	//								url: 'index.html', 
+	//								id: 'index.html', 
+	//								styles: {
+	//									top: '0px', 
+	//										bottom: '0px', 
+	//									},
+	//								}]
+	//							});
+								}else{
+									mui.init({
+										subpages: [{
+											url: 'index2.html', 
+											id: 'index2.html', 
+											styles: {
+												top: '0px', 
+												bottom: '0px', 
+											},
+										}]
+									});
+	//								document.location="http://han666.duapp.com/banbenhao/index.html"
+	//								mui.currentWebview.close();//退出程序
+								}
+		          }
+			      });
+					}
+	        if(/android/.test(ua)) {
+						mui.ajax({
+		          type: "POST",
+		          url: URL.path1 + "app/get_version",
+		          data: {type:"android"},
+		          dataType: "json",
+		          success: function(data){
+		            var data=data.data//下载地址
+	//	            console.log(data.version)
+	              var x=data.version.split(".")
+	              var xin='';
+	              var jiu='';
+	              for(var i=0;i<3;i++){
+	               	xin+=yl[i];
+	                jiu+=x[i];
+	            	};
+	            	xin = xin.replace(/[^0-9]/ig,""); 
+	            	jiu = jiu.replace(/[^0-9]/ig,"");
+	            	console.log(xin*1)
+	            	console.log(jiu*1)
+	            	if(xin*1<jiu*1){
+	            		w=1;
+	            	}
+	//          	alert(w)
+		            if(w==0){
+	//	          	mui.init({
+	//								subpages: [{
+	//									url: 'index.html', 
+	//									id: 'index.html', 
+	//									styles: {
+	//										top: '0px', 
+	//										bottom: '0px', 
+	//									},
+	//								}]
+	//							});
+								}else{
+									mui.init({
+										subpages: [{
+											url: 'index2.html', 
+											id: 'index2.html', 
+											styles: {
+												top: '0px', 
+												bottom: '0px', 
+											},
+										}]
+									});
+	//								console.log("document.location")
+	//								document.location.href="http://han666.duapp.com/banbenhao/index.html"
+	//								mui.currentWebview.close();//退出程序
+								}
+	          	}
+		      	});
+					}
+				});
+			}, false );
+//			} else {
+////				alert("执行离线状态时的任务");
+//				$("body").append(
+//	     			'<div id="prompting" style="width:100%;height:100%;background-image:url(static/img/page4.png);background-size:100% 100%;position:absolute;top:0;left:0;z-index:1000;">'
+//						+'<div style="width:70%;height:26%;background:#ffffff;position:absolute;margin:auto;top:30%;left:0;right:0;">'
+//							+'<div style="width:80%;height:10%;margin:0 auto;margin-top:20%">请检查您的网络是否已连接...</div>'
+//						+'</div>'
+//					+'</div>'
+//	     		);
+//			}
+		</script>
+		<script id="script1" src="dist/build.js"></script>
+  </body>
+</html>

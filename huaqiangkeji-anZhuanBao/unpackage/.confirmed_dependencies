@@ -1,0 +1,76 @@
+{
+  "index.html": {
+    "resources": [
+      "static/css/reset.css",
+      "dist/build.js",
+      "static/swiper/js/swiper-3.4.1.min.js",
+      "static/swiper/css/swiper-3.4.1.min.css",
+      "js/mui.min.js",
+      "static/swiper/js/fastclick.js",
+      "mui.min.css",
+      "mui.min.js",
+      "path.js",
+      "index2.html",
+      "css/mui.min.css",
+      "js/mui.js",
+      "update.js",
+      "mui.js",
+      "dist/f175ff5ffc72423e299c.worker.js"
+    ],
+    "refer": [
+      "index2.html",
+      "index1.html",
+      "guide.html"
+    ]
+  },
+  "home2.html": {
+    "resources": [
+      "path.js",
+      "mui.min.css",
+      "jquery-2.1.0.min.js",
+      "mui.min.js",
+      "index2.html",
+      "index.html"
+    ],
+    "refer": [
+      "index2.html",
+      "index.html"
+    ]
+  },
+  "index2.html": {
+    "resources": [
+      "static/img/page4.png",
+      "mui.min.css",
+      "jquery-2.1.0.min.js",
+      "css/mui.min.css"
+    ]
+  },
+  "index1.html": {
+    "resources": [
+      "static/swiper/js/swiper-3.4.1.min.js",
+      "path.js",
+      "static/css/reset.css",
+      "static/swiper/css/swiper-3.4.1.min.css",
+      "dist/build.js",
+      "static/swiper/js/fastclick.js",
+      "js/mui.min.js"
+    ]
+  },
+  "guide.html": {
+    "resources": [
+      "image/yuantiao.jpg",
+      "image/shuijiao.jpg",
+      "image/muwu.jpg",
+      "image/cbd.jpg",
+      "static/img/page3.png",
+      "static/img/page4.png",
+      "static/img/page2.png",
+      "css/mui.min.css",
+      "static/img/page1.png",
+      "js/mui.min.js"
+    ],
+    "refer": [
+      "index1.html"
+    ]
+  }
+}

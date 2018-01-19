@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+    <title></title>
+    <script src="js/mui.min.js"></script>
+    <link href="css/mui.min.css" rel="stylesheet"/>
+    <!--<script type="text/javascript" src="jquery-2.1.0.min.js"></script>-->
+   	<script src="path.js" type="text/javascript" charset="utf-8"></script>
+</head>
+<body>
+	<div id="prompting" style="width:100%;height:100%;position:absolute;top:0;left:0;z-index:2000;background-color: rgba(0,0,0,0.6);">
+		<div style="border-radius:12px;width:70%;height:52%;background:#ffffff;position:absolute;margin:auto;top:30%;left:0;right:0;">
+			<div style="width:80%;margin:0 auto;text-align: center;color:#FF7A59;font-size:20px;padding-top:10%;">发现新版本</div>
+			<div style="width:80%;height:62%;margin:0 auto;padding:10% 0;font-size:15px;">
+				<span>亲爱的用户，为进一步提高用户体验，企融团队近期对产品做了部分优化设计，修改了一些Bug，提升了一些功能。请点击下方按钮前往AppStore升级到最新版，感谢您的支持！</span>
+			</div>
+			<div style="width:80%;margin:0 auto;padding-bottom:10px;">
+				<span id="texts1" style="border-radius:6px;color:#fff;display:inline-block;width:100%;padding:10px 0;text-align: center;background:#FF7A59">立即升级</span>
+			</div>
+		</div>
+	</div>
+	
+	
+	<div id="prompting1" style="display:none;width:100%;height:100%;position:absolute;top:0;left:0;z-index:2000;background-color: rgba(0,0,0,0.6);">
+		<div style="border-radius:12px;width:70%;height:52%;background:#ffffff;position:absolute;margin:auto;top:30%;left:0;right:0;">
+			<div style="width:80%;margin:0 auto;text-align: center;color:#FF7A59;font-size:20px;padding-top:10%;">发现新版本</div>
+			<div style="width:80%;height:62%;margin:0 auto;padding:10% 0;font-size:15px;">
+				<span>亲爱的用户，为进一步提高用户体验，企融团队近期对产品做了部分优化设计，修改了一些Bug，提升了一些功能。点击下方按钮即可升级到最新版，感谢您的支持！</span>
+			</div>
+			<div style="width:80%;margin:0 auto;padding-bottom:10px;">
+				<span id="texts" style="border-radius:6px;color:#fff;display:inline-block;width:100%;padding:10px 0;text-align: center;background:#FF7A59">立即升级</span>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" charset="utf-8">
+      	mui.init();
+      	var body=document.getElementsByTagName("body")[0];
+		var box=document.createElement("div")
+      	document.addEventListener("plusready", function() {
+      		var wgtVer=null;
+	      	plus.runtime.getProperty(plus.runtime.appid, function(inf) {
+	            console.log("当前应用版本：" + inf.version + ' , app id=' + inf.appid+' id2='+plus.runtime.appid);
+	            var urlS= URL.path1 + "app/get_version";
+	            var ua = navigator.userAgent.toLowerCase();// 使用navigator.userAgent.toLowerCase()判断移动端类型
+	            var ver= inf.version;//当前应用版本
+	            var yl=ver.split(".");
+	            var w=0;
+	            console.log(yl)
+	            //休眠方法 
+				function sleep(numberMillis) { 
+				    var now = new Date(); 
+				    var exitTime = now.getTime() + numberMillis; 
+				    while (true) { 
+				        now = new Date(); 
+				        if (now.getTime() > exitTime) 
+				            return; 
+				    } 
+				} 
+				if(/iphone|ipad|ipod/.test(ua)) {    //苹果手机  
+					document.getElementById("prompting").style.display="block";
+//	                $.ajax({ 
+//	                    type:"get", 
+//	                    dataType:'json', 
+//	                    url:"https://itunes.apple.com/lookup?id=111030274",//获取当前上架APPStore版本信息 
+//	                    data:{             
+//	                        id:111030274 //APP唯一标识ID B5教程网 
+//	                    }, 
+//	                    contentType:'application/x-www-form-urlencoded;charset=UTF-8', 
+//	                    success:function(data){ 
+//	                        console.log("jsjsjsjs"+json2string(data)); 
+//	                        $.each(data, function(i,norms) { 
+//	                            $.each(norms, function(key,value) { 
+//	                                $.each(value, function(j, normItem) { 
+//	                                    if(j=="version"){ 
+//	                                        if(normItem>ver){                         
+//	                                              	alert("发现新版本:V"+normItem); 
+//	                                               	document.location.href='https://itunes.apple.com/cn/app/san-gu-hui/id111030274?mt=8'; //上新APPStore下载地址 
+//	                                        } 
+//	                                    }                             
+//	                                });                 
+//	                            }); 
+//	                        });         
+//	                        return ; 
+//	                    } 
+//	                });     
+	            	mui.ajax(urlS,{ 
+		                data: {type:"ios"}, 
+		                dataType: "json",
+		                type: "POST", 
+//		                timeout:10000, 
+		                success:function(data){
+		                	var data=data.data//下载地址
+		                	console.log(data)
+		                	var x=data.version.split(".")
+		                	var xin='';
+                			var jiu='';
+		                	for(var i=0;i<3;i++){
+		                		xin+=yl[i];
+                				jiu+=x[i];
+		                	}
+		                	xin = xin.replace(/[^0-9]/ig,""); 
+            				jiu = jiu.replace(/[^0-9]/ig,"");
+		                	if(xin*1<jiu*1){
+		            			w=1;
+		            		}
+//		            		alert(w)
+		                    if(w==1){
+		                    	var texts1=document.getElementById("texts1");
+		                    	texts1.onclick=function(){
+		                    		plus.runtime.openURL( data.url);
+		                    		//强制更新可以用这个方法
+		                    	}
+//		                        mui.toast("发现新版本:V"+data.version+"请更新...");
+//		                        console.log(data.url)
+//		                        var times=setTimeout(function(){
+////		                        	background-image:url(static/img/page4.png);background-size:100% 100%;
+//						     		body.innerHTML='<div id="prompting" style="width:100%;height:100%;position:absolute;top:0;left:0;z-index:2000;background-color: rgba(0,0,0,0.8);">'
+//										+'<div style="border-radius:16px;width:70%;height:26%;background:#ffffff;position:absolute;margin:auto;top:30%;left:0;right:0;">'
+//											+'<div style="width:80%;height:10%;margin:0 auto;margin-top:20%;font-size:15px;">您当前环境不支持自动更新，请到应用商店手动更新'+data.version+'版本..</div>'
+//										+'</div>'
+//									+'</div>'
+////			                        var inter=setTimeout(function(){
+//////			                        	backcount = 0;
+//////			                        	document.location.href='https://itunes.apple.com/cn/app/san-gu-hui/id111030274?mt=8';
+//////			                        	mui.currentWebview.close();//退出程序
+////			                        },4000);
+//		                        },2000);
+//		                        var times=setTimeout(function(){
+//		                        	document.location.href="itms-apps://itunes.apple.com/cn/app/id1231987622" ; //上新APPStore下载地址 
+//		                        },2000);
+		                  	}else{ 
+		            			console.log('当前版本号已是最新'); 
+		                        return; 
+		                    } 
+		                }, 
+		                error: function(xhr, type, errerThrown) { 
+		                    mui.toast('网络异常,请稍候再试'); 
+		                } 
+		            });
+				}else if(/android/.test(ua)) {
+					document.getElementById("prompting1").style.display="block";
+	                mui.ajax(urlS,{ 
+		                data: {type:"android"}, 
+		                dataType: "json",
+		                type: "POST", 
+//		                timeout:10000, 
+		                success:function(data){
+		                	var data=data.data//下载地址
+		                	console.log(data)
+		                	var x=data.version.split(".")
+		                	var xin='';
+                			var jiu='';
+		                	for(var i=0;i<3;i++){
+		                		xin+=yl[i];
+                				jiu+=x[i];
+		                	}
+		                	xin = xin.replace(/[^0-9]/ig,""); 
+            				jiu = jiu.replace(/[^0-9]/ig,"");
+		                	if(xin*1<jiu*1){
+		            			w=1;
+		            		}
+//		            		alert(w)
+		                    if(w==1){
+//				     			body.innerHTML='<div id="prompting" style="width:100%;height:100%;position:absolute;top:0;left:0;z-index:2000;background-color: rgba(0,0,0,0.8);">'
+//									+'<div style="border-radius:12px;width:70%;height:26%;background:#ffffff;position:absolute;margin:auto;top:30%;left:0;right:0;">'
+//										+'<div style="width:80%;height:10%;margin:0 auto;margin-top:20%;font-size:15px;">发现新版本:V'+data.version+'正在为您更新下载请耐心等候（10-30秒钟）...</div>'
+//									+'</div>'
+//								+'</div>'
+								var texts=document.getElementById("texts");
+								var uc="";
+								texts.onclick=function(){
+									if(uc!=""){
+										return;
+									}
+									uc=1;
+									var str='';
+						     		var dtask = plus.downloader.createDownload(data.url, {}, function(d, status) {
+						     			console.log(data.url)
+			                            if (status == 200) {
+//			                            	window.clearTimeout(times);
+	//		                                sleep(1000); 
+			                                var path = d.filename;//下载apk 
+			                                plus.runtime.install(path); // 自动安装apk文件 
+			                            }else {
+//			                            	window.clearTimeout(times);
+//			                                alert('版本更新失败:' + status); 
+			                            } 
+			                        });
+			                        dtask.addEventListener( "statechanged", function(task,status){
+	//							    	if(!that.dtask){return;}
+								    	switch(task.state) {
+								    		case 1: // 开始
+							//	    			outLine( "开始下载..." );
+								    		break;
+								    		case 2: // 已连接到服务器
+							//	    			outLine( "链接到服务器..." );
+								    			str = '请稍后...'
+								    		break;
+								    		case 3:	// 已接收到数据
+							//	    			outSet( "下载数据更新:" );
+					//			    			outLine( task.downloadedSize+"/"+task.totalSize );
+								    			task.downloadedSize = parseInt(task.downloadedSize/1024/1024*100)/100;
+												task.totalSize = parseInt(task.totalSize/1024/1024*100)/100;
+												
+												str = '下载中...'+task.downloadedSize + "M/" + task.totalSize+'M'
+								    		break;
+								    		case 4:	// 下载完成
+								    			str = '点击打开'
+											break;
+								    	}
+								    	texts.innerText=str;
+								    });
+			                        dtask.start();
+								}
+//					     		var times=setTimeout(function(){
+//									var box=document.getElementById("prompting");
+//									var time=0.02;
+//									var opacity=1
+//									var inter=setInterval(function(){
+//										x+=1;
+//										opacity-=time;
+//										box.style.opacity=opacity;
+//										if(opacity<=0.1){
+//											box.style.display="none";
+//											window.clearInterval(inter);
+//											window.clearTimeout(times);
+//										}
+//									},1);
+//								},43000);
+		                    }else{ 
+		            			console.log('当前版本号已是最新'); 
+		                        return; 
+		                    } 
+		                }, 
+		                error: function(xhr, type, errerThrown) { 
+		                    mui.toast('网络异常,请稍候再试'); 
+		                } 
+		            }); 
+		        };
+	        });
+        });
+    </script>
+</body>
+</html>
