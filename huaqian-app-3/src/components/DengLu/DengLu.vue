@@ -22,12 +22,12 @@
 						<li>
 							<span></span>
 							<input ref="shouji" v-model="phone" placeholder="请输入手机号" type="number" class="ferst mint-field-core"/>
-							<transition name="fade"><font v-show="shoujis" @click.stop="quxiao()"></font></transition>
+							<transition name="fadeq"><font v-show="shoujis" @click.stop="quxiao()"></font></transition>
 						</li>
 						<li>
 							<span></span>
 							<input ref="mima" v-model="password" placeholder="请输入密码" type="password" class="last mint-field-core"/>
-							<transition name="fade"><font v-show="mimas" @click.stop="mima()"></font></transition>
+							<transition name="fadeq"><font v-show="mimas" @click.stop="mima()"></font></transition>
 						</li>
 					</ul>
 					
@@ -303,10 +303,12 @@
 			quxiao(){
 				this.phone="";
 				this.shoujis=false;
+				this.$refs.shouji.focus();
 			},
 			mima(){
 				this.password="";
 				this.mimas=false;
+				this.$refs.mima.focus();
 			}
 		},
 		mounted(){
@@ -339,13 +341,13 @@
 </script>
 
 <style lang="scss" scoped>
-	.fade-enter-active {
+	.fadeq-enter-active {
 	  	transition: all .5s ease;
 	}
-	.fade-leave-active {
+	.fadeq-leave-active {
 	  	transition: all .5s ease;
 	}
-	.fade-enter, .fade-leave-active {
+	.fadeq-enter, .fadeq-leave-active {
 	  	/*transform: translateX(4.17rem);
 	  	transform:rotate(360deg);*/
 	  	opacity: 0;

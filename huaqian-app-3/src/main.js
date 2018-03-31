@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 //通过resoutce实现前后端数据交互
 import VueResource from "vue-resource"
 
+
 import Mint from 'mint-ui'
 import 'mint-ui/lib/style.css'
 import App from './App.vue'
@@ -18,6 +19,7 @@ Vue.use(Mint)
 
 
 import Router from "./router/router.js"
+import store from './store/index'
 
 var router = new VueRouter({
 	routes:Router.routes,
@@ -32,5 +34,6 @@ var router = new VueRouter({
 new Vue({
 	router:router,
   	el: '#app',
+  	store,
   	render: h => h(App)
 })

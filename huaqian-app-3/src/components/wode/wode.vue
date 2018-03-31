@@ -24,7 +24,7 @@
 			
 			<div class="box">
 				<div class="FadeContent">
-					<div style="width:100%;height:1.06rem;"></div>
+					<!--<div style="width:100%;height:1.06rem;"></div>-->
 					<ul v-show="blockCont" class="content-header ziliao">
 						<li>
 							<span v-if="data.received_item_nums=='0'" class="zanwu">暂无</span>
@@ -47,6 +47,10 @@
 						<span><font class="kuaixuna"></font>个人资料</span>
 						<a v-if="completeness" class="wancheng">完成度{{completeness}}%</a><span></span>
 					</div>
+					<div class="dujia-header border-top" @click.stop="neirongfabu()">
+						<span><font class="kuaixung"></font>内容发布管理</span>
+						<span></span>
+					</div>
 					<div v-if="investment_type" class="dujia-header border-top" @click.stop="ziliaoShow(type,investment_type)">
 						<span><font class="kuaixuna"></font>个人资料</span>
 						<a v-if="completeness" class="wancheng">完成度{{completeness}}%</a><span></span>
@@ -67,9 +71,14 @@
 						<span><font class="kuaixune"></font>工作岗位变更</span>
 						<span></span>
 					</div>
-					<div style="width:100%;height:0.18rem;"></div>
+					<!--<div style="width:100%;height:0.18rem;"></div>-->
 					<div class="dujia-header border-topbottom" @click.stop="biduGo()">
 						<span><font class="kuaixunf"></font>设置</span>
+						<span></span>
+					</div>
+					<div style="width:100%;height:0.18rem;"></div>
+					<div class="dujia-header border-topbottom" @click.stop="tuiChu()">
+						<span><font class="kuaixunk"></font>退出登录</span>
 						<span></span>
 					</div>
 				</div>
@@ -86,6 +95,7 @@
 	import {URL} from '../../common/js/path';
 	import { Indicator } from 'mint-ui';
 	import { Toast } from 'mint-ui';
+	import { MessageBox } from 'mint-ui';
 //	import BScroll from "better-scroll";
 //	import bidu from "./RongziBidu/biDu.vue";
 //	import jilu from "./RongziJilu/jiLu.vue";
@@ -300,12 +310,38 @@
 				    console.log(res);
 				})
 			},
+			neirongfabu(){
+				
+			},
 			gaiBian(){
 				window.location.href="#/touXiang/"+this.userContent["token"];
 			},
 			biduGo(){
 //				this.$refs.biduShow.biduBlock();
 				window.location.href="#/wode/shezhi/"+this.userContent["token"];
+			},
+			tuiChu(){
+				MessageBox.confirm('您确定要退出登录吗?').then(action => {
+					localStorage.removeItem("userID");		//用户ID
+					localStorage.removeItem("token");		//用户token
+					localStorage.removeItem("phone");		//用户电话
+					localStorage.removeItem("type");		//用户类型
+					localStorage.removeItem("name");
+					localStorage.removeItem("photo");		//用户头像id
+					localStorage.removeItem("photourl");	//用户头像URL地址
+					localStorage.removeItem("panduanWanshan");
+					localStorage.removeItem("qiangZhi");
+					if(localStorage.getItem("typeID")){
+						localStorage.removeItem("typeID");
+					}
+					Toast('退出成功');
+					setTimeout(function(){
+//						window.location.href="#/denglu"
+//						history.go(0)
+//						location.reload()
+						location.replace(document.referrer); 
+					},600)
+				});
 			},
 			ziliaoShow(id,Tid){			//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构/研究咨询 5:券商研究员/财务顾问 6:新三板做市商
 				if(localStorage.getItem("shifouZhuce")=='6'){
@@ -442,18 +478,21 @@
 
 <style lang="scss" scoped>
 	.wode{
-		width:100%;
+		width:76%;
 		height:100%;
-		background-color: #f5f4f9;
+		position:absolute;
+    	top:0;
+    	left:0;
+    	z-index:10000;
 		.searchBox {
-			position:fixed;
+			/*position:fixed;
 			top:0;
-			left:0;
+			left:0;*/
 			width:100%;
 		    padding:0.26rem 0 0.18rem 0;
 		    background-image:url("./img/bgbg.png");
-		    background-size:100%;
-		    background-position:0 -0.2rem;
+		    background-size:100% 100%;
+		    background-position:0 0rem;
 		    display:flex;
 		    z-index:100;
 		    .home-search {
@@ -518,6 +557,7 @@
 			width:100%;
 			height:100%;
 			overflow-y:auto;
+			background-color: #f5f4f9;
 			.FadeContent{
 				width:100%;
 				height:auto;
@@ -551,7 +591,7 @@
 					}
 				}
 				.dujia-header{
-					flex:1;
+					/*flex:1;*/
 					background:#fff;
 					padding:0.12rem 0.18rem;
 					.wancheng{
@@ -597,10 +637,7 @@
 							background-image:url("./img/jilu.png");
 						}
 						.kuaixung{
-							width:0.28rem;
-							height:0.28rem;
-							margin:0.02rem 0.05rem 0 -0.02rem;
-							background-image:url("./img/VIP.png");
+							background-image:url("./img/gauanli.png");
 						}
 						.kuaixund{
 							background-image:url("./img/baoming.png");
@@ -610,6 +647,9 @@
 						}
 						.kuaixunf{
 							background-image:url("./img/shezhi.png");
+						}
+						.kuaixunk{
+							background-image:url("./img/tuichu.png");
 						}
 					}
 				}

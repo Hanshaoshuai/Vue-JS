@@ -1,11 +1,20 @@
 <template>
 	<!--<transition name="fade">-->
 		<div class="faxian" ref="faxian">
-			<div ref="searchBox" class="searchBox">
+			<transition name="fade">
+				<div ref="Boxs" class="gereng" v-show="wodeblock" @click.stop="none()" @touchstart="start($event)" @touchmove.stop="huadong($event)" @touchend.stop="taiqi($event)">
+					<wode></wode>
+				</div>
+			</transition>
+			<!--<div ref="searchBox" class="searchBox">
 				<div class="home-search" @click.stop="sousuo()">
 					<img src="./img/circle_hot_search.png"/>
 					<span>搜公司，碰碰运气吧</span>
 				</div>
+			</div>-->
+			<div class="xiangmu-header">
+				<span class="xiangmu-left" @click.stop="sousuo()"><img src="./img/liebiao.png"/></span>
+				<span>企融直通车</span>
 			</div>
 			<div ref="wrapper" class="box" id="top">
 				<div class="FadeContent" ref="tianjia">
@@ -18,6 +27,11 @@
 		          	<span class="lodingTop2" v-show="topStatusTop2">
 		            	下拉刷新
 		          	</span>
+		          	<mt-swipe :auto="3000" :show-indicators="true" @change="handleChange">
+					  	<mt-swipe-item><img @click.stpe="tiaozhuan()" src="http://dummyimage.com/1745x492/f1d65b"/></mt-swipe-item>
+					  	<mt-swipe-item><img src="http://dummyimage.com/1745x492/40b7ea"/></mt-swipe-item>
+					  	<mt-swipe-item><img src="http://dummyimage.com/1745x492/e3c933"/></mt-swipe-item>
+					</mt-swipe>
 					<div class="banner">
 						<img src="./img/bg.jpg"/>
 						<div class="gaikuang">
@@ -117,6 +131,7 @@
 										<span v-if="item.type==7" class="texts">公司调研</span>
 										<span class="texts">* {{item.com_short.substr(1, 1)}} *</span>
 										<span class="texts">（{{item.com_code.substr(0, 2)}} **** ）</span>
+										<span class="texts right">进行中</span>
 									</div>
 									<div class="TypeList">
 										<span v-for="(name,index) in item.industry" class="texts">{{name.title}}</span>
@@ -160,7 +175,7 @@
           	</span>
 			<xiangmugenjin :shifouZhuce="shifouZhuce"></xiangmugenjin>
 			<router-view :setscrollTop="scrollTop" :datas="datas" :userContent='userContent' :type="type" :FankuiShu="FankuiShu"></router-view>
-			<transition name="fade">
+			<transition name="fade1">
 				<div v-show="topBlock" @click.stop="zhiDing()" class="zhiDing"></div>
 			</transition>
 		</div>
@@ -173,7 +188,9 @@
 	import { Indicator } from 'mint-ui';
 	import {URL} from '../../common/js/path';
 	import { Toast } from 'mint-ui';
+	import { Swipe, SwipeItem } from 'mint-ui';
 	import xiangmugenjin from "./xiangmuGenjin.vue";
+	import wode from "../wode/wode.vue"
 	
 	export default {
 		props:{
@@ -181,6 +198,9 @@
 		},
 		data () {
 			return {
+				loop:true,
+                autoPlay:true,
+                
 				yici:'0',
 				imgSrc:"./dist/hongbao.png",
 				dongTai:"",
@@ -239,10 +259,21 @@
 				qiangZhi:0,
 				
 				dongtai:"0",
-				jiantingTongguos:"0"
+				jiantingTongguos:"0",
+				
+				wodeblock:false,
+				touch:'',
+				startX:"",
+				startY:'',
+				endX:'',
+				endY:'',
+				distanceX:"",
+				distanceY:"",
+				drund:""
 			}
 		},
 		mounted() {	//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商
+			this.$store.dispatch('saveRegisterPhone','企融直通车');
 			document.activeElement.blur();
 //			if(!localStorage.getItem("qiangZhi")){
 //				localStorage.setItem("qiangZhi",'1')
@@ -364,6 +395,12 @@
 //			}
 		},
 		methods:{	//类型 1:企业 2:投资机构 3:合格投资人 4咨询机构 5:券商研究员 6:新三板做市商 7:财务顾问
+			handleChange(index) {
+//		    	alert(index)
+		  	},
+		  	tiaozhuan(){
+		  		alert("1")
+		  	},
 			topGo(){
 				if(this.$refs.wrapper.scrollTop>600){
 					this.topBlock=true;
@@ -373,6 +410,80 @@
 			},
 			zhiDing(){		//返回顶部；
 				this.betterscroll.scrollToElement(this.$refs.tianjia,300);
+			},
+			none(){
+				this.wodeblock=false;
+				this.$refs.Boxs.style.left='0px';
+			},
+			start(event){
+				this.touch = event.targetTouches[0];
+			    //滑动起点的坐标
+			    this.startX = this.touch.pageX;
+			    this.startY = this.touch.pageY;
+			},
+			huadong(event){
+				var clientWidth =document.documentElement.clientWidth;
+				var touch1 = event.targetTouches[0];
+		      	//手势滑动时，手势坐标不断变化，取最后一点的坐标为最终的终点坐标
+		        this.endX = touch1.pageX;
+		        this.endY = touch1.pageY;
+				var startX = event.target.offsetLeft;
+				this.drund=Math.floor(this.startX-this.endX)
+				console.log(Math.floor(clientWidth-this.endX))
+//				console.log(clientWidth)
+				if(this.drund>0){
+//					event.target.style.left=-(this.startX-this.endX)+'px'
+					this.$refs.Boxs.style.left=-(this.startX-this.endX)+'px'
+				}else{
+					this.$refs.Boxs.style.left='0px'
+				}
+				
+//				var startX = event.originalEvent.changedTouches[0].pageX;
+//				var startY = event.originalEvent.changedTouches[0].pageY;
+//				console.log(startX)
+//				console.log(startY)
+			},
+			taiqi(event){
+				if(this.drund>100){
+					this.wodeblock=false;
+					this.drund=0;
+				}else{
+					var that=this;
+					var z=-(this.startX-this.endX);
+					var run=setInterval(function(){
+						if(z<0){
+							z+=3
+							that.$refs.Boxs.style.left=z+'px';
+						}else{
+							that.$refs.Boxs.style.left='0px';
+							clearInterval(run);
+						}
+						
+					},0.5)
+				}
+				
+				
+//				this.distanceX=this.endX-this.startX,
+//		        this.distanceY=this.endY - this.startY;
+//		        // console.log("distanceX:"+distanceX+","+"distanceY:"+distanceY);
+//		        //移动端设备的屏幕宽度
+//		        var clientHeight =document.documentElement.clientHeight;
+//		        // console.log(clientHeight;*0.2);
+//		        //判断是否滑动了，而不是屏幕上单击了
+//		        if(this.startY!=Math.abs(this.distanceY)){
+//		 //在滑动的距离超过屏幕高度的20%时，做某种操作
+//		          	if(Math.abs(this.distanceY)>clientHeight*0.2){
+//		 //向下滑实行函数someAction1，向上滑实行函数someAction2
+//		          	this.distanceY <0 ? this.someAction1():this.someAction2();
+//		        	}
+//		        }
+//		        this.startX = this.startY = this.endX =this.endY =0;
+			},
+			someAction1(){
+				alert('someAction1')
+			},
+			someAction2(){
+				alert('someAction2')
 			},
 //			监听是否通过
 			jiantingTongguo(){
@@ -523,19 +634,19 @@
 							},100)
 						}
 					}
-					if(this.scrollYTop>45){
-						this.$refs.searchBox.style.opacity=(145-this.scrollYTop)/100;
-//						console.log((145-this.scrollYTop)/100);
-						if((145-this.scrollYTop)/1000<-0.01){
-							this.$refs.searchBox.style.display="none";
-						}else{
-							this.$refs.searchBox.style.display="block";
-						}
-					}
-					if(this.scrollY<=40){
-						this.$refs.searchBox.style.display="block";
-						this.$refs.searchBox.style.opacity=1;
-					}
+//					if(this.scrollYTop>45){
+//						this.$refs.searchBox.style.opacity=(145-this.scrollYTop)/100;
+////						console.log((145-this.scrollYTop)/100);
+//						if((145-this.scrollYTop)/1000<-0.01){
+//							this.$refs.searchBox.style.display="none";
+//						}else{
+//							this.$refs.searchBox.style.display="block";
+//						}
+//					}
+//					if(this.scrollY<=40){
+//						this.$refs.searchBox.style.display="block";
+//						this.$refs.searchBox.style.opacity=1;
+//					}
 				});
 				if(this.scrollHeight<600){
 					this.tishis=true;
@@ -792,7 +903,9 @@
 			},
 			sousuo(){
 				if(this.shifouZhuce==2){
-					window.location.href="#/faxian/sousuo/";
+					this.wodeblock=true;
+					this.$refs.Boxs.style.left='0px';
+//					window.location.href="#/wode";
 				}else{
 					if(this.shifouZhuce=='6'){
 						Toast(this.houtaiTishi)
@@ -927,7 +1040,8 @@
 		updated(){
 		},
 		components:{
-			xiangmugenjin
+			xiangmugenjin,
+			wode
 		}
 	}
 </script>
@@ -940,6 +1054,17 @@
 	  	transition: all .5s ease;
 	}
 	.fade-enter, .fade-leave-active {
+	  	transform: translateX(-4.17rem);
+	  	/*transform:rotate(360deg);*/
+	  	opacity: 0;
+	}
+	.fade1-enter-active {
+	  	transition: all .5s ease;
+	}
+	.fade1-leave-active {
+	  	transition: all .5s ease;
+	}
+	.fade1-enter, .fade1-leave-active {
 	  	transform: translateX(4.17rem);
 	  	/*transform:rotate(360deg);*/
 	  	opacity: 0;
@@ -947,56 +1072,38 @@
 	.faxian{
 		width:100%;
 		height:100%;
-		/*position:relative;*/
-		.searchBox {
+		.gereng{
 			position:fixed;
 			top:0;
 			left:0;
-		    width: 100%;
-		    height:0.45rem;
-		    background-color: #ff7a59;
-		    z-index:20;
-		    .home-search {
-		    	position: absolute;
-		    	margin:auto;
-		    	top:0;
-		    	left:0;
-		    	right:0;
-		    	bottom:0;
-			    width: 3.21rem;
-			    height: 0.3rem;
-			    background: #fff;
-			    color: #CACACA;
-    			border-radius: 0.3rem;
-			    font-size: 0.14rem;
-			    display: flex;
-			    -webkit-box-pack: center;
-			    justify-content: center;
-			    -webkit-box-align: center;
-			    align-items: center;
-			    img{
-			    	width:0.16rem;
-			    	margin-right:0.1rem;
-			    }
-			}
-			.tubiao{
+			width:100%;
+			height:100%;
+			z-index:160;
+			background:rgba(0,0,0,0.5);
+		}
+		/*position:relative;*/
+		.xiangmu-header{
+			position:fixed;
+			top:0;
+			left:0;
+			width:100%;
+			height:0.46rem;
+			font-weight:600;
+			background:#f5f4f9;
+			font-size:0.2rem;
+			text-align:center;
+			line-height:0.45rem;
+			/*color:#fff;*/
+			z-index:100;
+			.xiangmu-left{
 				position:absolute;
-				right:0.18rem;
-				top:0.12rem;
-				width:0.2rem;
-				height:0.2rem;
-				background-image:url("./img/wode1.png");
-				background-size:100% 100%;
-				/*background:#42B983;*/
-				span{
-					display:inline-block;
-					width:0.08rem;
-					height:0.08rem;
-					background:#E19900;
-					border-radius:0.05rem;
-					position:absolute;
-					top:-0.03rem;
-					right:-0.04rem;
+				height:100%;
+				padding-left:0.16rem;
+				display:inline-block;
+				top:0.06rem;
+				left:0;
+				img{
+					height:0.24rem;
 				}
 			}
 		}
@@ -1010,6 +1117,29 @@
 			overflow:hidden;
 			/*overflow-y:scroll;
 			-webkit-overflow-scrolling: touch;	/*解决苹果滑动流畅*/
+			.mint-swipe{
+				width:100%;
+			    height: 200px;
+			    position:relative;
+			    overflow: hidden;
+			    .mint-swipe-items-wrap{
+					width:100%;
+				    height: 200px;
+				    overflow: hidden;
+				    .mint-swipe-item{
+						width:100%;
+					    height: 200px;
+			    		background:#00C850;
+			    		color:#fff;
+			    		text-align: center;
+			    		line-height:200px;
+			    		img{
+			    			width:100%;
+			    			height:100%;
+			    		}
+					}
+				}
+			}
 			.FadeContent{
 				/*position:relative;*/
 				width:100%;
@@ -1285,6 +1415,11 @@
 									margin-right:0.1rem;
 								}
 							}
+							.right{
+								float:right;
+								color:red;
+							}
+
 						}
 						.TypeList{
 							float:left;

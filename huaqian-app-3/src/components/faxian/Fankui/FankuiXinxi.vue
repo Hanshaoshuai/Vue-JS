@@ -134,7 +134,13 @@
 				idBlock:true,
 				contBlock:false,
 				Myimg:'./dist/my.png',
-				Youimg:"./dist/you.png"
+				Youimg:"./dist/you.png",
+				
+				biaoti:'新三板创新层高成长...',
+				renming:'徐敬宾',
+				gongsi:"企融直通车",
+				bumen:"业务部",
+				
 			}
 		},
 		mounted(){
@@ -395,6 +401,7 @@
 							}
 						}
 					})
+					this.ZhaiquanXiangmu();
 				},function(res){
 					Indicator.close();
 				    console.log(res);
@@ -519,6 +526,7 @@
 			My(type,cont){		//我要发送信息处理函数
 				var contentTexte=this.$refs.contentTexte;
 				var you=document.createElement("div");			//创建元素        我要发送的dom
+				var biaoti=document.createElement("p");
 				var	neiRong=document.createElement("div");		//内容信息
 				var touXiang=document.createElement("div");		//头像
 				var span=document.createElement("span");
@@ -536,9 +544,13 @@
 				neiRong.appendChild(imgs);
 				imaF.appendChild(img);
 				touXiang.appendChild(imaF);
+				you.appendChild(biaoti);
 				you.appendChild(neiRong);
 				you.appendChild(touXiang);
 				this.prent.appendChild(you);
+				biaoti.innerText="我是某公司的总裁";
+				biaoti.style.width="86%";
+				biaoti.style.textAlign="right";
 				you.style.width="92%";						//样式4
 				you.style.margin="0 auto";
 				you.style.textAlign="justify";
@@ -551,20 +563,20 @@
 				neiRong.style.position="relative";
 				span.style.display="inline-block";
 				span.style.padding="0.08rem 0.1rem";
-				span.style.background="#ff7a59";
-				span.style.color="#fff";
+				span.style.background="#8DFA69";
+				span.style.color="";
 				span.style.float="right";
 				span.style.maxWidth="77%";
 				span.style.borderRadius="0.04rem";
 				span.style.fontSize="0.16rem";
-				span.style.border="0.006rem solid #e7e6e9";
+				span.style.border="1px solid #b7bab6";
 				span.style.wordWrap="break-word";
 				touXiang.style.width="14%";
 				touXiang.style.float="left";
 				touXiang.style.overflow="hidden";
 				imaF.style.width="0.38rem";
 				imaF.style.height="0.38rem";
-				imaF.style.border="0.006rem solid #e7e6e9";
+				imaF.style.border="1px solid #b7bab6";
 				imaF.style.boxSizing="border-box";
 				imaF.style.float="right";
 				imaF.style.overflow="hidden";
@@ -575,13 +587,13 @@
 				img.style.float="right";
 				img.style.borderRadius="0.02rem";
 				img.src=this.to_photo;
-				imgs.style.position="absolute";
 //				imgs.style.background="#ff7a59";
 //				imgs.style.borderRight="0.008rem solid #d4d2d2";
 //				imgs.style.borderTop="0.008rem solid #d4d2d2";
 ////					imgs.style.border="0.008rem solid #d4d2d2";
 ////					imgs.style.transform="skew(50deg,0deg)";
 //				imgs.style.transform="rotate(45deg)";
+				imgs.style.position="absolute";
 				imgs.style.width="0.08rem";
 				imgs.style.height="0.11rem";
 				imgs.style.top="0.13rem";
@@ -593,6 +605,7 @@
 					span.appendChild(this.MingpianTishi(cont));
 				}else{
 					span.innerHTML=cont;							//对应插入
+//					span.appendChild(this.ZhaiquanXiangmu());
 					this.introduction="";
 				}
 //				this.FasongShijian();
@@ -601,6 +614,7 @@
 			You(type,cont,id,item_id,MingPian,DianJi,chat_id,com_short){		//对方要发送信息处理函数
 				var contentTexte=this.$refs.contentTexte;
 				var my=document.createElement("div");			//创建元素		对方要发送的dom
+				var biaoti=document.createElement("p");
 				var	neiRong=document.createElement("div");
 				var touXiang=document.createElement("div");
 				var span=document.createElement("span");
@@ -619,15 +633,24 @@
 				neiRong.appendChild(imgs);
 				imaF.appendChild(img);
 				touXiang.appendChild(imaF);
+				my.appendChild(biaoti);
 				my.appendChild(touXiang);
 				my.appendChild(neiRong);
 				this.prent.appendChild(my);
+				biaoti.innerText="我是某公司的总裁";
+				biaoti.style.width="86%";
+				biaoti.style.textAlign="left";
+				biaoti.style.position="absolute";
+				biaoti.style.left="0.49rem";
+				biaoti.style.top="-0.15rem";
 				my.style.width="92%";						//样式4
+				my.style.position="relative";
 				my.style.margin="0 auto";
 				my.style.lineHeight="0.2rem";
 				my.style.textAlign="justify";
 				my.style.display="flex";
 				my.style.padding="0.05rem 0";
+				my.style.marginTop="0.2rem";
 				neiRong.style.width="86%";
 				neiRong.style.position="relative";
 //					neiRong.style.float="left";
@@ -637,13 +660,13 @@
 				span.style.maxWidth="77%"
 				span.style.borderRadius="0.04rem";
 				span.style.fontSize="0.16rem";
-				span.style.border="0.006rem solid #e7e6e9";
+				span.style.border="1px solid #e7e6e9";
 				span.style.wordWrap="break-word";
 				touXiang.style.width="14%";
 //					touXiang.style.float="left";
 				imaF.style.width="0.38rem";
 				imaF.style.height="0.38rem";
-				imaF.style.border="0.006rem solid #e7e6e9";
+				imaF.style.border="1px solid #e7e6e9";
 				imaF.style.boxSizing="border-box";
 				imaF.style.overflow="hidden";
 				imaF.style.borderRadius="0.02rem";
@@ -705,6 +728,76 @@
 					this.introduction="";
 				}
 				contentTexte.scrollTop=contentTexte.scrollHeight;  //滚动条始终在下面
+			},
+			ZhaiquanXiangmu(){			//债权项目
+				var thata=this;
+				var zhaiquan=document.createElement("div");
+//				var sanjiao=document.createElement("div");
+				var biaoti=document.createElement("p");
+				var ulcont=document.createElement("ul");
+				var licont=document.createElement("li");
+				var imgs=document.createElement('img');
+				var liright=document.createElement("li");
+				var divtop=document.createElement("div");
+				var divbot=document.createElement("div");
+				var spanbot=document.createElement("span");
+				var fontbot=document.createElement("font");
+				zhaiquan.appendChild(biaoti);
+				zhaiquan.appendChild(ulcont);
+//				zhaiquan.appendChild(sanjiao);
+				ulcont.appendChild(licont);
+				licont.appendChild(imgs);
+				ulcont.appendChild(liright);
+				this.prent.appendChild(zhaiquan);
+				liright.appendChild(divtop);
+				liright.appendChild(divbot);
+				divbot.appendChild(spanbot);
+				divbot.appendChild(fontbot);
+				biaoti.innerText=this.biaoti;
+				divtop.innerText=this.renming;
+				spanbot.innerText=this.gongsi;
+				fontbot.innerText=this.bumen;
+				zhaiquan.onclick=function(){
+					window.location.href="#/";
+				}
+				zhaiquan.style.position="relative";
+//				zhaiquan.style.display='inline-block';
+//				zhaiquan.style.maxWidth='66%';
+//				zhaiquan.style.background="#8DFA69";
+//				zhaiquan.style.borderRadius="0.04rem";
+//				zhaiquan.style.border="1px solid #b7bab6";
+//				zhaiquan.style.boxSizing='border-box';
+//				sanjiao.style.backgroundImage="url("+'"'+this.Youimg+'"'+")";
+//				sanjiao.style.backgroundSize="100% 100%";
+//				sanjiao.style.position="absolute";
+//				sanjiao.style.width="0.08rem";
+//				sanjiao.style.height="0.11rem";
+//				sanjiao.style.top="0.13rem";
+//				sanjiao.style.right="-0.075rem";
+//				ulcont.style.padding="0.06rem 0";
+				biaoti.style.fontSize="0.16rem";
+				biaoti.style.padding="0 0 0.2rem 0";
+				ulcont.style.width="100%";
+				ulcont.style.display="flex";
+				licont.style.display='flex';
+				licont.style.width="0.36rem";
+				licont.style.height="0.36rem";
+				licont.style.overflow='hidden';
+				licont.style.padding='0 0.1rem 0 0';
+//				licont.style.marginTop='0.02rem';
+				licont.style.textAlign='center';
+				licont.style.alignItems='center';
+				licont.style.alignContent='center';
+				licont.style.justifyContent='center';
+				imgs.style.width="0.36rem";
+				imgs.style.height="0.36rem";
+				imgs.src=this.from_photo;
+				liright.style.fontSize='0.14rem';
+				divtop.style.height='0.18rem';
+				fontbot.style.display="inline-block";
+				fontbot.style.margin="0 0 0 0.1rem";
+				
+				return zhaiquan;
 			},
 			MingpianTishi(cont,name,pont){			//申请换名片处理函数
 				var thata=this;
@@ -940,30 +1033,6 @@
 						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
 						yiyou=1;
 		        }
-//		        if(/^(0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(texts)){
-////		        	Toast("请不要输入敏感字符")
-//					if(yiyou==0){
-//			        	this.introduction="";
-////			        	var hanzi='';
-////						var reg = /[\u4e00-\u9fa5]/g;   
-////	        			hanzi=texts.match(reg).join("");  
-//						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
-//						yiyou=1;
-//			        }
-////		        	return;
-//		        }
-//		         if(/^[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【](0|86|17951)?(13[0-9]|15[012356789]|18[0-9]|14[57])[0-9]{8}|[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(texts)){
-////		        	Toast("请不要输入敏感字符")
-//		        	if(yiyou==0){
-//			        	this.introduction="";
-////			        	var hanzi='';
-////						var reg = /[\u4e00-\u9fa5]/g;   
-////	        			hanzi=texts.match(reg).join("");  
-//						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
-//						yiyou=1;
-//		        	}
-////		        	return;
-//		        }
 		        //验证电话
 		        if(/^(\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,8}$/.test(texts)){
 //					Toast('请不要输入敏感字符');
@@ -977,42 +1046,6 @@
 					}
 //					return;
 				}
-//		        if(/^[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【](\(\d{3,4}\)|\d{3,4}-|\s)?\d{7,8}|[！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.]$/.test(texts)){
-////					Toast('请不要输入敏感字符');
-//					if(yiyou==0){
-//						this.introduction="";
-////						var hanzi='';
-////						var reg = /[\u4e00-\u9fa5]/g;   
-////	        			hanzi=texts.match(reg).join("");  
-//						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
-//						yiyou=1;
-//					}
-////					return;
-//				}
-//		        if(/^1[0-9]{7,12}[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(texts)){
-////					Toast('请不要输入敏感字符');
-//					if(yiyou==0){
-//						this.introduction="";
-////						var hanzi='';
-////						var reg = /[\u4e00-\u9fa5]/g;   
-////	        			hanzi=texts.match(reg).join("");  
-//						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>'+hanzi;
-//						yiyou=1;
-//					}
-////					return;
-//				}
-//		        if(/^1[0-9]{7,12}[~|`|！|!|@|#|$|%|&|*|:|<|>|?|^|：|\|''|""|‘|；|、|“”|‘’|’|-|——|+|=|（）|()|.|】|【]$/.test(texts)){
-////					Toast('请不要输入敏感字符');
-//					if(yiyou==0){
-//						this.introduction="";
-////						var hanzi='';
-////						var reg = /[\u4e00-\u9fa5]/g;   
-////	        			hanzi=texts.match(reg).join("");  
-//						texts='<a style='+'"'+'color:#2abdfc'+'"'+'>[留言框仅支持汉字，如需联系请投资方申请交换名片]</a>';
-//						yiyou=1;
-//					}
-////					return;
-//				}
 //				//验证qq
 				if(/^[1-9][0-9]{7,12}$/.test(texts)){
 //					Toast('请不要输入敏感字符');
@@ -1483,11 +1516,11 @@
 					return;
 				}
 			},
-			watch:{
-//				msg:function(newVal,oldVal){
-//					console.log(newVal +"*********"+ oldVal)
-//				}
-			}
+//			watch:{
+////				msg:function(newVal,oldVal){
+////					console.log(newVal +"*********"+ oldVal)
+////				}
+//			}
 		},
 		events:{
 			

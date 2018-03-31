@@ -21,28 +21,6 @@ import Faxian from "../components/faxian/faxian.vue"
 		import jihuaShu from "../components/faxian/XinxiangMu/jihuaShu.vue"
 	
 	import WoyaoRongzi from "../components/faxian/WoyaoRongzi/WoyaoRongzi.vue"
-//		import Diaoyan from "../components/faxian/WoyaoRongzi/RongziLeixing/Diaoyan.vue"
-//		import Dingzeng from "../components/faxian/WoyaoRongzi/RongziLeixing/Dingzeng.vue"
-//		import Zuoshi from "../components/faxian/WoyaoRongzi/RongziLeixing/Zuoshi.vue"
-//		import ShuangChuang from "../components/faxian/WoyaoRongzi/RongziLeixing/ShuangChuang.vue"
-//		import ZhiYa from "../components/faxian/WoyaoRongzi/RongziLeixing/ZhiYa.vue"
-//		import ZhuanlaoGu from "../components/faxian/WoyaoRongzi/RongziLeixing/ZhuanlaoGu.vue"
-//		import ZuLin from "../components/faxian/WoyaoRongzi/RongziLeixing/ZuLin.vue"
-//		import YanBao from "../components/faxian/WoyaoRongzi/RongziLeixing/YanBao.vue"
-//		import DiaoyanShili from "../components/Faxian/YanbaoShili/gengduo.vue"
-//			import YanbaoXiangqing from "../components/Faxian/YanbaoShili/wenzhang.vue"
-
-
-//import Shendu from "../components/shendu/shendu.vue"//暂不使用
-//	import WenzhangGengduo from "../components/shendu/WenzhangGengduo/gengduo.vue"
-//	import XianxiaWenzhang from "../components/shendu/WenzhangYuedu/XianxiaWenzhang.vue"
-//	
-//	import XianxiaGengduo from "../components/shendu/XianxiaHuodong/XianxiaGengduo.vue"
-//	import PreIPO from "../components/shendu/XianxiaHuodong/XianxiaWenzhang.vue"
-//	
-//	import PeixunGengduo from "../components/shendu/PeixunZixun/PeixunGengduo.vue"
-//	import PeixunWenzhang from "../components/shendu/WenzhangYuedu/PeixunWenzhang.vue"
-//	import IPO from "../components/shendu/PeixunZixun/PeixunWenzhang.vue"
 
 
 import Wode from "../components/wode/wode.vue"
@@ -54,7 +32,6 @@ import Wode from "../components/wode/wode.vue"
 		import ZuLin1 from "../components/wode/RongziJilu/ZuLin.vue"
 		import Diaoyan1 from "../components/wode/RongziJilu/Diaoyan.vue"
 		import YitouQingdan from "../components/wode/RongziJilu/YitouQingdan.vue"
-//	import Baoming from "../components/wode/WoyaoBaoming/Baoming.vue"//暂不使用
 	import Ziliao1 from "../components/wode/GerenZiliao/GerenZiliao1.vue"
 	import Ziliao3 from "../components/wode/GerenZiliao/GerenZiliao3.vue"
 	import Ziliao4 from "../components/wode/GerenZiliao/GerenZiliao4.vue"
@@ -94,6 +71,22 @@ import Xeiyi from "../components/faxian/WoyaoRongzi/PipeiTouziRen/QuedingXeiyi.v
 	import XieyiXiangqing from "../components/faxian/WoyaoRongzi/PipeiTouziRen/ShoufeiXieyi.vue"
 	
 
+import zhaiquan from "../components/zhaiquan/zhaiquan.vue"
+	import xiangmuxiangqing from "../components/zhaiquan/xiangmuxiangqing/xiangmuxiangqing.vue"
+	import zijinxiangqing from "../components/zhaiquan/zijinxiangqing/zijinxiangqing.vue"
+	import fabuxiangmu from "../components/zhaiquan/fabuxiangmu/fabuxiangmu.vue"
+	import fabuzijin from "../components/zhaiquan/fabuzijin/fabuzijin.vue"
+
+import binggou from "../components/binggou/binggou.vue"
+	import jiafangxiangqing from "../components/binggou/jiafangxiangqing/jiaxiangqing.vue"
+	import jianfangxiangqing from "../components/binggou/jianfangxiangqing/jianxiangqing.vue"
+	import fabujia from "../components/binggou/fabujia/fabujia.vue"
+	import fabujian from "../components/binggou/fabujian/fabujian.vue"
+	
+import jianghu from "../components/jianghu/jianghu.vue"
+
+import xiaoxi from "../components/xiaoxi/xiaoxi.vue"
+
 
 export default ({
   routes: [
@@ -112,11 +105,6 @@ export default ({
 		    	]
 		   	},
 			{path:"Yijian/:token",component: Yijian},
-//			{path:"DiaoyanShili",component:DiaoyanShili,
-//				children:[
-//					{path:"YanbaoXiangqing",component:YanbaoXiangqing}
-//				]
-//			}
 		]
     },
     {path:"/DingzengZhaiyao/:token/:XiangmuID",component: DingzengZhaiyao},
@@ -138,45 +126,10 @@ export default ({
 		]
 	},
 	{path:"/WoyaoRongzi/:type",component:WoyaoRongzi,
-//		children:[
-//			{path:"Diaoyan",component:Diaoyan},
-//			{path:"Dingzeng",component:Dingzeng},
-//			{path:"Zuoshi",component:Zuoshi},
-//			{path:"ShuangChuang",component:ShuangChuang},
-//			{path:"ZhiYa",component:ZhiYa},
-//			{path:"ZhuanlaoGu",component:ZhuanlaoGu},
-//			{path:"ZuLin",component:ZuLin},
-//			{path:"YanBao",component:YanBao}
-//		]
 	},
-//  {path: '/shendu',component: Shendu,//暂不使用
-//  	children:[
-//			{path:"WenzhangGengduo/:classid",component:WenzhangGengduo
-//			},
-//			{path:"XianxiaGengduo/:classid",component:XianxiaGengduo,
-//				children:[
-//					{path:"XianxiaWenzhang",component:XianxiaWenzhang}
-//				]
-//			},
-//			{path:"PreIpo/:classid",component:PreIPO
-//			},
-//			{path:"PeixunGengduo/:classid",component:PeixunGengduo,
-//				children:[
-//					{path:"PeixunWenzhang",component:PeixunWenzhang}
-//				]
-//			},
-//			{path:"IPO/:classid",component:IPO}
-//		]
-//  },
     {path:"/touXiang/:classid",component:touXiang,},
     {path: '/wode',component: Wode,
     	children:[
-//			{path:"baoming/:classid",component:Baoming,//暂不使用
-//				children:[
-//					{path:"PreIpo",component:PreIPO},
-//					{path:"Ipo",component:IPO}
-//				]
-//			},
 			{path:"Ziliao1/:token",component:Ziliao1},
 			{path:"Ziliao3/:token",component:Ziliao3},
 			{path:"Ziliao4/:token",component:Ziliao4},
@@ -292,6 +245,19 @@ export default ({
 			{path:"XieyiXiangqing",component:XieyiXiangqing}
     	]
    	},
+   	{path:"/zhaiquan",component:zhaiquan,},
+   		{path:"/xiangmuxiangqing",component:xiangmuxiangqing,},
+	   	{path:"/zijinxiangqing",component:zijinxiangqing,},
+	   	{path:"/fabuxiangmu",component:fabuxiangmu,},
+	   	{path:"/fabuzijin",component:fabuzijin,},
+   	{path:"/binggou",component:binggou,},
+   		{path:"/jiafangxiangqing",component:jiafangxiangqing,},
+	   	{path:"/jianfangxiangqing",component:jianfangxiangqing,},
+	   	{path:"/fabujia",component:fabujia,},
+	   	{path:"/fabujian",component:fabujian,},
+   	{path:"/jianghu",component:jianghu,},
+   	{path:"/xiaoxi",component:xiaoxi,},
+   	
 //  {path:"*",redirect:"/denglu"}
   ]
 })

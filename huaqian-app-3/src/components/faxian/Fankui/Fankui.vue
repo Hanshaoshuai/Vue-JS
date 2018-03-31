@@ -8,7 +8,7 @@
 			<div class="box" ref="wrapper">
 				<div class="fankiu" ref="tianjia">
 					<div style="width:100%;height:0.45rem; background:#f5f4f9;"></div>
-					<div v-for="(item,index) in res" class="content-food border-bottom" @click.stap="xinxiTo(item.id,item.uname)">
+					<div v-for="(item,index) in res" class="content-food border-bottom" @click.stop="xinxiTo(item.id,item.uname)">
 						<div class="imgas">
 							<p>
 								<img class="border" :src="item.photo" alt="" />
@@ -125,7 +125,7 @@
 			},
 			xinxiTo(to_id,uname){///Xeiyi/:token/:uID/:type/:XiangmuID
 //				console.log(to_id)
-//				console.log(this.datas);
+//				console.log(uname);
 				//标记已读反馈
 				var farams={
 		      		token:this.$route.params.token,		//	token	是	[string]		

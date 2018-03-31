@@ -62,7 +62,7 @@
 							<div class="content-top">
 								<span>融资总额</span>
 								<span style="text-align: center;">{{item.total_finance}}万元</span>
-								<font>已审核</font>
+								<font class="contfon">已审核</font>
 								<font>{{numToTime(item.create_time)}}</font>
 							</div>
 						</li>
@@ -72,7 +72,7 @@
 							<div class="content-top">
 								<span>融资总额</span>
 								<span style="text-align: center;">{{item.total_finance}}万元</span>
-								<font>未审核</font>
+								<font class="contfon">未审核</font>
 								<font>{{numToTime(item.create_time)}}</font>
 							</div>
 						</li>
@@ -82,7 +82,7 @@
 							<div class="content-top">
 								<span>融资总额</span>
 								<span style="text-align: center;">{{item.total_finance}}万元</span>
-								<font>进行中</font>
+								<font class="contfon">进行中</font>
 								<font>{{numToTime(item.create_time)}}</font>
 							</div>
 						</li>
@@ -92,7 +92,7 @@
 							<div class="content-top">
 								<span>融资总额</span>
 								<span style="text-align: center;">{{item.total_finance}}万元</span>
-								<font>已结束</font>
+								<font class="contfon">已结束</font>
 								<font>{{numToTime(item.create_time)}}</font>
 							</div>
 						</li>
@@ -102,7 +102,7 @@
 							<div class="content-top">
 								<span>融资总额</span>
 								<span style="text-align: center;">{{item.total_finance}}万元</span>
-								<font>未通过</font>
+								<font class="contfon">未通过</font>
 								<font>{{numToTime(item.create_time)}}</font>
 							</div>
 						</li>
@@ -376,6 +376,9 @@
 								font-size:0.12rem;
 								color:#717070;
 								line-height:0.18rem;
+							}
+							.contfon{
+								flex:0.5;
 							}
 						}
 						.content-bottom{

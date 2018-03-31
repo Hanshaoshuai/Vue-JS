@@ -27,13 +27,13 @@
 						<font></font>
 					</div>
 				</div>
-				<box></box>
+				<!--<box></box>
 				<div class="sousuo-content border-topbottom" @click.stap="tuiChu()">
 					<div class="content-header">
 						<span>退出登录</span>
 						<font></font>
 					</div>
-				</div>
+				</div>-->
 			</div>
 			<router-view :token="token"></router-view>
 		</div>
@@ -77,29 +77,29 @@
 				Toast("清除成功")
 //				this.$refs.xiangqingShow.xiangqingBlock();
 			},
-			tuiChu(){
-				MessageBox.confirm('您确定要退出登录吗?').then(action => {
-					localStorage.removeItem("userID");		//用户ID
-					localStorage.removeItem("token");		//用户token
-					localStorage.removeItem("phone");		//用户电话
-					localStorage.removeItem("type");		//用户类型
-					localStorage.removeItem("name");
-					localStorage.removeItem("photo");		//用户头像id
-					localStorage.removeItem("photourl");	//用户头像URL地址
-					localStorage.removeItem("panduanWanshan");
-					localStorage.removeItem("qiangZhi");
-					if(localStorage.getItem("typeID")){
-						localStorage.removeItem("typeID");
-					}
-					Toast('退出成功');
-					setTimeout(function(){
-//						window.location.href="#/denglu"
-//						history.go(0)
-//						location.reload()
-						location.replace(document.referrer); 
-					},600)
-				});
-			}
+//			tuiChu(){
+//				MessageBox.confirm('您确定要退出登录吗?').then(action => {
+//					localStorage.removeItem("userID");		//用户ID
+//					localStorage.removeItem("token");		//用户token
+//					localStorage.removeItem("phone");		//用户电话
+//					localStorage.removeItem("type");		//用户类型
+//					localStorage.removeItem("name");
+//					localStorage.removeItem("photo");		//用户头像id
+//					localStorage.removeItem("photourl");	//用户头像URL地址
+//					localStorage.removeItem("panduanWanshan");
+//					localStorage.removeItem("qiangZhi");
+//					if(localStorage.getItem("typeID")){
+//						localStorage.removeItem("typeID");
+//					}
+//					Toast('退出成功');
+//					setTimeout(function(){
+////						window.location.href="#/denglu"
+////						history.go(0)
+////						location.reload()
+//						location.replace(document.referrer); 
+//					},600)
+//				});
+//			}
 			
 		},
 		events:{
