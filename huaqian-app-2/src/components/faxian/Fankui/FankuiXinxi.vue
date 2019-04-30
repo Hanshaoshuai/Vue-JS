@@ -1483,17 +1483,17 @@
 					return;
 				}
 			},
-			watch:{
-//				msg:function(newVal,oldVal){
-//					console.log(newVal +"*********"+ oldVal)
-//				}
-			}
+//			watch:{
+////				msg:function(newVal,oldVal){
+////					console.log(newVal +"*********"+ oldVal)
+////				}
+//			}
 		},
-		events:{
-			
-		},
-		filters:{
-		},
+//		events:{
+//			
+//		},
+//		filters:{
+//		},
 		updated(){
 		},
 		components:{

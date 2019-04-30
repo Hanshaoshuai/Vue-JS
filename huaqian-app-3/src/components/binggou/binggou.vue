@@ -130,6 +130,9 @@
 				
 			});
 		},
+		created(){
+			
+		},
 		mounted(){
 //			this.$store.dispatch('saveRegisterPhone','并购');
 			this.$store.commit('saveRegisterPhone','并购');

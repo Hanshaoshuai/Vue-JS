@@ -1351,7 +1351,7 @@
 					    align-items: center;
 					    border-radius:0rem 0 0.12rem 0.12rem;
 					    .tishi-left{
-					    	flex:1;
+					    	flex:6;
 					    	padding-left:5.5%;
 					    	span{
 					    		&:first-child{
@@ -1361,7 +1361,7 @@
 					    	}
 					    }
 					    .tishi-right{
-					    	flex:1;
+					    	flex:4;
 					    	padding-right:5.5%;
 					    	text-align:right;
 					    	span{

@@ -313,16 +313,6 @@
 				<div class="mui-indicator"></div>
 			</div>
 		</div>
-		<div id="foods" class="lodingfood" style="display:none;position: fixed;z-index: 8888; top: 0;right: 0;bottom: 0;left: 0;background-color: rgba(0,0,0,0.4);">
-		    <div class="loadEffect">
-		        <div class="content"><!--正常运行APP-->
-		        	<span>为了便于用户名片的交换和存储，需要使用您的通讯录功能</span>
-		        </div>
-		        <div class='load-butten'>
-			        <font id="loding" class="last">确定</font>
-		        </div>
-			</div>
-		</div>
 		<script src="js/mui.min.js"></script>
 		<!--<script src="static/js/public.js" type="text/javascript" charset="utf-8"></script>-->
 		<script>
@@ -436,16 +426,11 @@
 					},1000)
 				}
 			});
-			if(ua.match(/iPad/i)!="ipad") {
+			if(ua.match(/iPad/i)!="ipad" || navigator.userAgent.indexOf("iPad") == -1) {
 		    	if(!localStorage.getItem("YiyouTongxin1")){
 		    		foods.style.display="block";
 		    	}
 		   	}
-			if(navigator.userAgent.indexOf("iPad") == -1){  
-		    	if(!localStorage.getItem("YiyouTongxin1")){
-		    		foods.style.display="block";
-		    	}    
-			}
 		</script>
 	</body>
 

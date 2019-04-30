@@ -16,17 +16,14 @@
     	window.addEventListener('load', function() {
 			  FastClick.attach(document.body);
 			}, false);
-//  	var DEHeight;
 			(function (doc, win) {
 		        var docEl = doc.documentElement,
 	            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize',
 	            recalc = function () {
 	                var clientWidth = docEl.clientWidth;
-//	                var clientHeight = docEl.clientHeight;
-//	                DEHeight=clientHeight;
 	                if (!clientWidth) return;
-	                if(clientWidth>=375){
-	                    docEl.style.fontSize = '100px';
+	                if(clientWidth>414){
+	                    docEl.style.fontSize = 100 * (clientWidth / 512) + 'px';
 	                }else{
 	                    docEl.style.fontSize = 100 * (clientWidth / 375) + 'px';
 	                }

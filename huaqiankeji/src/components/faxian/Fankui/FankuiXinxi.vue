@@ -1483,11 +1483,11 @@
 					return;
 				}
 			},
-			watch:{
+//			watch:{
 //				msg:function(newVal,oldVal){
 //					console.log(newVal +"*********"+ oldVal)
 //				}
-			}
+//			}
 		},
 		events:{
 			
