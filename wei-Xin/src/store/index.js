@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import head from "./modules/head";
 import footerStatus from "./modules/footerStatus";
 import collection from "./modules/collection";
 
@@ -31,7 +32,8 @@ export default new Vuex.Store({
   //   }
   // },
   modules: {
+    head,
     footerStatus,
-    collection
+    collection,
   }
 });

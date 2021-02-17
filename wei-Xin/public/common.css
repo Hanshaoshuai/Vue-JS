@@ -243,4 +243,8 @@ img {
 .clearfloat{
 	zoom:1;
 }
+.touchstartOpsity{
+  opacity: 0.2;
+  background: #000000;
+}
 

@@ -1,6 +1,9 @@
 <template>
   <div id="app" >
-		<div v-if="hederTop" class='heder'><img :src='imgs' alt=""></div>
+		<div v-if="this.$store.state.head.hederTop" class='heder'>
+			<div v-if="this.$store.state.head.to.name && this.$store.state.head.to.name == 'Payment' || this.$store.state.head.to.name == 'Wallet' || this.$store.state.head.to.name == 'SmallChange'" class='backOff' @click="backOff()"></div>
+			<img :src='this.$store.state.head.urlNme' alt="">
+		</div>
   	<div class="content">
       <router-view />
   		<!-- <keep-alive>
@@ -49,22 +52,54 @@
   </div> 
 </template>
 <script>
+// import {
+//   mapState
+//   // mapGetters,
+//   // mapActions
+// } from "vuex"; //先要引入
 export default {
   name: "App",
   data() {
     return {
 			hederTop:true,
-      imgs: "img/imgs/WxTop.png"
+			imgs: "",
+			names:'',
+			hederTops: true,
+			urlNme: "img/imgs/WxTop.png"
     };
+	},
+	created() {
+		// console.log(this.$store.state.head);
+		// this.imgs=this.$store.state.head.urlNme
+		// console.log(window.location)
+		// console.log(this.$route)
+		if(this.$route.name == null){
+			this.$router.push({ name: "Wx"});
+		}
   },
   methods: {
 		imgUrl(text){
 			if(text=='WoTop'){
-				this.hederTop=false;
+				this.$store.dispatch({
+					type: "head/headChange",
+					amount: {
+						hederTop: false,
+						url: "img/imgs/"+text+".png"
+					}
+				});
 			}else{
-				this.hederTop=true;
-				this.imgs="img/imgs/"+text+".png"
+				this.$store.dispatch({
+					type: "head/headChange",
+					amount: {
+						hederTop: true,
+						url: "img/imgs/"+text+".png"
+					}
+				});
 			}
+			// console.log(this.$route)
+		},
+		backOff(){
+			history.go(-1);
 		},
     routerTo() {
       this.$router.push({ name: "About", params: { userId: "路由传参" } });
@@ -72,7 +107,26 @@ export default {
     routerTos() {
       this.$router.push({ name: "About", query: { userId: "query路由传参" } });
     }
-  }
+	},
+	watch:{
+		$route(to,from){
+			// console.log("进攻得分较高两地分居",to,from)
+      if(to.name == 'Wd'){
+        this.hederTops = false;
+      }else{
+				this.hederTops = true
+			}
+      this.$store.dispatch({
+        type: "head/headChange",
+        amount: {
+          hederTop: this.hederTops,
+					url: "img/imgs/"+ (to.name == 'Payment' ? 'ZhiFu' : to.name) +"Top.png",
+					to,
+					from
+        }
+      });
+		}
+	}
 };
 </script>
 
@@ -90,6 +144,15 @@ export default {
 			position:absolute;
 			top:0;
 			left:0;
+			z-index: 1000;
+			.backOff{
+				width:1.3rem;
+				height:1.3rem;
+				position:absolute;
+				top:0;
+				left:0;
+				// background:#7c1818;
+			}
 			img{
 				width:100%;
 				height:100%;

@@ -2,18 +2,20 @@
   <div class="wd">
     <div class='textList'>
       <div class="imgName"></div>
-      <div class="zhiFu" :class="styleNme" @touchstart="touchstart()" @touchend="touchend()"></div>
+      <div class="zhiFu" :class="styleNme" @touchstart="touchstart()" @touchend="touchend()" @click="payment()"></div>
       <div class="contList" v-for="(item, i) in contList" :key="i">
         <div></div>
       </div>
       <div class="sheZhi"></div>
       
     </div>
+    <!-- <router-view /> -->
+    <!-- <Payment/> -->
   </div>
 </template>
 
 <script>
-
+// import Payment from "@/views/subpage/Payment.vue";
 export default {
   name: "Wd",
   props: {},
@@ -37,14 +39,21 @@ export default {
     touchend(){
       this.styleNme='touchstart'
     },
-    routerTo() {
-      this.$router.push({ name: "About", params: { userId: "路由传参" } });
+    payment() {
+      this.$store.dispatch({
+        type: "head/headChange",
+        amount: {
+          hederTop: true,
+          url: "img/imgs/ZhiFuTop.png"
+        }
+      });
+      this.$router.push({ name: "Payment", params: { userId: "路由传参" } });
     }
   },
   watch: {
   },
   components: {
-    
+    // Payment
   }
 };
 </script>
@@ -70,10 +79,6 @@ export default {
       height:1.5rem;
       // background: red;
       margin-bottom: 0.24rem;
-    }
-    .touchstartOpsity{
-      opacity: 0.2;
-      background: #000000;
     }
     .contList{
       width:100%;
