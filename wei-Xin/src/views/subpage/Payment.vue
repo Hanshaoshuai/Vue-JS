@@ -3,8 +3,13 @@
   <div id="payment" class='payment'>
     <div class="paymentContent">
       <div class='hederTop'></div>
-      <div class='contentList'>
-        <div class='contentC' @touchstart="touchstart($event,key)" @touchend="touchend($event,key)" @click="payment($event)" v-for="(item, key) in dateList" :key="key"></div>
+      <div class="WeChatSansStd">
+        <div class="WeChatSansStd-Medium">
+          <p class="vtc_top" style="display:inline;">￥</p>{{phone}}
+        </div>
+        <div class='contentList'>
+          <div class='contentC' @touchstart="touchstart($event,key)" @touchend="touchend($event,key)" @click="payment($event,key)" v-for="(item, key) in dateList" :key="key"></div>
+        </div>
       </div>
     </div>
     
@@ -30,12 +35,13 @@ export default {
         1,2,3,4,5,6,7,8,9,10,11,12,13,14
       ],
       dateList:[1,2],
-      // styleNme:''
+      phone:"",
     };
   },
   computed: {
   },
   created() {
+    this.phone = localStorage.getItem("phone") ? localStorage.getItem("phone") : 0;
   },
   mounted() {
   },
@@ -49,16 +55,18 @@ export default {
       event.path[0].classList.remove("touchstartOpsity");
       // this.styleNme=''
     },
-    payment(event) {
+    payment(event,key) {
       console.log(event)
-      this.$store.dispatch({
-        type: "head/headChange",
-        amount: {
-          hederTop: true,
-          url: "img/imgs/WalletTop.png"
-        }
-      });
-      this.$router.push({ name: "Wallet", params: { userId: "路由传参" } });
+      if(key=='1'){
+        this.$store.dispatch({
+          type: "head/headChange",
+          amount: {
+            hederTop: true,
+            url: "img/imgs/WalletTop.png"
+          }
+        });
+        this.$router.push({ name: "Wallet", params: { userId: "路由传参" } });
+      }
     }
   },
   watch: {
@@ -86,26 +94,41 @@ export default {
       height:1.30rem;
       margin-bottom: 0.21rem;
     }
-    .contentList{
-      width:9.5rem;
-      height:3.90rem;
-      margin: 0 auto;
-      // background: #000000;
-      display:flex;
-			// flex-wrap:wrap;
-      justify-content: space-around;
-      .contentC{
-        margin-top: 0.23rem;
-        width:3.5rem;
-        height:3.5rem;
-        border-radius:0.2rem;
-        // background: #000000;
-        // opacity: 0.2;
+    .WeChatSansStd{
+      width:100%;
+      position: relative;
+      .WeChatSansStd-Medium{
+        width:50%;
+        position: absolute;
+        right: 0;
+        padding: 0.1rem;
+        font-size: 0.4rem;
+        text-align:center;
+        background: #2aae67;
+        top: 2.77rem;
+        padding-right: 0.06rem;
+        margin-right: 0.27rem;
+        color: #94d7b3;
       }
-      // .contentC:first-child{
-      //   float: left;
-      //   margin: 0.2rem 0 0 0.2rem;
-      // }
+      .contentList{
+        width:9.5rem;
+        height:3.90rem;
+        margin: 0 auto;
+        display:flex;
+        justify-content: space-around;
+        position: relative;
+        z-index: 130;
+        .contentC{
+          margin-top: 0.23rem;
+          width:3.5rem;
+          height:3.5rem;
+          border-radius:0.2rem;
+        }
+        // .contentC:first-child{
+        //   float: left;
+        //   margin: 0.2rem 0 0 0.2rem;
+        // }
+      }
     }
   }
   .textList{

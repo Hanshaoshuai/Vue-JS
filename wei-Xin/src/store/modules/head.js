@@ -2,7 +2,8 @@ const state = {
   urlNme: "img/imgs/WxTop.png",
   hederTop: true, //初始化一个colects数组
   to:{name:null},
-  from:{name:null}
+  from:{name:null},
+  statusbarStyle: {}
 };
 const getters = {
   renderCollects(state) {

@@ -1,16 +1,64 @@
 <template>
-  <div id="app" >
-		<div v-if="this.$store.state.head.hederTop" class='heder'>
-			<div v-if="this.$store.state.head.to.name && this.$store.state.head.to.name == 'Payment' || this.$store.state.head.to.name == 'Wallet' || this.$store.state.head.to.name == 'SmallChange'" class='backOff' @click="backOff()"></div>
+  <div id="app">
+		<div
+		v-if="this.$store.state.head.hederTop"
+		class="heder"
+		:style="{'border-top': statusbarStyle + 'rem solid '+ Colors}"
+		>
+			<div
+			v-if="this.$store.state.head.to.name &&
+			this.$store.state.head.to.name == 'Payment' ||
+			this.$store.state.head.to.name == 'Wallet' ||
+			this.$store.state.head.to.name == 'SmallChange' ||
+			this.$store.state.head.to.name == 'SetUp'"
+			class="backOff"
+			@click="backOff()"></div>
 			<img :src='this.$store.state.head.urlNme' alt="">
 		</div>
+		<transition :name="transitionName">
+		<div
+		v-if="this.$store.state.head.to.name == 'Payment'"
+		class="heder"
+		:style="{'border-top': statusbarStyle + 'rem solid '+ Colors}">
+			<div class="backOff" @click="backOff()"></div>
+			<img :src='this.$store.state.head.urlNme' alt="">
+		</div>
+		</transition>
+		<transition :name="transitionName">
+		<div
+		v-if=" this.$store.state.head.to.name == 'Wallet'"
+		class="heder"
+		:style="{'border-top': statusbarStyle + 'rem solid '+ Colors}">
+			<div class="backOff" @click="backOff()"></div>
+			<img :src='this.$store.state.head.urlNme' alt="">
+		</div>
+		</transition>
+		<transition :name="transitionName">
+		<div
+		v-if="this.$store.state.head.to.name == 'SmallChange'"
+		class="heder"
+		:style="{'border-top': statusbarStyle + 'rem solid '+ Colors}">
+			<div class="backOff" @click="backOff()"></div>
+			<img :src='this.$store.state.head.urlNme' alt="">
+		</div>
+		</transition>
+		<transition :name="transitionName">
+		<div
+		v-if="this.$store.state.head.to.name == 'SetUp'"
+		class="heder"
+		:style="{'border-top': statusbarStyle + 'rem solid '+ Colors}">
+			<div class="backOff" @click="backOff()"></div>
+			<img :src='this.$store.state.head.urlNme' alt="">
+		</div>
+		</transition>
+
   	<div class="content">
-      <router-view />
-  		<!-- <keep-alive>
-  			<router-view :userContent="userContent"></router-view>
-  		</keep-alive> -->
+			<transition :name="transitionName"> 
+      	<router-view :style="{'border-top': statusbarStyle + 'rem solid '+ Colors}" />
+			</transition>
   	</div>
-    <div class="food border-top">
+		<transition :name="transitionName" > 
+    <div v-if="indexs" class="food border-top">
     	<div class="tab-item" @click="imgUrl('WxTop')">
     		<router-link to="/" exact>
     			<span class="icon-WxT"></span>
@@ -28,7 +76,6 @@
     			<span class="icon-FxT"></span>
     			<font>发现</font>
     		</router-link>
-    		<!-- <li v-if="ZongHe">{{ZongHe}}</li> -->
     	</div>
     	<div class="tab-item" @click="imgUrl('WoTop')">
     		<router-link to="/wd">
@@ -37,6 +84,7 @@
     		</router-link>
     	</div>
     </div>
+		</transition>
   <!-- <div id="app">
     <div id="nav">
       <router-link to="/">Home</router-link> |
@@ -52,11 +100,6 @@
   </div> 
 </template>
 <script>
-// import {
-//   mapState
-//   // mapGetters,
-//   // mapActions
-// } from "vuex"; //先要引入
 export default {
   name: "App",
   data() {
@@ -65,7 +108,12 @@ export default {
 			imgs: "",
 			names:'',
 			hederTops: true,
-			urlNme: "img/imgs/WxTop.png"
+			urlNme: "img/imgs/WxTop.png",
+			transitionName: '',
+			indexs: true,
+			statusbarStyle: '',
+			Colors: "#ededed",
+			statusbarHeight: localStorage.getItem("statusbarHeight")
     };
 	},
 	created() {
@@ -73,10 +121,20 @@ export default {
 		// this.imgs=this.$store.state.head.urlNme
 		// console.log(window.location)
 		// console.log(this.$route)
+		localStorage.setItem("hash",'Wx');
 		if(this.$route.name == null){
 			this.$router.push({ name: "Wx"});
 		}
+		if(this.statusbarHeight){
+			this.statusbarStyle = this.statusbarHeight*3/100
+		}else{
+			this.statusbarStyle = 28*3/100
+		}
   },
+	mounted() {
+  },
+	updated(){
+	},
   methods: {
 		imgUrl(text){
 			if(text=='WoTop'){
@@ -96,7 +154,6 @@ export default {
 					}
 				});
 			}
-			// console.log(this.$route)
 		},
 		backOff(){
 			history.go(-1);
@@ -111,20 +168,51 @@ export default {
 	watch:{
 		$route(to,from){
 			// console.log("进攻得分较高两地分居",to,from)
-      if(to.name == 'Wd'){
+			localStorage.setItem("hash",to.name);
+			this.statusbarHeight = localStorage.getItem("statusbarHeight");
+      if(to.name == 'Wd' || to.name == 'Payment' || to.name == 'Wallet' || to.name == 'SmallChange' || to.name == 'SetUp'){
         this.hederTops = false;
       }else{
 				this.hederTops = true
 			}
-      this.$store.dispatch({
-        type: "head/headChange",
-        amount: {
-          hederTop: this.hederTops,
-					url: "img/imgs/"+ (to.name == 'Payment' ? 'ZhiFu' : to.name) +"Top.png",
-					to,
-					from
-        }
-      });
+			if(to.meta.index > 4 && (to.meta.index > from.meta.index)){
+				var timest = setTimeout(() => {
+					this.indexs = false;
+					window.clearTimeout(timest)
+				},0.1)
+			}else if(to.meta.index == 4 && (to.meta.index < from.meta.index)){
+				var times = setTimeout(() => {
+					this.indexs = true;
+					window.clearTimeout(times)
+				},0.1)
+			}
+			if(to.meta.index > 4 || from.meta.index > 4){
+				if(to.meta.index > from.meta.index){
+				//设置动画名称
+					this.transitionName = 'slide-left';
+				}else{
+					this.transitionName = 'slide-right';
+				}
+			}else{
+				this.transitionName = '';
+			}
+			var timeId = setTimeout(() => {
+				this.$store.dispatch({
+					type: "head/headChange",
+					amount: {
+						hederTop: this.hederTops,
+						url: "img/imgs/"+ (to.name == 'Payment' ? 'ZhiFu' : to.name) +"Top.png",
+						to,
+						from
+					}
+				});
+				if(to.name == 'Wd' || to.name == 'SmallChange'){
+					this.Colors = "#ffffff";
+				}else{
+					this.Colors = "#ededed";
+				}
+				window.clearTimeout(timeId)
+			}, 0.1);
 		}
 	}
 };
@@ -132,6 +220,30 @@ export default {
 
 <style lang="scss">
 #app{
+	.slide-right-enter-active,
+	.slide-right-leave-active,
+	.slide-left-enter-active,
+	.slide-left-leave-active {
+		will-change: transform;
+		transition: all 310ms;
+		position: absolute;
+	}
+	.slide-right-enter {
+		opacity: 0;
+		transform: translate3d(-100%, 0, 0);
+	}
+	.slide-right-leave-active {
+		opacity: 0;
+		transform: translate3d(100%, 0, 0);
+	}
+	.slide-left-enter {
+		opacity: 0;
+		transform: translate3d(100%, 0, 0);
+	}
+	.slide-left-leave-active {
+		opacity: 0;
+		transform: translate3d(-100%, 0, 0);
+	}
 		width:100%;
 		height:100%;
 		background:#ededed;
@@ -144,7 +256,7 @@ export default {
 			position:absolute;
 			top:0;
 			left:0;
-			z-index: 1000;
+			z-index:1000;
 			.backOff{
 				width:1.3rem;
 				height:1.3rem;
@@ -192,6 +304,7 @@ export default {
 			}
 		}
 		.content{
+			background:#ededed;
 			// flex:1;
 			width:100%;
 			// height:auto;
@@ -207,7 +320,6 @@ export default {
 			flex-wrap:wrap;
 			position:absolute;
 			bottom:0;
-      // background-image:url("../public/img/tencent.png");
       background-size:100% 100%;
 			background:#f7f7f7;
 			/*box-shadow: -0.006rem 0 0.01rem #000000;*/
@@ -223,7 +335,6 @@ export default {
 					top:0.01rem;
 					right:34%;
 					border-radius:0.16rem;
-					// background-image:url("./u740.png");
 					background-size:100% 100%;
 					background:#ff2d00;
 					color:#fff;

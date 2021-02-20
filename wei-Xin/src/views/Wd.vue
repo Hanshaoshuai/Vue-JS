@@ -6,7 +6,7 @@
       <div class="contList" v-for="(item, i) in contList" :key="i">
         <div></div>
       </div>
-      <div class="sheZhi"></div>
+      <div class="sheZhi" :class="setUpName" @touchstart="touchstart(1)" @touchend="touchend(1)" @click="setUp()"></div>
       
     </div>
     <!-- <router-view /> -->
@@ -22,7 +22,8 @@ export default {
   data() {
     return {
       contList: [1,2,3,4],
-      styleNme:'touchstart'
+      styleNme:'touchstart',
+      setUpName: ''
     };
   },
   computed: {
@@ -33,11 +34,16 @@ export default {
   mounted() {
   },
   methods: {
-    touchstart(){
-      this.styleNme='touchstartOpsity'
+    touchstart(key){
+      if(key == 1){
+        this.setUpName = 'touchstartOpsity';
+      }else{
+        this.styleNme='touchstartOpsity'
+      }
     },
     touchend(){
       this.styleNme='touchstart'
+      this.setUpName = ''
     },
     payment() {
       this.$store.dispatch({
@@ -48,6 +54,16 @@ export default {
         }
       });
       this.$router.push({ name: "Payment", params: { userId: "路由传参" } });
+    },
+    setUp(){
+      this.$store.dispatch({
+        type: "head/headChange",
+        amount: {
+          hederTop: true,
+          url: "img/imgs/setUpTop.png"
+        }
+      });
+      this.$router.push({ name: "SetUp", params: { userId: "路由传参" } });
     }
   },
   watch: {

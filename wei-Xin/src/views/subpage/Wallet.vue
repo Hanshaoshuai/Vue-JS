@@ -3,7 +3,12 @@
   <div id="wallet" class='wallet'>
     <div class="paymentContent">
       <div class='hederTop'></div>
-      <div class='contentC' @touchstart="touchstart($event,key)" @touchend="touchend($event,key)" @click="payment()" v-for="(item, key) in dateList" :key="key"></div>
+      <div class='WeChatSansStd'>
+        <div class="WeChatSansStd-Medium">
+          <p class="vtc_top" style="display:inline;">￥</p>{{phone}}
+        </div>
+        <div class='contentC' @touchstart="touchstart($event,key)" @touchend="touchend($event,key)" @click="payment(key)" v-for="(item, key) in dateList" :key="key"></div>
+      </div>
     </div>
     
     <!-- <div class='textList' v-for="(item,i) in list" :key="i">
@@ -28,11 +33,13 @@ export default {
         1,2,3,4,5,6,7,8,9,10,11,12,13,14
       ],
       dateList:[1,2,3],
+      phone: "",
     };
   },
   computed: {
   },
   created() {
+    this.phone = localStorage.getItem("phone") ? localStorage.getItem("phone") : 0;
   },
   mounted() {
   },
@@ -44,15 +51,17 @@ export default {
     touchend(event){
       event.path[0].classList.remove("touchstartOpsity");
     },
-    payment() {
-      this.$store.dispatch({
-        type: "head/headChange",
-        amount: {
-          hederTop: true,
-          url: "img/imgs/SmallChangeTop.png"
-        }
-      });
-      this.$router.push({ name: "SmallChange", params: { userId: "路由传参" } });
+    payment(key) {
+      if(key == 0){
+        this.$store.dispatch({
+          type: "head/headChange",
+          amount: {
+            hederTop: true,
+            url: "img/imgs/SmallChangeTop.png"
+          }
+        });
+        this.$router.push({ name: "SmallChange", params: { userId: "路由传参" } });
+      }
     }
   },
   watch: {
@@ -80,9 +89,23 @@ export default {
       height:1.30rem;
       margin-bottom: 0.21rem;
     }
+    .WeChatSansStd{
+      width:100%;
+      .WeChatSansStd-Medium{
+        padding: 0.1rem;
+        font-size: 0.5rem;
+        float: right;
+        margin: 0.38rem 0.85rem 0 0;
+        background: #ffffff;
+        width: 4.1rem;
+        text-align: right;
+      }
+    }
     .contentC{
       width:100%;
       height:1.52rem;
+      position: relative;
+      z-index: 111;
     }
   }
   .textList{

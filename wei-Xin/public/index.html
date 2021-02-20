@@ -10,6 +10,43 @@
   <script src="index.js"></script>
   <script src="common.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/lodash@4.13.1/lodash.min.js"></script>
+  <script type="text/javascript">
+    //取消浏览器的所有事件，使得active的样式在手机上正常生效
+    document.addEventListener('touchstart',function(){
+        return false;
+    },true);
+    // 禁止选择
+    document.oncontextmenu=function(){
+      return false;
+    };
+	  function plusReady(){
+		  // plus.navigator.setFullscreen(false);
+		  // plus.navigator.setStatusBarBackground('#D74B28');
+		  // console.log(plus.navigator.getStatusbarHeight())
+      localStorage.setItem("statusbarHeight",plus.navigator.getStatusbarHeight())
+	  	// 隐藏滚动条
+	  	plus.webview.currentWebview().setStyle({scrollIndicator:'none'});
+	  	// Android处理返回键
+	  	plus.key.addEventListener('backbutton',function(){
+        var hash = localStorage.getItem("hash")
+        if(hash =='Wx' || hash == 'Tx' || hash == 'Fx' || hash == 'Wd'){
+          plus.runtime.quit();//那么就退出app
+        }else{
+          history.go(-1)
+        }
+	  		// ('iOS'==plus.os.name)?plus.nativeUI.confirm('确认退出？', function(e){
+	  		// 	if(e.index>0){
+	  		// 		plus.runtime.quit();
+	  		// 	}
+	  		// }, 'HelloH5', ['取消','确定']):(confirm('确认退出？')&&plus.runtime.quit());
+	  	},false);
+	  }
+	  if(window.plus){
+	  	plusReady();
+	  }else{
+	  	document.addEventListener('plusready',plusReady,false);
+	  }
+	</script>
   <body>
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>

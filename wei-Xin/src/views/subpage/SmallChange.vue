@@ -3,9 +3,12 @@
   <div id="smallChange" class='smallChange'>
     <div class="paymentContent">
       <div class='hederTop'></div>
+      <div class="WeChatSansStd-Medium">
+        <div class="vtc_top">￥</div>
+          {{phone}}
+        </div>
       <div class='contentC' @touchstart="touchstart($event,key)" @touchend="touchend($event,key)" @click="payment()" v-for="(item, key) in dateList" :key="key"></div>
     </div>
-    
     <!-- <div class='textList' v-for="(item,i) in list" :key="i">
       <div></div>
     </div> -->
@@ -28,11 +31,13 @@ export default {
         1,2,3,4,5,6,7,8,9,10,11,12,13,14
       ],
       dateList:[1,2],
+      phone: ""
     };
   },
   computed: {
   },
   created() {
+    this.phone = localStorage.getItem("phone") ? localStorage.getItem("phone") : 0;
   },
   mounted() {
   },
@@ -79,6 +84,21 @@ export default {
       width:100%;
       height:1.30rem;
       margin-bottom: 15.18rem;
+    }
+    .WeChatSansStd-Medium{
+      background: #ffffff;
+      font-size: 1.3rem;
+      width:100%;
+      text-align: center;
+      position: absolute;
+      left: 0px;
+      top: 6.1rem;
+      div{
+        display:inline;
+        font-size: 1.1rem;
+        margin-left: -0.1rem;
+        margin-right: -0.1rem;
+      }
     }
     .contentC{
       width:4.98rem;

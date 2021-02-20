@@ -8,13 +8,13 @@ const routes = [
   {
     path: "/",
     name: "Wx",
-    meta: { title: "Wx" }, // 坑
+    meta: { title: "Wx", index: 1}, // 坑
     component: Wx
   },
   {
     path: "/tx",
     name: "Tx",
-    meta: { title: "Tx" },
+    meta: { title: "Tx", index: 2},
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
@@ -24,14 +24,14 @@ const routes = [
   {
     path: "/fx",
     name: "Fx",
-    meta: { title: "Fx" },
+    meta: { title: "Fx", index: 3},
     component: () =>
       import("../views/Fx.vue")
   },
   {
     path: "/wd",
     name: "Wd",
-    meta: { title: "Wd" },
+    meta: { title: "Wd", index: 4},
     component: () =>
       import("../views/Wd.vue"),
       // children: [
@@ -45,7 +45,7 @@ const routes = [
   },
   {
     path: '/payment/:userId',//以“/”开头的嵌套路径会被当作根路径，所以子路由上不用加“/”;在生成路由时，主路由上的path会被自动添加到子路由之前，所以子路由上的path不用在重新声明主路由上的path了。
-    meta: { title: "Payment" },
+    meta: { title: "Payment", index: 5},
     name: 'Payment',
     component:() =>
     import("../views/subpage/Payment.vue")
@@ -53,16 +53,23 @@ const routes = [
   {
     path: "/wallet/:userId",
     name: "Wallet",
-    meta: { title: "Wallet" },
+    meta: { title: "Wallet", index: 6},
     component: () =>
       import("../views/subpage/Wallet.vue")
   },
   {
     path: "/smallChange/:userId",
     name: "SmallChange",
-    meta: { title: "SmallChange" },
+    meta: { title: "SmallChange", index: 7},
     component: () =>
       import("../views/subpage/SmallChange.vue")
+  },
+  {
+    path: "/setUp/:userId",
+    name: "SetUp",
+    meta: { title: "SetUp", index: 8},
+    component: () =>
+      import("../views/subpage/SetUp.vue")
   }
 ];
 
