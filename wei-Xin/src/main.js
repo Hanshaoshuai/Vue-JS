@@ -5,6 +5,9 @@ import store from "./store";
 import router from "./router";
 import axios from "axios";
 import VueAxios from "vue-axios";
+import VueCropper from 'vue-cropper'//图片剪切
+import VueQuickCropper from 'vue-quick-cropper';
+// import MakePy from MakePy.js;
 
 
 // import MintUI from 'mint-ui'
@@ -27,7 +30,7 @@ axios.defaults.withCredentials = true;
 
 // console.log(process.env.NODE_ENV);
 
-Vue.use(VueAxios, axios);
+Vue.use(VueAxios, axios,VueCropper, VueQuickCropper);
 
 Vue.config.productionTip = false;
 

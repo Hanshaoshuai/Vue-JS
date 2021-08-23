@@ -8,9 +8,16 @@ const routes = [
   {
     path: "/",
     name: "Wx",
-    meta: { title: "Wx", index: 1}, // 坑
+    meta: { title: "Wx", index: 0}, // 坑
     component: Wx
   },
+  // {
+  //   path: "/signIn",
+  //   name: "SignIn",
+  //   meta: { title: "SignIn", index: 1}, // 坑
+  //   component: () =>
+  //     import("../views/SignIn.vue")
+  // },
   {
     path: "/tx",
     name: "Tx",

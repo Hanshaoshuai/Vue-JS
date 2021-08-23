@@ -8,17 +8,17 @@
           <li>
             <span></span>
             <input ref="shouji" v-model="phone" placeholder="设置钱包金额" type="number" class="ferst mint-field-core"/>
-            <font @click.stop="quxiao()">更改</font>
+            <font @click.stop="quxiao()" @touchstart="touchstart($event)" @touchend="touchend($event)">更改</font>
           </li>
           <li>
             <span></span>
-            <input ref="mima" v-model="texts" placeholder="请输验证码" type="number" class="last mint-field-core"/>
-            <font v-show="shoujis" ref="yanzhengMa" @click.stop="huoquMima()">获取验证码</font>
+            <input ref="mima" v-model="WxName" placeholder="设置微信名" class="last mint-field-core"/>
+            <font ref="yanzhengMa" @click.stop="huoquMima()" @touchstart="touchstart($event)" @touchend="touchend($event)">设置</font>
           </li>
           <li>
             <span></span>
-            <input ref="mimas" v-model="password" placeholder="请输入密码" type="password" class="last mint-field-core"/>
-            <font v-show="mimas" @click.stop="mima()"></font>
+            <input ref="mimas" v-model="WxNameH" placeholder="设置微信号" class="last mint-field-core"/>
+            <font @click.stop="mima()" @touchstart="touchstart($event)" @touchend="touchend($event)">设置</font>
           </li>
         </ul>
       </div>
@@ -45,8 +45,8 @@ export default {
       ],
       dateList:[1,2,3],
       phone: '',
-      texts: '',
-      password: ''
+      WxName: '',
+      WxNameH: ''
     };
   },
   computed: {
@@ -71,6 +71,20 @@ export default {
         localStorage.setItem("phone",0);
       }else{
         localStorage.setItem("phone",this.phone);
+      }
+    },
+    huoquMima(){
+      if(this.WxName == ''){
+        localStorage.setItem("WxName",'设置');
+      }else{
+        localStorage.setItem("WxName",this.WxName);
+      }
+    },
+    mima(){
+      if(this.WxNameH == ''){
+        localStorage.setItem("WxNameH",'设置');
+      }else{
+        localStorage.setItem("WxNameH",this.WxNameH);
       }
     }
   },
@@ -147,48 +161,21 @@ export default {
 						}
 						font{
 							display:inline-block;
-              font-size: 0.5rem;
+              font-size: 0.41rem;
 							margin:0 0.24rem;
               flex:1;
               text-align:center;
-              line-height: 0.88rem;
+              line-height: 0.9rem;
               border:0.01rem solid #d0d0d0;
 							// background-image:url("../DengLu/img/quxiao.png");
 							background-size:100% 100%;
+              border-radius: 0.12rem;
+              background: #2aae67;
+              color: #94d7b3;
 							
-						}
-						&:last-child{
-							// span{
-							// 	// background-image:url("../DengLu/img/mimas.png");
-							// }
-							font{
-								display:inline-block;
-								width:0.19rem;
-								height:0.13rem;
-								margin:0.06rem 0.15rem 0 0;
-								// background-image:url("../DengLu/img/xianshimima.png");
-								background-size:100% 100%;
-								
-							}
 						}
 						&:nth-child(2n){
 							border-bottom:1px solid #d0d0d0;
-							// span{
-							// 	// background-image:url("../DengLu/img/yanzheng.png");
-							// }
-							font{
-								display:inline-block;
-								padding:0.08rem 0.17rem;
-								border-radius:0.04rem;
-								background:#ff7a59;
-								width:auto;
-								height:auto;
-								margin:0;
-								position:absolute;
-								top:0.05rem;
-								right:0.04rem;
-								color:#fff;
-							}
 						}
 					}
 				}

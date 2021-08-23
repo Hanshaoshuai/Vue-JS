@@ -22,6 +22,7 @@ const actions = {
 
 const mutations = {
   headChange(state, items) {
+    // console.log("就将计就计1111",items)
     //如何变化collects,插入items
     state.hederTop=items.amount.hederTop;
     state.urlNme=items.amount.url;
@@ -29,7 +30,6 @@ const mutations = {
       state.to=items.amount.to
       state.from=items.amount.from
     }
-    // console.log("就将计就计1111",items)
   }
 };
 

@@ -73,6 +73,7 @@ export default {
   height:100%;
   position: relative;
   z-index: 120;
+  background: #ffffff;
   .paymentContent{
     width:100%;
     height:22.63rem;
